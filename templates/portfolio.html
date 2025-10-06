@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block title %}Portfolio - Spark Solution{% endblock %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <h1 class="text-center mb-5">Our Portfolio</h1>
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="{{ url_for('static', filename='images/project1.jpg') }}" class="card-img-top" alt="Project 1">
+                    <div class="card-body">
+                        <h5 class="card-title">E-commerce Website</h5>
+                        <p class="card-text">A fully responsive online store with payment integration.</p>
+                        <p class="card-text"><small class="text-muted">Web Development</small></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="{{ url_for('static', filename='images/project2.jpg') }}" class="card-img-top" alt="Project 2">
+                    <div class="card-body">
+                        <h5 class="card-title">Security Audit</h5>
+                        <p class="card-text">Comprehensive cybersecurity assessment for a financial institution.</p>
+                        <p class="card-text"><small class="text-muted">Cybersecurity</small></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="{{ url_for('static', filename='images/project3.jpg') }}" class="card-img-top" alt="Project 3">
+                    <div class="card-body">
+                        <h5 class="card-title">Social Media Campaign</h5>
+                        <p class="card-text">Increased engagement by 300% for a local business.</p>
+                        <p class="card-text"><small class="text-muted">Digital Marketing</small></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="{{ url_for('static', filename='images/project4.jpg') }}" class="card-img-top" alt="Project 4">
+                    <div class="card-body">
+                        <h5 class="card-title">Fitness App</h5>
+                        <p class="card-text">Cross-platform mobile app for tracking workouts and nutrition.</p>
+                        <p class="card-text"><small class="text-muted">Mobile App Development</small></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="{{ url_for('static', filename='images/project5.jpg') }}" class="card-img-top" alt="Project 5">
+                    <div class="card-body">
+                        <h5 class="card-title">Corporate Website</h5>
+                        <p class="card-text">Modern website with CMS integration for a tech company.</p>
+                        <p class="card-text"><small class="text-muted">Web Development</small></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="{{ url_for('static', filename='images/project6.jpg') }}" class="card-img-top" alt="Project 6">
+                    <div class="card-body">
+                        <h5 class="card-title">SEO Optimization</h5>
+                        <p class="card-text">Improved search rankings and organic traffic for an e-commerce site.</p>
+                        <p class="card-text"><small class="text-muted">Digital Marketing</small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-5">
+            <h3>Client Testimonials</h3>
+            <div class="row mt-4">
+                <div class="col-md-4">
+                    <blockquote class="blockquote">
+                        <p>"Spark Solution delivered an amazing website that exceeded our expectations."</p>
+                        <footer class="blockquote-footer">John Doe, CEO of TechCorp</footer>
+                    </blockquote>
+                </div>
+                <div class="col-md-4">
+                    <blockquote class="blockquote">
+                        <p>"Their cybersecurity services gave us peace of mind."</p>
+                        <footer class="blockquote-footer">Jane Smith, CFO of FinanceInc</footer>
+                    </blockquote>
+                </div>
+                <div class="col-md-4">
+                    <blockquote class="blockquote">
+                        <p>"Our mobile app engagement increased significantly thanks to their expertise."</p>
+                        <footer class="blockquote-footer">Mike Johnson, Founder of AppStart</footer>
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

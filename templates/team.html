@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Meet the Team - Spark Solution{% endblock %}
+{% block content %}
+<section class="team-showcase container mt-5">
+    <h2 class="mb-4 text-center reveal">Meet the Team</h2>
+    <div class="row text-center">
+        <div class="col-md-4 team-member reveal-scale">
+            <img src="{{ url_for('static', filename='images/myimg.jpg') }}" alt="Nikhil Dubey" />
+            <h5>Nikhil Dubey</h5>
+            <p>Founder & Developer</p>
+        </div>
+        <div class="col-md-4 team-member reveal-scale">
+            <img src="{{ url_for('static', filename='images/suryakant.jpg') }}" alt="Suryakant Jaisawal" />
+            <h5>Suryakant Jaisawal</h5>
+            <p>Head of Marketing</p>
+        </div>
+        <div class="col-md-4 team-member reveal-scale">
+            <img src="{{ url_for('static', filename='images/himanchal.jpg') }}" alt="Himanchal" />
+            <h5>Himanchal</h5>
+            <p>Digital Marketing Head</p>
+        </div>
+    </div>
+</section>
+<script src="{{ url_for('static', filename='js/animation.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,7 @@
+Flask
+Flask-CORS
+pymongo
+google-generativeai
+python-dotenv
+bcrypt
+python-environ
