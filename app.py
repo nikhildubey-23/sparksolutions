@@ -114,9 +114,25 @@ def practice():
 def css():
     return render_template('css.html')
 
+@app.route('/flask')
+def flask():
+    return render_template('flask.html')
+
+@app.route('/react')
+def react():
+    return render_template('react.html')
+
 @app.route('/js')
 def js():
     return render_template('js.html')
+
+@app.route('/node')
+def node():
+    return render_template('node.html')
+
+@app.route('/dap')
+def dap():
+    return render_template('dap.html')
 
 @app.route('/htmltest')
 def htmltest():

@@ -1,0 +1,1414 @@
+{% extends 'base.html' %}
+
+{% block title %}Flask Docs - Spark Solutions{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.3/purify.min.js"></script>
+    <script>
+        hljs.highlightAll();
+    </script>
+{% endblock %}
+
+{% block content %}
+    <!-- Flask Docs Page -->
+    <section class="docs-page py-5">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- Documentation Content -->
+                <div class="col-md-12">
+                    <!-- Search Box -->
+                    <div class="search-container mb-4">
+                        <input type="text" id="search-input" class="form-control" placeholder="Search documentation...">
+                    </div>
+                    <div id="content">
+                        <h2 class="mb-4">Flask Documentation</h2>
+                        <p>Welcome to the comprehensive Flask documentation. Here, you'll find detailed guides and tutorials for building web applications with Flask.</p>
+
+                        <h3 id="introduction" class="mt-5">Introduction to Flask</h3>
+                        <p>Flask is a lightweight WSGI web application framework. It is designed to make getting started quick and easy, with the ability to scale up to complex applications.</p>
+                        <p>Key features of Flask:</p>
+                        <ul>
+                            <li><strong>Lightweight</strong> - Minimal core with extensions available</li>
+                            <li><strong>Werkzeug</strong> - WSGI utility library for Python</li>
+                            <li><strong>Jinja2</strong> - Template engine for Python</li>
+                            <li><strong>Flexible</strong> - No database or form validation layers included</li>
+                            <li><strong>Extensible</strong> - Rich ecosystem of extensions</li>
+                            <li><strong>RESTful</strong> - Built-in support for REST request dispatching</li>
+                        </ul>
+
+                        <h3 id="setup" class="mt-5">Setup and Installation</h3>
+
+                        <h4>Virtual Environment</h4>
+                        <p>Always use a virtual environment for Flask projects:</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
+# Create virtual environment
+python -m venv venv
+
+# Activate on Windows
+venv\Scripts\activate
+
+# Activate on macOS/Linux
+source venv/bin/activate
+
+# Deactivate
+deactivate
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Install Flask</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
+# Install Flask
+pip install Flask
+
+# Install additional useful packages
+pip install Flask-SQLAlchemy Flask-Migrate Flask-WTF Flask-Login Flask-Mail python-dotenv
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Verify Installation</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+# test_flask.py
+import flask
+print(flask.__version__)
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h3 id="basic-app" class="mt-5">Basic Flask Application</h3>
+
+                        <h4>Minimal Flask App</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+# app.py
+from flask import Flask
+
+app = Flask(__name__)
+
+@app.route('/')
+def hello_world():
+    return 'Hello, World!'
+
+if __name__ == '__main__':
+    app.run(debug=True)
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Running the Application</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
+# Run the development server
+python app.py
+
+# Or using flask command
+flask run
+
+# With custom host and port
+flask run --host=0.0.0.0 --port=5000
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Application Factory Pattern</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+# __init__.py
+from flask import Flask
+
+def create_app(config_name='development'):
+    app = Flask(__name__)
+    
+    # Load configuration
+    app.config.from_object(f'config.{config_name}')
+    
+    # Register blueprints
+    from app.routes import main_bp
+    app.register_blueprint(main_bp)
+    
+    return app
+
+# run.py
+from app import create_app
+
+app = create_app()
+
+if __name__ == '__main__':
+    app.run(debug=True)
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h3 id="routing" class="mt-5">Routing</h3>
+
+                        <h4>Basic Routes</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+from flask import Flask
+
+app = Flask(__name__)
+
+@app.route('/')
+def index():
+    return 'Index Page'
+
+@app.route('/hello')
+def hello():
+    return 'Hello, World!'
+
+@app.route('/user/<username>')
+def show_user_profile(username):
+    return f'User: {username}'
+
+@app.route('/post/<int:post_id>')
+def show_post(post_id):
+    return f'Post ID: {post_id}'
+
+@app.route('/path/<path:subpath>')
+def show_subpath(subpath):
+    return f'Subpath: {subpath}'
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>HTTP Methods</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+from flask import request
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        return handle_login()
+    else:
+        return show_login_form()
+
+def handle_login():
+    username = request.form['username']
+    password = request.form['password']
+    # Process login
+    return f'Logged in as {username}'
+
+def show_login_form():
+    return '''
+        <form method="post">
+            <input type="text" name="username" placeholder="Username">
+            <input type="password" name="password" placeholder="Password">
+            <input type="submit" value="Login">
+        </form>
+    '''
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>URL Building</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+from flask import url_for
+
+@app.route('/profile')
+def profile():
+    return 'Profile Page'
+
+@app.route('/dashboard')
+def dashboard():
+    # Generate URL for profile endpoint
+    profile_url = url_for('profile')
+    return f'Dashboard - <a href="{profile_url}">Go to Profile</a>'
+
+# Dynamic URL building
+@app.route('/user/<username>')
+def user_profile(username):
+    edit_url = url_for('edit_user', username=username)
+    return f'User: {username} - <a href="{edit_url}">Edit</a>'
+
+@app.route('/user/<username>/edit')
+def edit_user(username):
+    return f'Edit User: {username}'
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Blueprints</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+# auth.py
+from flask import Blueprint, render_template
+
+auth_bp = Blueprint('auth', __name__, url_prefix='/auth')
+
+@auth_bp.route('/login')
+def login():
+    return render_template('login.html')
+
+@auth_bp.route('/register')
+def register():
+    return render_template('register.html')
+
+# main.py
+from flask import Flask
+from auth import auth_bp
+
+app = Flask(__name__)
+app.register_blueprint(auth_bp)
+
+# Or with URL prefix
+app.register_blueprint(auth_bp, url_prefix='/auth')
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h3 id="templates" class="mt-5">Templates and Jinja2</h3>
+
+                        <h4>Basic Templates</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-html">{% raw %}
+<!-- templates/base.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}My App{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="{{ url_for('index') }}">Home</a>
+            <a href="{{ url_for('about') }}">About</a>
+            <a href="{{ url_for('contact') }}">Contact</a>
+        </nav>
+    </header>
+    
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    
+    <footer>
+        <p>&copy; 2023 My Flask App</p>
+    </footer>
+</body>
+</html>
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <pre><button class="copy-button">Copy</button><code class="language-html">{% raw %}
+<!-- templates/index.html -->
+{% extends "base.html" %}
+
+{% block title %}Home - {% endblock %}
+
+{% block content %}
+<h1>Welcome to My Flask App</h1>
+<p>This is the home page.</p>
+
+{% if user %}
+    <p>Hello, {{ user.name }}!</p>
+{% else %}
+    <p>Please <a href="{{ url_for('login') }}">log in</a>.</p>
+{% endif %}
+
+<ul>
+    {% for item in items %}
+    <li>{{ item.name }} - ${{ item.price }}</li>
+    {% endfor %}
+</ul>
+{% endblock %}
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Template Inheritance</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+from flask import render_template
+
+@app.route('/')
+def index():
+    user = {'name': 'John Doe', 'email': 'john@example.com'}
+    items = [
+        {'name': 'Product 1', 'price': 10.99},
+        {'name': 'Product 2', 'price': 24.99},
+        {'name': 'Product 3', 'price': 5.99}
+    ]
+    return render_template('index.html', user=user, items=items)
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Jinja2 Filters</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-html">{% raw %}
+<!-- Using filters in templates -->
+<p>{{ text|capitalize }}</p>
+<p>{{ text|upper }}</p>
+<p>{{ text|lower }}</p>
+<p>{{ text|title }}</p>
+
+<p>{{ number|round(2) }}</p>
+<p>{{ date|strftime('%Y-%m-%d') }}</p>
+
+<p>{{ text|truncate(50) }}</p>
+<p>{{ html|safe }}</p>
+
+<!-- Custom filters -->
+<p>{{ price|currency }}</p>
+<p>{{ date|timesince }}</p>
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Custom Filters</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+# app.py
+from flask import Flask
+
+app = Flask(__name__)
+
+@app.template_filter('currency')
+def currency_filter(value):
+    return f"${value:.2f}"
+
+@app.template_filter('timesince')
+def timesince_filter(value):
+    from datetime import datetime
+    now = datetime.utcnow()
+    diff = now - value
+    return f"{diff.days} days ago"
+
+# Or using add_template_filter
+def format_date(value, format='%Y-%m-%d'):
+    return value.strftime(format)
+
+app.jinja_env.filters['format_date'] = format_date
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h3 id="static-files" class="mt-5">Static Files</h3>
+
+                        <h4>Static File Structure</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
+myapp/
+├── static/
+│   ├── css/
+│   │   ├── style.css
+│   │   └── bootstrap.min.css
+│   ├── js/
+│   │   ├── app.js
+│   │   └── jquery.min.js
+│   ├── images/
+│   │   ├── logo.png
+│   │   └── banner.jpg
+│   └── fonts/
+└── templates/
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Accessing Static Files</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-html">{% raw %}
+<!-- In templates -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+<img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo">
+
+<!-- With versioning for cache busting -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css', v='1.0.0') }}">
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h3 id="forms" class="mt-5">Forms and WTForms</h3>
+
+                        <h4>Basic Forms</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+from flask import Flask, render_template, request, redirect, url_for, flash
+
+app = Flask(__name__)
+app.secret_key = 'your-secret-key'
+
+@app.route('/contact', methods=['GET', 'POST'])
+def contact():
+    if request.method == 'POST':
+        name = request.form['name']
+        email = request.form['email']
+        message = request.form['message']
+        
+        # Process form data
+        flash('Thank you for your message!', 'success')
+        return redirect(url_for('contact'))
+    
+    return render_template('contact.html')
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <pre><button class="copy-button">Copy</button><code class="language-html">{% raw %}
+<!-- templates/contact.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Contact Us</h1>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+<form method="POST">
+    <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" class="form-control" required>
+    </div>
+    
+    <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" class="form-control" required>
+    </div>
+    
+    <div class="form-group">
+        <label for="message">Message:</label>
+        <textarea id="message" name="message" class="form-control" required></textarea>
+    </div>
+    
+    <button type="submit" class="btn btn-primary">Send Message</button>
+</form>
+{% endblock %}
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>WTForms Integration</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+# forms.py
+from flask_wtf import FlaskForm
+from wtforms import StringField, TextAreaField, SubmitField
+from wtforms.validators import DataRequired, Email, Length
+
+class ContactForm(FlaskForm):
+    name = StringField('Name', validators=[DataRequired(), Length(min=2, max=50)])
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    message = TextAreaField('Message', validators=[DataRequired(), Length(min=10)])
+    submit = SubmitField('Send Message')
+
+# app.py
+from flask import Flask, render_template, request, redirect, url_for, flash
+from forms import ContactForm
+
+app = Flask(__name__)
+app.secret_key = 'your-secret-key'
+
+@app.route('/contact', methods=['GET', 'POST'])
+def contact():
+    form = ContactForm()
+    
+    if form.validate_on_submit():
+        name = form.name.data
+        email = form.email.data
+        message = form.message.data
+        
+        # Process form data
+        flash('Thank you for your message!', 'success')
+        return redirect(url_for('contact'))
+    
+    return render_template('contact.html', form=form)
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <pre><button class="copy-button">Copy</button><code class="language-html">{% raw %}
+<!-- templates/contact.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Contact Us</h1>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+<form method="POST" novalidate>
+    {{ form.hidden_tag() }}
+    
+    <div class="form-group">
+        {{ form.name.label(class="form-control-label") }}
+        {{ form.name(class="form-control") }}
+        {% if form.name.errors %}
+            <div class="text-danger">
+                {% for error in form.name.errors %}
+                    <small>{{ error }}</small>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+    
+    <div class="form-group">
+        {{ form.email.label(class="form-control-label") }}
+        {{ form.email(class="form-control") }}
+        {% if form.email.errors %}
+            <div class="text-danger">
+                {% for error in form.email.errors %}
+                    <small>{{ error }}</small>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+    
+    <div class="form-group">
+        {{ form.message.label(class="form-control-label") }}
+        {{ form.message(class="form-control") }}
+        {% if form.message.errors %}
+            <div class="text-danger">
+                {% for error in form.message.errors %}
+                    <small>{{ error }}</small>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+    
+    {{ form.submit(class="btn btn-primary") }}
+</form>
+{% endblock %}
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h3 id="database" class="mt-5">Database Integration</h3>
+
+                        <h4>Flask-SQLAlchemy Setup</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+# models.py
+from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
+
+db = SQLAlchemy()
+
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(80), unique=True, nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    password_hash = db.Column(db.String(128))
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    def __repr__(self):
+        return f'<User {self.username}>'
+
+class Post(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    content = db.Column(db.Text, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    
+    def __repr__(self):
+        return f'<Post {self.title}>'
+
+# app.py
+from flask import Flask
+from models import db, User, Post
+
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db.init_app(app)
+
+# Create tables
+with app.app_context():
+    db.create_all()
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>CRUD Operations</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+from flask import render_template, request, redirect, url_for, flash
+from models import db, User
+from werkzeug.security import generate_password_hash, check_password_hash
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        username = request.form['username']
+        email = request.form['email']
+        password = request.form['password']
+        
+        # Check if user already exists
+        if User.query.filter_by(username=username).first():
+            flash('Username already exists', 'error')
+            return redirect(url_for('register'))
+        
+        # Create new user
+        user = User(
+            username=username,
+            email=email,
+            password_hash=generate_password_hash(password)
+        )
+        db.session.add(user)
+        db.session.commit()
+        
+        flash('Registration successful! Please log in.', 'success')
+        return redirect(url_for('login'))
+    
+    return render_template('register.html')
+
+@app.route('/users')
+def list_users():
+    users = User.query.all()
+    return render_template('users.html', users=users)
+
+@app.route('/user/<int:user_id>')
+def user_detail(user_id):
+    user = User.query.get_or_404(user_id)
+    return render_template('user_detail.html', user=user)
+
+@app.route('/user/<int:user_id>/edit', methods=['GET', 'POST'])
+def edit_user(user_id):
+    user = User.query.get_or_404(user_id)
+    
+    if request.method == 'POST':
+        user.username = request.form['username']
+        user.email = request.form['email']
+        db.session.commit()
+        flash('User updated successfully!', 'success')
+        return redirect(url_for('user_detail', user_id=user_id))
+    
+    return render_template('edit_user.html', user=user)
+
+@app.route('/user/<int:user_id>/delete', methods=['POST'])
+def delete_user(user_id):
+    user = User.query.get_or_404(user_id)
+    db.session.delete(user)
+    db.session.commit()
+    flash('User deleted successfully!', 'success')
+    return redirect(url_for('list_users'))
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h3 id="authentication" class="mt-5">Authentication and Authorization</h3>
+
+                        <h4>Flask-Login Setup</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+# auth.py
+from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
+
+login_manager = LoginManager()
+
+class User(UserMixin, db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(80), unique=True, nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    password_hash = db.Column(db.String(128))
+    
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+    
+    def check_password(self, password):
+        return check_password_hash(password, self.password_hash)
+
+# app.py
+from flask_login import LoginManager, login_user, logout_user, login_required, current_user
+
+app = Flask(__name__)
+login_manager = LoginManager()
+login_manager.login_view = 'login'
+login_manager.logout_view = 'logout'
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        user = User.query.filter_by(username=username).first()
+        
+        if user and user.check_password(password):
+            login_user(user)
+            flash('Logged in successfully!', 'success')
+            return redirect(url_for('dashboard'))
+        else:
+            flash('Invalid username or password', 'error')
+    
+    return render_template('login.html')
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    flash('You have been logged out.', 'info')
+    return redirect(url_for('index'))
+
+@app.route('/dashboard')
+@login_required
+def dashboard():
+    return render_template('dashboard.html', user=current_user)
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Role-Based Authorization</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+# models.py
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(80), unique=True, nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    password_hash = db.Column(db.String(128))
+    role = db.Column(db.String(20), default='user')  # 'user', 'admin', 'moderator'
+    
+    def is_admin(self):
+        return self.role == 'admin'
+
+# decorators.py
+from functools import wraps
+from flask import abort, redirect, url_for, flash
+from flask_login import current_user
+
+def admin_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not current_user.is_authenticated or not current_user.is_admin():
+            flash('Admin access required!', 'error')
+            return redirect(url_for('index'))
+        return f(*args, **kwargs)
+    return decorated_function
+
+# app.py
+@app.route('/admin')
+@admin_required
+def admin_panel():
+    return render_template('admin.html')
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h3 id="api" class="mt-5">Building REST APIs</h3>
+
+                        <h4>Basic API Structure</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+from flask import Flask, jsonify, request
+from models import db, User, Post
+
+app = Flask(__name__)
+
+@app.route('/api/users', methods=['GET'])
+def get_users():
+    users = User.query.all()
+    return jsonify([{
+        'id': user.id,
+        'username': user.username,
+        'email': user.email,
+        'created_at': user.created_at.isoformat()
+    } for user in users])
+
+@app.route('/api/users', methods=['POST'])
+def create_user():
+    data = request.get_json()
+    
+    if not data or not data.get('username') or not data.get('password'):
+        return jsonify({'error': 'Username and password required'}), 400
+    
+    # Check if user already exists
+    if User.query.filter_by(username=data['username']).first():
+        return jsonify({'error': 'Username already exists'}), 409
+    
+    user = User(
+        username=data['username'],
+        email=data.get('email', ''),
+        password_hash=generate_password_hash(data['password'])
+    )
+    db.session.add(user)
+    db.session.commit()
+    
+    return jsonify({
+        'id': user.id,
+        'username': user.username,
+        'email': user.email,
+        'created_at': user.created_at.isoformat()
+    }), 201
+
+@app.route('/api/users/<int:user_id>', methods=['GET'])
+def get_user(user_id):
+    user = User.query.get_or_404(user_id)
+    return jsonify({
+        'id': user.id,
+        'username': user.username,
+        'email': user.email,
+        'created_at': user.created_at.isoformat()
+    })
+
+@app.route('/api/users/<int:user_id>', methods=['PUT'])
+def update_user(user_id):
+    user = User.query.get_or_404(user_id)
+    data = request.get_json()
+    
+    if data.get('username'):
+        user.username = data['username']
+    if data.get('email'):
+        user.email = data['email']
+    
+    db.session.commit()
+    
+    return jsonify({
+        'id': user.id,
+        'username': user.username,
+        'email': user.email,
+        'updated_at': datetime.utcnow().isoformat()
+    })
+
+@app.route('/api/users/<int:user_id>', methods=['DELETE'])
+def delete_user(user_id):
+    user = User.query.get_or_404(user_id)
+    db.session.delete(user)
+    db.session.commit()
+    
+    return jsonify({'message': 'User deleted successfully'})
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>API Versioning</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+# api/v1/users.py
+from flask import Blueprint
+
+v1_bp = Blueprint('api_v1', __name__, url_prefix='/api/v1')
+
+@v1_bp.route('/users', methods=['GET'])
+def get_users_v1():
+    users = User.query.all()
+    return jsonify([{
+        'id': user.id,
+        'username': user.username,
+        'email': user.email
+    } for user in users])
+
+# api/v2/users.py
+v2_bp = Blueprint('api_v2', __name__, url_prefix='/api/v2')
+
+@v2_bp.route('/users', methods=['GET'])
+def get_users_v2():
+    users = User.query.all()
+    return jsonify({
+        'users': [{
+            'id': user.id,
+            'username': user.username,
+            'email': user.email,
+            'created_at': user.created_at.isoformat(),
+            'posts_count': len(user.posts)
+        } for user in users],
+        'total': len(users)
+    })
+
+# app.py
+from api.v1.users import v1_bp
+from api.v2.users import v2_bp
+
+app.register_blueprint(v1_bp)
+app.register_blueprint(v2_bp)
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h3 id="testing" class="mt-5">Testing Flask Applications</h3>
+
+                        <h4>Unit Testing with pytest</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
+# Install testing dependencies
+pip install pytest pytest-flask
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+# test_app.py
+import pytest
+from app import create_app
+
+@pytest.fixture
+def app():
+    app = create_app('testing')
+    with app.app_context():
+        yield app
+
+@pytest.fixture
+def client(app):
+    return app.test_client()
+
+def test_index(client):
+    response = client.get('/')
+    assert response.status_code == 200
+    assert b'Hello, World!' in response.data
+
+def test_login(client):
+    response = client.post('/login', data={
+        'username': 'testuser',
+        'password': 'testpass'
+    })
+    assert response.status_code == 302  # Redirect
+
+def test_register(client):
+    response = client.post('/register', data={
+        'username': 'newuser',
+        'email': 'newuser@example.com',
+        'password': 'password123'
+    })
+    assert response.status_code == 302  # Redirect
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Integration Testing</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+# test_api.py
+import json
+import pytest
+from app import create_app
+
+@pytest.fixture
+def app():
+    app = create_app('testing')
+    with app.app_context():
+        db.create_all()
+        yield app
+
+@pytest.fixture
+def client(app):
+    return app.test_client()
+
+def test_get_users(client):
+    response = client.get('/api/users')
+    assert response.status_code == 200
+    data = json.loads(response.data)
+    assert isinstance(data, list)
+
+def test_create_user(client):
+    user_data = {
+        'username': 'testuser',
+        'password': 'testpass',
+        'email': 'test@example.com'
+    }
+    response = client.post('/api/users',
+                         data=json.dumps(user_data),
+                         content_type='application/json')
+    assert response.status_code == 201
+    data = json.loads(response.data)
+    assert data['username'] == 'testuser'
+    assert data['email'] == 'test@example.com'
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h3 id="deployment" class="mt-5">Deployment</h3>
+
+                        <h4>Production Configuration</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+# config.py
+import os
+
+class Config:
+    SECRET_KEY = os.environ.get('SECRET_KEY') or 'dev-secret-key'
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///app.db'
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+class DevelopmentConfig(Config):
+    DEBUG = True
+
+class ProductionConfig(Config):
+    DEBUG = False
+    # Add production-specific settings
+    SESSION_COOKIE_SECURE = True
+    SESSION_COOKIE_HTTPONLY = True
+    SESSION_COOKIE_SAMESITE = 'Lax'
+
+class TestingConfig(Config):
+    TESTING = True
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
+    WTF_CSRF_ENABLED = False
+
+config = {
+    'development': DevelopmentConfig,
+    'production': ProductionConfig,
+    'testing': TestingConfig
+}
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Gunicorn Deployment</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
+# Install Gunicorn
+pip install gunicorn
+
+# Run with Gunicorn
+gunicorn -w 4 -b 0.0.0.0:8000 app:app
+
+# Or with a configuration file
+gunicorn -c gunicorn.conf.py app:app
+
+# gunicorn.conf.py
+bind = "0.0.0.0:8000"
+workers = 4
+worker_class = "sync"
+worker_connections = 1000
+timeout = 30
+keepalive = 2
+max_requests = 1000
+max_requests_jitter = 100
+preload_app = True
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Docker Deployment</h4>
+                        <pre><button class="copy-button">Copy</button><code class="dockerfile">{% raw %}
+# Dockerfile
+FROM python:3.9-slim
+
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    gcc \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Python dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy application code
+COPY . .
+
+# Expose port
+EXPOSE 5000
+
+# Run the application
+CMD ["gunicorn", "-b", "0.0.0.0:5000", "app:app"]
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <pre><button class="copy-button">Copy</button><code class="language-yaml">{% raw %}
+# docker-compose.yml
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=production
+      - DATABASE_URL=postgresql://user:password@db:5432/appdb
+    depends_on:
+      - db
+  
+  db:
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=appdb
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h3 id="best-practices" class="mt-5">Flask Best Practices</h3>
+
+                        <h4>Project Structure</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
+myflaskapp/
+├── app/
+│   ├── __init__.py
+│   ├── models.py
+│   ├── routes/
+│   │   ├── __init__.py
+│   │   ├── main.py
+│   │   ├── auth.py
+│   │   └── api.py
+│   ├── templates/
+│   │   ├── base.html
+│   │   ├── index.html
+│   │   ├── auth/
+│   │   └── errors/
+│   ├── static/
+│   │   ├── css/
+│   │   ├── js/
+│   │   └── images/
+│   └── forms.py
+├── migrations/
+├── tests/
+│   ├── test_app.py
+│   ├── test_models.py
+│   └── test_routes/
+├── config.py
+├── requirements.txt
+├── run.py
+└── README.md
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Configuration Management</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+# Use environment variables for configuration
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+class Config:
+    SECRET_KEY = os.environ.get('SECRET_KEY')
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
+    MAIL_SERVER = os.environ.get('MAIL_SERVER')
+    MAIL_PORT = os.environ.get('MAIL_PORT', 587)
+    MAIL_USE_TLS = os.environ.get('MAIL_USE_TLS', 'true')
+    MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
+    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
+
+# .env file (never commit to version control)
+SECRET_KEY=your-secret-key-here
+DATABASE_URL=postgresql://user:password@localhost:5432/dbname
+MAIL_SERVER=smtp.gmail.com
+MAIL_PORT=587
+MAIL_USERNAME=your-email@gmail.com
+MAIL_PASSWORD=your-app-password
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Error Handling</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+# errors.py
+from flask import render_template
+
+def not_found_error(error):
+    return render_template('errors/404.html'), 404
+
+def internal_error(error):
+    return render_template('errors/500.html'), 500
+
+# app.py
+from flask import Flask
+from errors import not_found_error, internal_error
+
+app = Flask(__name__)
+
+@app.errorhandler(404)
+def not_found(error):
+    return not_found_error(error)
+
+@app.errorhandler(500)
+def internal_error(error):
+    return internal_error(error)
+
+# Custom error handlers
+@app.errorhandler(403)
+def forbidden(error):
+    return render_template('errors/403.html'), 403
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Security Best Practices</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+# Security considerations
+from flask import Flask
+from flask_talisman import Talisman
+from flask_wtf.csrf import CSRFProtect
+
+app = Flask(__name__)
+
+# Enable CSRF protection
+CSRFProtect(app)
+
+# Enable security headers
+Talisman(app, force_https=True)
+
+# Content Security Policy
+csp = {
+    'default-src': "'self'",
+    'script-src': "'self'",
+    'style-src': "'self' 'unsafe-inline'",
+    'img-src': "'self' data:",
+    'font-src': "'self'",
+    'connect-src': "'self'"
+}
+
+# Use HTTPS in production
+if app.config.get('ENV') == 'production':
+    app.config.update(
+        SESSION_COOKIE_SECURE=True,
+        SESSION_COOKIE_HTTPONLY=True,
+        SESSION_COOKIE_SAMESITE='Lax',
+        PERMANENT_SESSION_LIFETIME=3600
+    )
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h3 id="extensions" class="mt-5">Popular Flask Extensions</h3>
+
+                        <h4>Flask-SQLAlchemy</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+# Database models and relationships
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(80), unique=True)
+    posts = db.relationship('Post', backref='author', lazy='dynamic')
+
+class Post(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    content = db.Column(db.Text)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    author = db.relationship('User', backref='posts')
+
+# Database migrations
+from flask_migrate import Migrate
+
+migrate = Migrate(app, db)
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Flask-Mail</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+from flask_mail import Mail, Message
+
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = 'your-email@gmail.com'
+app.config['MAIL_PASSWORD'] = 'your-password'
+
+mail = Mail(app)
+
+@app.route('/send-email')
+def send_email():
+    msg = Message(
+        'Hello',
+        sender='from@example.com',
+        recipients=['to@example.com'],
+        body='This is a test email'
+    )
+    mail.send(msg)
+    return 'Email sent!'
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Flask-RESTful</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+from flask_restful import Api, Resource
+from flask import jsonify
+
+class UserResource(Resource):
+    def get(self):
+        users = User.query.all()
+        return jsonify([{
+            'id': user.id,
+            'username': user.username,
+            'email': user.email
+        } for user in users])
+
+    def post(self):
+        data = request.get_json()
+        user = User(username=data['username'])
+        db.session.add(user)
+        db.session.commit()
+        return jsonify({'id': user.id}), 201
+
+api.add_resource(UserResource, '/api/users')
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h3 id="real-world-examples" class="mt-5">Real-World Examples</h4>
+
+                        <h4>File Upload Service</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+import os
+from flask import Flask, request, redirect, url_for, flash
+from werkzeug.utils import secure_filename
+
+app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = 'uploads'
+os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+@app.route('/upload', methods=['GET', 'POST'])
+def upload_file():
+    if request.method == 'POST':
+        if 'file' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+        
+        file = request.files['file']
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+        
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            flash('File successfully uploaded')
+            return redirect(url_for('uploaded_file',
+                                   filename=filename))
+    
+    return render_template('upload.html')
+
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>WebSocket Support</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+# Install Flask-SocketIO
+pip install flask-socketio
+
+# app.py
+from flask import Flask, render_template
+from flask_socketio import SocketIO, emit
+
+app = Flask(__name__)
+socketio = SocketIO(app)
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@socketio.on('connect')
+def handle_connect():
+    print('Client connected')
+    emit('server_response', {'data': 'Connected!'})
+
+@socketio.on('disconnect')
+def handle_disconnect():
+    print('Client disconnected')
+
+if __name__ == '__main__':
+    socketio.run(app, debug=True)
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <pre><button class="copy-button">Copy</button><code class="language-html">{% raw %}
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Flask-SocketIO Test</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"></script>
+</head>
+<body>
+    <h1>Flask-SocketIO Test</h1>
+    <div id="messages"></div>
+    
+    <script>
+        const socket = io();
+        
+        socket.on('connect', function() {
+            console.log('Connected to server');
+        });
+        
+        socket.on('server_response', function(msg) {
+            const messages = document.getElementById('messages');
+            const message = document.createElement('div');
+            message.textContent = msg.data;
+            messages.appendChild(message);
+        });
+    </script>
+</body>
+</html>
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h3 id="conclusion" class="mt-5">Conclusion</h3>
+                        <p>This comprehensive Flask documentation covers essential concepts from basics to advanced topics. Flask provides a solid foundation for building web applications quickly and efficiently.</p>
+                        <p>Key takeaways:</p>
+                        <ul>
+                            <li>Flask is lightweight and extensible</li>
+                            <li>Use blueprints for organizing large applications</li>
+                            <li>Always use virtual environments for dependency management</li>
+                            <li>Implement proper authentication and authorization</li>
+                            <li>Write tests to ensure application reliability</li>
+                            <li>Follow security best practices in production</li>
+                            <li>Use appropriate extensions for common tasks</li>
+                        </ul>
+                        <p>Continue learning by building real-world applications, exploring the Flask ecosystem, and staying engaged with the community. Happy coding with Flask!</p>
+
+                        <div class="mt-5 text-center">
+                            <a href="/practice" class="btn btn-primary btn-lg">Take Practice Test</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="animation-container-docs" style="position: fixed; <div id="animation-container-docs" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1;">
+        </div>
+    </section>
+
+    <script>
+        document.getElementById('search-input').addEventListener('input', function() {
+            const query = this.value.toLowerCase();
+            const content = document.getElementById('content');
+            const elements = content.querySelectorAll('h2, h3, h4, p, pre');
+
+            elements.forEach(element => {
+                const text = element.textContent.toLowerCase();
+                if (query === '' || text.includes(query)) {
+                    element.style.display = '';
+                } else {
+                    element.style.display = 'none';
+                }
+            });
+        });
+    </script>
+    <script>
+        const copyButtons = document.querySelectorAll('.copy-button');
+        copyButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const code = this.parentNode.querySelector('code').textContent;
+                navigator.clipboard.writeText(code);
+                this.textContent = 'Copied!';
+                setTimeout(() => {
+                    this.textContent = 'Copy';
+                }, 2000);
+            });
+        });
+    </script>
+{% endblock %}
