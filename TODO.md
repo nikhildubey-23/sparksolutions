@@ -1,0 +1,5 @@
+- [x] Modify base.html to change Docs nav item to dropdown with Python and HTML options
+- [x] Add /python and /html routes in app.py
+- [x] Create templates/python.html with Python content, highlighting, search, and copy scripts
+- [x] Create templates/html.html with HTML content, highlighting, search, and copy scripts
+- [x] Modify templates/docs.html to remove sidebar and content sections

@@ -1,0 +1,547 @@
+{% extends 'base.html' %}
+
+{% block title %}Python Docs - Spark Solutions{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.3/purify.min.js"></script>
+    <script>
+        hljs.highlightAll();
+    </script>
+{% endblock %}
+
+{% block content %}
+    <!-- Python Docs Page -->
+    <section class="docs-page py-5">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- Documentation Content -->
+                <div class="col-md-12">
+                    <!-- Search Box -->
+                    <div class="search-container mb-4">
+                        <input type="text" id="search-input" class="form-control" placeholder="Search documentation...">
+                    </div>
+                    <div id="content">
+                        <h2 class="mb-4">Python Documentation</h2>
+                        <p>Welcome to the Python programming documentation. Here, you'll find comprehensive guides and tutorials for Python programming.</p>
+
+                        <h3 id="python" class="mt-5">Python Programming</h3>
+                        <p>This section provides a comprehensive guide to Python programming, from basics to advanced concepts.</p>
+
+                        <h4>What is Python and Its Use</h4>
+                        <p>Python is a versatile, high-level programming language known for its simplicity, readability, and extensive libraries. It's widely used in web development, data science, AI, automation, and more.</p>
+
+                        <h4>Installation</h4>
+                        <p>To get started, download and install Python from the official website: <a href="https://www.python.org/downloads/" target="_blank">python.org</a>. Choose the latest stable version for your operating system.</p>
+
+                        <h4>Print Function</h4>
+                        <p>The print function is used to output text to the console. Here's a simple "Hello, World!" program:</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">
+print("Hello, World!")
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Variables</h4>
+                        <p>Variables store data values. You can assign values to variables without declaring their type:</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">
+name = "Alice"
+age = 30
+height = 5.7
+is_student = True
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Data Types</h4>
+                        <p>Python supports various data types:</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">
+print(type(name))      # <class 'str'>
+print(type(age))       # <class 'int'>
+print(type(height))    # <class 'float'>
+print(type(is_student)) # <class 'bool'>
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Operators</h4>
+                        <p>Python supports various operators for arithmetic, comparison, logical, and more:</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">
+# Arithmetic operators
+a = 10
+b = 3
+print(a + b)  # 13
+print(a - b)  # 7
+print(a * b)  # 30
+print(a / b)  # 3.333...
+print(a // b) # 3 (floor division)
+print(a % b)  # 1 (modulus)
+print(a ** b) # 1000 (exponentiation)
+
+# Comparison operators
+print(a > b)  # True
+print(a == b) # False
+print(a != b) # True
+
+# Logical operators
+x = True
+y = False
+print(x and y) # False
+print(x or y)  # True
+print(not x)   # False
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Conditions</h4>
+                        <p>Use if-else statements to control the flow of your program:</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">
+if age >= 18:
+    print("You are an adult.")
+else:
+    print("You are a minor.")
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Loops</h4>
+                        <p>Loops allow you to repeat code execution:</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">
+# For loop
+for i in range(5):
+    print(f"Count: {i}")
+
+# While loop
+count = 0
+while count < 3:
+    print(f"While count: {count}")
+    count += 1
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Lists</h4>
+                        <p>Lists are mutable sequences that can store multiple items:</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">
+fruits = ["apple", "banana", "cherry"]
+fruits.append("orange")
+print(fruits[0])  # apple
+print(len(fruits))  # 4
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Dictionaries</h4>
+                        <p>Dictionaries store key-value pairs:</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">
+person = {"name": "Alice", "age": 30, "city": "New York"}
+print(person["name"])  # Alice
+person["job"] = "Engineer"
+print(person)
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Sets</h4>
+                        <p>Sets are unordered collections of unique elements:</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">
+set1 = {1, 2, 3}
+set2 = {3, 4, 5}
+set1.add(4)
+union = set1 | set2
+intersection = set1 & set2
+print(union)        # {1, 2, 3, 4, 5}
+print(intersection) # {3, 4}
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Tuples</h4>
+                        <p>Tuples are immutable sequences:</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">
+my_tuple = (1, 2, 3, 2, 4)
+index = my_tuple.index(2)  # 1
+count = my_tuple.count(2)  # 2
+print(index, count)
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Strings</h4>
+                        <p>Strings are sequences of characters used to represent text in Python. They are immutable, meaning their values cannot be changed after creation. Strings can be enclosed in single quotes, double quotes, or triple quotes.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">
+my_string = "Hello, World!"
+
+upper = my_string.upper()      # "HELLO, WORLD!"
+lower = my_string.lower()      # "hello, world!"
+title = my_string.title()      # "Hello, World!"
+capitalized = my_string.capitalize()  # "Hello, world!"
+
+split_str = my_string.split()  # Split by space: ['Hello,', 'World!']
+joined = " ".join(['Hello', 'World'])  # "Hello World"
+
+replaced = my_string.replace('World', 'Python')  # "Hello, Python!"
+starts_with = my_string.startswith('Hello')  # True
+ends_with = my_string.endswith('!')  # True
+
+stripped = "  hello  ".strip()  # "hello" (remove whitespace)
+find_index = my_string.find('World')  # 7
+is_alpha = "abc".isalpha()  # True
+is_digit = "123".isdigit()  # True
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Functions</h4>
+                        <p>Functions allow you to organize and reuse code. They can be parameterized or non-parameterized:</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">
+# Non-parameterized function
+def greet():
+    return "Hello, World!"
+
+# Parameterized function
+def greet_person(name):
+    return f"Hello, {name}!"
+
+def add_numbers(a, b):
+    return a + b
+
+print(greet())
+print(greet_person("Alice"))
+print(add_numbers(5, 3))
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>OOP Concepts</h4>
+                        <p>Python supports object-oriented programming (OOP) with classes, objects, inheritance, polymorphism, and encapsulation:</p>
+
+                        <h5>Class and Object</h5>
+                        <p>A class is a blueprint for creating objects. An object is an instance of a class.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">
+class Person:
+    def __init__(self, name, age):
+        self.name = name  # Instance variable
+        self.age = age
+
+    def introduce(self):
+        return f"My name is {self.name} and I am {self.age} years old."
+
+alice = Person("Alice", 30)  # Creating an object
+print(alice.introduce())
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h5>Inheritance</h5>
+                        <p>Inheritance allows a class to inherit attributes and methods from another class.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">
+class Student(Person):  # Student inherits from Person
+    def __init__(self, name, age, student_id):
+        super().__init__(name, age)  # Call parent constructor
+        self.student_id = student_id
+
+    def study(self):
+        return f"{self.name} is studying."
+
+bob = Student("Bob", 20, "S12345")
+print(bob.introduce())  # Inherited method
+print(bob.study())      # Own method
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h5>Polymorphism</h5>
+                        <p>Polymorphism allows methods to have the same name but different implementations.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">
+class Animal:
+    def speak(self):
+        return "Some sound"
+
+class Dog(Animal):
+    def speak(self):
+        return "Woof!"
+
+class Cat(Animal):
+    def speak(self):
+        return "Meow!"
+
+animals = [Dog(), Cat(), Animal()]
+for animal in animals:
+    print(animal.speak())  # Different implementations
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h5>Encapsulation</h5>
+                        <p>Encapsulation hides the internal state of an object and restricts access to it.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">
+class BankAccount:
+    def __init__(self, balance):
+        self.__balance = balance  # Private attribute
+
+    def deposit(self, amount):
+        if amount > 0:
+            self.__balance += amount
+
+    def get_balance(self):
+        return self.__balance
+
+account = BankAccount(1000)
+account.deposit(500)
+print(account.get_balance())  # 1500
+# print(account.__balance)  # AttributeError: private attribute
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h5>Class Variables and Methods</h5>
+                        <p>Class variables are shared among all instances. Class methods operate on the class.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">
+class Car:
+    wheels = 4  # Class variable
+
+    def __init__(self, model):
+        self.model = model
+
+    @classmethod
+    def change_wheels(cls, new_wheels):
+        cls.wheels = new_wheels
+
+    @staticmethod
+    def is_motor_vehicle():
+        return True
+
+car1 = Car("Toyota")
+car2 = Car("Honda")
+print(car1.wheels)  # 4
+Car.change_wheels(6)
+print(car2.wheels)  # 6 (changed for all)
+print(Car.is_motor_vehicle())  # True
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>File Handling</h4>
+                        <p>Read from and write to files:</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">
+# Writing to a file
+with open("example.txt", "w") as file:
+    file.write("Hello, file!")
+
+# Reading from a file
+with open("example.txt", "r") as file:
+    content = file.read()
+    print(content)
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Modules and Packages</h4>
+                        <p>Import and use external modules:</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">
+import math
+print(math.sqrt(16))  # 4.0
+
+import random
+print(random.randint(1, 10))  # Random number between 1 and 10
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Exception Handling</h4>
+                        <p>Handle errors gracefully using try-except blocks:</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">
+try:
+    result = 10 / 0
+except ZeroDivisionError:
+    print("Cannot divide by zero!")
+finally:
+    print("This always executes.")
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>List Comprehensions</h4>
+                        <p>Create lists in a concise way:</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">
+# Traditional way
+squares = []
+for i in range(10):
+    squares.append(i**2)
+
+# List comprehension
+squares = [i**2 for i in range(10)]
+print(squares)  # [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
+
+# With condition
+even_squares = [i**2 for i in range(10) if i % 2 == 0]
+print(even_squares)  # [0, 4, 16, 36, 64]
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Decorators</h4>
+                        <p>Modify the behavior of functions or methods:</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">
+def my_decorator(func):
+    def wrapper():
+        print("Something before the function.")
+        func()
+        print("Something after the function.")
+    return wrapper
+
+@my_decorator
+def say_hello():
+    print("Hello!")
+
+say_hello()
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Regular Expressions</h4>
+                        <p>Work with patterns in strings using the 're' module:</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">
+import re
+
+pattern = r'\b\d{3}-\d{3}-\d{4}\b'  # Phone number pattern
+text = "Call me at 123-456-7890 or 098-765-4321"
+matches = re.findall(pattern, text)
+print(matches)  # ['123-456-7890', '098-765-4321']
+
+# Search and replace
+result = re.sub(r'\d', '*', "Phone: 123-456-7890")
+print(result)  # Phone: ***-***-****
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Working with JSON</h4>
+                        <p>Parse and generate JSON data:</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">
+import json
+
+# Parse JSON string
+json_string = '{"name": "Alice", "age": 30}'
+data = json.loads(json_string)
+print(data["name"])  # Alice
+
+# Generate JSON string
+person = {"name": "Bob", "age": 25}
+json_output = json.dumps(person)
+print(json_output)  # {"name": "Bob", "age": 25}
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Virtual Environments</h4>
+                        <p>Isolate project dependencies:</p>
+                        <pre><code class="language-bash">
+# Create a virtual environment
+python -m venv myenv
+
+# Activate it (Linux/Mac)
+source myenv/bin/activate
+
+# Activate it (Windows)
+myenv\Scripts\activate
+
+# Install packages
+pip install requests
+
+# Deactivate
+deactivate
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Testing with unittest</h4>
+                        <p>Write and run unit tests to ensure code reliability:</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">
+import unittest
+
+def add(a, b):
+    return a + b
+
+class TestMath(unittest.TestCase):
+    def test_add(self):
+        self.assertEqual(add(2, 3), 5)
+        self.assertEqual(add(-1, 1), 0)
+
+if __name__ == '__main__':
+    unittest.main()
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Match Case (Structural Pattern Matching)</h4>
+                        <p>Introduced in Python 3.10, match-case provides powerful pattern matching similar to switch statements in other languages:</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">
+def describe_value(value):
+    match value:
+        case 0:
+            return "Zero"
+        case 1 | 2 | 3:
+            return "Small number"
+        case str() as s if len(s) > 5:
+            return f"Long string: {s}"
+        case [x, y]:
+            return f"Pair: {x}, {y}"
+        case _:
+            return "Something else"
+
+print(describe_value(0))        # Zero
+print(describe_value([1, 2]))   # Pair: 1, 2
+print(describe_value("hello"))  # Long string: hello
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Lambda Functions</h4>
+                        <p>Anonymous functions defined with the lambda keyword, useful for short, simple functions:</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">
+# Regular function
+def add(x, y):
+    return x + y
+
+# Lambda function
+add_lambda = lambda x, y: x + y
+
+print(add(2, 3))          # 5
+print(add_lambda(2, 3))   # 5
+
+# Using with map
+numbers = [1, 2, 3, 4]
+squares = list(map(lambda x: x**2, numbers))
+print(squares)  # [1, 4, 9, 16]
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Generators</h4>
+                        <p>Functions that yield values one at a time, useful for memory-efficient iteration:</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">
+def fibonacci(n):
+    a, b = 0, 1
+    for _ in range(n):
+        yield a
+        a, b = b, a + b
+
+# Using the generator
+for num in fibonacci(10):
+    print(num, end=' ')  # 0 1 1 2 3 5 8 13 21 34
+
+# Generator expression
+squares_gen = (x**2 for x in range(10))
+print(list(squares_gen))  # [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Context Managers</h4>
+                        <p>Objects that manage resources, ensuring proper setup and cleanup, often used with 'with' statements:</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">
+# Using built-in context manager
+with open('example.txt', 'w') as file:
+    file.write('Hello, World!')
+
+# Creating a custom context manager
+class MyContext:
+    def __enter__(self):
+        print("Entering context")
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        print("Exiting context")
+
+with MyContext():
+    print("Inside context")
+</code><button class="copy-button">Copy</button></pre>
+
+                        <p>This comprehensive guide covers essential Python concepts, from basic syntax to advanced features. For specialized domains, explore additional libraries and frameworks as needed.</p>
+
+                        <div class="mt-5 text-center">
+                            <a href="/practice" class="btn btn-primary btn-lg">Take Practice Test</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="animation-container-docs" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1;">
+        </div>
+    </section>
+
+    <script>
+        document.getElementById('search-input').addEventListener('input', function() {
+            const query = this.value.toLowerCase();
+            const content = document.getElementById('content');
+            const elements = content.querySelectorAll('h2, h3, h4, p, pre');
+
+            elements.forEach(element => {
+                const text = element.textContent.toLowerCase();
+                if (query === '' || text.includes(query)) {
+                    element.style.display = '';
+                } else {
+                    element.style.display = 'none';
+                }
+            });
+        });
+    </script>
+    <script>
+        const copyButtons = document.querySelectorAll('.copy-button');
+        copyButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const code = this.parentNode.querySelector('code').textContent;
+                navigator.clipboard.writeText(code);
+                this.textContent = 'Copied!';
+                setTimeout(() => {
+                    this.textContent = 'Copy';
+                }, 2000);
+            });
+        });
+    </script>
+{% endblock %}

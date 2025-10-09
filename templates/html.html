@@ -1,0 +1,302 @@
+{% extends 'base.html' %}
+
+{% block title %}HTML Docs - Spark Solutions{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.3/purify.min.js"></script>
+    <script>
+        hljs.highlightAll();
+    </script>
+{% endblock %}
+
+{% block content %}
+    <!-- HTML Docs Page -->
+    <section class="docs-page py-5">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- Documentation Content -->
+                <div class="col-md-12">
+                    <!-- Search Box -->
+                    <div class="search-container mb-4">
+                        <input type="text" id="search-input" class="form-control" placeholder="Search documentation...">
+                    </div>
+                    <div id="content">
+                        <h2 class="mb-4">HTML Documentation</h2>
+                        <p>Welcome to the HTML programming documentation. Here, you'll find comprehensive guides and tutorials for HTML markup language.</p>
+
+                        <h3 id="html" class="mt-5">HTML Programming</h3>
+                        <p>This section provides a comprehensive guide to HTML (HyperText Markup Language), the standard markup language for creating web pages.</p>
+
+                        <h4>What is HTML?</h4>
+                        <p>HTML (HyperText Markup Language) is the standard markup language for creating web pages and web applications. It describes the structure of a web page semantically and originally included cues for the appearance of the document. HTML consists of a series of elements, which tell the browser how to display the content. Elements are represented by tags, which are enclosed in angle brackets like &lt;tagname&gt;. Most tags have an opening tag and a closing tag, with content in between.</p>
+                        <p>HTML is not a programming language; it's a markup language that defines the structure and layout of web pages. It works alongside CSS (Cascading Style Sheets) for styling and JavaScript for interactivity. HTML5 is the latest version, which introduced new semantic elements and APIs for modern web development.</p>
+
+                        <h4>Basic HTML Structure</h4>
+                        <p>Every HTML document should have a basic structure to ensure proper rendering and accessibility. The &lt;!DOCTYPE html&gt; declaration defines the document type and helps browsers render the page correctly. The &lt;html&gt; element is the root element of an HTML page, and the lang attribute specifies the language of the document. The &lt;head&gt; element contains meta-information about the document, such as the title, character encoding, and links to external resources. The &lt;body&gt; element contains the visible content of the web page.</p>
+                        <p>The meta charset tag ensures proper character encoding, while the viewport meta tag is crucial for responsive design on mobile devices.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-html">
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;My First Web Page&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Hello, World!&lt;/h1&gt;
+    &lt;p&gt;This is my first web page.&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Headings</h4>
+                        <p>HTML provides six levels of headings, from &lt;h1&gt; (most important) to &lt;h6&gt; (least important). Headings are used to structure the content hierarchy of a web page. Search engines use headings to understand the structure and importance of the content. The &lt;h1&gt; tag should be used for the main title of the page, while &lt;h2&gt; to &lt;h6&gt; are used for subsections. Proper use of headings improves accessibility for screen readers and helps with SEO.</p>
+                        <p>Headings should be used in a logical order without skipping levels. For example, don't jump from &lt;h1&gt; to &lt;h3&gt; without an &lt;h2&gt; in between.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-html">
+&lt;h1&gt;Main Heading&lt;/h1&gt;
+&lt;h2&gt;Subheading&lt;/h2&gt;
+&lt;h3&gt;Sub-subheading&lt;/h3&gt;
+&lt;h4&gt;Level 4 Heading&lt;/h4&gt;
+&lt;h5&gt;Level 5 Heading&lt;/h5&gt;
+&lt;h6&gt;Level 6 Heading&lt;/h6&gt;
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Paragraphs</h4>
+                        <p>The &lt;p&gt; tag defines a paragraph of text. Browsers automatically add some margin before and after each paragraph. Paragraphs are block-level elements, meaning they take up the full width available and start on a new line. You can style paragraphs using CSS to change font, color, spacing, and alignment. Proper use of paragraphs improves readability and SEO.</p>
+                        <p>Don't use &lt;p&gt; tags for non-paragraph content like headings or lists. Empty &lt;p&gt; tags should be avoided as they can cause layout issues.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-html">
+&lt;p&gt;This is a paragraph of text.&lt;/p&gt;
+&lt;p&gt;This is another paragraph.&lt;/p&gt;
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Links</h4>
+                        <p>The &lt;a&gt; (anchor) tag creates hyperlinks to other web pages, files, locations within the same page, or email addresses. The href attribute specifies the destination of the link. Links can open in the same window/tab or a new one using the target="_blank" attribute. The title attribute provides additional information about the link when hovered. Links are essential for navigation and are a key factor in SEO.</p>
+                        <p>Always provide meaningful link text that describes the destination. Avoid generic text like "click here". Use relative URLs for internal links and absolute URLs for external sites.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-html">
+&lt;a href="https://www.example.com"&gt;Visit Example&lt;/a&gt;
+&lt;a href="page.html"&gt;Go to Page&lt;/a&gt;
+&lt;a href="#section"&gt;Jump to Section&lt;/a&gt;
+&lt;a href="mailto:email@example.com"&gt;Send Email&lt;/a&gt;
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Images</h4>
+                        <p>The &lt;img&gt; tag embeds images in HTML documents. The src attribute specifies the path to the image file. The alt attribute provides alternative text for screen readers and displays if the image fails to load. Width and height attributes control the image dimensions and help prevent layout shifts during page loading. Images should be optimized for web use to improve page load times.</p>
+                        <p>Use appropriate image formats: JPEG for photos, PNG for graphics with transparency, SVG for vector graphics. Always include the alt attribute for accessibility and SEO benefits.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-html">
+&lt;img src="image.jpg" alt="Description of image"&gt;
+&lt;img src="https://example.com/image.png" alt="Remote image" width="300" height="200"&gt;
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Lists</h4>
+                        <p>HTML supports two main types of lists: ordered (&lt;ol&gt;) and unordered (&lt;ul&gt;). Ordered lists use numbers or letters to sequence items, while unordered lists use bullets. Each list item is defined with the &lt;li&gt; tag. Lists can be nested within each other to create hierarchical structures. CSS can be used to customize the appearance of list markers.</p>
+                        <p>Use ordered lists when the sequence matters (like steps in a process), and unordered lists for items where order is not important. Proper list structure improves accessibility and readability.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-html">
+&lt;!-- Unordered list --&gt;
+&lt;ul&gt;
+    &lt;li&gt;Item 1&lt;/li&gt;
+    &lt;li&gt;Item 2&lt;/li&gt;
+    &lt;li&gt;Item 3&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!-- Ordered list --&gt;
+&lt;ol&gt;
+    &lt;li&gt;First item&lt;/li&gt;
+    &lt;li&gt;Second item&lt;/li&gt;
+    &lt;li&gt;Third item&lt;/li&gt;
+&lt;/ol&gt;
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Tables</h4>
+                        <p>Tables are used to display tabular data in rows and columns. The &lt;table&gt; element contains &lt;thead&gt; for headers, &lt;tbody&gt; for body content, and optionally &lt;tfoot&gt; for footer. Each row is defined with &lt;tr&gt;, header cells with &lt;th&gt;, and data cells with &lt;td&gt;. Tables should only be used for tabular data, not for layout purposes (use CSS for layout).</p>
+                        <p>Use &lt;th&gt; elements for headers to improve accessibility. Add scope attributes to headers to associate them with rows or columns. Avoid complex nested tables as they can be difficult to maintain and less accessible.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-html">
+&lt;table&gt;
+    &lt;thead&gt;
+        &lt;tr&gt;
+            &lt;th&gt;Name&lt;/th&gt;
+            &lt;th&gt;Age&lt;/th&gt;
+            &lt;th&gt;City&lt;/th&gt;
+        &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+        &lt;tr&gt;
+            &lt;td&gt;John&lt;/td&gt;
+            &lt;td&gt;25&lt;/td&gt;
+            &lt;td&gt;New York&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td&gt;Jane&lt;/td&gt;
+            &lt;td&gt;30&lt;/td&gt;
+            &lt;td&gt;London&lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/tbody&gt;
+&lt;/table&gt;
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Forms</h4>
+                        <p>Forms collect user input and send it to a server for processing. The &lt;form&gt; element wraps form controls. Common input types include text, email, password, checkbox, radio, select, textarea, and button. The action attribute specifies where to send form data, and method specifies how (GET or POST). Labels should be associated with inputs using the for attribute for accessibility.</p>
+                        <p>Use appropriate input types for better user experience and validation. Include validation attributes like required, min, max. Forms are crucial for user interaction and data collection on websites.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-html">
+&lt;form action="/submit" method="post"&gt;
+    &lt;label for="name"&gt;Name:&lt;/label&gt;
+    &lt;input type="text" id="name" name="name" required&gt;
+    
+    &lt;label for="email"&gt;Email:&lt;/label&gt;
+    &lt;input type="email" id="email" name="email" required&gt;
+    
+    &lt;label for="message"&gt;Message:&lt;/label&gt;
+    &lt;textarea id="message" name="message"&gt;&lt;/textarea&gt;
+    
+    &lt;input type="submit" value="Submit"&gt;
+&lt;/form&gt;
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Divisions and Spans</h4>
+                        <p>&lt;div&gt; is a generic block-level container for grouping elements and applying styles or scripts. It doesn't have semantic meaning but is useful for layout. &lt;span&gt; is an inline container for styling parts of text or grouping inline elements. Both are essential for CSS styling and JavaScript manipulation. Overuse of divs can lead to "div soup" - prefer semantic elements when possible.</p>
+                        <p>Use divs for major layout sections and spans for minor inline styling. Both elements are versatile but should be used thoughtfully for maintainable code.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-html">
+&lt;div class="container"&gt;
+    &lt;h1&gt;Title&lt;/h1&gt;
+    &lt;p&gt;This is inside a div.&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;p&gt;This is &lt;span class="highlight"&gt;highlighted&lt;/span&gt; text.&lt;/p&gt;
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Semantic Elements</h4>
+                        <p>Semantic elements clearly describe their meaning to both browsers and developers. &lt;header&gt; represents introductory content, &lt;nav&gt; for navigation, &lt;main&gt; for main content, &lt;section&gt; for thematic grouping, &lt;article&gt; for self-contained content, &lt;aside&gt; for sidebar content, and &lt;footer&gt; for footer information. These elements improve SEO, accessibility, and code readability compared to generic divs.</p>
+                        <p>Use semantic elements appropriately: one &lt;main&gt; per page, &lt;header&gt; and &lt;footer&gt; for page structure, &lt;article&gt; for blog posts or news items. Screen readers rely on semantic structure for navigation.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-html">
+&lt;header&gt;
+    &lt;h1&gt;Site Title&lt;/h1&gt;
+    &lt;nav&gt;
+        &lt;ul&gt;
+            &lt;li&gt;&lt;a href="/"&gt;Home&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="/about"&gt;About&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/nav&gt;
+&lt;/header&gt;
+
+&lt;main&gt;
+    &lt;section&gt;
+        &lt;h2&gt;Main Content&lt;/h2&gt;
+        &lt;article&gt;
+            &lt;h3&gt;Article Title&lt;/h3&gt;
+            &lt;p&gt;Article content...&lt;/p&gt;
+        &lt;/article&gt;
+    &lt;/section&gt;
+    
+    &lt;aside&gt;
+        &lt;h3&gt;Sidebar&lt;/h3&gt;
+        &lt;p&gt;Additional information...&lt;/p&gt;
+    &lt;/aside&gt;
+&lt;/main&gt;
+
+&lt;footer&gt;
+    &lt;p&gt;&amp;copy; 2023 My Website&lt;/p&gt;
+&lt;/footer&gt;
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Meta Tags</h4>
+                        <p>Meta tags provide metadata about the HTML document. charset specifies character encoding, description gives a brief page summary for search engines, keywords help with SEO (though less important now), author credits the creator, viewport controls mobile display. Other meta tags can specify refresh rates, robots instructions, and social media previews.</p>
+                        <p>The viewport meta tag is essential for responsive design. Keep descriptions under 160 characters for optimal display in search results. Use Open Graph meta tags for better social media sharing.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-html">
+&lt;meta charset="UTF-8"&gt;
+&lt;meta name="description" content="A brief description of the page"&gt;
+&lt;meta name="keywords" content="HTML, web development, tutorial"&gt;
+&lt;meta name="author" content="Your Name"&gt;
+&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Comments</h4>
+                        <p>Comments are used to add notes or explanations in HTML code that are not displayed in the browser. They help developers understand the code and can be used to temporarily disable code during debugging. Comments start with &lt;!-- and end with --&gt;. They can span multiple lines and are ignored by browsers.</p>
+                        <p>Use comments to explain complex sections, mark TODO items, or provide context. Avoid leaving commented-out code in production as it can confuse other developers.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-html">
+&lt;!-- This is a comment --&gt;
+&lt;!-- 
+    Multi-line comment
+    Another line
+--&gt;
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Entities</h4>
+                        <p>HTML entities represent reserved characters or symbols that have special meaning in HTML. They start with &amp; and end with ;. Common entities include &amp;lt; for &lt;, &amp;gt; for &gt;, &amp;amp; for &amp;, &amp;nbsp; for non-breaking space, &amp;copy; for ©, &amp;reg; for ®. Entities ensure characters display correctly and prevent code injection.</p>
+                        <p>Use entities when you need to display characters that are part of HTML syntax. Remember that modern HTML5 handles most characters correctly with proper encoding, but entities are still useful for symbols and special characters.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-html">
+&amp;lt; &lt; Less than
+&amp;gt; &gt; Greater than
+&amp;amp; &amp; Ampersand
+&amp;nbsp; &nbsp; Non-breaking space
+&amp;copy; &copy; Copyright
+&amp;reg; &reg; Registered trademark
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Inline vs Block Elements</h4>
+                        <p>Block-level elements take up the full width available, start on a new line, and can contain other block-level or inline elements. Examples include &lt;div&gt;, &lt;p&gt;, &lt;h1&gt;-&lt;h6&gt;, &lt;ul&gt;, &lt;ol&gt;, &lt;li&gt;. Inline elements only take up as much width as necessary, don't start new lines, and can only contain other inline elements or text. Examples include &lt;span&gt;, &lt;a&gt;, &lt;strong&gt;, &lt;em&gt;, &lt;img&gt;.</p>
+                        <p>Understanding the difference is crucial for layout and styling. CSS display property can change an element's behavior from block to inline or vice versa.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-html">
+&lt;!-- Block-level elements --&gt;
+&lt;div&gt;Block element&lt;/div&gt;
+&lt;p&gt;Paragraph&lt;/p&gt;
+&lt;h1&gt;Heading&lt;/h1&gt;
+
+&lt;!-- Inline elements --&gt;
+&lt;span&gt;Inline element&lt;/span&gt;
+&lt;a href="#"&gt;Link&lt;/a&gt;
+&lt;strong&gt;Bold text&lt;/strong&gt;
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Attributes</h4>
+                        <p>Attributes provide additional information about HTML elements. They are always specified in the opening tag and consist of a name and value pair. Common attributes include class and id for styling and scripting, style for inline CSS, title for tooltips, and data-* for custom data. Some attributes are specific to certain elements, like href for links or src for images.</p>
+                        <p>Attribute values should be enclosed in quotes. Use meaningful class and id names for maintainable code. Avoid inline styles in favor of external CSS files.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-html">
+&lt;a href="https://example.com" target="_blank" title="Visit Example"&gt;Link&lt;/a&gt;
+&lt;img src="image.jpg" alt="Description" width="300" height="200"&gt;
+&lt;input type="text" name="username" placeholder="Enter username" required&gt;
+</code><button class="copy-button">Copy</button></pre>
+
+                        <p>This comprehensive guide covers essential HTML tags and concepts with detailed explanations for each topic. HTML forms the foundation of web development and is often used alongside CSS and JavaScript to create modern web applications. Understanding HTML structure and semantics is crucial for creating accessible, SEO-friendly, and maintainable websites.</p>
+
+                        <div class="mt-5 text-center">
+                            <a href="/practice" class="btn btn-primary btn-lg">Take Practice Test</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="animation-container-docs" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1;">
+        </div>
+    </section>
+
+    <script>
+        document.getElementById('search-input').addEventListener('input', function() {
+            const query = this.value.toLowerCase();
+            const content = document.getElementById('content');
+            const elements = content.querySelectorAll('h2, h3, h4, p, pre');
+
+            elements.forEach(element => {
+                const text = element.textContent.toLowerCase();
+                if (query === '' || text.includes(query)) {
+                    element.style.display = '';
+                } else {
+                    element.style.display = 'none';
+                }
+            });
+        });
+    </script>
+    <script>
+        const copyButtons = document.querySelectorAll('.copy-button');
+        copyButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const code = this.parentNode.querySelector('code').textContent;
+                navigator.clipboard.writeText(code);
+                this.textContent = 'Copied!';
+                setTimeout(() => {
+                    this.textContent = 'Copy';
+                }, 2000);
+            });
+        });
+    </script>
+{% endblock %}

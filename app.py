@@ -94,6 +94,14 @@ def team():
 def docs():
     return render_template('docs.html')
 
+@app.route('/python')
+def python():
+    return render_template('python.html')
+
+@app.route('/html')
+def html_page():
+    return render_template('html.html')
+
 @app.route('/previous-work')
 def previous_work():
     return render_template('previous_work.html')
