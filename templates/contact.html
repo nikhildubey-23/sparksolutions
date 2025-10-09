@@ -1,48 +1,65 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 
-{% block title %}Contact - Spark Solution{% endblock %}
+{% block title %}Contact - Spark Solutions{% endblock %}
 
 {% block content %}
-<section class="py-5">
-    <div class="container">
-        <h1 class="text-center mb-5">Contact Us</h1>
-        <div class="row justify-content-center">
-            <div class="col-lg-8">
-                <form id="contact-form" method="POST" action="{{ url_for('contact') }}">
-                    <div class="mb-3">
-                        <label for="name" class="form-label">Name *</label>
-                        <input type="text" class="form-control" id="name" name="name" required>
+    <!-- Contact Page -->
+    <section class="contact-page">
+        <div class="container">
+            <h2 class="text-center reveal mb-4">Contact Us</h2>
+            <div class="row justify-content-center">
+                <div class="col-md-8 reveal-left">
+                    <div class="card shadow-sm p-3">
+                        <form method="POST" action="/contact">
+                            {{ form.csrf_token }}
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Name</label>
+                                {{ form.name(class="form-control", id="name", required=true) }}
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                {{ form.email(class="form-control", id="email", required=true) }}
+                            </div>
+                            <div class="mb-3">
+                                <label for="phone" class="form-label">Phone (Optional)</label>
+                                {{ form.phone(class="form-control", id="phone") }}
+                            </div>
+                            <div class="mb-3">
+                                <label for="subject" class="form-label">Subject</label>
+                                {{ form.subject(class="form-control", id="subject", required=true) }}
+                            </div>
+                            <div class="mb-3">
+                                <label for="service_interest" class="form-label">Service Interest</label>
+                                {{ form.service_interest(class="form-select", id="service_interest", required=true) }}
+                            </div>
+                            <div class="mb-3">
+                                <label for="message" class="form-label">Message</label>
+                                {{ form.message(class="form-control", id="message", rows="4", required=true) }}
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                        {% with messages = get_flashed_messages(with_categories=true) %}
+                          {% if messages %}
+                            <div class="flashes">
+                              {% for category, message in messages %}
+                                <div class="alert alert-{{ category }}">{{ message }}</div>
+                              {% endfor %}
+                            </div>
+                          {% endif %}
+                        {% endwith %}
                     </div>
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Email *</label>
-                        <input type="email" class="form-control" id="email" name="email" required>
+                </div>
+            </div>
+            <div class="row mt-4 justify-content-center">
+                <div class="col-md-6 reveal-right">
+                    <div class="card shadow-sm p-3 text-center">
+                        <h3>Contact Information</h3>
+                        <p><i class="bi bi-envelope"></i> Email: info@sparksolutions.com</p>
+                        <p><i class="bi bi-phone"></i> Phone: +1 (555) 123-4567</p>
+                        <p><i class="bi bi-geo-alt"></i> Location: 123 Main Street, Anytown, USA</p>
                     </div>
-                    <div class="mb-3">
-                        <label for="phone" class="form-label">Phone</label>
-                        <input type="tel" class="form-control" id="phone" name="phone">
-                    </div>
-                    <div class="mb-3">
-                        <label for="subject" class="form-label">Subject *</label>
-                        <input type="text" class="form-control" id="subject" name="subject" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="service_interest" class="form-label">Service Interest *</label>
-                        <select class="form-select" id="service_interest" name="service_interest" required>
-                            <option value="">Select a service</option>
-                            <option value="Web Development">Web Development</option>
-                            <option value="Cybersecurity">Cybersecurity</option>
-                            <option value="Digital Marketing">Digital Marketing</option>
-                            <option value="Mobile App Development">Mobile App Development</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="message" class="form-label">Message *</label>
-                        <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Send Message</button>
-                </form>
+                </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 {% endblock %}

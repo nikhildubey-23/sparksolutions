@@ -1,89 +1,57 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 
-{% block title %}Services - Spark Solution{% endblock %}
+{% block title %}Services - Spark Solutions{% endblock %}
 
 {% block content %}
-<section class="py-5">
-    <div class="container">
-        <h1 class="text-center mb-5">Our Services</h1>
-        <div class="row">
-            <div class="col-lg-6 mb-4">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <h5 class="card-title"><i class="fas fa-code"></i> Web Development</h5>
-                        <p class="card-text">We create responsive, modern websites and web applications using the latest technologies. From simple landing pages to complex e-commerce platforms, we deliver high-quality solutions tailored to your needs.</p>
-                        <h6>Benefits:</h6>
-                        <ul>
-                            <li>SEO-optimized</li>
-                            <li>Mobile-responsive</li>
-                            <li>Fast loading times</li>
-                        </ul>
-                        <h6>Example Projects:</h6>
-                        <ul>
-                            <li>E-commerce website for a local business</li>
-                            <li>Portfolio site for a photographer</li>
-                        </ul>
+    <!-- Services Showcase -->
+    <section class="services-overview container py-5">
+        <h2 class="mb-4 text-center reveal">Our Services</h2>
+        <div class="row g-4">
+            <div class="col-md-4 reveal-left">
+                <div class="card p-3 shadow-sm h-100">
+                    <div class="card-body text-center">
+                        <div class="mb-3">
+                            <i class="bi bi-code-slash display-4 text-primary"></i>
+                        </div>
+                        <h4>Software Development</h4>
+                        <p>Modern, responsive websites tailored to your needs.</p>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6 mb-4">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <h5 class="card-title"><i class="fas fa-shield-alt"></i> Cybersecurity</h5>
-                        <p class="card-text">Protect your business from cyber threats with our comprehensive security services. We offer vulnerability assessments, penetration testing, and security consulting to keep your data safe.</p>
-                        <h6>Benefits:</h6>
-                        <ul>
-                            <li>Reduce risk of data breaches</li>
-                            <li>Compliance with industry standards</li>
-                            <li>24/7 monitoring options</li>
-                        </ul>
-                        <h6>Example Projects:</h6>
-                        <ul>
-                            <li>Security audit for a financial firm</li>
-                            <li>Implementation of firewall for a startup</li>
-                        </ul>
+            <div class="col-md-4 reveal-right">
+                <div class="card p-3 shadow-sm h-100">
+                    <div class="card-body text-center">
+                        <div class="mb-3">
+                            <i class="bi bi-video display-4 text-success"></i>
+                        </div>
+                        <h4>Video Editing</h4>
+                        <p>Professional video editing services to make your content shine.</p>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6 mb-4">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <h5 class="card-title"><i class="fas fa-bullhorn"></i> Digital Marketing</h5>
-                        <p class="card-text">Boost your online presence with our digital marketing strategies. We handle SEO, social media marketing, content creation, and PPC campaigns to drive traffic and conversions.</p>
-                        <h6>Benefits:</h6>
-                        <ul>
-                            <li>Increased brand visibility</li>
-                            <li>Higher conversion rates</li>
-                            <li>Data-driven insights</li>
-                        </ul>
-                        <h6>Example Projects:</h6>
-                        <ul>
-                            <li>SEO campaign for a retail store</li>
-                            <li>Social media strategy for a tech startup</li>
-                        </ul>
+
+            <div class="col-md-4 reveal-right">
+                <div class="card p-3 shadow-sm h-100">
+                    <div class="card-body text-center">
+                        <div class="mb-3">
+                            <i class="bi bi-pencil display-4 text-warning"></i>
+                        </div>
+                        <h4>Content Writing</h4>
+                        <p>Engaging content writing services to attract and inform your audience.</p>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6 mb-4">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <h5 class="card-title"><i class="fas fa-mobile-alt"></i> Mobile App Development</h5>
-                        <p class="card-text">Develop native or cross-platform mobile apps for iOS and Android. We use modern frameworks to create user-friendly apps that engage your audience and meet your business goals.</p>
-                        <h6>Benefits:</h6>
-                        <ul>
-                            <li>Cross-platform compatibility</li>
-                            <li>Intuitive user interfaces</li>
-                            <li>Scalable architecture</li>
-                        </ul>
-                        <h6>Example Projects:</h6>
-                        <ul>
-                            <li>Fitness tracking app</li>
-                            <li>E-learning platform app</li>
-                        </ul>
+            <div class="col-md-4 reveal-left">
+                <div class="card p-3 shadow-sm h-100">
+                    <div class="card-body text-center">
+                        <div class="mb-3">
+                            <i class="bi bi-mortarboard display-4 text-info"></i>
+                        </div>
+                        <h4>Teaching</h4>
+                        <p>Expert teaching programs to enhance your skills and knowledge.</p>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 {% endblock %}

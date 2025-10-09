@@ -61,6 +61,12 @@ document.addEventListener('DOMContentLoaded', () => {
             rotationSpeedX = 0.01;
             rotationSpeedY = 0.02;
             color = 0xfd7e14;
+        } else if (path === '/docs') {
+            // Docs: TorusKnot
+            geometry = new THREE.TorusKnotGeometry( 10, 3, 100, 16 );
+            rotationSpeedX = 0.015;
+            rotationSpeedY = 0.005;
+            color = 0x00FFFF;
         } else {
             // Default: Torus
             geometry = new THREE.TorusGeometry(10, 3, 16, 100);

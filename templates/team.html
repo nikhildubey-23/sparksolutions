@@ -1,25 +1,76 @@
-{% extends "base.html" %}
-{% block title %}Meet the Team - Spark Solution{% endblock %}
+{% extends 'base.html' %}
+
+{% block title %}Team - Spark Solutions{% endblock %}
+
 {% block content %}
-<section class="team-showcase container mt-5">
-    <h2 class="mb-4 text-center reveal">Meet the Team</h2>
-    <div class="row text-center">
-        <div class="col-md-4 team-member reveal-scale">
-            <img src="{{ url_for('static', filename='images/myimg.jpg') }}" alt="Nikhil Dubey" />
-            <h5>Nikhil Dubey</h5>
-            <p>Founder & Developer</p>
+    <!-- Team Page -->
+    <section class="team-page py-5">
+        <div class="container">
+            <h2 class="text-center mb-4">Our Team</h2>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="card team-card h-100 text-center">
+                        <img src="{{ url_for('static', filename='images/myimg.jpg') }}" alt="Nikhil Dubey" class="img-fluid rounded-circle mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Nikhil Dubey</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">Software Development Head</h6>
+                            <p class="card-text">"Code is my passion, and innovation is my goal."</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card team-card h-100 text-center">
+                        <img src="{{ url_for('static', filename='images/myimg.jpg') }}" alt="Swarnav Das" class="img-fluid rounded-circle mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Swarnav Das</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">Teaching Head</h6>
+                            <p class="card-text">"Education is the key to unlocking potential."</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card team-card h-100 text-center">
+                        <img src="{{ url_for('static', filename='images/myimg.jpg') }}" alt="Deepak Yadav" class="img-fluid rounded-circle mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Deepak Yadav</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">Video Editing Head</h6>
+                            <p class="card-text">"Visual storytelling is my art."</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="card team-card h-100 text-center">
+                        <img src="{{ url_for('static', filename='images/myimg.jpg') }}" alt="Suraj" class="img-fluid rounded-circle mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Suraj</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">Logo Designing Head</h6>
+                            <p class="card-text">"Creating visual identities that leave a lasting impression."</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card team-card h-100 text-center">
+                        <img src="{{ url_for('static', filename='images/myimg.jpg') }}" alt="Suryakant Jesawal" class="img-fluid rounded-circle mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Suryakant Jesawal</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">Offline Marketing</h6>
+                            <p class="card-text">"Connecting with people and building relationships."</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card team-card h-100 text-center">
+                        <img src="{{ url_for('static', filename='images/myimg.jpg') }}" alt="Himanchal Das" class="img-fluid rounded-circle mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Himanchal Das</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">Digital Marketing</h6>
+                            <p class="card-text">"Driving growth through digital strategies."</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="col-md-4 team-member reveal-scale">
-            <img src="{{ url_for('static', filename='images/suryakant.jpg') }}" alt="Suryakant Jaisawal" />
-            <h5>Suryakant Jaisawal</h5>
-            <p>Head of Marketing</p>
-        </div>
-        <div class="col-md-4 team-member reveal-scale">
-            <img src="{{ url_for('static', filename='images/himanchal.jpg') }}" alt="Himanchal" />
-            <h5>Himanchal</h5>
-            <p>Digital Marketing Head</p>
-        </div>
-    </div>
-</section>
-<script src="{{ url_for('static', filename='js/animation.js') }}"></script>
+    </section>
 {% endblock %}
