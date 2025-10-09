@@ -1,0 +1,764 @@
+{% extends 'base.html' %}
+
+{% block title %}CSS Docs - Spark Solutions{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.3/purify.min.js"></script>
+    <script>
+        hljs.highlightAll();
+    </script>
+{% endblock %}
+
+{% block content %}
+    <!-- CSS Docs Page -->
+    <section class="docs-page py-5">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- Documentation Content -->
+                <div class="col-md-12">
+                    <!-- Search Box -->
+                    <div class="search-container mb-4">
+                        <input type="text" id="search-input" class="form-control" placeholder="Search documentation...">
+                    </div>
+                    <div id="content">
+                        <h2 class="mb-4">CSS Documentation</h2>
+                        <p>Welcome to the CSS (Cascading Style Sheets) documentation. Here, you'll find comprehensive guides and tutorials for styling web pages.</p>
+
+                        <h3 id="css" class="mt-5">CSS Programming</h3>
+                        <p>This section provides a comprehensive guide to CSS (Cascading Style Sheets), the stylesheet language used to describe the presentation of HTML documents.</p>
+
+                        <h4>What is CSS?</h4>
+                        <p>CSS (Cascading Style Sheets) is a stylesheet language used to describe the presentation of a document written in HTML or XML. CSS describes how elements should be rendered on screen, on paper, in speech, or on other media. CSS saves a lot of work as it can control the layout of multiple web pages all at once. External stylesheets are stored in CSS files.</p>
+                        <p>CSS is designed primarily to enable the separation of document content from document presentation, including aspects such as layout, colors, and fonts. This separation can improve content accessibility, provide more flexibility and control in the specification of presentation characteristics.</p>
+
+                        <h4>Basic CSS Syntax</h4>
+                        <p>CSS syntax consists of a selector and a declaration block. The selector points to the HTML element you want to style. The declaration block contains one or more declarations separated by semicolons. Each declaration includes a CSS property name and a value, separated by a colon. Multiple CSS rules can be stacked together.</p>
+                        <p>CSS comments start with /* and end with */. Comments are used to explain your code and may help when you edit the source code at a later date.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-css">
+/* CSS Comment */
+selector {
+    property: value;
+    property: value;
+}
+
+/* Example */
+p {
+    color: blue;
+    font-size: 16px;
+}
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>CSS Selectors</h4>
+                        <p>Selectors are patterns used to select and style HTML elements. CSS selectors can find HTML elements based on their element name, id, class, attribute, and more. There are several types of selectors: element selectors, class selectors, ID selectors, universal selectors, group selectors, and combinators.</p>
+                        <p>Understanding selectors is fundamental to writing efficient CSS. More specific selectors override less specific ones due to the cascade.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Element selector */
+h1 { color: blue; }
+
+/* Class selector */
+.highlight { background-color: yellow; }
+
+/* ID selector */
+#header { font-size: 24px; }
+
+/* Universal selector */
+* { margin: 0; padding: 0; }
+
+/* Group selector */
+h1, h2, h3 { font-family: Arial; }
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Class and ID Selectors</h4>
+                        <p>Class selectors select elements with a specific class attribute. To select elements with a specific class, write a period (.) character, followed by the class name. ID selectors select elements with a specific id attribute. To select an element with a specific id, write a hash (#) character, followed by the id.</p>
+                        <p>Class names can be used by multiple elements, while ID names must be unique within the page. IDs have higher specificity than classes.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Class selector */
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Multiple classes */
+.box.highlight {
+    border: 2px solid red;
+}
+
+/* ID selector */
+#main-navigation {
+    background-color: #333;
+    color: white;
+}
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Attribute Selectors</h4>
+                        <p>Attribute selectors select elements based on the presence or value of a given attribute. You can select elements with a specific attribute, with a specific attribute and value, with an attribute value containing a certain word, starting with a certain value, or ending with a certain value.</p>
+                        <p>Attribute selectors are powerful for styling form elements, links, and other elements with specific attributes.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Element with attribute */
+input[type] {
+    border: 1px solid #ccc;
+}
+
+/* Element with specific attribute value */
+input[type="text"] {
+    padding: 8px;
+}
+
+/* Attribute value contains word */
+a[href~="example"] {
+    color: green;
+}
+
+/* Attribute value starts with */
+a[href^="https"] {
+    color: blue;
+}
+
+/* Attribute value ends with */
+a[href$=".pdf"] {
+    background: url(pdf-icon.png) no-repeat right;
+}
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Pseudo-classes</h4>
+                        <p>Pseudo-classes define special states of an element. They are used to add special effects to some selectors. Common pseudo-classes include :hover (when mouse over), :active (when clicked), :visited (for visited links), :first-child, :last-child, :nth-child(), and :focus.</p>
+                        <p>Pseudo-classes are preceded by a colon (:). They can be combined with other selectors for more specific targeting.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Link states */
+a:link { color: blue; }
+a:visited { color: purple; }
+a:hover { color: red; }
+a:active { color: orange; }
+
+/* Form focus */
+input:focus {
+    outline: 2px solid blue;
+}
+
+/* First and last child */
+li:first-child {
+    font-weight: bold;
+}
+
+li:last-child {
+    border-bottom: none;
+}
+
+/* Nth child */
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Pseudo-elements</h4>
+                        <p>Pseudo-elements are used to style specific parts of an element. They are preceded by double colons (::). Common pseudo-elements include ::before (insert content before), ::after (insert content after), ::first-line (style first line), and ::first-letter (style first letter).</p>
+                        <p>Pseudo-elements are often used with the content property to add decorative elements or text.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Before and after */
+.quote::before {
+    content: """;
+    font-size: 24px;
+    color: #666;
+}
+
+.quote::after {
+    content: """;
+    font-size: 24px;
+    color: #666;
+}
+
+/* First letter */
+p::first-letter {
+    font-size: 28px;
+    font-weight: bold;
+    float: left;
+    margin-right: 4px;
+}
+
+/* First line */
+p::first-line {
+    font-weight: bold;
+    color: #333;
+}
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>The Box Model</h4>
+                        <p>The CSS box model is a box that wraps around every HTML element. It consists of: content (the actual content), padding (space around content), border (goes around padding and content), and margin (space outside the border). The box model allows us to add a border around elements, and to define space between elements.</p>
+                        <p>Understanding the box model is crucial for layout and spacing. The box-sizing property can change how the box model is calculated.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-css">
+.box {
+    width: 300px;
+    padding: 20px;
+    border: 5px solid #333;
+    margin: 10px;
+}
+
+/* Include padding and border in width */
+.responsive-box {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #ddd;
+}
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Margin and Padding</h4>
+                        <p>Margin clears an area around an element (outside the border). Margin is transparent. Padding clears an area around the content (inside the border). Both margin and padding can have top, right, bottom, and left values specified individually or using shorthand notation.</p>
+                        <p>Margin can have negative values, while padding cannot. Margin can cause margin collapse, where adjacent margins combine into a single margin.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Individual margins */
+.element {
+    margin-top: 10px;
+    margin-right: 20px;
+    margin-bottom: 10px;
+    margin-left: 20px;
+}
+
+/* Shorthand margin (top, right, bottom, left) */
+.element {
+    margin: 10px 20px 10px 20px;
+}
+
+/* Shorthand margin (top/bottom, left/right) */
+.element {
+    margin: 10px 20px;
+}
+
+/* Padding examples */
+.element {
+    padding: 15px; /* All sides */
+    padding: 10px 20px; /* Top/bottom, left/right */
+    padding: 5px 10px 15px 20px; /* Top, right, bottom, left */
+}
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Borders</h4>
+                        <p>The CSS border properties allow you to specify the style, width, and color of an element's border. Border properties include border-style, border-width, border-color, and the shorthand border property. You can also style individual borders with border-top, border-right, border-bottom, and border-left.</p>
+                        <p>Border styles include solid, dotted, dashed, double, groove, ridge, inset, and outset. Borders can be rounded using the border-radius property.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Border shorthand */
+.button {
+    border: 2px solid #007bff;
+}
+
+/* Individual border properties */
+.card {
+    border-style: solid;
+    border-width: 1px;
+    border-color: #ddd;
+}
+
+/* Individual sides */
+.sidebar {
+    border-left: 3px solid #333;
+    border-top: 1px solid #eee;
+}
+
+/* Rounded corners */
+.avatar {
+    border-radius: 50%; /* Circle */
+}
+
+.box {
+    border-radius: 10px; /* Rounded corners */
+}
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Colors and Backgrounds</h4>
+                        <p>CSS color properties specify the color of text, borders, and other elements. Background properties allow you to control the background color of elements, set background images, control background repetition, and position background images.</p>
+                        <p>Colors can be specified using color names, HEX values, RGB values, RGBA values (with transparency), HSL values, or HSLA values.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Text color */
+.text-primary { color: #007bff; }
+.text-success { color: #28a745; }
+
+/* Background color */
+.bg-light { background-color: #f8f9fa; }
+.bg-dark { background-color: #343a40; }
+
+/* Background image */
+.hero {
+    background-image: url('hero-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* RGBA with transparency */
+.overlay {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Typography</h4>
+                        <p>CSS typography properties allow you to control the appearance of text. Key properties include font-family, font-size, font-weight, font-style, line-height, text-align, text-decoration, text-transform, and letter-spacing.</p>
+                        <p>Web fonts can be added using @font-face or by linking to Google Fonts or other font services. System font stacks provide fallbacks for better performance.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Font family */
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* Font size and weight */
+h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+/* Line height and spacing */
+p {
+    line-height: 1.6;
+    letter-spacing: 0.5px;
+}
+
+/* Text alignment and decoration */
+.text-center {
+    text-align: center;
+}
+
+.no-underline {
+    text-decoration: none;
+}
+
+/* Text transformation */
+.uppercase {
+    text-transform: uppercase;
+}
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Display Property</h4>
+                        <p>The display property specifies the display behavior of an element. Common values include block, inline, inline-block, none, flex, grid, and inherit. Block elements take up the full width available and start on a new line. Inline elements only take up as much width as necessary.</p>
+                        <p>inline-block combines properties of both inline and block elements. flex and grid create flexible and grid layouts respectively.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Block level */
+div {
+    display: block;
+}
+
+/* Inline */
+span {
+    display: inline;
+}
+
+/* Inline block */
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+}
+
+/* Hide element */
+.hidden {
+    display: none;
+}
+
+/* Flex container */
+.flex-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Grid container */
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+}
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Position Property</h4>
+                        <p>The position property specifies the type of positioning method used for an element. Values include static (default), relative, absolute, fixed, and sticky. Positioned elements can be offset using top, right, bottom, and left properties.</p>
+                        <p>Relative positioning moves element relative to its normal position. Absolute positioning moves element relative to its nearest positioned ancestor. Fixed positioning positions element relative to the viewport.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Relative positioning */
+.relative-box {
+    position: relative;
+    top: 10px;
+    left: 20px;
+}
+
+/* Absolute positioning */
+.absolute-element {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+/* Fixed positioning */
+.fixed-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+/* Sticky positioning */
+.sticky-nav {
+    position: sticky;
+    top: 0;
+}
+
+/* Z-index for stacking order */
+.layer-1 { z-index: 1; }
+.layer-2 { z-index: 2; }
+.layer-3 { z-index: 3; }
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Flexbox Layout</h4>
+                        <p>Flexbox is a one-dimensional layout method for arranging items in rows or columns. Items flex to fill additional space or shrink to fit into smaller spaces. The main concepts are flex container (parent) and flex items (children).</p>
+                        <p>Key properties include display: flex, flex-direction, justify-content, align-items, flex-wrap, align-content, and gap. Flex items can be controlled with flex-grow, flex-shrink, flex-basis, and align-self.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Flex container */
+.flex-container {
+    display: flex;
+    flex-direction: row; /* or column */
+    justify-content: center; /* flex-start, flex-end, space-between, space-around */
+    align-items: center; /* flex-start, flex-end, stretch */
+    flex-wrap: wrap; /* or nowrap */
+    gap: 20px;
+}
+
+/* Flex items */
+.flex-item {
+    flex: 1; /* flex-grow, flex-shrink, flex-basis */
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: auto;
+}
+
+/* Individual flex item alignment */
+.special-item {
+    align-self: flex-end;
+}
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Grid Layout</h4>
+                        <p>CSS Grid Layout is a two-dimensional layout system for the web. It lets you layout content in rows and columns, and has many features that make building complex layouts straightforward. Grid consists of grid container and grid items.</p>
+                        <p>Key properties include display: grid, grid-template-columns, grid-template-rows, grid-gap, grid-template-areas, and justify-items/align-items. Grid items can be placed with grid-column and grid-row.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Grid container */
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr; /* Fractional units */
+    grid-template-rows: auto 1fr auto;
+    gap: 20px;
+    grid-template-areas:
+        "header header header"
+        "sidebar main aside"
+        "footer footer footer";
+}
+
+/* Grid items */
+.header { grid-area: header; }
+.sidebar { grid-area: sidebar; }
+.main { grid-area: main; }
+.aside { grid-area: aside; }
+.footer { grid-area: footer; }
+
+/* Alternative grid placement */
+.item-1 {
+    grid-column: 1 / 3; /* From column 1 to 3 */
+    grid-row: 1; /* Row 1 */
+}
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Transitions</h4>
+                        <p>CSS transitions allow you to change property values smoothly over a given duration. Transitions are commonly used for hover effects, state changes, and animations. The transition property is a shorthand for transition-property, transition-duration, transition-timing-function, and transition-delay.</p>
+                        <p>Common timing functions include ease, linear, ease-in, ease-out, and ease-in-out. You can also create custom cubic-bezier curves.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Transition shorthand */
+.button {
+    transition: all 0.3s ease;
+}
+
+/* Individual transition properties */
+.card {
+    transition-property: transform, box-shadow;
+    transition-duration: 0.3s;
+    transition-timing-function: ease-out;
+    transition-delay: 0.1s;
+}
+
+/* Hover effect with transition */
+.button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Multiple transitions */
+.element {
+    transition: background-color 0.3s, transform 0.5s ease-in-out;
+}
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Animations</h4>
+                        <p>CSS animations make it possible to animate transitions from one CSS style configuration to another. Animations consist of two components: keyframes that define the animation stages, and animation properties that apply the animation to elements.</p>
+                        <p>Key animation properties include animation-name, animation-duration, animation-timing-function, animation-delay, animation-iteration-count, animation-direction, and animation-fill-mode.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Define keyframes */
+@keyframes slideIn {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+/* Apply animation */
+.animated-element {
+    animation-name: slideIn;
+    animation-duration: 0.5s;
+    animation-timing-function: ease-out;
+    animation-fill-mode: forwards;
+}
+
+/* Animation shorthand */
+.pulse-element {
+    animation: pulse 2s infinite;
+}
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Media Queries</h4>
+                        <p>Media queries allow you to apply CSS styles based on device characteristics like screen width, height, orientation, and resolution. They are essential for responsive design, ensuring your website looks good on all devices.</p>
+                        <p>Common breakpoints include mobile (320px-768px), tablet (768px-1024px), and desktop (1024px+). You can use min-width, max-width, orientation, and other features.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Mobile first approach */
+.container {
+    width: 100%;
+    padding: 0 15px;
+}
+
+/* Tablet styles */
+@media (min-width: 768px) {
+    .container {
+        max-width: 750px;
+        margin: 0 auto;
+    }
+}
+
+/* Desktop styles */
+@media (min-width: 1024px) {
+    .container {
+        max-width: 1200px;
+    }
+}
+
+/* Orientation specific */
+@media (orientation: landscape) {
+    .hero {
+        height: 100vh;
+    }
+}
+
+/* High DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .logo {
+        background-image: url('logo@2x.png');
+    }
+}
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>CSS Units</h4>
+                        <p>CSS has several different units for expressing length. Absolute units (px, pt, cm, mm, in) are fixed size. Relative units (em, rem, %, vw, vh, vmin, vmax) are relative to another length property.</p>
+                        <p>em is relative to the font-size of the element. rem is relative to the font-size of the root element. vw/vh are relative to viewport width/height. % is relative to the parent element.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Absolute units */
+.pixel-value { width: 300px; }
+.point-value { font-size: 12pt; }
+
+/* Relative units */
+.em-value { font-size: 1.2em; } /* 1.2 times parent font size */
+.rem-value { font-size: 1.2rem; } /* 1.2 times root font size */
+.percent-value { width: 50%; } /* 50% of parent width */
+
+/* Viewport units */
+.full-width { width: 100vw; } /* 100% of viewport width */
+.full-height { height: 100vh; } /* 100% of viewport height */
+.responsive-font { font-size: 2vw; } /* 2% of viewport width */
+
+/* Responsive typography */
+html { font-size: 16px; }
+@media (min-width: 768px) {
+    html { font-size: 18px; }
+}
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>CSS Specificity</h4>
+                        <p>Specificity is how browsers decide which CSS property values to apply when multiple rules match the same element. More specific selectors override less specific ones. Inline styles have highest specificity, followed by IDs, then classes, attributes, and pseudo-classes, then elements and pseudo-elements.</p>
+                        <p>The universal selector (*) and combinators (>, +, ~) have no specificity. The !important rule overrides all other declarations.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Low specificity - element selector */
+p { color: blue; }
+
+/* Medium specificity - class selector */
+.text { color: green; }
+
+/* High specificity - ID selector */
+#intro { color: red; }
+
+/* Very high specificity - inline style */
+&lt;p style="color: purple;"&gt;Purple text&lt;/p&gt;
+
+/* Combining selectors increases specificity */
+div.container p.text { color: orange; }
+
+/* Using !important (use sparingly) */
+.important {
+    color: pink !important;
+}
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>CSS Variables</h4>
+                        <p>CSS variables (custom properties) allow you to store values that can be reused throughout your document. They are defined with two dashes (--) and accessed using the var() function. Variables are useful for theming, maintaining consistency, and easy updates.</p>
+                        <p>Variables can be defined globally in the :root selector or locally within specific selectors. They can be overridden in media queries for responsive theming.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Define global variables */
+:root {
+    --primary-color: #007bff;
+    --secondary-color: #6c757d;
+    --font-size-base: 16px;
+    --border-radius: 4px;
+}
+
+/* Use variables */
+.button {
+    background-color: var(--primary-color);
+    font-size: var(--font-size-base);
+    border-radius: var(--border-radius);
+}
+
+/* Override variables locally */
+.dark-theme {
+    --primary-color: #0056b3;
+    --secondary-color: #fff;
+}
+
+/* Responsive variables */
+@media (min-width: 768px) {
+    :root {
+        --font-size-base: 18px;
+    }
+}
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Responsive Design</h4>
+                        <p>Responsive design ensures your website looks good on all devices. Key techniques include flexible grids, flexible images, media queries, and mobile-first design. Use relative units, flexible containers, and breakpoints to create adaptive layouts.</p>
+                        <p>Modern CSS features like CSS Grid, Flexbox, and Container Queries make responsive design easier. Always test on various devices and screen sizes.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Fluid typography */
+html {
+    font-size: clamp(16px, 2vw, 20px);
+}
+
+/* Responsive grid */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+/* Responsive images */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Mobile-first navigation */
+.nav {
+    display: flex;
+    flex-direction: column;
+}
+
+@media (min-width: 768px) {
+    .nav {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+}
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>CSS Best Practices</h4>
+                        <p>Follow these best practices for maintainable and efficient CSS: Use semantic class names, organize CSS logically, avoid !important, use shorthand properties, optimize for performance, use CSS variables for consistency, write mobile-first CSS, comment your code, and use a CSS methodology like BEM or SMACSS.</p>
+                        <p>Minimize CSS file size, remove unused styles, and consider using CSS preprocessors like Sass or Less for larger projects.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-css">
+/* BEM naming convention */
+.card { /* Block */ }
+.card__title { /* Element */ }
+.card__image { /* Element */ }
+.card--featured { /* Modifier */ }
+
+/* Organize CSS sections */
+/* ====== Reset ====== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* ====== Variables ====== */
+:root { /* Custom properties */ }
+
+/* ====== Base Styles ====== */
+body { /* Base styles */ }
+
+/* ====== Components ====== */
+.button { /* Component styles */ }
+
+/* ====== Layout ====== */
+.container { /* Layout styles */ }
+
+/* ====== Utilities ====== */
+.text-center { text-align: center; }
+</code><button class="copy-button">Copy</button></pre>
+
+                        <p>This comprehensive guide covers essential CSS concepts and properties with detailed explanations. CSS is a powerful styling language that works alongside HTML to create visually appealing and responsive websites. Understanding CSS fundamentals is crucial for modern web development.</p>
+
+                        <div class="mt-5 text-center">
+                            <a href="/practice" class="btn btn-primary btn-lg">Take Practice Test</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="animation-container-docs" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1;">
+        </div>
+    </section>
+
+    <script>
+        document.getElementById('search-input').addEventListener('input', function() {
+            const query = this.value.toLowerCase();
+            const content = document.getElementById('content');
+            const elements = content.querySelectorAll('h2, h3, h4, p, pre');
+
+            elements.forEach(element => {
+                const text = element.textContent.toLowerCase();
+                if (query === '' || text.includes(query)) {
+                    element.style.display = '';
+                } else {
+                    element.style.display = 'none';
+                }
+            });
+        });
+    </script>
+    <script>
+        const copyButtons = document.querySelectorAll('.copy-button');
+        copyButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const code = this.parentNode.querySelector('code').textContent;
+                navigator.clipboard.writeText(code);
+                this.textContent = 'Copied!';
+                setTimeout(() => {
+                    this.textContent = 'Copy';
+                }, 2000);
+            });
+        });
+    </script>
+{% endblock %}

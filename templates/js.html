@@ -1,0 +1,2017 @@
+{% extends 'base.html' %}
+
+{% block title %}JavaScript Docs - Spark Solutions{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.3/purify.min.js"></script>
+    <script>
+        hljs.highlightAll();
+    </script>
+{% endblock %}
+
+{% block content %}
+    <!-- JavaScript Docs Page -->
+    <section class="docs-page py-5">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- Documentation Content -->
+                <div class="col-md-12">
+                    <!-- Search Box -->
+                    <div class="search-container mb-4">
+                        <input type="text" id="search-input" class="form-control" placeholder="Search documentation...">
+                    </div>
+                    <div id="content">
+                        <h2 class="mb-4">JavaScript Documentation</h2>
+                        <p>Welcome to the JavaScript documentation. Here, you'll find comprehensive guides and tutorials for JavaScript programming and Data Structures & Algorithms.</p>
+
+                        <h3 id="javascript" class="mt-5">JavaScript Programming</h3>
+                        <p>This section provides a comprehensive guide to JavaScript, the programming language of the web, along with essential Data Structures and Algorithms.</p>
+
+                        <h4>What is JavaScript?</h4>
+                        <p>JavaScript is a high-level, interpreted programming language that conforms to the ECMAScript specification. It's a language that is also characterized as dynamic, weakly typed, prototype-based and multi-paradigm. JavaScript enables interactive web pages and is an essential part of web applications.</p>
+                        <p>Alongside HTML and CSS, JavaScript is one of the core technologies of the World Wide Web. JavaScript supports event-driven, functional, and imperative programming styles. It has APIs for working with text, arrays, dates, regular expressions, and the DOM.</p>
+
+                        <h4>Variables and Data Types</h4>
+                        <p>JavaScript variables are containers for storing data values. JavaScript has three ways to declare variables: var, let, and const. JavaScript has dynamic types, meaning the same variable can be used to hold different data types.</p>
+                        <p>JavaScript data types include: Number, String, Boolean, Undefined, Null, Symbol, BigInt (primitive types) and Object (reference type).</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-javascript">
+// Variable declarations
+var name = "John"; // function scoped, can be redeclared
+let age = 25; // block scoped, cannot be redeclared
+const PI = 3.14159; // block scoped, cannot be reassigned
+
+// Data types
+let number = 42; // Number
+let string = "Hello World"; // String
+let boolean = true; // Boolean
+let nothing = null; // Null
+let notDefined; // Undefined
+let symbol = Symbol('unique'); // Symbol
+let bigInt = 123456789012345678901234567890n; // BigInt
+
+// Object types
+let object = { name: "John", age: 25 };
+let array = [1, 2, 3, 4, 5];
+let date = new Date();
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Operators</h4>
+                        <p>JavaScript operators are used to perform operations on variables and values. Types include: Arithmetic operators (+, -, *, /, %, **), Assignment operators (=, +=, -=, *=, /=), Comparison operators (==, ===, !=, !==, >, <, >=, <=), Logical operators (&&, ||, !), and Unary operators (+, -, ++, --).</p>
+                        <p>Understanding operator precedence and type coercion is crucial for writing correct JavaScript code.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-javascript">
+// Arithmetic operators
+let sum = 10 + 5; // 15
+let difference = 10 - 5; // 5
+let product = 10 * 5; // 50
+let quotient = 10 / 5; // 2
+let remainder = 10 % 3; // 1
+let power = 2 ** 3; // 8
+
+// Assignment operators
+let x = 10;
+x += 5; // x = 15
+x -= 3; // x = 12
+x *= 2; // x = 24
+
+// Comparison operators
+console.log(5 == "5"); // true (loose equality)
+console.log(5 === "5"); // false (strict equality)
+console.log(5 != "5"); // false
+console.log(5 !== "5"); // true
+
+// Logical operators
+let a = true, b = false;
+console.log(a && b); // false (AND)
+console.log(a || b); // true (OR)
+console.log(!a); // false (NOT)
+
+// Ternary operator
+let result = (age >= 18) ? "Adult" : "Minor";
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Control Flow</h4>
+                        <p>Control flow statements determine the order in which code is executed. JavaScript includes if/else statements, switch statements, and various loops (for, while, do-while, for-in, for-of).</p>
+                        <p>Break and continue statements can be used to control loop execution. Labels can be used with break and continue for nested loops.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-javascript">
+// If/else statement
+if (age >= 18) {
+    console.log("You are an adult");
+} else if (age >= 13) {
+    console.log("You are a teenager");
+} else {
+    console.log("You are a child");
+}
+
+// Switch statement
+let day = "Monday";
+switch (day) {
+    case "Monday":
+        console.log("Start of the week");
+        break;
+    case "Friday":
+        console.log("End of the week");
+        break;
+    default:
+        console.log("Middle of the week");
+}
+
+// For loop
+for (let i = 0; i < 5; i++) {
+    console.log(i);
+}
+
+// While loop
+let count = 0;
+while (count < 5) {
+    console.log(count);
+    count++;
+}
+
+// For...in loop (objects)
+let person = { name: "John", age: 25 };
+for (let key in person) {
+    console.log(key + ": " + person[key]);
+}
+
+// For...of loop (arrays)
+let fruits = ["apple", "banana", "orange"];
+for (let fruit of fruits) {
+    console.log(fruit);
+}
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Functions</h4>
+                        <p>Functions are reusable blocks of code that perform specific tasks. JavaScript supports function declarations, function expressions, arrow functions, and immediately invoked function expressions (IIFEs).</p>
+                        <p>Functions can take parameters and return values. JavaScript supports default parameters, rest parameters, and the arguments object.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-javascript">
+// Function declaration
+function greet(name) {
+    return "Hello, " + name + "!";
+}
+
+// Function expression
+const add = function(a, b) {
+    return a + b;
+};
+
+// Arrow function
+const multiply = (a, b) => a * b;
+
+// Function with default parameters
+function greetWithDefault(name = "Guest") {
+    return "Hello, " + name + "!";
+}
+
+// Function with rest parameters
+function sum(...numbers) {
+    return numbers.reduce((total, num) => total + num, 0);
+}
+
+// Higher-order function
+function createMultiplier(factor) {
+    return function(number) {
+        return number * factor;
+    };
+}
+
+const double = createMultiplier(2);
+console.log(double(5)); // 10
+
+// IIFE (Immediately Invoked Function Expression)
+(function() {
+    console.log("This runs immediately!");
+})();
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Objects</h4>
+                        <p>Objects are collections of key-value pairs. JavaScript objects are dynamic, meaning properties can be added, modified, or deleted at runtime. Objects can be created using object literals, the Object constructor, or constructor functions.</p>
+                        <p>JavaScript supports prototypal inheritance, where objects can inherit properties from other objects.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-javascript">
+// Object literal
+let person = {
+    name: "John",
+    age: 25,
+    greet: function() {
+        return "Hello, I'm " + this.name;
+    }
+};
+
+// Accessing properties
+console.log(person.name); // Dot notation
+console.log(person["age"]); // Bracket notation
+
+// Adding/modifying properties
+person.email = "john@example.com";
+person.age = 26;
+
+// Deleting properties
+delete person.email;
+
+// Object methods
+console.log(Object.keys(person)); // Get all keys
+console.log(Object.values(person)); // Get all values
+console.log(Object.entries(person)); // Get key-value pairs
+
+// Object destructuring
+const { name, age } = person;
+
+// Spread operator
+let personCopy = { ...person, city: "New York" };
+
+// Object methods
+let merged = Object.assign({}, person, { job: "Developer" });
+let hasName = person.hasOwnProperty("name"); // true
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Arrays</h4>
+                        <p>Arrays are ordered collections of values. JavaScript arrays are dynamic and can hold values of different types. Arrays have many built-in methods for manipulation, iteration, and transformation.</p>
+                        <p>Common array methods include push, pop, shift, unshift, splice, slice, concat, map, filter, reduce, forEach, find, sort, and reverse.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-javascript">
+// Creating arrays
+let fruits = ["apple", "banana", "orange"];
+let numbers = new Array(1, 2, 3, 4, 5);
+let mixed = [1, "hello", true, null];
+
+// Array methods
+fruits.push("grape"); // Add to end
+fruits.pop(); // Remove from end
+fruits.unshift("strawberry"); // Add to beginning
+fruits.shift(); // Remove from beginning
+
+// Iteration methods
+numbers.forEach(num => console.log(num));
+
+let doubled = numbers.map(num => num * 2);
+let evens = numbers.filter(num => num % 2 === 0);
+let sum = numbers.reduce((total, num) => total + num, 0);
+
+// Finding elements
+let found = numbers.find(num => num > 3);
+let index = numbers.indexOf(3);
+let includes = numbers.includes(5);
+
+// Array destructuring
+const [first, second, ...rest] = numbers;
+
+// Spread operator
+let newArray = [...numbers, 6, 7, 8];
+
+// Array methods
+let sorted = [...numbers].sort((a, b) => a - b);
+let reversed = [...numbers].reverse();
+let sliced = numbers.slice(1, 3);
+let spliced = numbers.splice(1, 2, 10, 20);
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>ES6+ Features</h4>
+                        <p>ES6 (ECMAScript 2015) and later versions introduced many new features to JavaScript. These include let/const, arrow functions, template literals, destructuring, default parameters, rest/spread operators, classes, modules, promises, and more.</p>
+                        <p>These features make JavaScript more powerful and easier to work with.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-javascript">
+// Template literals
+let name = "John";
+let greeting = `Hello, ${name}!
+Welcome to JavaScript.`;
+
+// Destructuring
+const { a, b } = { a: 1, b: 2 };
+const [x, y] = [10, 20];
+
+// Default parameters
+function greet(name = "Guest", age = 0) {
+    return `${name} is ${age} years old`;
+}
+
+// Rest parameters
+function sum(...numbers) {
+    return numbers.reduce((total, num) => total + num, 0);
+}
+
+// Spread operator
+let arr1 = [1, 2, 3];
+let arr2 = [...arr1, 4, 5, 6];
+
+// Enhanced object literals
+let prop = "name";
+let obj = {
+    [prop]: "John", // Computed property name
+    greet() { // Method shorthand
+        return "Hello!";
+    }
+};
+
+// Optional chaining
+let user = { profile: { name: "John" } };
+let userName = user?.profile?.name; // "John"
+let city = user?.profile?.address?.city; // undefined
+
+// Nullish coalescing
+let value = null ?? "default"; // "default"
+let value2 = 0 ?? "default"; // 0
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>DOM Manipulation</h4>
+                        <p>The Document Object Model (DOM) represents the HTML document as a tree structure. JavaScript can manipulate the DOM to change content, structure, and style of web pages dynamically.</p>
+                        <p>Common DOM operations include selecting elements, creating elements, modifying elements, adding/removing elements, and handling events.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-javascript">
+// Selecting elements
+let element = document.getElementById("myId");
+let elements = document.getElementsByClassName("myClass");
+let elementsByTag = document.getElementsByTagName("div");
+let firstElement = document.querySelector(".myClass");
+let allElements = document.querySelectorAll(".myClass");
+
+// Creating elements
+let newDiv = document.createElement("div");
+let newText = document.createTextNode("Hello World");
+
+// Modifying elements
+element.innerHTML = "&lt;strong&gt;Bold text&lt;/strong&gt;";
+element.textContent = "Plain text";
+element.setAttribute("class", "new-class");
+element.style.color = "red";
+
+// Adding elements
+document.body.appendChild(newDiv);
+element.appendChild(newText);
+parentElement.insertBefore(newElement, referenceElement);
+
+// Removing elements
+parentElement.removeChild(childElement);
+element.remove(); // Modern way
+
+// Modifying classes
+element.classList.add("new-class");
+element.classList.remove("old-class");
+element.classList.toggle("active");
+element.classList.contains("my-class");
+
+// Traversing the DOM
+let parent = element.parentElement;
+let children = element.children;
+let firstChild = element.firstElementChild;
+let nextSibling = element.nextElementSibling;
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Event Handling</h4>
+                        <p>Events are actions that happen in the browser, like clicks, key presses, or page loads. JavaScript can respond to these events using event handlers and event listeners.</p>
+                        <p>Common events include click, mouseover, keydown, keyup, submit, change, load, and resize. Event objects provide information about the event.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-javascript">
+// Event listeners
+button.addEventListener("click", function() {
+    console.log("Button clicked!");
+});
+
+// Arrow function event listener
+button.addEventListener("click", () => {
+    console.log("Arrow function handler");
+});
+
+// Event with parameters
+button.addEventListener("click", function(event) {
+    console.log("Event type:", event.type);
+    console.log("Target:", event.target);
+    event.preventDefault(); // Prevent default behavior
+});
+
+// Multiple event types
+element.addEventListener("mouseover mouseout", function() {
+    this.classList.toggle("highlight");
+});
+
+// Event delegation
+document.addEventListener("click", function(event) {
+    if (event.target.matches(".button")) {
+        console.log("Delegated button click");
+    }
+});
+
+// Removing event listeners
+function handleClick() {
+    console.log("Clicked");
+}
+button.addEventListener("click", handleClick);
+button.removeEventListener("click", handleClick);
+
+// Custom events
+let customEvent = new Event("customEvent");
+element.dispatchEvent(customEvent);
+
+element.addEventListener("customEvent", function() {
+    console.log("Custom event fired");
+});
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Asynchronous JavaScript</h4>
+                        <p>JavaScript supports asynchronous programming through callbacks, promises, and async/await. This is essential for operations that take time, like API calls, file operations, or timers.</p>
+                        <p>Understanding the event loop, callback queue, and microtask queue is crucial for mastering asynchronous JavaScript.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-javascript">
+// Callbacks
+function fetchData(callback) {
+    setTimeout(() => {
+        callback("Data received");
+    }, 1000);
+}
+
+fetchData(function(data) {
+    console.log(data);
+});
+
+// Promises
+let promise = new Promise((resolve, reject) => {
+    setTimeout(() => {
+        resolve("Success!");
+        // reject("Error!");
+    }, 1000);
+});
+
+promise
+    .then(data => console.log(data))
+    .catch(error => console.error(error))
+    .finally(() => console.log("Cleanup"));
+
+// Promise methods
+Promise.all([promise1, promise2])
+    .then(results => console.log(results));
+
+Promise.race([promise1, promise2])
+    .then(result => console.log(result));
+
+// Async/Await
+async function fetchDataAsync() {
+    try {
+        let data = await promise;
+        console.log(data);
+        return data;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+// Parallel async operations
+async function fetchMultiple() {
+    let [data1, data2] = await Promise.all([
+        fetchData1(),
+        fetchData2()
+    ]);
+    return { data1, data2 };
+}
+
+// Sequential async operations
+async function fetchSequential() {
+    let data1 = await fetchData1();
+    let data2 = await fetchData2();
+    return { data1, data2 };
+}
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Error Handling</h4>
+                        <p>JavaScript provides try-catch-finally blocks for handling errors. You can throw custom errors and create custom error types. Proper error handling makes your code more robust and user-friendly.</p>
+                        <p>Common error types include Error, TypeError, ReferenceError, SyntaxError, and RangeError.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-javascript">
+// Try-catch-finally
+try {
+    // Code that might throw an error
+    let result = riskyOperation();
+    console.log(result);
+} catch (error) {
+    console.error("Error occurred:", error.message);
+} finally {
+    console.log("Cleanup code");
+}
+
+// Throwing errors
+function divide(a, b) {
+    if (b === 0) {
+        throw new Error("Division by zero");
+    }
+    return a / b;
+}
+
+// Custom error types
+class CustomError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = "CustomError";
+    }
+}
+
+// Handling different error types
+try {
+    // Some operation
+} catch (error) {
+    if (error instanceof TypeError) {
+        console.log("Type error occurred");
+    } else if (error instanceof ReferenceError) {
+        console.log("Reference error occurred");
+    } else {
+        console.log("Unknown error:", error);
+    }
+}
+
+// Global error handler
+window.addEventListener("error", function(event) {
+    console.error("Global error:", event.error);
+});
+
+// Promise error handling
+promise
+    .then(data => console.log(data))
+    .catch(error => console.error("Promise error:", error));
+
+// Async function error handling
+async function handleErrors() {
+    try {
+        await riskyOperation();
+    } catch (error) {
+        console.error("Async error:", error);
+    }
+}
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Classes and OOP</h4>
+                        <p>ES6 introduced class syntax for object-oriented programming. JavaScript uses prototypal inheritance, but classes provide a cleaner syntax. Classes support constructors, methods, inheritance, static methods, and getters/setters.</p>
+                        <p>Understanding OOP concepts like encapsulation, inheritance, polymorphism, and abstraction is important for building complex applications.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-javascript">
+// Class definition
+class Person {
+    constructor(name, age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    // Instance method
+    greet() {
+        return `Hello, I'm ${this.name}`;
+    }
+
+    // Getter
+    get info() {
+        return `${this.name} is ${this.age} years old`;
+    }
+
+    // Setter
+    set age(newAge) {
+        if (newAge > 0) {
+            this._age = newAge;
+        }
+    }
+
+    // Static method
+    static species() {
+        return "Homo sapiens";
+    }
+}
+
+// Inheritance
+class Student extends Person {
+    constructor(name, age, grade) {
+        super(name, age); // Call parent constructor
+        this.grade = grade;
+    }
+
+    // Override method
+    greet() {
+        return `${super.greet()} and I'm a student`;
+    }
+
+    // New method
+    study() {
+        return `${this.name} is studying`;
+    }
+}
+
+// Creating instances
+let person = new Person("John", 25);
+let student = new Student("Jane", 20, "A");
+
+// Using instances
+console.log(person.greet());
+console.log(student.greet());
+console.log(student.study());
+
+// Private fields (ES2022)
+class BankAccount {
+    #balance = 0; // Private field
+
+    deposit(amount) {
+        this.#balance += amount;
+    }
+
+    getBalance() {
+        return this.#balance;
+    }
+}
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Modules</h4>
+                        <p>JavaScript modules allow you to break up your code into separate, reusable files. ES6 modules use import/export syntax. Modules help organize code, avoid namespace pollution, and enable better code reuse.</p>
+                        <p>Modules can be named exports or default exports. Dynamic imports allow loading modules on demand.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-javascript">
+// math.js - Named exports
+export const PI = 3.14159;
+export function add(a, b) {
+    return a + b;
+}
+export function multiply(a, b) {
+    return a * b;
+}
+
+// utils.js - Default export
+export default function formatDate(date) {
+    return date.toLocaleDateString();
+}
+
+// main.js - Importing
+import { PI, add, multiply } from './math.js';
+import formatDate from './utils.js';
+
+// Using imports
+console.log(PI);
+console.log(add(5, 3));
+console.log(formatDate(new Date()));
+
+// Import all as namespace
+import * as math from './math.js';
+console.log(math.multiply(4, 5));
+
+// Dynamic import
+async function loadModule() {
+    const module = await import('./math.js');
+    console.log(module.add(2, 3));
+}
+
+// Re-exporting
+export { add, multiply } from './math.js';
+export { default as formatDate } from './utils.js';
+
+// CommonJS (Node.js)
+// module.exports = { add, multiply };
+// const { add, multiply } = require('./math');
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h3 id="dsa" class="mt-5">Data Structures & Algorithms</h3>
+                        <p>This section covers essential data structures and algorithms implemented in JavaScript, crucial for solving complex problems efficiently.</p>
+
+                        <h4>Arrays (Advanced)</h4>
+                        <p>Arrays are fundamental data structures. Understanding array operations and their time complexity is essential. Common operations include access, search, insertion, deletion, and traversal.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-javascript">
+// Array operations and their complexities
+class ArrayOperations {
+    constructor() {
+        this.arr = [];
+    }
+
+    // O(1) - Access element at index
+    get(index) {
+        return this.arr[index];
+    }
+
+    // O(1) - Insert at end
+    push(element) {
+        this.arr.push(element);
+    }
+
+    // O(1) - Remove from end
+    pop() {
+        return this.arr.pop();
+    }
+
+    // O(n) - Insert at beginning
+    unshift(element) {
+        this.arr.unshift(element);
+    }
+
+    // O(n) - Remove from beginning
+    shift() {
+        return this.arr.shift();
+    }
+
+    // O(n) - Linear search
+    linearSearch(target) {
+        for (let i = 0; i < this.arr.length; i++) {
+            if (this.arr[i] === target) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    // O(log n) - Binary search (requires sorted array)
+    binarySearch(target, left = 0, right = this.arr.length - 1) {
+        if (left > right) return -1;
+        
+        const mid = Math.floor((left + right) / 2);
+        
+        if (this.arr[mid] === target) {
+            return mid;
+        } else if (this.arr[mid] < target) {
+            return this.binarySearch(target, mid + 1, right);
+        } else {
+            return this.binarySearch(target, left, mid - 1);
+        }
+    }
+}
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Linked Lists</h4>
+                        <p>Linked lists consist of nodes where each node contains data and a reference to the next node. They allow efficient insertion and deletion but have O(n) access time.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-javascript">
+// Singly Linked List
+class Node {
+    constructor(data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+
+class LinkedList {
+    constructor() {
+        this.head = null;
+        this.size = 0;
+    }
+
+    // O(1) - Add to beginning
+    prepend(data) {
+        const newNode = new Node(data);
+        newNode.next = this.head;
+        this.head = newNode;
+        this.size++;
+    }
+
+    // O(n) - Add to end
+    append(data) {
+        const newNode = new Node(data);
+        
+        if (!this.head) {
+            this.head = newNode;
+        } else {
+            let current = this.head;
+            while (current.next) {
+                current = current.next;
+            }
+            current.next = newNode;
+        }
+        this.size++;
+    }
+
+    // O(n) - Insert at index
+    insertAt(data, index) {
+        if (index < 0 || index > this.size) {
+            return false;
+        }
+
+        if (index === 0) {
+            this.prepend(data);
+        } else {
+            const newNode = new Node(data);
+            let current = this.head;
+            let previous;
+            
+            for (let i = 0; i < index; i++) {
+                previous = current;
+                current = current.next;
+            }
+            
+            newNode.next = current;
+            previous.next = newNode;
+            this.size++;
+        }
+        return true;
+    }
+
+    // O(n) - Remove at index
+    removeAt(index) {
+        if (index < 0 || index >= this.size) {
+            return null;
+        }
+
+        let current = this.head;
+        let previous;
+
+        if (index === 0) {
+            this.head = current.next;
+        } else {
+            for (let i = 0; i < index; i++) {
+                previous = current;
+                current = current.next;
+            }
+            previous.next = current.next;
+        }
+        
+        this.size--;
+        return current.data;
+    }
+
+    // O(n) - Search
+    search(data) {
+        let current = this.head;
+        let index = 0;
+        
+        while (current) {
+            if (current.data === data) {
+                return index;
+            }
+            current = current.next;
+            index++;
+        }
+        return -1;
+    }
+
+    // O(n) - Convert to array
+    toArray() {
+        const result = [];
+        let current = this.head;
+        
+        while (current) {
+            result.push(current.data);
+            current = current.next;
+        }
+        return result;
+    }
+}
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Stacks</h4>
+                        <p>Stacks follow LIFO (Last In First Out) principle. Common operations are push (add to top), pop (remove from top), peek (view top element), and isEmpty.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-javascript">
+// Stack implementation
+class Stack {
+    constructor() {
+        this.items = [];
+    }
+
+    // O(1) - Add to top
+    push(element) {
+        this.items.push(element);
+    }
+
+    // O(1) - Remove from top
+    pop() {
+        if (this.isEmpty()) {
+            return null;
+        }
+        return this.items.pop();
+    }
+
+    // O(1) - View top element
+    peek() {
+        if (this.isEmpty()) {
+            return null;
+        }
+        return this.items[this.items.length - 1];
+    }
+
+    // O(1) - Check if empty
+    isEmpty() {
+        return this.items.length === 0;
+    }
+
+    // O(1) - Get size
+    size() {
+        return this.items.length;
+    }
+
+    // O(n) - Clear stack
+    clear() {
+        this.items = [];
+    }
+
+    // O(n) - Convert to array
+    toArray() {
+        return [...this.items];
+    }
+}
+
+// Stack usage examples
+function reverseString(str) {
+    const stack = new Stack();
+    
+    // Push all characters
+    for (let char of str) {
+        stack.push(char);
+    }
+    
+    // Pop all characters to reverse
+    let reversed = '';
+    while (!stack.isEmpty()) {
+        reversed += stack.pop();
+    }
+    
+    return reversed;
+}
+
+// Check for balanced parentheses
+function isBalanced(str) {
+    const stack = new Stack();
+    const pairs = { '(': ')', '[': ']', '{': '}' };
+    
+    for (let char of str) {
+        if (pairs[char]) {
+            stack.push(char);
+        } else if (Object.values(pairs).includes(char)) {
+            if (stack.isEmpty() || pairs[stack.pop()] !== char) {
+                return false;
+            }
+        }
+    }
+    
+    return stack.isEmpty();
+}
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Queues</h4>
+                        <p>Queues follow FIFO (First In First Out) principle. Common operations are enqueue (add to rear), dequeue (remove from front), front (view front element), and isEmpty.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-javascript">
+// Queue implementation
+class Queue {
+    constructor() {
+        this.items = [];
+    }
+
+    // O(1) - Add to rear
+    enqueue(element) {
+        this.items.push(element);
+    }
+
+    // O(n) - Remove from front
+    dequeue() {
+        if (this.isEmpty()) {
+            return null;
+        }
+        return this.items.shift();
+    }
+
+    // O(1) - View front element
+    front() {
+        if (this.isEmpty()) {
+            return null;
+        }
+        return this.items[0];
+    }
+
+    // O(1) - Check if empty
+    isEmpty() {
+        return this.items.length === 0;
+    }
+
+    // O(1) - Get size
+    size() {
+        return this.items.length;
+    }
+}
+
+// Circular Queue implementation
+class CircularQueue {
+    constructor(capacity) {
+        this.items = new Array(capacity);
+        this.capacity = capacity;
+        this.front = -1;
+        this.rear = -1;
+        this.size = 0;
+    }
+
+    // O(1) - Add to rear
+    enqueue(element) {
+        if (this.isFull()) {
+            return false;
+        }
+        
+        if (this.isEmpty()) {
+            this.front = 0;
+        }
+        
+        this.rear = (this.rear + 1) % this.capacity;
+        this.items[this.rear] = element;
+        this.size++;
+        return true;
+    }
+
+    // O(1) - Remove from front
+    dequeue() {
+        if (this.isEmpty()) {
+            return null;
+        }
+        
+        const item = this.items[this.front];
+        
+        if (this.front === this.rear) {
+            this.front = -1;
+            this.rear = -1;
+        } else {
+            this.front = (this.front + 1) % this.capacity;
+        }
+        
+        this.size--;
+        return item;
+    }
+
+    // O(1) - Check if full
+    isFull() {
+        return this.size === this.capacity;
+    }
+
+    // O(1) - Check if empty
+    isEmpty() {
+        return this.size === 0;
+    }
+}
+
+// Priority Queue
+class PriorityQueue {
+    constructor() {
+        this.items = [];
+    }
+
+    // O(n) - Add with priority
+    enqueue(element, priority) {
+        const queueElement = { element, priority };
+        let added = false;
+        
+        for (let i = 0; i < this.items.length; i++) {
+            if (queueElement.priority < this.items[i].priority) {
+                this.items.splice(i, 0, queueElement);
+                added = true;
+                break;
+            }
+        }
+        
+        if (!added) {
+            this.items.push(queueElement);
+        }
+    }
+
+    // O(1) - Remove highest priority
+    dequeue() {
+        if (this.isEmpty()) {
+            return null;
+        }
+        return this.items.shift().element;
+    }
+}
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Trees</h4>
+                        <p>Trees are hierarchical data structures with a root node and child nodes. Binary trees have at most two children per node. Binary Search Trees (BST) maintain order for efficient searching.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-javascript">
+// Binary Search Tree
+class TreeNode {
+    constructor(value) {
+        this.value = value;
+        this.left = null;
+        this.right = null;
+    }
+}
+
+class BinarySearchTree {
+    constructor() {
+        this.root = null;
+    }
+
+    // O(log n) average, O(n) worst - Insert
+    insert(value) {
+        const newNode = new TreeNode(value);
+        
+        if (!this.root) {
+            this.root = newNode;
+        } else {
+            this.insertNode(this.root, newNode);
+        }
+    }
+
+    insertNode(node, newNode) {
+        if (newNode.value < node.value) {
+            if (!node.left) {
+                node.left = newNode;
+            } else {
+                this.insertNode(node.left, newNode);
+            }
+        } else {
+            if (!node.right) {
+                node.right = newNode;
+            } else {
+                this.insertNode(node.right, newNode);
+            }
+        }
+    }
+
+    // O(log n) average, O(n) worst - Search
+    search(value) {
+        return this.searchNode(this.root, value);
+    }
+
+    searchNode(node, value) {
+        if (!node) {
+            return false;
+        }
+        
+        if (value < node.value) {
+            return this.searchNode(node.left, value);
+        } else if (value > node.value) {
+            return this.searchNode(node.right, value);
+        } else {
+            return true;
+        }
+    }
+
+    // O(n) - In-order traversal (sorted)
+    inOrder(callback) {
+        this.inOrderTraversal(this.root, callback);
+    }
+
+    inOrderTraversal(node, callback) {
+        if (node) {
+            this.inOrderTraversal(node.left, callback);
+            callback(node.value);
+            this.inOrderTraversal(node.right, callback);
+        }
+    }
+
+    // O(n) - Pre-order traversal
+    preOrder(callback) {
+        this.preOrderTraversal(this.root, callback);
+    }
+
+    preOrderTraversal(node, callback) {
+        if (node) {
+            callback(node.value);
+            this.preOrderTraversal(node.left, callback);
+            this.preOrderTraversal(node.right, callback);
+        }
+    }
+
+    // O(n) - Post-order traversal
+    postOrder(callback) {
+        this.postOrderTraversal(this.root, callback);
+    }
+
+    postOrderTraversal(node, callback) {
+        if (node) {
+            this.postOrderTraversal(node.left, callback);
+            this.postOrderTraversal(node.right, callback);
+            callback(node.value);
+        }
+    }
+
+    // O(n) - Level-order traversal (BFS)
+    levelOrder(callback) {
+        if (!this.root) return;
+        
+        const queue = [this.root];
+        
+        while (queue.length > 0) {
+            const node = queue.shift();
+            callback(node.value);
+            
+            if (node.left) queue.push(node.left);
+            if (node.right) queue.push(node.right);
+        }
+    }
+
+    // O(log n) average, O(n) worst - Find min
+    findMin() {
+        if (!this.root) return null;
+        
+        let current = this.root;
+        while (current.left) {
+            current = current.left;
+        }
+        return current.value;
+    }
+
+    // O(log n) average, O(n) worst - Find max
+    findMax() {
+        if (!this.root) return null;
+        
+        let current = this.root;
+        while (current.right) {
+            current = current.right;
+        }
+        return current.value;
+    }
+}
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Graphs</h4>
+                        <p>Graphs consist of vertices (nodes) connected by edges. They can be directed or undirected, weighted or unweighted. Common representations include adjacency list and adjacency matrix.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-javascript">
+// Graph implementation using adjacency list
+class Graph {
+    constructor() {
+        this.adjacencyList = {};
+    }
+
+    // O(1) - Add vertex
+    addVertex(vertex) {
+        if (!this.adjacencyList[vertex]) {
+            this.adjacencyList[vertex] = [];
+        }
+    }
+
+    // O(1) - Add edge (undirected)
+    addEdge(vertex1, vertex2) {
+        if (!this.adjacencyList[vertex1] || !this.adjacencyList[vertex2]) {
+            return false;
+        }
+        
+        this.adjacencyList[vertex1].push(vertex2);
+        this.adjacencyList[vertex2].push(vertex1);
+        return true;
+    }
+
+    // O(1) - Add edge (directed)
+    addDirectedEdge(from, to) {
+        if (!this.adjacencyList[from] || !this.adjacencyList[to]) {
+            return false;
+        }
+        
+        this.adjacencyList[from].push(to);
+        return true;
+    }
+
+    // O(V + E) - Remove edge
+    removeEdge(vertex1, vertex2) {
+        this.adjacencyList[vertex1] = this.adjacencyList[vertex1].filter(
+            v => v !== vertex2
+        );
+        this.adjacencyList[vertex2] = this.adjacencyList[vertex2].filter(
+            v => v !== vertex1
+        );
+    }
+
+    // O(V + E) - Remove vertex
+    removeVertex(vertex) {
+        while (this.adjacencyList[vertex].length) {
+            const adjacentVertex = this.adjacencyList[vertex].pop();
+            this.removeEdge(vertex, adjacentVertex);
+        }
+        delete this.adjacencyList[vertex];
+    }
+
+    // O(V + E) - Depth First Search (DFS)
+    dfs(start) {
+        const result = [];
+        const visited = {};
+        const stack = [start];
+        visited[start] = true;
+
+        while (stack.length) {
+            const vertex = stack.pop();
+            result.push(vertex);
+
+            this.adjacencyList[vertex].forEach(neighbor => {
+                if (!visited[neighbor]) {
+                    visited[neighbor] = true;
+                    stack.push(neighbor);
+                }
+            });
+        }
+
+        return result;
+    }
+
+    // O(V + E) - Breadth First Search (BFS)
+    bfs(start) {
+        const result = [];
+        const visited = {};
+        const queue = [start];
+        visited[start] = true;
+
+        while (queue.length) {
+            const vertex = queue.shift();
+            result.push(vertex);
+
+            this.adjacencyList[vertex].forEach(neighbor => {
+                if (!visited[neighbor]) {
+                    visited[neighbor] = true;
+                    queue.push(neighbor);
+                }
+            });
+        }
+
+        return result;
+    }
+}
+
+// Weighted Graph for Dijkstra's Algorithm
+class WeightedGraph {
+    constructor() {
+        this.adjacencyList = {};
+    }
+
+    addVertex(vertex) {
+        if (!this.adjacencyList[vertex]) {
+            this.adjacencyList[vertex] = [];
+        }
+    }
+
+    addEdge(vertex1, vertex2, weight) {
+        this.adjacencyList[vertex1].push({ node: vertex2, weight });
+        this.adjacencyList[vertex2].push({ node: vertex1, weight });
+    }
+
+    // Dijkstra's Algorithm - O((V + E) log V)
+    dijkstra(start, finish) {
+        const nodes = new PriorityQueue();
+        const distances = {};
+        const previous = {};
+        const path = [];
+        let smallest;
+
+        // Build up initial state
+        for (let vertex in this.adjacencyList) {
+            if (vertex === start) {
+                distances[vertex] = 0;
+                nodes.enqueue(vertex, 0);
+            } else {
+                distances[vertex] = Infinity;
+                nodes.enqueue(vertex, Infinity);
+            }
+            previous[vertex] = null;
+        }
+
+        // As long as there is something to visit
+        while (nodes.values.length) {
+            smallest = nodes.dequeue().val;
+            
+            if (smallest === finish) {
+                // Build path to return
+                while (previous[smallest]) {
+                    path.push(smallest);
+                    smallest = previous[smallest];
+                }
+                break;
+            }
+
+            if (smallest || distances[smallest] !== Infinity) {
+                for (let neighbor in this.adjacencyList[smallest]) {
+                    // Find neighboring node
+                    let nextNode = this.adjacencyList[smallest][neighbor];
+                    // Calculate new distance to neighboring node
+                    let candidate = distances[smallest] + nextNode.weight;
+                    let nextNeighbor = nextNode.node;
+                    
+                    if (candidate < distances[nextNeighbor]) {
+                        // Updating new smallest distance to neighbor
+                        distances[nextNeighbor] = candidate;
+                        // Updating previous - How we got to neighbor
+                        previous[nextNeighbor] = smallest;
+                        // Enqueue in priority queue with new priority
+                        nodes.enqueue(nextNeighbor, candidate);
+                    }
+                }
+            }
+        }
+
+        return path.concat(smallest).reverse();
+    }
+}
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Sorting Algorithms</h4>
+                        <p>Sorting algorithms arrange elements in a specific order. Common algorithms include Bubble Sort, Selection Sort, Insertion Sort, Merge Sort, Quick Sort, and Heap Sort.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-javascript">
+// Bubble Sort - O(n²)
+function bubbleSort(arr) {
+    const n = arr.length;
+    
+    for (let i = 0; i < n - 1; i++) {
+        let swapped = false;
+        
+        for (let j = 0; j < n - i - 1; j++) {
+            if (arr[j] > arr[j + 1]) {
+                // Swap
+                [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
+                swapped = true;
+            }
+        }
+        
+        // If no swapping occurred, array is sorted
+        if (!swapped) break;
+    }
+    
+    return arr;
+}
+
+// Selection Sort - O(n²)
+function selectionSort(arr) {
+    const n = arr.length;
+    
+    for (let i = 0; i < n - 1; i++) {
+        let minIndex = i;
+        
+        for (let j = i + 1; j < n; j++) {
+            if (arr[j] < arr[minIndex]) {
+                minIndex = j;
+            }
+        }
+        
+        // Swap minimum element with first unsorted element
+        [arr[i], arr[minIndex]] = [arr[minIndex], arr[i]];
+    }
+    
+    return arr;
+}
+
+// Insertion Sort - O(n²)
+function insertionSort(arr) {
+    for (let i = 1; i < arr.length; i++) {
+        let key = arr[i];
+        let j = i - 1;
+        
+        // Move elements greater than key one position ahead
+        while (j >= 0 && arr[j] > key) {
+            arr[j + 1] = arr[j];
+            j--;
+        }
+        
+        arr[j + 1] = key;
+    }
+    
+    return arr;
+}
+
+// Merge Sort - O(n log n)
+function mergeSort(arr) {
+    if (arr.length <= 1) {
+        return arr;
+    }
+    
+    const mid = Math.floor(arr.length / 2);
+    const left = mergeSort(arr.slice(0, mid));
+    const right = mergeSort(arr.slice(mid));
+    
+    return merge(left, right);
+}
+
+function merge(left, right) {
+    const result = [];
+    let leftIndex = 0;
+    let rightIndex = 0;
+    
+    while (leftIndex < left.length && rightIndex < right.length) {
+        if (left[leftIndex] < right[rightIndex]) {
+            result.push(left[leftIndex]);
+            leftIndex++;
+        } else {
+            result.push(right[rightIndex]);
+            rightIndex++;
+        }
+    }
+    
+    return result.concat(left.slice(leftIndex)).concat(right.slice(rightIndex));
+}
+
+// Quick Sort - O(n log n) average, O(n²) worst
+function quickSort(arr, left = 0, right = arr.length - 1) {
+    if (left < right) {
+        const pivotIndex = partition(arr, left, right);
+        quickSort(arr, left, pivotIndex - 1);
+        quickSort(arr, pivotIndex + 1, right);
+    }
+    return arr;
+}
+
+function partition(arr, left, right) {
+    const pivot = arr[right];
+    let i = left - 1;
+    
+    for (let j = left; j < right; j++) {
+        if (arr[j] < pivot) {
+            i++;
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+    }
+    
+    [arr[i + 1], arr[right]] = [arr[right], arr[i + 1]];
+    return i + 1;
+}
+
+// Heap Sort - O(n log n)
+function heapSort(arr) {
+    const n = arr.length;
+    
+    // Build max heap
+    for (let i = Math.floor(n / 2) - 1; i >= 0; i--) {
+        heapify(arr, n, i);
+    }
+    
+    // Extract elements from heap one by one
+    for (let i = n - 1; i > 0; i--) {
+        // Move current root to end
+        [arr[0], arr[i]] = [arr[i], arr[0]];
+        
+        // Call heapify on reduced heap
+        heapify(arr, i, 0);
+    }
+    
+    return arr;
+}
+
+function heapify(arr, n, i) {
+    let largest = i;
+    const left = 2 * i + 1;
+    const right = 2 * i + 2;
+    
+    if (left < n && arr[left] > arr[largest]) {
+        largest = left;
+    }
+    
+    if (right < n && arr[right] > arr[largest]) {
+        largest = right;
+    }
+    
+    if (largest !== i) {
+        [arr[i], arr[largest]] = [arr[largest], arr[i]];
+        heapify(arr, n, largest);
+    }
+}
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Searching Algorithms</h4>
+                        <p>Searching algorithms find specific elements in data structures. Common algorithms include Linear Search, Binary Search, Jump Search, and Interpolation Search.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-javascript">
+// Linear Search - O(n)
+function linearSearch(arr, target) {
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i] === target) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+// Binary Search - O(log n) (requires sorted array)
+function binarySearch(arr, target) {
+    let left = 0;
+    let right = arr.length - 1;
+    
+    while (left <= right) {
+        const mid = Math.floor((left + right) / 2);
+        
+        if (arr[mid] === target) {
+            return mid;
+        } else if (arr[mid] < target) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+    
+    return -1;
+}
+
+// Jump Search - O(√n) (requires sorted array)
+function jumpSearch(arr, target) {
+    const n = arr.length;
+    const step = Math.floor(Math.sqrt(n));
+    let prev = 0;
+    
+    // Find the block where element could be present
+    while (arr[Math.min(step, n) - 1] < target) {
+        prev = step;
+        step += Math.floor(Math.sqrt(n));
+        if (prev >= n) {
+            return -1;
+        }
+    }
+    
+    // Linear search in the identified block
+    while (arr[prev] < target) {
+        prev++;
+        if (prev === Math.min(step, n)) {
+            return -1;
+        }
+    }
+    
+    return arr[prev] === target ? prev : -1;
+}
+
+// Interpolation Search - O(log log n) average (uniformly distributed)
+function interpolationSearch(arr, target) {
+    let left = 0;
+    let right = arr.length - 1;
+    
+    while (left <= right && target >= arr[left] && target <= arr[right]) {
+        if (left === right) {
+            return arr[left] === target ? left : -1;
+        }
+        
+        // Calculate position using interpolation formula
+        const pos = left + Math.floor(
+            ((target - arr[left]) * (right - left)) / (arr[right] - arr[left])
+        );
+        
+        if (arr[pos] === target) {
+            return pos;
+        } else if (arr[pos] < target) {
+            left = pos + 1;
+        } else {
+            right = pos - 1;
+        }
+    }
+    
+    return -1;
+}
+
+// Exponential Search - O(log n)
+function exponentialSearch(arr, target) {
+    const n = arr.length;
+    
+    if (arr[0] === target) {
+        return 0;
+    }
+    
+    // Find range for binary search
+    let i = 1;
+    while (i < n && arr[i] <= target) {
+        i = i * 2;
+    }
+    
+    // Binary search in found range
+    return binarySearch(arr.slice(i / 2, Math.min(i, n)), target) + i / 2;
+}
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Recursion</h4>
+                        <p>Recursion is a technique where a function calls itself to solve problems by breaking them down into smaller subproblems. Understanding base cases and recursive cases is essential.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-javascript">
+// Factorial - O(n)
+function factorial(n) {
+    if (n <= 1) {
+        return 1;
+    }
+    return n * factorial(n - 1);
+}
+
+// Fibonacci - O(2^n) naive, O(n) with memoization
+function fibonacci(n) {
+    if (n <= 1) {
+        return n;
+    }
+    return fibonacci(n - 1) + fibonacci(n - 2);
+}
+
+// Fibonacci with memoization
+function fibonacciMemo(n, memo = {}) {
+    if (n in memo) {
+        return memo[n];
+    }
+    if (n <= 1) {
+        return n;
+    }
+    
+    memo[n] = fibonacciMemo(n - 1, memo) + fibonacciMemo(n - 2, memo);
+    return memo[n];
+}
+
+// Tower of Hanoi - O(2^n)
+function towerOfHanoi(n, source, destination, auxiliary) {
+    if (n === 1) {
+        console.log(`Move disk 1 from ${source} to ${destination}`);
+        return;
+    }
+    
+    towerOfHanoi(n - 1, source, auxiliary, destination);
+    console.log(`Move disk ${n} from ${source} to ${destination}`);
+    towerOfHanoi(n - 1, auxiliary, destination, source);
+}
+
+// Binary Search (recursive) - O(log n)
+function binarySearchRecursive(arr, target, left = 0, right = arr.length - 1) {
+    if (left > right) {
+        return -1;
+    }
+    
+    const mid = Math.floor((left + right) / 2);
+    
+    if (arr[mid] === target) {
+        return mid;
+    } else if (arr[mid] < target) {
+        return binarySearchRecursive(arr, target, mid + 1, right);
+    } else {
+        return binarySearchRecursive(arr, target, left, mid - 1);
+    }
+}
+
+// Tree traversal (recursive)
+function inorderTraversal(node, result = []) {
+    if (node) {
+        inorderTraversal(node.left, result);
+        result.push(node.value);
+        inorderTraversal(node.right, result);
+    }
+    return result;
+}
+
+// Permutations - O(n!)
+function permutations(str) {
+    if (str.length <= 1) {
+        return [str];
+    }
+    
+    const result = [];
+    
+    for (let i = 0; i < str.length; i++) {
+        const char = str[i];
+        const remaining = str.slice(0, i) + str.slice(i + 1);
+        const perms = permutations(remaining);
+        
+        for (let perm of perms) {
+            result.push(char + perm);
+        }
+    }
+    
+    return result;
+}
+
+// Combination - O(2^n)
+function combinations(arr, k) {
+    const result = [];
+    
+    function combine(start, current) {
+        if (current.length === k) {
+            result.push([...current]);
+            return;
+        }
+        
+        for (let i = start; i < arr.length; i++) {
+            current.push(arr[i]);
+            combine(i + 1, current);
+            current.pop();
+        }
+    }
+    
+    combine(0, []);
+    return result;
+}
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Dynamic Programming</h4>
+                        <p>Dynamic Programming solves complex problems by breaking them into overlapping subproblems. It uses memoization (top-down) or tabulation (bottom-up) to store intermediate results.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-javascript">
+// Fibonacci with DP (bottom-up) - O(n)
+function fibonacciDP(n) {
+    if (n <= 1) {
+        return n;
+    }
+    
+    const dp = [0, 1];
+    
+    for (let i = 2; i <= n; i++) {
+        dp[i] = dp[i - 1] + dp[i - 2];
+    }
+    
+    return dp[n];
+}
+
+// Longest Common Subsequence - O(m*n)
+function longestCommonSubsequence(str1, str2) {
+    const m = str1.length;
+    const n = str2.length;
+    const dp = Array(m + 1).fill().map(() => Array(n + 1).fill(0));
+    
+    for (let i = 1; i <= m; i++) {
+        for (let j = 1; j <= n; j++) {
+            if (str1[i - 1] === str2[j - 1]) {
+                dp[i][j] = dp[i - 1][j - 1] + 1;
+            } else {
+                dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+            }
+        }
+    }
+    
+    return dp[m][n];
+}
+
+// Knapsack Problem (0/1) - O(n*W)
+function knapsack(weights, values, capacity) {
+    const n = weights.length;
+    const dp = Array(n + 1).fill().map(() => Array(capacity + 1).fill(0));
+    
+    for (let i = 1; i <= n; i++) {
+        for (let w = 1; w <= capacity; w++) {
+            if (weights[i - 1] <= w) {
+                dp[i][w] = Math.max(
+                    values[i - 1] + dp[i - 1][w - weights[i - 1]],
+                    dp[i - 1][w]
+                );
+            } else {
+                dp[i][w] = dp[i - 1][w];
+            }
+        }
+    }
+    
+    return dp[n][capacity];
+}
+
+// Coin Change Problem - O(n*amount)
+function coinChange(coins, amount) {
+    const dp = Array(amount + 1).fill(Infinity);
+    dp[0] = 0;
+    
+    for (let i = 1; i <= amount; i++) {
+        for (let coin of coins) {
+            if (coin <= i) {
+                dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+            }
+        }
+    }
+    
+    return dp[amount] === Infinity ? -1 : dp[amount];
+}
+
+// Edit Distance - O(m*n)
+function editDistance(word1, word2) {
+    const m = word1.length;
+    const n = word2.length;
+    const dp = Array(m + 1).fill().map(() => Array(n + 1).fill(0));
+    
+    for (let i = 0; i <= m; i++) {
+        dp[i][0] = i;
+    }
+    
+    for (let j = 0; j <= n; j++) {
+        dp[0][j] = j;
+    }
+    
+    for (let i = 1; i <= m; i++) {
+        for (let j = 1; j <= n; j++) {
+            if (word1[i - 1] === word2[j - 1]) {
+                dp[i][j] = dp[i - 1][j - 1];
+            } else {
+                dp[i][j] = Math.min(
+                    dp[i - 1][j] + 1,    // Delete
+                    dp[i][j - 1] + 1,    // Insert
+                    dp[i - 1][j - 1] + 1 // Replace
+                );
+            }
+        }
+    }
+    
+    return dp[m][n];
+}
+
+// Longest Increasing Subsequence - O(n²)
+function longestIncreasingSubsequence(arr) {
+    const n = arr.length;
+    const dp = Array(n).fill(1);
+    
+    for (let i = 1; i < n; i++) {
+        for (let j = 0; j < i; j++) {
+            if (arr[i] > arr[j] && dp[i] < dp[j] + 1) {
+                dp[i] = dp[j] + 1;
+            }
+        }
+    }
+    
+    return Math.max(...dp);
+}
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>JavaScript Best Practices</h4>
+                        <p>Follow these best practices for writing clean, efficient, and maintainable JavaScript code: Use meaningful variable names, write functions that do one thing, avoid global variables, use strict mode, handle errors properly, use modern ES6+ features, optimize performance, write tests, and document your code.</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-javascript">
+// Use const and let instead of var
+const API_URL = 'https://api.example.com';
+let currentUser = null;
+
+// Use meaningful variable and function names
+function calculateTotalPrice(items, taxRate) {
+    const subtotal = items.reduce((sum, item) => sum + item.price, 0);
+    return subtotal * (1 + taxRate);
+}
+
+// Use arrow functions for callbacks
+const numbers = [1, 2, 3, 4, 5];
+const doubled = numbers.map(num => num * 2);
+
+// Use destructuring
+const { name, age } = user;
+const [first, second] = array;
+
+// Use template literals
+const greeting = `Hello, ${name}! You are ${age} years old.`;
+
+// Use default parameters
+function greet(name = 'Guest') {
+    return `Hello, ${name}!`;
+}
+
+// Use async/await for asynchronous code
+async function fetchUserData(userId) {
+    try {
+        const response = await fetch(`/api/users/${userId}`);
+        const userData = await response.json();
+        return userData;
+    } catch (error) {
+        console.error('Error fetching user:', error);
+        throw error;
+    }
+}
+
+// Use classes for object-oriented programming
+class UserService {
+    constructor(apiUrl) {
+        this.apiUrl = apiUrl;
+    }
+
+    async getUser(id) {
+        const response = await fetch(`${this.apiUrl}/users/${id}`);
+        return response.json();
+    }
+}
+
+// Use modules for code organization
+// utils.js
+export const formatDate = (date) => {
+    return date.toLocaleDateString();
+};
+
+// main.js
+import { formatDate } from './utils.js';
+
+// Handle errors gracefully
+function divide(a, b) {
+    if (b === 0) {
+        throw new Error('Division by zero is not allowed');
+    }
+    return a / b;
+}
+
+// Use pure functions when possible
+function add(a, b) {
+    return a + b; // No side effects
+}
+
+// Optimize loops
+// Bad: O(n²)
+for (let i = 0; i < arr.length; i++) {
+    for (let j = 0; j < arr.length; j++) {
+        // Nested operations
+    }
+}
+
+// Good: O(n)
+const lookup = new Map();
+for (let item of arr) {
+    lookup.set(item.id, item);
+}
+
+// Use appropriate data structures
+const set = new Set([1, 2, 3, 3, 4]); // Automatically removes duplicates
+const map = new Map([['key1', 'value1'], ['key2', 'value2']]);
+
+// Write tests
+function sum(a, b) {
+    return a + b;
+}
+
+// Test
+console.assert(sum(2, 3) === 5, 'Sum function failed');
+</code><button class="copy-button">Copy</button></pre>
+
+                        <p>This comprehensive guide covers JavaScript fundamentals and essential Data Structures & Algorithms. Understanding these concepts is crucial for becoming a proficient JavaScript developer and solving complex programming problems efficiently.</p>
+
+                        <div class="mt-5 text-center">
+                            <a href="/practice" class="btn btn-primary btn-lg">Take Practice Test</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="animation-container-docs" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1;">
+        </div>
+    </section>
+
+    <script>
+        document.getElementById('search-input').addEventListener('input', function() {
+            const query = this.value.toLowerCase();
+            const content = document.getElementById('content');
+            const elements = content.querySelectorAll('h2, h3, h4, p, pre');
+
+            elements.forEach(element => {
+                const text = element.textContent.toLowerCase();
+                if (query === '' || text.includes(query)) {
+                    element.style.display = '';
+                } else {
+                    element.style.display = 'none';
+                }
+            });
+        });
+    </script>
+    <script>
+        const copyButtons = document.querySelectorAll('.copy-button');
+        copyButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const code = this.parentNode.querySelector('code').textContent;
+                navigator.clipboard.writeText(code);
+                this.textContent = 'Copied!';
+                setTimeout(() => {
+                    this.textContent = 'Copy';
+                }, 2000);
+            });
+        });
+    </script>
+{% endblock %}

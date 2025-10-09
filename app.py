@@ -110,6 +110,18 @@ def previous_work():
 def practice():
     return render_template('practice.html')
 
+@app.route('/css')
+def css():
+    return render_template('css.html')
+
+@app.route('/js')
+def js():
+    return render_template('js.html')
+
+@app.route('/htmltest')
+def htmltest():
+    return render_template('htmltest.html')
+
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
     form = ContactForm()
