@@ -1,5 +1,5 @@
 Flask
 Flask-CORS
 bcrypt
-python-environ
+python-dotenv
 flask_wtf
