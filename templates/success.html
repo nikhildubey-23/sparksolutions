@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Enrollment Successful - Spark Solutions{% endblock %}
+
+{% block content %}
+    <!-- Success Page -->
+    <section class="success-page py-5" style="background: #f8f9fa; min-height: 60vh;">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-6">
+                    <div class="card shadow text-center">
+                        <div class="card-body">
+                            <div class="mb-4">
+                                <i class="fas fa-check-circle text-success" style="font-size: 4rem;"></i>
+                            </div>
+                            <h2 class="card-title text-success mb-3">Enrollment Successful!</h2>
+                            <p class="card-text mb-4">
+                                Thank you for enrolling in our course. Your information has been received successfully.
+                                We will contact you soon with further details and payment instructions.
+                            </p>
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                                <a href="/courses" class="btn btn-primary me-md-2">Back to Courses</a>
+                                <a href="/" class="btn btn-outline-primary">Go to Home</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

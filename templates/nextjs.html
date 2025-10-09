@@ -1,0 +1,690 @@
+{% extends 'base.html' %}
+
+{% block title %}Next.js Docs - Spark Solutions{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.3/purify.min.js"></script>
+    <script>
+        hljs.highlightAll();
+    </script>
+{% endblock %}
+
+{% block content %}
+    <!-- Next.js Docs Page -->
+    <section class="docs-page py-5">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- Documentation Content -->
+                <div class="col-md-12">
+                    <!-- Search Box -->
+                    <div class="search-container mb-4">
+                        <input type="text" id="search-input" class="form-control" placeholder="Search documentation...">
+                    </div>
+                    <div id="content">
+                        <h2 class="mb-4">Next.js Documentation</h2>
+                        <p>Welcome to the comprehensive Next.js documentation. Next.js is a React framework that enables functionality such as server-side rendering and generating static websites for React based web applications.</p>
+
+                        <h3 id="introduction" class="mt-5">Introduction to Next.js</h3>
+                        <p>Next.js is a full-stack React framework that provides everything you need to build production-ready web applications. It features automatic optimization, TypeScript support, and a powerful routing system.</p>
+                        <p>Key features of Next.js:</p>
+                        <ul>
+                            <li><strong>Server-Side Rendering (SSR)</strong> - Render pages on the server for better performance and SEO</li>
+                            <li><strong>Static Site Generation (SSG)</strong> - Pre-build pages at build time</li>
+                            <li><strong>API Routes</strong> - Build API endpoints as part of your Next.js app</li>
+                            <li><strong>File-based Routing</strong> - Automatic routing based on file structure</li>
+                            <li><strong>TypeScript Support</strong> - Built-in TypeScript support</li>
+                            <li><strong>Image Optimization</strong> - Automatic image optimization and lazy loading</li>
+                            <li><strong>Code Splitting</strong> - Automatic code splitting for faster loading</li>
+                        </ul>
+
+                        <h3 id="setup" class="mt-5">Setup and Installation</h3>
+
+                        <h4>Prerequisites</h4>
+                        <p>Make sure you have Node.js (version 18.17 or later) and npm installed:</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
+# Check Node.js version
+node --version
+
+# Check npm version
+npm --version
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Create Next.js Project</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
+# Create a new Next.js app
+npx create-next-app@latest my-next-app
+
+# Or with TypeScript
+npx create-next-app@latest my-next-app --typescript
+
+# Navigate to the project
+cd my-next-app
+
+# Start the development server
+npm run dev
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Manual Setup</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
+# Initialize npm project
+npm init -y
+
+# Install Next.js
+npm install next react react-dom
+
+# Install additional packages
+npm install @types/node @types/react @types/react-dom typescript eslint eslint-config-next
+
+# Create necessary directories
+mkdir pages components styles public
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Package.json Scripts</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-json">{% raw %}
+{
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "export": "next export"
+  }
+}
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h3 id="project-structure" class="mt-5">Next.js Project Structure</h3>
+
+                        <h4>App Router Structure (Next.js 13+)</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
+my-next-app/
+├── app/
+│   ├── layout.tsx
+│   ├── page.tsx
+│   ├── globals.css
+│   ├── about/
+│   │   └── page.tsx
+│   └── api/
+│       └── users/
+│           └── route.ts
+├── components/
+│   ├── Header.tsx
+│   ├── Footer.tsx
+│   └── Button.tsx
+├── lib/
+│   └── utils.ts
+├── public/
+│   ├── favicon.ico
+│   └── images/
+├── styles/
+│   └── Home.module.css
+├── next.config.js
+├── package.json
+├── tsconfig.json
+└── tailwind.config.js
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Pages Router Structure (Legacy)</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
+my-next-app/
+├── pages/
+│   ├── _app.tsx
+│   ├── _document.tsx
+│   ├── index.tsx
+│   ├── about.tsx
+│   └── api/
+│       └── users.ts
+├── components/
+├── public/
+├── styles/
+├── next.config.js
+└── package.json
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Next.js Configuration</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-javascript">{% raw %}
+// next.config.js
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  reactStrictMode: true,
+  swcMinify: true,
+  images: {
+    domains: ['example.com'],
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/api/:path*',
+        destination: 'https://api.example.com/:path*',
+      },
+    ]
+  },
+  env: {
+    API_URL: process.env.API_URL,
+  },
+}
+
+module.exports = nextConfig
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h3 id="app-router" class="mt-5">App Router (Next.js 13+)</h3>
+
+                        <h4>Root Layout</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
+// app/layout.tsx
+import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
+import './globals.css'
+
+const inter = Inter({ subsets: ['latin'] })
+
+export const metadata: Metadata = {
+  title: 'My Next.js App',
+  description: 'Generated by create next app',
+}
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <html lang="en">
+      <body className={inter.className}>
+        <header>
+          <nav>
+            <h1>My App</h1>
+          </nav>
+        </header>
+        {children}
+        <footer>
+          <p>© 2023 My App</p>
+        </footer>
+      </body>
+    </html>
+  )
+}
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Page Component</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
+// app/page.tsx
+import Link from 'next/link'
+
+export default function Home() {
+  return (
+    <main>
+      <h1>Welcome to Next.js</h1>
+      <p>This is the home page.</p>
+      <Link href="/about">Go to About</Link>
+    </main>
+  )
+}
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Nested Routes</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
+// app/blog/[slug]/page.tsx
+import { notFound } from 'next/navigation'
+
+interface PageProps {
+  params: {
+    slug: string
+  }
+}
+
+export default function BlogPost({ params }: PageProps) {
+  const { slug } = params
+
+  // Fetch blog post data
+  const post = getBlogPost(slug)
+
+  if (!post) {
+    notFound()
+  }
+
+  return (
+    <article>
+      <h1>{post.title}</h1>
+      <p>{post.content}</p>
+    </article>
+  )
+}
+
+export async function generateStaticParams() {
+  const posts = await getAllBlogPosts()
+
+  return posts.map((post) => ({
+    slug: post.slug,
+  }))
+}
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h3 id="pages-router" class="mt-5">Pages Router (Legacy)</h3>
+
+                        <h4>Custom App</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
+// pages/_app.tsx
+import type { AppProps } from 'next/app'
+import '../styles/globals.css'
+
+export default function App({ Component, pageProps }: AppProps) {
+  return <Component {...pageProps} />
+}
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Custom Document</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
+// pages/_document.tsx
+import { Html, Head, Main, NextScript } from 'next/document'
+
+export default function Document() {
+  return (
+    <Html lang="en">
+      <Head />
+      <body>
+        <Main />
+        <NextScript />
+      </body>
+    </Html>
+  )
+}
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Page Component</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
+// pages/index.tsx
+import type { NextPage } from 'next'
+import Link from 'next/link'
+
+const Home: NextPage = () => {
+  return (
+    <div>
+      <h1>Welcome to Next.js</h1>
+      <Link href="/about">
+        <a>About</a>
+      </Link>
+    </div>
+  )
+}
+
+export default Home
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h3 id="api-routes" class="mt-5">API Routes</h3>
+
+                        <h4>App Router API Route</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
+// app/api/users/route.ts
+import { NextRequest, NextResponse } from 'next/server'
+
+export async function GET(request: NextRequest) {
+  const users = [
+    { id: 1, name: 'John Doe' },
+    { id: 2, name: 'Jane Doe' },
+  ]
+
+  return NextResponse.json(users)
+}
+
+export async function POST(request: NextRequest) {
+  const body = await request.json()
+  const newUser = { id: Date.now(), ...body }
+
+  // Save to database
+  // await saveUser(newUser)
+
+  return NextResponse.json(newUser, { status: 201 })
+}
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Pages Router API Route</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
+// pages/api/users.ts
+import type { NextApiRequest, NextApiResponse } from 'next'
+
+type User = {
+  id: number
+  name: string
+}
+
+export default function handler(
+  req: NextApiRequest,
+  res: NextApiResponse<User[] | User>
+) {
+  if (req.method === 'GET') {
+    const users: User[] = [
+      { id: 1, name: 'John Doe' },
+      { id: 2, name: 'Jane Doe' },
+    ]
+    res.status(200).json(users)
+  } else if (req.method === 'POST') {
+    const newUser: User = { id: Date.now(), name: req.body.name }
+    res.status(201).json(newUser)
+  } else {
+    res.setHeader('Allow', ['GET', 'POST'])
+    res.status(405).end(`Method ${req.method} Not Allowed`)
+  }
+}
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h3 id="components" class="mt-5">Components and Styling</h3>
+
+                        <h4>React Components</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
+// components/Button.tsx
+import { ButtonHTMLAttributes } from 'react'
+
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: 'primary' | 'secondary'
+  size?: 'sm' | 'md' | 'lg'
+}
+
+export default function Button({
+  variant = 'primary',
+  size = 'md',
+  children,
+  className = '',
+  ...props
+}: ButtonProps) {
+  const baseClasses = 'rounded font-medium transition-colors'
+  const variantClasses = {
+    primary: 'bg-blue-500 text-white hover:bg-blue-600',
+    secondary: 'bg-gray-200 text-gray-800 hover:bg-gray-300',
+  }
+  const sizeClasses = {
+    sm: 'px-3 py-1 text-sm',
+    md: 'px-4 py-2',
+    lg: 'px-6 py-3 text-lg',
+  }
+
+  return (
+    <button
+      className={`${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${className}`}
+      {...props}
+    >
+      {children}
+    </button>
+  )
+}
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>CSS Modules</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-css">{% raw %}
+/* styles/Home.module.css */
+.container {
+  padding: 0 2rem;
+}
+
+.main {
+  min-height: 100vh;
+  padding: 4rem 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.title {
+  margin: 0;
+  line-height: 1.15;
+  font-size: 4rem;
+  text-align: center;
+}
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Tailwind CSS</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
+# Install Tailwind CSS
+npm install -D tailwindcss postcss autoprefixer
+npx tailwindcss init -p
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <pre><button class="copy-button">Copy</button><code class="language-javascript">{% raw %}
+// tailwind.config.js
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    './pages/**/*.{js,ts,jsx,tsx}',
+    './components/**/*.{js,ts,jsx,tsx}',
+    './app/**/*.{js,ts,jsx,tsx}',
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h3 id="data-fetching" class="mt-5">Data Fetching</h3>
+
+                        <h4>Server Components (App Router)</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
+// app/users/page.tsx
+async function getUsers() {
+  const res = await fetch('https://api.example.com/users')
+  if (!res.ok) {
+    throw new Error('Failed to fetch users')
+  }
+  return res.json()
+}
+
+export default async function UsersPage() {
+  const users = await getUsers()
+
+  return (
+    <div>
+      <h1>Users</h1>
+      <ul>
+        {users.map((user) => (
+          <li key={user.id}>{user.name}</li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Client Components</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
+// components/UserList.tsx
+'use client'
+
+import { useState, useEffect } from 'react'
+
+export default function UserList() {
+  const [users, setUsers] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    async function fetchUsers() {
+      try {
+        const res = await fetch('/api/users')
+        const data = await res.json()
+        setUsers(data)
+      } catch (error) {
+        console.error('Failed to fetch users:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchUsers()
+  }, [])
+
+  if (loading) return <div>Loading...</div>
+
+  return (
+    <ul>
+      {users.map((user) => (
+        <li key={user.id}>{user.name}</li>
+      ))}
+    </ul>
+  )
+}
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>SWR for Data Fetching</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
+# Install SWR
+npm install swr
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
+// components/UserList.tsx
+'use client'
+
+import useSWR from 'swr'
+
+const fetcher = (url: string) => fetch(url).then((res) => res.json())
+
+export default function UserList() {
+  const { data, error, isLoading } = useSWR('/api/users', fetcher)
+
+  if (error) return <div>Failed to load</div>
+  if (isLoading) return <div>Loading...</div>
+
+  return (
+    <ul>
+      {data.map((user) => (
+        <li key={user.id}>{user.name}</li>
+      ))}
+    </ul>
+  )
+}
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h3 id="deployment" class="mt-5">Deployment</h3>
+
+                        <h4>Vercel Deployment</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
+# Install Vercel CLI
+npm install -g vercel
+
+# Deploy
+vercel
+
+# For production deployment
+vercel --prod
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Build Configuration</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-javascript">{% raw %}
+// vercel.json
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": ".next",
+  "framework": "nextjs",
+  "regions": ["iad1"],
+  "env": {
+    "NODE_ENV": "production"
+  }
+}
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Environment Variables</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
+# .env.local
+NEXT_PUBLIC_API_URL=https://api.example.com
+DATABASE_URL=postgresql://...
+SECRET_KEY=your-secret-key
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h3 id="optimization" class="mt-5">Performance Optimization</h3>
+
+                        <h4>Image Optimization</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
+// components/OptimizedImage.tsx
+import Image from 'next/image'
+
+export default function OptimizedImage() {
+  return (
+    <Image
+      src="/hero.jpg"
+      alt="Hero image"
+      width={800}
+      height={600}
+      priority
+      placeholder="blur"
+      blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQ..."
+    />
+  )
+}
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Code Splitting</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
+// components/LazyComponent.tsx
+import dynamic from 'next/dynamic'
+
+const LazyComponent = dynamic(() => import('./HeavyComponent'), {
+  loading: () => <div>Loading...</div>,
+  ssr: false,
+})
+
+export default function Page() {
+  return (
+    <div>
+      <LazyComponent />
+    </div>
+  )
+}
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Analytics and Monitoring</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
+// app/layout.tsx
+import { Analytics } from '@vercel/analytics/react'
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <html lang="en">
+      <body>
+        {children}
+        <Analytics />
+      </body>
+    </html>
+  )
+}
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        document.getElementById('search-input').addEventListener('input', function() {
+            const query = this.value.toLowerCase();
+            const content = document.getElementById('content');
+            const elements = content.querySelectorAll('h2, h3, h4, p, li, pre, code');
+            
+            elements.forEach(element => {
+                const text = element.textContent.toLowerCase();
+                if (query === '' || text.includes(query)) {
+                    element.style.display = '';
+                } else {
+                    element.style.display = 'none';
+                }
+            });
+        });
+        
+        const copyButtons = document.querySelectorAll('.copy-button');
+        copyButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const code = this.parentNode.querySelector('code').textContent;
+                navigator.clipboard.writeText(code);
+                this.textContent = 'Copied!';
+                setTimeout(() => {
+                    this.textContent = 'Copy';
+                }, 2000);
+            });
+        });
+    </script>
+{% endblock %}

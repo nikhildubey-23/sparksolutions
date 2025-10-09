@@ -16,12 +16,12 @@
                     {'name': 'Suryakant Jesawal', 'role': 'Offline Marketing', 'quote': 'Connecting with people and building relationships.', 'image': 'suryakant.jpeg'},
                     {'name': 'Himanchal Das', 'role': 'Digital Marketing', 'quote': 'Driving growth through digital strategies.', 'image': 'himanchal.jpeg'}
                 ] %}
-                <div class="col-12">
-                    <div class="d-flex align-items-center p-3 bg-white rounded shadow-sm team-card" style="transition: box-shadow 0.3s ease;">
-                        <div style="flex: 0 0 450px; height: 450px; background: #f0f0f0; display: flex; justify-content: center; align-items: center; border-radius: 0.375rem; overflow: hidden; margin-right: 1.5rem;">
-                            <img src="{{ url_for('static', filename='images/' + member.image) }}" alt="{{ member.name }}" style="max-height: 100%; max-width: 100%; object-fit: contain; filter: brightness(0.85); transition: filter 0.3s ease;">
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="d-flex flex-column flex-md-row align-items-center p-3 bg-white rounded shadow-sm team-card" style="transition: box-shadow 0.3s ease;">
+                        <div style="width: 100%; height: 250px; background: #f0f0f0; display: flex; justify-content: center; align-items: center; border-radius: 0.375rem; overflow: hidden; margin-bottom: 1rem; margin-right: 0;">
+                            <img src="{{ url_for('static', filename='images/' + member.image) }}" alt="{{ member.name }}" style="width: 100%; height: 100%; object-fit: contain; filter: brightness(0.85); transition: filter 0.3s ease;">
                         </div>
-                        <div>
+                        <div class="text-center text-md-start">
                             <h5 class="fw-bold mb-1">{{ member.name }}</h5>
                             <h6 class="text-muted fst-italic mb-2">{{ member.role }}</h6>
                             <p class="fst-italic mb-0">"{{ member.quote }}"</p>

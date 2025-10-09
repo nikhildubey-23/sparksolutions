@@ -21,8 +21,8 @@ app.secret_key = os.getenv("FLASK_SECRET_KEY", "supersecretkey")
 CORS(app)
 
 # Email setup
-EMAIL_USER = os.getenv("EMAIL_USER")
-EMAIL_APP_PASSWORD = os.getenv("EMAIL_APP_PASSWORD")
+EMAIL_USER = "sparksolutionfreelancing@gmail.com"
+EMAIL_APP_PASSWORD = "xmng fmym qfuq oswj"
 
 def send_email(subject, body, to_email):
     msg = MIMEMultipart()
@@ -118,6 +118,10 @@ def css():
 def flask():
     return render_template('flask.html')
 
+@app.route('/nextjs')
+def nextjs():
+    return render_template('nextjs.html')
+
 @app.route('/react')
 def react():
     return render_template('react.html')
@@ -125,6 +129,11 @@ def react():
 @app.route('/js')
 def js():
     return render_template('js.html')
+
+@app.route('/django')
+def django():
+    return render_template('django.html')
+
 
 @app.route('/node')
 def node():
@@ -137,6 +146,53 @@ def dap():
 @app.route('/htmltest')
 def htmltest():
     return render_template('htmltest.html')
+
+@app.route('/form')
+def form():
+    return render_template('form.html')
+
+@app.route('/enroll', methods=['POST'])
+def enroll():
+    name = request.form.get('name')
+    phone = request.form.get('phone')
+    email = request.form.get('email')
+    course = request.form.get('course')
+    terms = request.form.get('terms')
+
+    if not all([name, phone, email, course, terms]):
+        flash("All fields are required!", "error")
+        return redirect(url_for('form'))
+
+    # Course details mapping
+    courses = {
+        'python-basics': {'name': 'Python Basics with OOPs', 'price': '₹200', 'ref': 'PYB001'},
+        'data-analysis': {'name': 'Data Analysis', 'price': '₹250', 'ref': 'DAP001'},
+        'html-css-js-react': {'name': 'HTML, CSS, JS & React', 'price': '₹500', 'ref': 'HCR001'},
+        'javascript-dsa': {'name': 'JavaScript with DSA', 'price': '₹350', 'ref': 'JSD001'},
+        'nodejs': {'name': 'Node.js', 'price': '₹250', 'ref': 'NOD001'},
+        'flask': {'name': 'Flask', 'price': '₹250', 'ref': 'FLA001'},
+        'django': {'name': 'Django', 'price': '₹400', 'ref': 'DJG001'},
+        'nextjs': {'name': 'Next.js', 'price': '₹500', 'ref': 'NXJ001'},
+        'video-editing': {'name': 'Video Editing', 'price': '₹600', 'ref': 'VED001'},
+    }
+
+    course_info = courses.get(course, {'name': 'Unknown', 'price': 'N/A', 'ref': 'N/A'})
+
+    # Send email notification
+    email_body = f"""
+    New course enrollment:
+
+    Name: {name}
+    Phone: {phone}
+    Email: {email}
+    Course: {course_info['name']}
+    Course Reference: {course_info['ref']}
+    Price: {course_info['price']}
+    """
+    send_email(f"New Course Enrollment: {course_info['name']}", email_body, EMAIL_USER)
+
+    flash("Enrollment successful! We will contact you soon.", "success")
+    return render_template('success.html')
 
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():

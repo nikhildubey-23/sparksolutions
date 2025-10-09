@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+
+{% block title %}Course Enrollment - Spark Solutions{% endblock %}
+
+{% block content %}
+    <!-- Course Enrollment Form -->
+    <section class="enrollment-form py-5" style="background: #f8f9fa;">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="card shadow">
+                        <div class="card-header bg-primary text-white">
+                            <h3 class="card-title mb-0">Course Enrollment Form</h3>
+                        </div>
+                        <div class="card-body">
+                            <form id="enrollmentForm" method="POST" action="/enroll">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="name" class="form-label">Full Name *</label>
+                                        <input type="text" class="form-control" id="name" name="name" required>
+                                        <div class="invalid-feedback">
+                                            Please provide your full name.
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="phone" class="form-label">Phone Number *</label>
+                                        <input type="tel" class="form-control" id="phone" name="phone" pattern="[0-9]{10}" required>
+                                        <div class="invalid-feedback">
+                                            Please provide a valid 10-digit phone number.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email Address *</label>
+                                    <input type="email" class="form-control" id="email" name="email" required>
+                                    <div class="invalid-feedback">
+                                        Please provide a valid email address.
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="course" class="form-label">Select Course *</label>
+                                    <select class="form-select" id="course" name="course" required>
+                                        <option value="">Choose a course...</option>
+                                        <option value="python-basics" data-price="200" data-ref="PYB001">Python Basics with OOPs - ₹200</option>
+                                        <option value="data-analysis" data-price="250" data-ref="DAP001">Data Analysis - ₹250</option>
+                                        <option value="html-css-js-react" data-price="500" data-ref="HCR001">HTML, CSS, JS & React - ₹500</option>
+                                        <option value="javascript-dsa" data-price="350" data-ref="JSD001">JavaScript with DSA - ₹350</option>
+                                        <option value="nodejs" data-price="250" data-ref="NOD001">Node.js - ₹250</option>
+                                        <option value="flask" data-price="250" data-ref="FLA001">Flask - ₹250</option>
+                                        <option value="django" data-price="400" data-ref="DJG001">Django - ₹400</option>
+                                        <option value="nextjs" data-price="500" data-ref="NXJ001">Next.js - ₹500</option>
+                                        <option value="video-editing" data-price="600" data-ref="VED001">Video Editing - ₹600</option>
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        Please select a course.
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="card bg-light">
+                                        <div class="card-body">
+                                            <h6 class="card-title">Course Details</h6>
+                                            <p class="mb-1"><strong>Selected Course:</strong> <span id="selectedCourse">None</span></p>
+                                            <p class="mb-1"><strong>Course Reference:</strong> <span id="courseRef">N/A</span></p>
+                                            <p class="mb-0"><strong>Price:</strong> ₹<span id="coursePrice">0</span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-3 form-check">
+                                    <input type="checkbox" class="form-check-input" id="terms" name="terms" required>
+                                    <label class="form-check-label" for="terms">
+                                        I agree to the terms and conditions *
+                                    </label>
+                                    <div class="invalid-feedback">
+                                        You must agree to the terms and conditions.
+                                    </div>
+                                </div>
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-primary btn-lg">Enroll Now</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Update course details when selection changes
+        document.getElementById('course').addEventListener('change', function() {
+            const selectedOption = this.options[this.selectedIndex];
+            const courseName = selectedOption.text.split(' - ')[0] || 'None';
+            const price = selectedOption.getAttribute('data-price') || '0';
+            const ref = selectedOption.getAttribute('data-ref') || 'N/A';
+
+            document.getElementById('selectedCourse').textContent = courseName;
+            document.getElementById('coursePrice').textContent = price;
+            document.getElementById('courseRef').textContent = ref;
+        });
+
+        // Form validation
+        (function () {
+            'use strict'
+
+            const forms = document.querySelectorAll('.needs-validation')
+
+            Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
+
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+        })()
+
+        // Phone number validation
+        document.getElementById('phone').addEventListener('input', function() {
+            this.value = this.value.replace(/\D/g, '').slice(0, 10);
+        });
+    </script>
+{% endblock %}

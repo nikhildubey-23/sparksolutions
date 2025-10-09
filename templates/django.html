@@ -1,0 +1,264 @@
+{% extends 'base.html' %}
+
+{% block title %}Django Docs - Spark Solutions{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.3/purify.min.js"></script>
+    <script>
+        hljs.highlightAll();
+    </script>
+{% endblock %}
+
+{% block content %}
+    <!-- Django Docs Page -->
+    <section class="docs-page py-5">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- Documentation Content -->
+                <div class="col-md-12">
+                    <!-- Search Box -->
+                    <div class="search-container mb-4">
+                        <input type="text" id="search-input" class="form-control" placeholder="Search documentation...">
+                    </div>
+                    <div id="content">
+                        <h2 class="mb-4">Django Documentation</h2>
+                        <p>Welcome to the comprehensive Django documentation. Here, you'll find detailed guides and tutorials for building web applications with Django.</p>
+
+                        <h3 id="introduction" class="mt-5">Introduction to Django</h3>
+                        <p>Django is a high-level Python web framework that encourages rapid development and clean, pragmatic design. It follows the Model-View-Template (MVT) architectural pattern and includes many built-in features for common web development tasks.</p>
+                        <p>Key features of Django:</p>
+                        <ul>
+                            <li><strong>Batteries Included</strong> - Authentication, admin interface, forms, ORM, and more</li>
+                            <li><strong>MTV Architecture</strong> - Clear separation of concerns</li>
+                            <li><strong>ORM</strong> - Powerful Object-Relational Mapping</li>
+                            <li><strong>Admin Interface</strong> - Automatic admin panel generation</li>
+                            <li><strong>Security</strong> - Built-in protection against common vulnerabilities</li>
+                            <li><strong>Scalability</strong> - Designed to handle high-traffic sites</li>
+                            <li><strong>Community</strong> - Large ecosystem of packages and apps</li>
+                        </ul>
+
+                        <h3 id="setup" class="mt-5">Setup and Installation</h3>
+
+                        <h4>Virtual Environment</h4>
+                        <p>Always use a virtual environment for Django projects:</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
+# Create virtual environment
+python -m venv venv
+
+# Activate on Windows
+venv\Scripts\activate
+
+# Activate on macOS/Linux
+source venv/bin/activate
+
+# Deactivate
+deactivate
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Install Django</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
+# Install Django
+pip install Django
+
+# Install additional useful packages
+pip install djangorestframework django-cors python-decouple django-environ
+pip install pillow celery redis psycopg2-binary
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Create Django Project</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
+# Create new Django project
+django-admin startproject myproject
+
+# Create Django app
+cd myproject
+python manage.py startapp myapp
+
+# Run migrations
+python manage.py migrate
+
+# Create superuser
+python manage.py createsuperuser
+
+# Run development server
+python manage.py runserver
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Verify Installation</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+# test_django.py
+import django
+print(django.get_version())
+print(django.VERSION)
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h3 id="project-structure" class="mt-5">Django Project Structure</h3>
+
+                        <h4>Standard Django Structure</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
+myproject/
+├── manage.py
+├── myproject/
+│   ├── __init__.py
+│   ├── settings.py
+│   ├── urls.py
+│   ├── wsgi.py
+│   └── asgi.py
+├── myapp/
+│   ├── __init__.py
+│   ├── admin.py
+│   ├── apps.py
+│   ├── models.py
+│   ├── tests.py
+│   ├── urls.py
+│   ├── views.py
+│   ├── migrations/
+│   └── templates/
+│       └── myapp/
+├── templates/
+├── static/
+│   ├── css/
+│   ├── js/
+│   └── images/
+└── requirements.txt
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Settings Configuration</h4>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+# myproject/settings.py
+import os
+from pathlib import Path
+
+# Build paths
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Security settings
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-key')
+DEBUG = os.environ.get('DEBUG', 'True')
+
+ALLOWED_HOSTS = ['localhost', '127.0.0.0', '[::1]']
+
+# Application definition
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'myapp',
+]
+
+# Middleware
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.ClickjackingMiddleware',
+]
+
+# Database
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+
+# Internationalization
+LANGUAGE_CODE = 'en-us'
+TIME_ZONE = 'UTC'
+USE_I18N = True
+
+# Static files
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# Media files
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
+# Templates
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [BASE_DIR / 'templates'],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+
+# Logging
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': BASE_DIR / 'logs/django.log',
+        },
+        'console': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+        },
+    },
+}
+
+# Environment-specific settings
+if os.environ.get('DJANGO_ENV') == 'production':
+    DEBUG = False
+    ALLOWED_HOSTS = ['yourdomain.com']
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_BROWSER_XSS_FILTER = True
+    X_FRAME_OPTIONS = 'DENY'
+{% endraw %}</code><button class="copy-button">Copy</button></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        document.getElementById('search-input').addEventListener('input', function() {
+            const query = this.value.toLowerCase();
+            const content = document.getElementById('content');
+            const elements = content.querySelectorAll('h2, h3, h4, p, li, pre, code');
+            
+            elements.forEach(element => {
+                const text = element.textContent.toLowerCase();
+                if (query === '' || text.includes(query)) {
+                    element.style.display = '';
+                } else {
+                    element.style.display = 'none';
+                }
+            });
+        });
+        
+        const copyButtons = document.querySelectorAll('.copy-button');
+        copyButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const code = this.parentNode.querySelector('code').textContent;
+                navigator.clipboard.writeText(code);
+                this.textContent = 'Copied!';
+                setTimeout(() => {
+                    this.textContent = 'Copy';
+                }, 2000);
+            });
+        });
+    </script>
+{% endblock %}
