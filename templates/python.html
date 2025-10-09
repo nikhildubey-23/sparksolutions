@@ -24,139 +24,507 @@
                     </div>
                     <div id="content">
                         <h2 class="mb-4">Python Documentation</h2>
-                        <p>Welcome to the Python programming documentation. Here, you'll find comprehensive guides and tutorials for Python programming.</p>
+                        <p>Welcome to the comprehensive Python programming documentation. Here, you'll find detailed guides and tutorials covering Python from basics to advanced concepts.</p>
 
                         <h3 id="python" class="mt-5">Python Programming</h3>
-                        <p>This section provides a comprehensive guide to Python programming, from basics to advanced concepts.</p>
+                        <p>This section provides a comprehensive guide to Python programming, from fundamentals to advanced topics.</p>
 
                         <h4>What is Python and Its Use</h4>
-                        <p>Python is a versatile, high-level programming language known for its simplicity, readability, and extensive libraries. It's widely used in web development, data science, AI, automation, and more.</p>
+                        <p>Python is a high-level, interpreted programming language created by Guido van Rossum and first released in 1991. It emphasizes code readability with its notable use of significant whitespace. Its language constructs and object-oriented approach aim to help programmers write clear, logical code for small and large-scale projects.</p>
+                        <p>Python is dynamically typed and garbage-collected. It supports multiple programming paradigms, including structured (particularly, procedural), object-oriented, and functional programming. Python is often described as a "batteries included" language due to its comprehensive standard library.</p>
+                        <p>Python is widely used in:</p>
+                        <ul>
+                            <li>Web Development (Django, Flask, FastAPI)</li>
+                            <li>Data Science and Machine Learning (NumPy, Pandas, TensorFlow, PyTorch)</li>
+                            <li>Automation and Scripting</li>
+                            <li>Desktop GUI Applications (Tkinter, PyQt, Kivy)</li>
+                            <li>Scientific Computing</li>
+                            <li>Game Development</li>
+                            <li>Network Programming</li>
+                            <li>DevOps and System Administration</li>
+                        </ul>
 
                         <h4>Installation</h4>
-                        <p>To get started, download and install Python from the official website: <a href="https://www.python.org/downloads/" target="_blank">python.org</a>. Choose the latest stable version for your operating system.</p>
+                        <p>To get started with Python, download and install it from the official website: <a href="https://www.python.org/downloads/" target="_blank">python.org</a>. Choose the latest stable version for your operating system.</p>
+                        <p>During installation on Windows, make sure to check the "Add Python to PATH" option. On macOS and Linux, Python is often pre-installed, but you might want to install a newer version.</p>
+                        <p>After installation, verify it by opening a terminal or command prompt and typing:</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-bash">
+python --version
+# or
+python3 --version
+</code><button class="copy-button">Copy</button></pre>
 
-                        <h4>Print Function</h4>
+                        <h4>Python Basics</h4>
+                        <p>Let's start with the fundamentals of Python programming.</p>
+
+                        <h5>Print Function</h5>
                         <p>The print function is used to output text to the console. Here's a simple "Hello, World!" program:</p>
                         <pre><button class="copy-button">Copy</button><code class="language-python">
 print("Hello, World!")
+
+# You can print multiple items
+print("Hello", "World", sep=", ", end="!\n")
+
+# Formatted strings (f-strings)
+name = "Alice"
+age = 30
+print(f"My name is {name} and I am {age} years old.")
+
+# Using format method
+print("My name is {} and I am {} years old.".format(name, age))
+
+# Using % operator (older method)
+print("My name is %s and I am %d years old." % (name, age))
 </code><button class="copy-button">Copy</button></pre>
 
-                        <h4>Variables</h4>
-                        <p>Variables store data values. You can assign values to variables without declaring their type:</p>
+                        <h5>Variables</h5>
+                        <p>Variables store data values. In Python, you don't need to declare variables with types:</p>
                         <pre><button class="copy-button">Copy</button><code class="language-python">
+# Variable assignment
 name = "Alice"
 age = 30
 height = 5.7
 is_student = True
+
+# Multiple assignment
+x, y, z = 1, 2, 3
+print(x, y, z)  # 1 2 3
+
+# Swapping variables
+a, b = 5, 10
+a, b = b, a
+print(a, b)  # 10 5
+
+# Variable naming rules
+# Can contain letters, numbers, and underscores
+# Cannot start with a number
+# Case sensitive
+my_variable = 5
+My_Variable = 10  # Different from my_variable
 </code><button class="copy-button">Copy</button></pre>
 
-                        <h4>Data Types</h4>
-                        <p>Python supports various data types:</p>
+                        <h5>Data Types</h5>
+                        <p>Python supports various data types. Let's explore them in detail:</p>
                         <pre><button class="copy-button">Copy</button><code class="language-python">
+# Basic data types
+name = "Alice"        # str (string)
+age = 30              # int (integer)
+height = 5.7          # float (floating point)
+is_student = True     # bool (boolean)
+nothing = None        # NoneType (represents absence of value)
+
+# Check types
 print(type(name))      # <class 'str'>
 print(type(age))       # <class 'int'>
 print(type(height))    # <class 'float'>
 print(type(is_student)) # <class 'bool'>
+print(type(nothing))   # <class 'NoneType'>
+
+# Type conversion
+num_str = "123"
+num_int = int(num_str)  # Convert string to integer
+num_float = float(num_str)  # Convert string to float
+print(num_int, num_float)  # 123 123.0
+
+# Dynamic typing
+x = 5      # x is an integer
+x = "hello"  # Now x is a string
+x = [1, 2, 3]  # Now x is a list
 </code><button class="copy-button">Copy</button></pre>
 
-                        <h4>Operators</h4>
+                        <h5>Operators</h5>
                         <p>Python supports various operators for arithmetic, comparison, logical, and more:</p>
                         <pre><button class="copy-button">Copy</button><code class="language-python">
 # Arithmetic operators
 a = 10
 b = 3
-print(a + b)  # 13
-print(a - b)  # 7
-print(a * b)  # 30
-print(a / b)  # 3.333...
+print(a + b)  # 13 (addition)
+print(a - b)  # 7 (subtraction)
+print(a * b)  # 30 (multiplication)
+print(a / b)  # 3.333... (division)
 print(a // b) # 3 (floor division)
-print(a % b)  # 1 (modulus)
+print(a % b)  # 1 (modulus/remainder)
 print(a ** b) # 1000 (exponentiation)
 
 # Comparison operators
-print(a > b)  # True
-print(a == b) # False
-print(a != b) # True
+print(a > b)  # True (greater than)
+print(a < b)  # False (less than)
+print(a >= b) # True (greater than or equal to)
+print(a <= b) # False (less than or equal to)
+print(a == b) # False (equal to)
+print(a != b) # True (not equal to)
 
 # Logical operators
 x = True
 y = False
-print(x and y) # False
-print(x or y)  # True
-print(not x)   # False
+print(x and y) # False (logical AND)
+print(x or y)  # True (logical OR)
+print(not x)   # False (logical NOT)
+
+# Bitwise operators
+a = 5  # Binary: 0101
+b = 3  # Binary: 0011
+print(a & b)  # 1 (bitwise AND)
+print(a | b)  # 7 (bitwise OR)
+print(a ^ b)  # 6 (bitwise XOR)
+print(~a)     # -6 (bitwise NOT)
+print(a << 1) # 10 (left shift)
+print(a >> 1) # 2 (right shift)
+
+# Assignment operators
+x = 5
+x += 3  # x = x + 3 (8)
+x -= 2  # x = x - 2 (6)
+x *= 4  # x = x * 4 (24)
+x /= 3  # x = x / 3 (8.0)
+x //= 2 # x = x // 2 (4.0)
+x %= 3  # x = x % 3 (1.0)
+x **= 2 # x = x ** 2 (1.0)
+
+# Identity operators
+a = [1, 2, 3]
+b = [1, 2, 3]
+c = a
+print(a is b)  # False (different objects)
+print(a is c)  # True (same object)
+print(a is not b)  # True
+
+# Membership operators
+print(2 in a)  # True
+print(4 not in a)  # True
 </code><button class="copy-button">Copy</button></pre>
 
-                        <h4>Conditions</h4>
+                        <h5>Conditions</h5>
                         <p>Use if-else statements to control the flow of your program:</p>
                         <pre><button class="copy-button">Copy</button><code class="language-python">
+age = 20
+
+# Simple if statement
+if age >= 18:
+    print("You are an adult.")
+
+# If-else statement
 if age >= 18:
     print("You are an adult.")
 else:
     print("You are a minor.")
+
+# If-elif-else statement
+score = 85
+if score >= 90:
+    grade = "A"
+elif score >= 80:
+    grade = "B"
+elif score >= 70:
+    grade = "C"
+elif score >= 60:
+    grade = "D"
+else:
+    grade = "F"
+print(f"Your grade is {grade}.")
+
+# Nested if statements
+age = 20
+has_license = True
+if age >= 18:
+    if has_license:
+        print("You can drive.")
+    else:
+        print("You need to get a license.")
+else:
+    print("You are too young to drive.")
+
+# Conditional expressions (ternary operator)
+message = "You can vote" if age >= 18 else "You cannot vote"
+print(message)
+
+# Multiple conditions with logical operators
+temperature = 25
+is_raining = False
+if temperature > 20 and not is_raining:
+    print("It's a nice day for a walk.")
 </code><button class="copy-button">Copy</button></pre>
 
-                        <h4>Loops</h4>
+                        <h5>Loops</h5>
                         <p>Loops allow you to repeat code execution:</p>
                         <pre><button class="copy-button">Copy</button><code class="language-python">
-# For loop
+# For loop with range
 for i in range(5):
     print(f"Count: {i}")
+
+# For loop with range(start, stop, step)
+for i in range(2, 10, 2):
+    print(f"Even number: {i}")
+
+# For loop with a list
+fruits = ["apple", "banana", "cherry"]
+for fruit in fruits:
+    print(f"I like {fruit}")
+
+# For loop with enumerate (to get index and value)
+for index, fruit in enumerate(fruits):
+    print(f"{index + 1}. {fruit}")
+
+# For loop with dictionary
+person = {"name": "Alice", "age": 30, "city": "New York"}
+for key in person:
+    print(f"{key}: {person[key]}")
+
+# For loop with dictionary items
+for key, value in person.items():
+    print(f"{key}: {value}")
 
 # While loop
 count = 0
 while count < 3:
     print(f"While count: {count}")
     count += 1
+
+# Break and continue
+for i in range(10):
+    if i == 3:
+        continue  # Skip the rest of this iteration
+    if i == 7:
+        break  # Exit the loop
+    print(i)
+
+# Else clause with loops (executed if loop completes normally)
+for i in range(5):
+    print(i)
+else:
+    print("Loop completed without break")
+
+# Nested loops
+for i in range(3):
+    for j in range(3):
+        print(f"({i}, {j})")
 </code><button class="copy-button">Copy</button></pre>
 
-                        <h4>Lists</h4>
-                        <p>Lists are mutable sequences that can store multiple items:</p>
+                        <h4>Data Structures</h4>
+                        <p>Python provides several built-in data structures to organize and store data efficiently.</p>
+
+                        <h5>Lists</h5>
+                        <p>Lists are mutable sequences that can store multiple items of different types:</p>
                         <pre><button class="copy-button">Copy</button><code class="language-python">
+# Creating lists
+empty_list = []
+numbers = [1, 2, 3, 4, 5]
+mixed = [1, "hello", 3.14, True]
+nested = [[1, 2], [3, 4], [5, 6]]
+
+# List operations
 fruits = ["apple", "banana", "cherry"]
-fruits.append("orange")
-print(fruits[0])  # apple
-print(len(fruits))  # 4
+fruits.append("orange")  # Add to end
+fruits.insert(1, "grape")  # Insert at index
+fruits.extend(["mango", "kiwi"])  # Add multiple items
+print(fruits)  # ['apple', 'grape', 'banana', 'cherry', 'orange', 'mango', 'kiwi']
+
+# Accessing elements
+print(fruits[0])  # 'apple' (first element)
+print(fruits[-1])  # 'kiwi' (last element)
+print(fruits[2:5])  # ['banana', 'cherry', 'orange'] (slicing)
+
+# Modifying elements
+fruits[0] = "pear"
+print(fruits)
+
+# Removing elements
+fruits.remove("banana")  # Remove by value
+popped = fruits.pop()  # Remove and return last element
+removed = fruits.pop(1)  # Remove and return element at index
+print(fruits)
+
+# List methods
+numbers = [3, 1, 4, 1, 5, 9, 2, 6]
+numbers.sort()  # Sort in place
+print(numbers)  # [1, 1, 2, 3, 4, 5, 6, 9]
+
+numbers.reverse()  # Reverse in place
+print(numbers)  # [9, 6, 5, 4, 3, 2, 1, 1]
+
+print(numbers.count(1))  # 2 (count occurrences)
+print(numbers.index(5))  # 2 (find index of first occurrence)
+
+# List comprehension
+squares = [x**2 for x in range(10)]
+print(squares)  # [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
+
+# List comprehension with condition
+even_squares = [x**2 for x in range(10) if x % 2 == 0]
+print(even_squares)  # [0, 4, 16, 36, 64]
+
+# Nested list comprehension
+matrix = [[i*j for j in range(3)] for i in range(3)]
+print(matrix)  # [[0, 0, 0], [0, 1, 2], [0, 2, 4]]
 </code><button class="copy-button">Copy</button></pre>
 
-                        <h4>Dictionaries</h4>
-                        <p>Dictionaries store key-value pairs:</p>
+                        <h5>Dictionaries</h5>
+                        <p>Dictionaries store key-value pairs and are mutable:</p>
                         <pre><button class="copy-button">Copy</button><code class="language-python">
+# Creating dictionaries
+empty_dict = {}
 person = {"name": "Alice", "age": 30, "city": "New York"}
-print(person["name"])  # Alice
-person["job"] = "Engineer"
+person2 = dict(name="Bob", age=25, city="Los Angeles")
+
+# Accessing values
+print(person["name"])  # 'Alice'
+print(person.get("age"))  # 30
+print(person.get("country", "Unknown"))  # 'Unknown' (default value)
+
+# Modifying values
+person["age"] = 31
+person["job"] = "Engineer"  # Add new key-value pair
 print(person)
+
+# Dictionary methods
+print(person.keys())  # dict_keys(['name', 'age', 'city', 'job'])
+print(person.values())  # dict_values(['Alice', 31, 'New York', 'Engineer'])
+print(person.items())  # dict_items([('name', 'Alice'), ...])
+
+# Removing items
+removed_value = person.pop("job")  # Remove and return value
+del person["city"]  # Remove by key
+person.clear()  # Remove all items
+
+# Dictionary comprehension
+squares = {x: x**2 for x in range(5)}
+print(squares)  # {0: 0, 1: 1, 2: 4, 3: 9, 4: 16}
+
+# Merging dictionaries (Python 3.9+)
+dict1 = {"a": 1, "b": 2}
+dict2 = {"c": 3, "d": 4}
+merged = dict1 | dict2
+print(merged)  # {'a': 1, 'b': 2, 'c': 3, 'd': 4}
+
+# Iterating over dictionaries
+for key in person:
+    print(key, person[key])
+
+for key, value in person.items():
+    print(f"{key}: {value}")
+
+# Nested dictionaries
+employees = {
+    "emp1": {"name": "Alice", "dept": "HR", "salary": 50000},
+    "emp2": {"name": "Bob", "dept": "IT", "salary": 60000}
+}
+print(employees["emp1"]["name"])  # 'Alice'
 </code><button class="copy-button">Copy</button></pre>
 
-                        <h4>Sets</h4>
+                        <h5>Sets</h5>
                         <p>Sets are unordered collections of unique elements:</p>
                         <pre><button class="copy-button">Copy</button><code class="language-python">
-set1 = {1, 2, 3}
-set2 = {3, 4, 5}
-set1.add(4)
-union = set1 | set2
-intersection = set1 & set2
-print(union)        # {1, 2, 3, 4, 5}
-print(intersection) # {3, 4}
+# Creating sets
+empty_set = set()
+set1 = {1, 2, 3, 4, 5}
+set2 = {4, 5, 6, 7, 8}
+set3 = set([1, 2, 2, 3, 4])  # From list (duplicates removed)
+
+# Set operations
+set1.add(6)  # Add element
+set1.remove(1)  # Remove element (raises error if not found)
+set1.discard(2)  # Remove element (no error if not found)
+popped = set1.pop()  # Remove and return an arbitrary element
+
+# Set methods
+print(set1.union(set2))  # {3, 4, 5, 6, 7, 8}
+print(set1.intersection(set2))  # {4, 5, 6}
+print(set1.difference(set2))  # {3}
+print(set1.symmetric_difference(set2))  # {3, 7, 8}
+
+# Set operations with operators
+print(set1 | set2)  # Union
+print(set1 & set2)  # Intersection
+print(set1 - set2)  # Difference
+print(set1 ^ set2)  # Symmetric difference
+
+# Set methods for comparison
+print(set1.issubset(set2))  # False
+print(set1.issuperset(set2))  # False
+print(set1.isdisjoint(set2))  # False (they have common elements)
+
+# Frozen sets (immutable sets)
+frozen = frozenset([1, 2, 3])
+# frozen.add(4)  # Error: cannot add to frozen set
+
+# Set comprehension
+squares = {x**2 for x in range(5)}
+print(squares)  # {0, 1, 4, 9, 16}
 </code><button class="copy-button">Copy</button></pre>
 
-                        <h4>Tuples</h4>
+                        <h5>Tuples</h5>
                         <p>Tuples are immutable sequences:</p>
                         <pre><button class="copy-button">Copy</button><code class="language-python">
+# Creating tuples
+empty_tuple = ()
+single_element = (5,)  # Note the comma
 my_tuple = (1, 2, 3, 2, 4)
-index = my_tuple.index(2)  # 1
-count = my_tuple.count(2)  # 2
-print(index, count)
+another_tuple = 1, 2, 3  # Parentheses are optional
+
+# Accessing elements
+print(my_tuple[0])  # 1
+print(my_tuple[-1])  # 4
+print(my_tuple[1:3])  # (2, 3)
+
+# Tuple methods
+index = my_tuple.index(2)  # 1 (first occurrence)
+count = my_tuple.count(2)  # 2 (number of occurrences)
+
+# Tuple operations
+t1 = (1, 2, 3)
+t2 = (4, 5, 6)
+t3 = t1 + t2  # Concatenation
+t4 = t1 * 3  # Repetition
+
+# Tuple unpacking
+a, b, c = t1
+print(a, b, c)  # 1 2 3
+
+# Extended unpacking
+first, *middle, last = (1, 2, 3, 4, 5)
+print(first, middle, last)  # 1 [2, 3, 4] 5
+
+# Named tuples
+from collections import namedtuple
+Point = namedtuple('Point', ['x', 'y'])
+p = Point(10, 20)
+print(p.x, p.y)  # 10 20
+print(p[0], p[1])  # 10 20
+
+# Tuple comprehension (using generator expression with tuple())
+squares = tuple(x**2 for x in range(5))
+print(squares)  # (0, 1, 4, 9, 16)
 </code><button class="copy-button">Copy</button></pre>
 
-                        <h4>Strings</h4>
-                        <p>Strings are sequences of characters used to represent text in Python. They are immutable, meaning their values cannot be changed after creation. Strings can be enclosed in single quotes, double quotes, or triple quotes.</p>
+                        <h5>Strings</h5>
+                        <p>Strings are sequences of characters used to represent text in Python. They are immutable:</p>
                         <pre><button class="copy-button">Copy</button><code class="language-python">
-my_string = "Hello, World!"
+# Creating strings
+single_quotes = 'Hello, World!'
+double_quotes = "Hello, World!"
+triple_quotes = '''This is a
+multi-line string'''
+raw_string = r"This is a raw string\n"  # Backslashes are not escaped
 
+# String operations
+s1 = "Hello"
+s2 = "World"
+s3 = s1 + ", " + s2 + "!"  # Concatenation
+s4 = s1 * 3  # Repetition
+
+# Accessing characters
+text = "Python"
+print(text[0])  # 'P'
+print(text[-1])  # 'n'
+print(text[2:5])  # 'tho'
+
+# String methods
+my_string = "Hello, World!"
 upper = my_string.upper()      # "HELLO, WORLD!"
 lower = my_string.lower()      # "hello, world!"
 title = my_string.title()      # "Hello, World!"
 capitalized = my_string.capitalize()  # "Hello, world!"
+swapcase = my_string.swapcase()  # "hELLO, wORLD!"
 
 split_str = my_string.split()  # Split by space: ['Hello,', 'World!']
 joined = " ".join(['Hello', 'World'])  # "Hello World"
@@ -166,9 +534,43 @@ starts_with = my_string.startswith('Hello')  # True
 ends_with = my_string.endswith('!')  # True
 
 stripped = "  hello  ".strip()  # "hello" (remove whitespace)
-find_index = my_string.find('World')  # 7
-is_alpha = "abc".isalpha()  # True
-is_digit = "123".isdigit()  # True
+lstripped = "  hello  ".lstrip()  # "hello "
+rstripped = "  hello  ".rstrip()  # "  hello"
+
+find_index = my_string.find('World')  # 7 (first occurrence)
+rfind_index = my_string.rfind('l')  # 9 (last occurrence)
+count = my_string.count('l')  # 3 (number of occurrences)
+
+is_alpha = "abc".isalpha()  # True (all alphabetic)
+is_digit = "123".isdigit()  # True (all digits)
+is_alnum = "abc123".isalnum()  # True (all alphanumeric)
+is_lower = "hello".islower()  # True (all lowercase)
+is_upper = "HELLO".isupper()  # True (all uppercase)
+is_title = "Hello World".istitle()  # True (title case)
+is_space = "   ".isspace()  # True (all whitespace)
+
+# String formatting
+name = "Alice"
+age = 30
+# f-strings (Python 3.6+)
+print(f"My name is {name} and I am {age} years old.")
+# format method
+print("My name is {} and I am {} years old.".format(name, age))
+# % operator (older method)
+print("My name is %s and I am %d years old." % (name, age))
+
+# Advanced formatting
+pi = 3.14159265359
+print(f"Pi is approximately {pi:.2f}")  # Pi is approximately 3.14
+print(f"{name:>10}")  # Right-aligned in 10 characters
+print(f"{name:<10}")  # Left-aligned in 10 characters
+print(f"{name:^10}")  # Centered in 10 characters
+
+# String templates
+from string import Template
+template = Template('Hello, $name!')
+message = template.substitute(name=name)
+print(message)  # Hello, Alice!
 </code><button class="copy-button">Copy</button></pre>
 
                         <h4>Functions</h4>
@@ -182,167 +584,86 @@ def greet():
 def greet_person(name):
     return f"Hello, {name}!"
 
+# Function with multiple parameters
 def add_numbers(a, b):
     return a + b
 
+# Function with default parameters
+def greet_with_title(name, title="Mr./Ms."):
+    return f"Hello, {title} {name}!"
+
+# Function with variable number of arguments
+def sum_all(*args):
+    total = 0
+    for num in args:
+        total += num
+    return total
+
+# Function with keyword arguments
+def print_person_info(**kwargs):
+    for key, value in kwargs.items():
+        print(f"{key}: {value}")
+
+# Function with both positional and keyword arguments
+def complex_function(a, b, *args, **kwargs):
+    print(f"a: {a}, b: {b}")
+    print(f"args: {args}")
+    print(f"kwargs: {kwargs}")
+
+# Function with return statement
+def divide(a, b):
+    if b == 0:
+        return "Cannot divide by zero!"
+    return a / b
+
+# Function returning multiple values
+def get_name_and_age():
+    return "Alice", 30
+
+# Calling functions
 print(greet())
 print(greet_person("Alice"))
 print(add_numbers(5, 3))
-</code><button class="copy-button">Copy</button></pre>
+print(greet_with_title("Smith"))
+print(greet_with_title("Johnson", "Dr."))
+print(sum_all(1, 2, 3, 4, 5))
+print_person_info(name="Alice", age=30, city="New York")
+complex_function(1, 2, 3, 4, 5, name="Alice", age=30)
+result = divide(10, 2)
+print(result)
+name, age = get_name_and_age()
+print(name, age)  # Alice 30
 
-                        <h4>OOP Concepts</h4>
-                        <p>Python supports object-oriented programming (OOP) with classes, objects, inheritance, polymorphism, and encapsulation:</p>
+# Function annotations (type hints)
+def multiply(a: int, b: int) -> int:
+    return a * b
 
-                        <h5>Class and Object</h5>
-                        <p>A class is a blueprint for creating objects. An object is an instance of a class.</p>
-                        <pre><button class="copy-button">Copy</button><code class="language-python">
-class Person:
-    def __init__(self, name, age):
-        self.name = name  # Instance variable
-        self.age = age
+# Lambda functions (anonymous functions)
+square = lambda x: x**2
+print(square(5))  # 25
 
-    def introduce(self):
-        return f"My name is {self.name} and I am {self.age} years old."
+# Using lambda with built-in functions
+numbers = [1, 2, 3, 4, 5]
+squared = list(map(lambda x: x**2, numbers))
+print(squared)  # [1, 4, 9, 16, 25]
 
-alice = Person("Alice", 30)  # Creating an object
-print(alice.introduce())
-</code><button class="copy-button">Copy</button></pre>
+# Higher-order functions (functions that take other functions as arguments)
+def apply_operation(func, numbers):
+    return [func(num) for num in numbers]
 
-                        <h5>Inheritance</h5>
-                        <p>Inheritance allows a class to inherit attributes and methods from another class.</p>
-                        <pre><button class="copy-button">Copy</button><code class="language-python">
-class Student(Person):  # Student inherits from Person
-    def __init__(self, name, age, student_id):
-        super().__init__(name, age)  # Call parent constructor
-        self.student_id = student_id
+doubled = apply_operation(lambda x: x*2, numbers)
+print(doubled)  # [2, 4, 6, 8, 10]
 
-    def study(self):
-        return f"{self.name} is studying."
+# Closures (functions that remember the environment in which they were created)
+def make_multiplier(factor):
+    def multiplier(number):
+        return number * factor
+    return multiplier
 
-bob = Student("Bob", 20, "S12345")
-print(bob.introduce())  # Inherited method
-print(bob.study())      # Own method
-</code><button class="copy-button">Copy</button></pre>
+times_three = make_multiplier(3)
+print(times_three(10))  # 30
 
-                        <h5>Polymorphism</h5>
-                        <p>Polymorphism allows methods to have the same name but different implementations.</p>
-                        <pre><button class="copy-button">Copy</button><code class="language-python">
-class Animal:
-    def speak(self):
-        return "Some sound"
-
-class Dog(Animal):
-    def speak(self):
-        return "Woof!"
-
-class Cat(Animal):
-    def speak(self):
-        return "Meow!"
-
-animals = [Dog(), Cat(), Animal()]
-for animal in animals:
-    print(animal.speak())  # Different implementations
-</code><button class="copy-button">Copy</button></pre>
-
-                        <h5>Encapsulation</h5>
-                        <p>Encapsulation hides the internal state of an object and restricts access to it.</p>
-                        <pre><button class="copy-button">Copy</button><code class="language-python">
-class BankAccount:
-    def __init__(self, balance):
-        self.__balance = balance  # Private attribute
-
-    def deposit(self, amount):
-        if amount > 0:
-            self.__balance += amount
-
-    def get_balance(self):
-        return self.__balance
-
-account = BankAccount(1000)
-account.deposit(500)
-print(account.get_balance())  # 1500
-# print(account.__balance)  # AttributeError: private attribute
-</code><button class="copy-button">Copy</button></pre>
-
-                        <h5>Class Variables and Methods</h5>
-                        <p>Class variables are shared among all instances. Class methods operate on the class.</p>
-                        <pre><button class="copy-button">Copy</button><code class="language-python">
-class Car:
-    wheels = 4  # Class variable
-
-    def __init__(self, model):
-        self.model = model
-
-    @classmethod
-    def change_wheels(cls, new_wheels):
-        cls.wheels = new_wheels
-
-    @staticmethod
-    def is_motor_vehicle():
-        return True
-
-car1 = Car("Toyota")
-car2 = Car("Honda")
-print(car1.wheels)  # 4
-Car.change_wheels(6)
-print(car2.wheels)  # 6 (changed for all)
-print(Car.is_motor_vehicle())  # True
-</code><button class="copy-button">Copy</button></pre>
-
-                        <h4>File Handling</h4>
-                        <p>Read from and write to files:</p>
-                        <pre><button class="copy-button">Copy</button><code class="language-python">
-# Writing to a file
-with open("example.txt", "w") as file:
-    file.write("Hello, file!")
-
-# Reading from a file
-with open("example.txt", "r") as file:
-    content = file.read()
-    print(content)
-</code><button class="copy-button">Copy</button></pre>
-
-                        <h4>Modules and Packages</h4>
-                        <p>Import and use external modules:</p>
-                        <pre><button class="copy-button">Copy</button><code class="language-python">
-import math
-print(math.sqrt(16))  # 4.0
-
-import random
-print(random.randint(1, 10))  # Random number between 1 and 10
-</code><button class="copy-button">Copy</button></pre>
-
-                        <h4>Exception Handling</h4>
-                        <p>Handle errors gracefully using try-except blocks:</p>
-                        <pre><button class="copy-button">Copy</button><code class="language-python">
-try:
-    result = 10 / 0
-except ZeroDivisionError:
-    print("Cannot divide by zero!")
-finally:
-    print("This always executes.")
-</code><button class="copy-button">Copy</button></pre>
-
-                        <h4>List Comprehensions</h4>
-                        <p>Create lists in a concise way:</p>
-                        <pre><button class="copy-button">Copy</button><code class="language-python">
-# Traditional way
-squares = []
-for i in range(10):
-    squares.append(i**2)
-
-# List comprehension
-squares = [i**2 for i in range(10)]
-print(squares)  # [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
-
-# With condition
-even_squares = [i**2 for i in range(10) if i % 2 == 0]
-print(even_squares)  # [0, 4, 16, 36, 64]
-</code><button class="copy-button">Copy</button></pre>
-
-                        <h4>Decorators</h4>
-                        <p>Modify the behavior of functions or methods:</p>
-                        <pre><button class="copy-button">Copy</button><code class="language-python">
+# Decorators (functions that modify other functions)
 def my_decorator(func):
     def wrapper():
         print("Something before the function.")
@@ -355,41 +676,1178 @@ def say_hello():
     print("Hello!")
 
 say_hello()
+
+# Decorator with arguments
+def repeat(times):
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            for _ in range(times):
+                result = func(*args, **kwargs)
+            return result
+        return wrapper
+    return decorator
+
+@repeat(3)
+def greet(name):
+    print(f"Hello, {name}!")
+
+greet("Alice")  # Prints "Hello, Alice!" three times
 </code><button class="copy-button">Copy</button></pre>
 
-                        <h4>Regular Expressions</h4>
-                        <p>Work with patterns in strings using the 're' module:</p>
+                        <h4>Object-Oriented Programming (OOP)</h4>
+                        <p>Python supports object-oriented programming with classes, objects, inheritance, polymorphism, and encapsulation:</p>
+
+                        <h5>Class and Object</h5>
+                        <p>A class is a blueprint for creating objects. An object is an instance of a class:</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">
+# Defining a class
+class Person:
+    # Class attribute (shared by all instances)
+    species = "Homo sapiens"
+    
+    # Constructor (initializer)
+    def __init__(self, name, age):
+        # Instance attributes (unique to each instance)
+        self.name = name
+        self.age = age
+    
+    # Instance method
+    def introduce(self):
+        return f"My name is {self.name} and I am {self.age} years old."
+    
+    # Another instance method
+    def celebrate_birthday(self):
+        self.age += 1
+        return f"Happy {self.age}th birthday, {self.name}!"
+    
+    # Class method (operates on the class, not instances)
+    @classmethod
+    def get_species(cls):
+        return cls.species
+    
+    # Static method (doesn't operate on instance or class)
+    @staticmethod
+    def is_adult(age):
+        return age >= 18
+
+# Creating objects (instances of the class)
+alice = Person("Alice", 30)
+bob = Person("Bob", 25)
+
+# Accessing attributes and methods
+print(alice.name)  # Alice
+print(bob.age)  # 25
+print(alice.introduce())  # My name is Alice and I am 30 years old.
+print(bob.celebrate_birthday())  # Happy 26th birthday, Bob!
+
+# Accessing class attribute
+print(alice.species)  # Homo sapiens
+print(Person.species)  # Homo sapiens
+
+# Calling class method
+print(Person.get_species())  # Homo sapiens
+
+# Calling static method
+print(Person.is_adult(20))  # True
+print(alice.is_adult(15))  # False
+
+# Checking instance and class
+print(isinstance(alice, Person))  # True
+print(issubclass(Person, object))  # True
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h5>Inheritance</h5>
+                        <p>Inheritance allows a class to inherit attributes and methods from another class:</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">
+# Base class (parent class)
+class Animal:
+    def __init__(self, name):
+        self.name = name
+    
+    def speak(self):
+        return "Some sound"
+    
+    def eat(self):
+        return f"{self.name} is eating."
+
+# Derived class (child class)
+class Dog(Animal):
+    def __init__(self, name, breed):
+        # Call the parent class constructor
+        super().__init__(name)
+        self.breed = breed
+    
+    # Override the parent method
+    def speak(self):
+        return "Woof!"
+    
+    # Add a new method
+    def fetch(self):
+        return f"{self.name} is fetching."
+
+# Another derived class
+class Cat(Animal):
+    def __init__(self, name, color):
+        super().__init__(name)
+        self.color = color
+    
+    def speak(self):
+        return "Meow!"
+    
+    def climb(self):
+        return f"{self.name} is climbing."
+
+# Creating objects
+dog = Dog("Buddy", "Golden Retriever")
+cat = Cat("Whiskers", "Black")
+
+# Using inherited and overridden methods
+print(dog.name)  # Buddy
+print(dog.breed)  # Golden Retriever
+print(dog.speak())  # Woof! (overridden method)
+print(dog.eat())  # Buddy is eating. (inherited method)
+print(dog.fetch())  # Buddy is fetching. (own method)
+
+print(cat.name)  # Whiskers
+print(cat.color)  # Black
+print(cat.speak())  # Meow! (overridden method)
+print(cat.eat())  # Whiskers is eating. (inherited method)
+print(cat.climb())  # Whiskers is climbing. (own method)
+
+# Multiple inheritance
+class Flyable:
+    def fly(self):
+        return "Flying high!"
+
+class Swimmable:
+    def swim(self):
+        return "Swimming gracefully!"
+
+class Duck(Animal, Flyable, Swimmable):
+    def speak(self):
+        return "Quack!"
+
+duck = Duck("Donald")
+print(duck.speak())  # Quack!
+print(duck.fly())  # Flying high!
+print(duck.swim())  # Swimming gracefully!
+print(duck.eat())  # Donald is eating.
+
+# Method Resolution Order (MRO)
+print(Duck.__mro__)  # Shows the order in which methods are searched
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h5>Polymorphism</h5>
+                        <p>Polymorphism allows methods to have the same name but different implementations:</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">
+# Base class
+class Shape:
+    def area(self):
+        pass
+    
+    def perimeter(self):
+        pass
+
+# Derived classes
+class Rectangle(Shape):
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+    
+    def area(self):
+        return self.width * self.height
+    
+    def perimeter(self):
+        return 2 * (self.width + self.height)
+
+class Circle(Shape):
+    def __init__(self, radius):
+        self.radius = radius
+    
+    def area(self):
+        return 3.14159 * self.radius ** 2
+    
+    def perimeter(self):
+        return 2 * 3.14159 * self.radius
+
+class Triangle(Shape):
+    def __init__(self, base, height, side1, side2, side3):
+        self.base = base
+        self.height = height
+        self.side1 = side1
+        self.side2 = side2
+        self.side3 = side3
+    
+    def area(self):
+        return 0.5 * self.base * self.height
+    
+    def perimeter(self):
+        return self.side1 + self.side2 + self.side3
+
+# Polymorphism in action
+shapes = [
+    Rectangle(5, 4),
+    Circle(3),
+    Triangle(4, 3, 3, 4, 5)
+]
+
+for shape in shapes:
+    print(f"Area: {shape.area():.2f}, Perimeter: {shape.perimeter():.2f}")
+
+# Duck typing (if it walks like a duck and quacks like a duck, it's a duck)
+def describe_shape(shape):
+    if hasattr(shape, 'area') and hasattr(shape, 'perimeter'):
+        return f"This shape has an area of {shape.area():.2f} and a perimeter of {shape.perimeter():.2f}."
+    return "This is not a valid shape."
+
+print(describe_shape(Rectangle(5, 4)))
+print(describe_shape(Circle(3)))
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h5>Encapsulation</h5>
+                        <p>Encapsulation hides the internal state of an object and restricts access to it:</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">
+class BankAccount:
+    def __init__(self, account_number, balance=0):
+        self.account_number = account_number
+        self.__balance = balance  # Private attribute (name mangling)
+        self._transaction_count = 0  # Protected attribute (convention)
+    
+    def deposit(self, amount):
+        if amount > 0:
+            self.__balance += amount
+            self._transaction_count += 1
+            return f"Deposited ${amount}. New balance: ${self.__balance}"
+        return "Invalid deposit amount."
+    
+    def withdraw(self, amount):
+        if 0 < amount <= self.__balance:
+            self.__balance -= amount
+            self._transaction_count += 1
+            return f"Withdrew ${amount}. New balance: ${self.__balance}"
+        return "Invalid withdrawal amount or insufficient funds."
+    
+    def get_balance(self):
+        return self.__balance
+    
+    def get_transaction_count(self):
+        return self._transaction_count
+
+account = BankAccount("123456789", 1000)
+print(account.deposit(500))  # Deposited $500. New balance: $1500
+print(account.withdraw(200))  # Withdrew $200. New balance: $1300
+print(account.get_balance())  # 1300
+print(account.get_transaction_count())  # 2
+
+# Direct access to private attribute (not recommended)
+# print(account.__balance)  # AttributeError: 'BankAccount' object has no attribute '__balance'
+# But can be accessed with name mangling
+print(account._BankAccount__balance)  # 1300 (not recommended)
+
+# Using properties for controlled access
+class Employee:
+    def __init__(self, name, salary):
+        self.name = name
+        self.__salary = salary  # Private attribute
+    
+    @property
+    def salary(self):
+        return self.__salary
+    
+    @salary.setter
+    def salary(self, new_salary):
+        if new_salary > 0:
+            self.__salary = new_salary
+        else:
+            print("Salary must be positive.")
+    
+    @property
+    def email(self):
+        return f"{self.name.lower().replace(' ', '.')}@company.com"
+
+employee = Employee("John Doe", 50000)
+print(employee.salary)  # 50000 (accessed like an attribute, not a method)
+employee.salary = 60000  # Set like an attribute, not a method
+print(employee.salary)  # 60000
+employee.salary = -1000  # Salary must be positive.
+print(employee.email)  # john.doe@company.com
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h5>Special Methods (Magic Methods)</h5>
+                        <p>Python classes can implement special methods that are called by specific syntax:</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">
+class Vector:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+    
+    # String representation
+    def __str__(self):
+        return f"Vector({self.x}, {self.y})"
+    
+    # Official representation
+    def __repr__(self):
+        return f"Vector({self.x}, {self.y})"
+    
+    # Addition
+    def __add__(self, other):
+        return Vector(self.x + other.x, self.y + other.y)
+    
+    # Subtraction
+    def __sub__(self, other):
+        return Vector(self.x - other.x, self.y - other.y)
+    
+    # Multiplication (scalar)
+    def __mul__(self, scalar):
+        return Vector(self.x * scalar, self.y * scalar)
+    
+    # Equality
+    def __eq__(self, other):
+        return self.x == other.x and self.y == other.y
+    
+    # Length (len() function)
+    def __len__(self):
+        return int((self.x**2 + self.y**2)**0.5)
+    
+    # Get item (v[0], v[1])
+    def __getitem__(self, index):
+        if index == 0:
+            return self.x
+        elif index == 1:
+            return self.y
+        else:
+            raise IndexError("Index out of range")
+    
+    # Set item (v[0] = value)
+    def __setitem__(self, index, value):
+        if index == 0:
+            self.x = value
+        elif index == 1:
+            self.y = value
+        else:
+            raise IndexError("Index out of range")
+
+v1 = Vector(3, 4)
+v2 = Vector(1, 2)
+
+print(v1)  # Vector(3, 4) (uses __str__)
+print(repr(v1))  # Vector(3, 4) (uses __repr__)
+
+v3 = v1 + v2  # Uses __add__
+print(v3)  # Vector(4, 6)
+
+v4 = v1 - v2  # Uses __sub__
+print(v4)  # Vector(2, 2)
+
+v5 = v1 * 2  # Uses __mul__
+print(v5)  # Vector(6, 8)
+
+print(v1 == v2)  # False (uses __eq__)
+print(v1 == Vector(3, 4))  # True
+
+print(len(v1))  # 5 (uses __len__)
+
+print(v1[0], v1[1])  # 3 4 (uses __getitem__)
+v1[0] = 5  # Uses __setitem__
+print(v1)  # Vector(5, 4)
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h4>Advanced Python Concepts</h4>
+                        <p>Let's explore some advanced Python concepts that will enhance your programming skills.</p>
+
+                        <h5>Iterators and Iterables</h5>
+                        <p>Iterators are objects that can be iterated upon, and iterables are objects that return an iterator:</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">
+# Built-in iterables
+my_list = [1, 2, 3, 4, 5]
+my_string = "Hello"
+my_dict = {"a": 1, "b": 2}
+
+# Getting iterators
+list_iterator = iter(my_list)
+string_iterator = iter(my_string)
+dict_iterator = iter(my_dict)
+
+# Using iterators
+print(next(list_iterator))  # 1
+print(next(list_iterator))  # 2
+
+# For loop automatically uses iterators
+for item in my_list:
+    print(item)
+
+# Creating a custom iterator
+class Countdown:
+    def __init__(self, start):
+        self.current = start
+    
+    def __iter__(self):
+        return self
+    
+    def __next__(self):
+        if self.current <= 0:
+            raise StopIteration
+        self.current -= 1
+        return self.current + 1
+
+# Using the custom iterator
+countdown = Countdown(5)
+for number in countdown:
+    print(number)  # 5 4 3 2 1
+
+# Creating a custom iterable
+class Fibonacci:
+    def __init__(self, max):
+        self.max = max
+    
+    def __iter__(self):
+        self.a, self.b = 0, 1
+        return self
+    
+    def __next__(self):
+        if self.a > self.max:
+            raise StopIteration
+        self.a, self.b = self.b, self.a + self.b
+        return self.a - self.b
+
+# Using the custom iterable
+fib = Fibonacci(100)
+for number in fib:
+    print(number, end=" ")  # 0 1 1 2 3 5 8 13 21 34 55 89
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h5>Generators</h5>
+                        <p>Generators are functions that yield values one at a time, useful for memory-efficient iteration:</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">
+# Simple generator function
+def count_up_to(max):
+    count = 1
+    while count <= max:
+        yield count
+        count += 1
+
+# Using the generator
+counter = count_up_to(5)
+for number in counter:
+    print(number)  # 1 2 3 4 5
+
+# Generator expression
+squares = (x**2 for x in range(10))
+for square in squares:
+    print(square, end=" ")  # 0 1 4 9 16 25 36 49 64 81
+
+# Fibonacci generator
+def fibonacci(n):
+    a, b = 0, 1
+    for _ in range(n):
+        yield a
+        a, b = b, a + b
+
+# Using the Fibonacci generator
+for num in fibonacci(10):
+    print(num, end=" ")  # 0 1 1 2 3 5 8 13 21 34
+
+# Infinite generator
+def infinite_sequence():
+    num = 0
+    while True:
+        yield num
+        num += 1
+
+# Using the infinite generator with a break condition
+for num in infinite_sequence():
+    print(num, end=" ")
+    if num >= 10:
+        break  # 0 1 2 3 4 5 6 7 8 9 10
+
+# Generator pipeline
+def numbers():
+    for i in range(1, 100):
+        yield i
+
+def even_numbers(numbers):
+    for num in numbers:
+        if num % 2 == 0:
+            yield num
+
+def squares_of_even(even_numbers):
+    for num in even_numbers:
+        yield num ** 2
+
+# Using the generator pipeline
+even_squares = squares_of_even(even_numbers(numbers()))
+for i, square in enumerate(even_squares):
+    if i >= 5:
+        break
+    print(square, end=" ")  # 4 16 36 64 100
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h5>Context Managers</h5>
+                        <p>Context managers manage resources, ensuring proper setup and cleanup, often used with 'with' statements:</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">
+# Using built-in context manager
+with open('example.txt', 'w') as file:
+    file.write('Hello, World!')
+# File is automatically closed after the with block
+
+# Creating a custom context manager using a class
+class MyContext:
+    def __enter__(self):
+        print("Entering context")
+        return self
+    
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        print("Exiting context")
+        if exc_type:
+            print(f"Exception occurred: {exc_val}")
+        return True  # Suppress the exception
+
+with MyContext():
+    print("Inside context")
+
+# Creating a custom context manager using a generator
+from contextlib import contextmanager
+
+@contextmanager
+def my_context():
+    print("Entering context")
+    try:
+        yield
+    finally:
+        print("Exiting context")
+
+with my_context():
+    print("Inside context")
+
+# Practical example: Timer context manager
+import time
+
+@contextmanager
+def timer():
+    start = time.time()
+    yield
+    end = time.time()
+    print(f"Elapsed time: {end - start:.4f} seconds")
+
+with timer():
+    time.sleep(1)  # Simulate some work
+    print("Doing some work...")
+
+# Practical example: Database connection context manager
+@contextmanager
+def db_connection(db_url):
+    print(f"Connecting to database: {db_url}")
+    connection = f"Connection to {db_url}"
+    try:
+        yield connection
+    finally:
+        print("Closing database connection")
+
+with db_connection("postgresql://localhost/mydb") as conn:
+    print(f"Using connection: {conn}")
+    # Do database operations
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h5>Decorators</h5>
+                        <p>Decorators modify the behavior of functions or methods without changing their source code:</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">
+# Simple decorator
+def my_decorator(func):
+    def wrapper():
+        print("Something before the function.")
+        func()
+        print("Something after the function.")
+    return wrapper
+
+@my_decorator
+def say_hello():
+    print("Hello!")
+
+say_hello()
+
+# Decorator with arguments
+def repeat(times):
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            for _ in range(times):
+                result = func(*args, **kwargs)
+            return result
+        return wrapper
+    return decorator
+
+@repeat(3)
+def greet(name):
+    print(f"Hello, {name}!")
+
+greet("Alice")  # Prints "Hello, Alice!" three times
+
+# Decorator that preserves function metadata
+from functools import wraps
+
+def timer_decorator(func):
+    @wraps(func)  # Preserves the original function's metadata
+    def wrapper(*args, **kwargs):
+        import time
+        start = time.time()
+        result = func(*args, **kwargs)
+        end = time.time()
+        print(f"{func.__name__} took {end - start:.4f} seconds")
+        return result
+    return wrapper
+
+@timer_decorator
+def slow_function():
+    import time
+    time.sleep(1)
+    return "Done"
+
+result = slow_function()
+print(result)  # Done
+print(slow_function.__name__)  # slow_function (preserved by @wraps)
+
+# Decorator that checks arguments
+def validate_args(*types):
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            for i, (arg, arg_type) in enumerate(zip(args, types)):
+                if not isinstance(arg, arg_type):
+                    raise TypeError(f"Argument {i} should be {arg_type.__name__}")
+            return func(*args, **kwargs)
+        return wrapper
+    return decorator
+
+@validate_args(int, int)
+def add(a, b):
+    return a + b
+
+print(add(2, 3))  # 5
+# print(add(2, "3"))  # TypeError: Argument 1 should be int
+
+# Class decorator
+def add_method(cls):
+    def new_method(self):
+        return "New method added by decorator"
+    cls.new_method = new_method
+    return cls
+
+@add_method
+class MyClass:
+    def existing_method(self):
+        return "Existing method"
+
+obj = MyClass()
+print(obj.existing_method())  # Existing method
+print(obj.new_method())  # New method added by decorator
+
+# Property decorator
+class Person:
+    def __init__(self, name):
+        self._name = name
+    
+    @property
+    def name(self):
+        return self._name
+    
+    @name.setter
+    def name(self, value):
+        if not value:
+            raise ValueError("Name cannot be empty")
+        self._name = value
+    
+    @name.deleter
+    def name(self):
+        print("Deleting name")
+        self._name = None
+
+person = Person("Alice")
+print(person.name)  # Alice
+person.name = "Bob"
+print(person.name)  # Bob
+del person.name  # Deleting name
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h5>Regular Expressions</h5>
+                        <p>Regular expressions are patterns used to match character combinations in strings:</p>
                         <pre><button class="copy-button">Copy</button><code class="language-python">
 import re
 
-pattern = r'\b\d{3}-\d{3}-\d{4}\b'  # Phone number pattern
+# Basic pattern matching
+pattern = r'hello'
+text = "Hello, world! hello there."
+matches = re.findall(pattern, text, re.IGNORECASE)
+print(matches)  # ['Hello', 'hello']
+
+# Character classes
+pattern = r'[aeiou]'  # Match any vowel
+text = "The quick brown fox jumps over the lazy dog"
+vowels = re.findall(pattern, text)
+print(vowels)  # ['e', 'u', 'i', 'o', 'o', 'u', 'o', 'e', 'e', 'a', 'o']
+
+# Quantifiers
+pattern = r'\b\w{4}\b'  # Match 4-letter words
+words = re.findall(pattern, text)
+print(words)  # ['quick', 'brown', 'jumps', 'over', 'lazy']
+
+# Anchors
+pattern = r'^The'  # Match 'The' at the beginning
+print(re.search(pattern, text))  # <re.Match object>
+
+pattern = r'dog$'  # Match 'dog' at the end
+print(re.search(pattern, text))  # <re.Match object>
+
+# Groups
+pattern = r'(\w+)\s(\w+)'  # Match two words
+text = "John Doe"
+match = re.search(pattern, text)
+if match:
+    print(match.group(0))  # John Doe
+    print(match.group(1))  # John
+    print(match.group(2))  # Doe
+
+# Named groups
+pattern = r'(?P<first>\w+)\s(?P<last>\w+)'
+match = re.search(pattern, text)
+if match:
+    print(match.group('first'))  # John
+    print(match.group('last'))  # Doe
+
+# Email validation
+email_pattern = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
+emails = ["john@example.com", "invalid.email", "jane.doe@company.co.uk"]
+for email in emails:
+    if re.match(email_pattern, email):
+        print(f"{email} is valid")
+    else:
+        print(f"{email} is invalid")
+
+# Phone number extraction
+phone_pattern = r'\b\d{3}-\d{3}-\d{4}\b'
 text = "Call me at 123-456-7890 or 098-765-4321"
-matches = re.findall(pattern, text)
-print(matches)  # ['123-456-7890', '098-765-4321']
+phones = re.findall(phone_pattern, text)
+print(phones)  # ['123-456-7890', '098-765-4321']
 
 # Search and replace
-result = re.sub(r'\d', '*', "Phone: 123-456-7890")
-print(result)  # Phone: ***-***-****
+text = "The price is $100. The discount is 20%."
+new_text = re.sub(r'\$(\d+)', r'USD \1', text)
+print(new_text)  # The price is USD 100. The discount is 20%.
+
+# Splitting with regex
+text = "apple, banana; cherry|date"
+fruits = re.split(r'[,;|]\s*', text)
+print(fruits)  # ['apple', 'banana', 'cherry', 'date']
+
+# Compiling regex for performance
+pattern = re.compile(r'\b\d{3}-\d{3}-\d{4}\b')
+text = "Call me at 123-456-7890 or 098-765-4321"
+phones = pattern.findall(text)
+print(phones)  # ['123-456-7890', '098-765-4321']
 </code><button class="copy-button">Copy</button></pre>
 
-                        <h4>Working with JSON</h4>
-                        <p>Parse and generate JSON data:</p>
+                        <h5>File Handling</h5>
+                        <p>Python provides various functions and methods to work with files:</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">
+# Reading from a file
+with open('example.txt', 'r') as file:
+    content = file.read()
+    print(content)
+
+# Reading line by line
+with open('example.txt', 'r') as file:
+    for line in file:
+        print(line.strip())  # Remove newline character
+
+# Reading all lines into a list
+with open('example.txt', 'r') as file:
+    lines = file.readlines()
+    print(lines)
+
+# Writing to a file
+with open('output.txt', 'w') as file:
+    file.write("Hello, World!\n")
+    file.write("This is a test.\n")
+
+# Appending to a file
+with open('output.txt', 'a') as file:
+    file.write("This line is appended.\n")
+
+# Writing multiple lines
+lines = ["Line 1\n", "Line 2\n", "Line 3\n"]
+with open('output.txt', 'w') as file:
+    file.writelines(lines)
+
+# Working with binary files
+with open('image.jpg', 'rb') as file:
+    image_data = file.read()
+
+with open('copy.jpg', 'wb') as file:
+    file.write(image_data)
+
+# File operations
+import os
+
+# Check if file exists
+if os.path.exists('example.txt'):
+    print("File exists")
+
+# Get file size
+size = os.path.getsize('example.txt')
+print(f"File size: {size} bytes")
+
+# Rename file
+os.rename('old_name.txt', 'new_name.txt')
+
+# Delete file
+os.remove('file_to_delete.txt')
+
+# Working with directories
+# Create directory
+os.makedirs('new_directory', exist_ok=True)
+
+# List files in directory
+files = os.listdir('.')
+print(files)
+
+# Check if path is a file or directory
+print(os.path.isfile('example.txt'))  # True
+print(os.path.isdir('new_directory'))  # True
+
+# Path manipulation
+from pathlib import Path
+
+# Create a Path object
+path = Path('example.txt')
+
+# Check if file exists
+print(path.exists())
+
+# Get file name and extension
+print(path.name)  # example.txt
+print(path.stem)  # example
+print(path.suffix)  # .txt
+
+# Join paths
+new_path = Path('directory') / 'subdirectory' / 'file.txt'
+print(new_path)
+
+# Create directories
+new_path.parent.mkdir(parents=True, exist_ok=True)
+
+# Working with CSV files
+import csv
+
+# Writing to CSV
+with open('data.csv', 'w', newline='') as file:
+    writer = csv.writer(file)
+    writer.writerow(['Name', 'Age', 'City'])
+    writer.writerow(['Alice', 30, 'New York'])
+    writer.writerow(['Bob', 25, 'Los Angeles'])
+
+# Reading from CSV
+with open('data.csv', 'r') as file:
+    reader = csv.reader(file)
+    for row in reader:
+        print(row)
+
+# Working with JSON files
+import json
+
+# Writing to JSON
+data = {
+    'name': 'Alice',
+    'age': 30,
+    'is_student': False,
+    'courses': ['Math', 'Science', 'History']
+}
+with open('data.json', 'w') as file:
+    json.dump(data, file, indent=4)
+
+# Reading from JSON
+with open('data.json', 'r') as file:
+    loaded_data = json.load(file)
+    print(loaded_data)
+
+# Working with pickle (Python object serialization)
+import pickle
+
+# Saving an object
+my_object = {'name': 'Alice', 'age': 30}
+with open('data.pkl', 'wb') as file:
+    pickle.dump(my_object, file)
+
+# Loading an object
+with open('data.pkl', 'rb') as file:
+    loaded_object = pickle.load(file)
+    print(loaded_object)
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h5>Exception Handling</h5>
+                        <p>Handle errors gracefully using try-except blocks:</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">
+# Basic try-except
+try:
+    result = 10 / 0
+except ZeroDivisionError:
+    print("Cannot divide by zero!")
+
+# Handling multiple exceptions
+try:
+    num = int(input("Enter a number: "))
+    result = 10 / num
+except ValueError:
+    print("Invalid input! Please enter a number.")
+except ZeroDivisionError:
+    print("Cannot divide by zero!")
+
+# Catching any exception
+try:
+    # Some code that might raise an exception
+    pass
+except Exception as e:
+    print(f"An error occurred: {e}")
+
+# Using else and finally
+try:
+    file = open('example.txt', 'r')
+    content = file.read()
+except FileNotFoundError:
+    print("File not found!")
+except Exception as e:
+    print(f"An error occurred: {e}")
+else:
+    print("File read successfully!")
+    print(content)
+finally:
+    if 'file' in locals():
+        file.close()
+        print("File closed.")
+
+# Raising exceptions
+def validate_age(age):
+    if age < 0:
+        raise ValueError("Age cannot be negative!")
+    if age > 120:
+        raise ValueError("Age seems unrealistic!")
+    return True
+
+try:
+    validate_age(-5)
+except ValueError as e:
+    print(f"Validation error: {e}")
+
+# Custom exceptions
+class CustomError(Exception):
+    def __init__(self, message, code):
+        super().__init__(message)
+        self.code = code
+
+def risky_operation():
+    raise CustomError("Something went wrong!", 500)
+
+try:
+    risky_operation()
+except CustomError as e:
+    print(f"Error {e.code}: {e}")
+
+# Using assertions for debugging
+def divide(a, b):
+    assert b != 0, "Division by zero!"
+    return a / b
+
+try:
+    result = divide(10, 0)
+except AssertionError as e:
+    print(f"Assertion failed: {e}")
+
+# Context manager for exception handling
+from contextlib import contextmanager
+
+@contextmanager
+def exception_handler(exception_type, handler):
+    try:
+        yield
+    except exception_type as e:
+        handler(e)
+
+def handle_zero_division(error):
+    print(f"Handled division by zero: {error}")
+
+with exception_handler(ZeroDivisionError, handle_zero_division):
+    result = 10 / 0
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h5>Modules and Packages</h5>
+                        <p>Python's module system allows you to organize code into reusable components:</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">
+# Importing a module
+import math
+print(math.sqrt(16))  # 4.0
+print(math.pi)  # 3.141592653589793
+
+# Importing specific functions from a module
+from math import sqrt, pi
+print(sqrt(16))  # 4.0
+print(pi)  # 3.141592653589793
+
+# Importing with an alias
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Importing all functions from a module (not recommended)
+# from math import *
+
+# Creating a module (save as my_module.py)
+"""
+# my_module.py
+def greet(name):
+    return f"Hello, {name}!"
+
+PI = 3.141592653589793
+"""
+
+# Using the module
+import my_module
+print(my_module.greet("Alice"))  # Hello, Alice!
+print(my_module.PI)  # 3.141592653589793
+
+# Creating a package (directory structure)
+"""
+my_package/
+    __init__.py
+    module1.py
+    module2.py
+    subpackage/
+        __init__.py
+        module3.py
+"""
+
+# Using the package
+from my_package import module1, module2
+from my_package.subpackage import module3
+
+# Reloading a module (useful in interactive sessions)
+import importlib
+importlib.reload(my_module)
+
+# Finding module location
+import math
+print(math.__file__)  # Path to math module
+
+# Listing all functions in a module
+import math
+print(dir(math))
+
+# Checking if a module has a specific attribute
+print(hasattr(math, 'sqrt'))  # True
+print(hasattr(math, 'square'))  # False
+
+# Installing packages with pip
+# Command line: pip install package_name
+
+# Using installed packages
+import requests
+response = requests.get('https://api.example.com/data')
+data = response.json()
+
+# Virtual environments
+"""
+# Create a virtual environment
+python -m venv myenv
+
+# Activate it (Linux/Mac)
+source myenv/bin/activate
+
+# Activate it (Windows)
+myenv\Scripts\activate
+
+# Install packages
+pip install requests numpy pandas
+
+# Deactivate
+deactivate
+"""
+
+# Requirements file
+"""
+# requirements.txt
+requests==2.25.1
+numpy>=1.19.0
+pandas
+"""
+
+# Install from requirements file
+# pip install -r requirements.txt
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h5>Working with JSON</h5>
+                        <p>JSON (JavaScript Object Notation) is a lightweight data interchange format:</p>
                         <pre><button class="copy-button">Copy</button><code class="language-python">
 import json
 
 # Parse JSON string
-json_string = '{"name": "Alice", "age": 30}'
+json_string = '{"name": "Alice", "age": 30, "is_student": false, "courses": ["Math", "Science"]}'
 data = json.loads(json_string)
 print(data["name"])  # Alice
+print(data["courses"][0])  # Math
 
 # Generate JSON string
-person = {"name": "Bob", "age": 25}
+person = {"name": "Bob", "age": 25, "is_student": True}
 json_output = json.dumps(person)
-print(json_output)  # {"name": "Bob", "age": 25}
+print(json_output)  # {"name": "Bob", "age": 25, "is_student": true}
+
+# Pretty-print JSON
+json_output = json.dumps(person, indent=4)
+print(json_output)
+
+# Working with files
+# Writing JSON to file
+data = {
+    "users": [
+        {"name": "Alice", "age": 30},
+        {"name": "Bob", "age": 25}
+    ]
+}
+with open('data.json', 'w') as file:
+    json.dump(data, file, indent=4)
+
+# Reading JSON from file
+with open('data.json', 'r') as file:
+    loaded_data = json.load(file)
+    print(loaded_data)
+
+# Converting Python objects to JSON
+class Person:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+def person_to_dict(person):
+    return {"name": person.name, "age": person.age}
+
+person = Person("Alice", 30)
+json_data = json.dumps(person, default=person_to_dict)
+print(json_data)
+
+# Converting JSON to Python objects
+def dict_to_person(d):
+    return Person(d["name"], d["age"])
+
+person_dict = json.loads(json_data, object_hook=dict_to_person)
+print(person_dict.name)  # Alice
+print(person_dict.age)  # 30
+
+# Working with JSON APIs
+import requests
+
+response = requests.get('https://jsonplaceholder.typicode.com/users')
+users = response.json()
+
+for user in users[:3]:  # Print first 3 users
+    print(f"Name: {user['name']}, Email: {user['email']}")
 </code><button class="copy-button">Copy</button></pre>
 
-                        <h4>Virtual Environments</h4>
-                        <p>Isolate project dependencies:</p>
+                        <h5>Virtual Environments</h5>
+                        <p>Virtual environments allow you to isolate project dependencies:</p>
                         <pre><code class="language-bash">
 # Create a virtual environment
 python -m venv myenv
@@ -401,13 +1859,25 @@ source myenv/bin/activate
 myenv\Scripts\activate
 
 # Install packages
-pip install requests
+pip install requests numpy pandas
+
+# List installed packages
+pip list
+
+# Show package details
+pip show requests
+
+# Export requirements
+pip freeze > requirements.txt
+
+# Install from requirements
+pip install -r requirements.txt
 
 # Deactivate
 deactivate
 </code><button class="copy-button">Copy</button></pre>
 
-                        <h4>Testing with unittest</h4>
+                        <h5>Testing with unittest</h5>
                         <p>Write and run unit tests to ensure code reliability:</p>
                         <pre><button class="copy-button">Copy</button><code class="language-python">
 import unittest
@@ -415,17 +1885,58 @@ import unittest
 def add(a, b):
     return a + b
 
+def subtract(a, b):
+    return a - b
+
 class TestMath(unittest.TestCase):
     def test_add(self):
         self.assertEqual(add(2, 3), 5)
         self.assertEqual(add(-1, 1), 0)
+        self.assertEqual(add(0, 0), 0)
+    
+    def test_subtract(self):
+        self.assertEqual(subtract(5, 3), 2)
+        self.assertEqual(subtract(1, 1), 0)
+        self.assertEqual(subtract(0, 5), -5)
+    
+    def test_exceptions(self):
+        with self.assertRaises(TypeError):
+            add("2", 3)
 
 if __name__ == '__main__':
     unittest.main()
+
+# Test fixtures (setUp and tearDown)
+class TestList(unittest.TestCase):
+    def setUp(self):
+        self.my_list = [1, 2, 3]
+    
+    def test_append(self):
+        self.my_list.append(4)
+        self.assertEqual(self.my_list, [1, 2, 3, 4])
+    
+    def test_remove(self):
+        self.my_list.remove(2)
+        self.assertEqual(self.my_list, [1, 3])
+    
+    def tearDown(self):
+        # Clean up resources
+        pass
+
+# Test suites
+def suite():
+    suite = unittest.TestSuite()
+    suite.addTest(TestMath('test_add'))
+    suite.addTest(TestMath('test_subtract'))
+    return suite
+
+if __name__ == '__main__':
+    runner = unittest.TextTestRunner()
+    runner.run(suite())
 </code><button class="copy-button">Copy</button></pre>
 
-                        <h4>Match Case (Structural Pattern Matching)</h4>
-                        <p>Introduced in Python 3.10, match-case provides powerful pattern matching similar to switch statements in other languages:</p>
+                        <h5>Match Case (Structural Pattern Matching)</h5>
+                        <p>Introduced in Python 3.10, match-case provides powerful pattern matching:</p>
                         <pre><button class="copy-button">Copy</button><code class="language-python">
 def describe_value(value):
     match value:
@@ -433,76 +1944,1129 @@ def describe_value(value):
             return "Zero"
         case 1 | 2 | 3:
             return "Small number"
+        case int() as i if i > 100:
+            return f"Large number: {i}"
         case str() as s if len(s) > 5:
             return f"Long string: {s}"
         case [x, y]:
             return f"Pair: {x}, {y}"
+        case {"name": name, "age": age}:
+            return f"Person: {name}, {age} years old"
         case _:
             return "Something else"
 
 print(describe_value(0))        # Zero
 print(describe_value([1, 2]))   # Pair: 1, 2
 print(describe_value("hello"))  # Long string: hello
+print(describe_value({"name": "Alice", "age": 30}))  # Person: Alice, 30 years old
+
+# Pattern matching with classes
+class Point:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+def where_is(point):
+    match point:
+        case Point(x=0, y=0):
+            return "Origin"
+        case Point(x=0, y=y):
+            return f"On Y axis at {y}"
+        case Point(x=x, y=0):
+            return f"On X axis at {x}"
+        case Point():
+            return "Somewhere else"
+
+print(where_is(Point(0, 0)))  # Origin
+print(where_is(Point(0, 5)))  # On Y axis at 5
+print(where_is(Point(3, 0)))  # On X axis at 3
+print(where_is(Point(3, 4)))  # Somewhere else
+
+# Pattern matching with sequences
+def process_sequence(seq):
+    match seq:
+        case []:
+            return "Empty sequence"
+        case [x]:
+            return f"Single element: {x}"
+        case [x, y]:
+            return f"Two elements: {x}, {y}"
+        case [x, *rest]:
+            return f"First element: {x}, rest: {rest}"
+
+print(process_sequence([]))           # Empty sequence
+print(process_sequence([1]))          # Single element: 1
+print(process_sequence([1, 2]))       # Two elements: 1, 2
+print(process_sequence([1, 2, 3, 4])) # First element: 1, rest: [2, 3, 4]
 </code><button class="copy-button">Copy</button></pre>
 
-                        <h4>Lambda Functions</h4>
-                        <p>Anonymous functions defined with the lambda keyword, useful for short, simple functions:</p>
+                        <h5>Type Hints</h5>
+                        <p>Type hints provide optional type information for variables, function parameters, and return values:</p>
                         <pre><button class="copy-button">Copy</button><code class="language-python">
-# Regular function
-def add(x, y):
-    return x + y
+# Basic type hints
+name: str = "Alice"
+age: int = 30
+height: float = 5.7
+is_student: bool = True
 
-# Lambda function
-add_lambda = lambda x, y: x + y
+# Function type hints
+def add(a: int, b: int) -> int:
+    return a + b
 
-print(add(2, 3))          # 5
-print(add_lambda(2, 3))   # 5
+def greet(name: str) -> str:
+    return f"Hello, {name}!"
 
-# Using with map
-numbers = [1, 2, 3, 4]
-squares = list(map(lambda x: x**2, numbers))
-print(squares)  # [1, 4, 9, 16]
+# Optional type hints
+from typing import Optional
+
+def find_user(id: int) -> Optional[str]:
+    # In a real function, this would look up a user
+    if id == 1:
+        return "Alice"
+    return None
+
+# List type hints
+from typing import List
+
+def process_numbers(numbers: List[int]) -> List[int]:
+    return [num * 2 for num in numbers]
+
+# Dictionary type hints
+from typing import Dict
+
+def get_user_info() -> Dict[str, str]:
+    return {"name": "Alice", "email": "alice@example.com"}
+
+# Union type hints
+from typing import Union
+
+def process_value(value: Union[int, str]) -> str:
+    if isinstance(value, int):
+        return str(value * 2)
+    return value.upper()
+
+# Callable type hints
+from typing import Callable
+
+def apply_operation(numbers: List[int], operation: Callable[[int], int]) -> List[int]:
+    return [operation(num) for num in numbers]
+
+# Generic type hints
+from typing import TypeVar, Generic
+
+T = TypeVar('T')
+
+class Stack(Generic[T]):
+    def __init__(self):
+        self._items: List[T] = []
+    
+    def push(self, item: T) -> None:
+        self._items.append(item)
+    
+    def pop(self) -> T:
+        return self._items.pop()
+
+# Using the generic class
+int_stack = Stack[int]()
+int_stack.push(1)
+int_stack.push(2)
+print(int_stack.pop())  # 2
+
+str_stack = Stack[str]()
+str_stack.push("hello")
+str_stack.push("world")
+print(str_stack.pop())  # "world"
+
+# Type checking with mypy
+"""
+# Install mypy: pip install mypy
+# Run type checking: mypy my_script.py
+"""
 </code><button class="copy-button">Copy</button></pre>
 
-                        <h4>Generators</h4>
-                        <p>Functions that yield values one at a time, useful for memory-efficient iteration:</p>
+                        <h5>Asynchronous Programming</h5>
+                        <p>Asynchronous programming allows you to write concurrent code using async/await:</p>
                         <pre><button class="copy-button">Copy</button><code class="language-python">
-def fibonacci(n):
-    a, b = 0, 1
-    for _ in range(n):
-        yield a
-        a, b = b, a + b
+import asyncio
+import time
 
-# Using the generator
-for num in fibonacci(10):
-    print(num, end=' ')  # 0 1 1 2 3 5 8 13 21 34
+# Basic async function
+async def say_hello():
+    print("Hello...")
+    await asyncio.sleep(1)  # Non-blocking sleep
+    print("World!")
 
-# Generator expression
-squares_gen = (x**2 for x in range(10))
-print(list(squares_gen))  # [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
-</code><button class="copy-button">Copy</button></pre>
+# Running an async function
+async def main():
+    await say_hello()
 
-                        <h4>Context Managers</h4>
-                        <p>Objects that manage resources, ensuring proper setup and cleanup, often used with 'with' statements:</p>
-                        <pre><button class="copy-button">Copy</button><code class="language-python">
-# Using built-in context manager
-with open('example.txt', 'w') as file:
-    file.write('Hello, World!')
+asyncio.run(main())
 
-# Creating a custom context manager
-class MyContext:
-    def __enter__(self):
-        print("Entering context")
+# Running multiple async functions concurrently
+async def fetch_data(url):
+    print(f"Fetching data from {url}")
+    await asyncio.sleep(1)  # Simulate network request
+    print(f"Data fetched from {url}")
+    return f"Data from {url}"
+
+async def main():
+    urls = ["url1", "url2", "url3"]
+    tasks = [fetch_data(url) for url in urls]
+    results = await asyncio.gather(*tasks)
+    for result in results:
+        print(result)
+
+asyncio.run(main())
+
+# Async context manager
+class AsyncContextManager:
+    async def __aenter__(self):
+        print("Entering async context")
         return self
+    
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
+        print("Exiting async context")
+    
+    async def do_something(self):
+        print("Doing something in async context")
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        print("Exiting context")
+async def main():
+    async with AsyncContextManager() as cm:
+        await cm.do_something()
 
-with MyContext():
-    print("Inside context")
+asyncio.run(main())
+
+# Async iterator
+class AsyncIterator:
+    def __init__(self, limit):
+        self.limit = limit
+        self.count = 0
+    
+    def __aiter__(self):
+        return self
+    
+    async def __anext__(self):
+        if self.count >= self.limit:
+            raise StopAsyncIteration
+        self.count += 1
+        await asyncio.sleep(0.1)  # Simulate async operation
+        return self.count
+
+async def main():
+    async for number in AsyncIterator(5):
+        print(number)
+
+asyncio.run(main())
+
+# Async generator
+async def async_generator(limit):
+    for i in range(limit):
+        await asyncio.sleep(0.1)
+        yield i
+
+async def main():
+    async for number in async_generator(5):
+        print(number)
+
+asyncio.run(main())
+
+# Real-world example: Making HTTP requests asynchronously
+import aiohttp
+
+async def fetch_url(session, url):
+    async with session.get(url) as response:
+        return await response.text()
+
+async def main():
+    urls = [
+        "https://api.github.com",
+        "https://api.github.com/users/python",
+        "https://api.github.com/repos/python/cpython"
+    ]
+    
+    async with aiohttp.ClientSession() as session:
+        tasks = [fetch_url(session, url) for url in urls]
+        results = await asyncio.gather(*tasks)
+        for i, result in enumerate(results):
+            print(f"URL {i+1} fetched, length: {len(result)}")
+
+# asyncio.run(main())  # Uncomment to run (requires aiohttp: pip install aiohttp)
 </code><button class="copy-button">Copy</button></pre>
 
-                        <p>This comprehensive guide covers essential Python concepts, from basic syntax to advanced features. For specialized domains, explore additional libraries and frameworks as needed.</p>
+                        <h5>Data Structures in Collections Module</h5>
+                        <p>The collections module provides specialized container datatypes:</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">
+from collections import namedtuple, Counter, defaultdict, deque, OrderedDict, ChainMap
+
+# Namedtuple
+Point = namedtuple('Point', ['x', 'y'])
+p = Point(10, 20)
+print(p.x, p.y)  # 10 20
+print(p[0], p[1])  # 10 20
+
+# Counter
+counter = Counter(['a', 'b', 'c', 'a', 'b', 'a'])
+print(counter)  # Counter({'a': 3, 'b': 2, 'c': 1})
+print(counter['a'])  # 3
+print(counter['d'])  # 0 (doesn't raise KeyError)
+counter.update(['d', 'd', 'd'])
+print(counter)  # Counter({'a': 3, 'b': 2, 'c': 1, 'd': 3})
+
+# Most common elements
+print(counter.most_common(2))  # [('a', 3), ('b', 2)]
+
+# Defaultdict
+d = defaultdict(int)
+d['a'] += 1
+print(d)  # defaultdict(<class 'int'>, {'a': 1})
+print(d['b'])  # 0 (default value for int)
+
+# Using list as default factory
+d = defaultdict(list)
+d['a'].append(1)
+d['a'].append(2)
+d['b'].append(3)
+print(d)  # defaultdict(<class 'list'>, {'a': [1, 2], 'b': [3]})
+
+# Deque (double-ended queue)
+d = deque([1, 2, 3])
+d.append(4)  # Add to right
+d.appendleft(0)  # Add to left
+print(d)  # deque([0, 1, 2, 3, 4])
+d.pop()  # Remove from right
+d.popleft()  # Remove from left
+print(d)  # deque([1, 2, 3])
+
+# Rotate deque
+d.rotate(1)  # Right rotation
+print(d)  # deque([3, 1, 2])
+d.rotate(-1)  # Left rotation
+print(d)  # deque([1, 2, 3])
+
+# OrderedDict (preserves insertion order)
+od = OrderedDict()
+od['a'] = 1
+od['b'] = 2
+od['c'] = 3
+print(od)  # OrderedDict([('a', 1), ('b', 2), ('c', 3)])
+
+# Move items to end or beginning
+od.move_to_end('b')
+print(od)  # OrderedDict([('a', 1), ('c', 3), ('b', 2)])
+
+# ChainMap (combines multiple dictionaries)
+dict1 = {'a': 1, 'b': 2}
+dict2 = {'b': 3, 'c': 4}
+chain = ChainMap(dict1, dict2)
+print(chain['a'])  # 1 (from dict1)
+print(chain['b'])  # 2 (from dict1, not dict2)
+print(chain['c'])  # 4 (from dict2)
+
+# Adding new dictionaries to the chain
+dict3 = {'d': 5, 'e': 6}
+new_chain = chain.new_child(dict3)
+print(new_chain)  # ChainMap({'d': 5, 'e': 6}, {'a': 1, 'b': 2}, {'b': 3, 'c': 4})
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h5>Functional Programming</h5>
+                        <p>Python supports functional programming paradigms with functions like map, filter, and reduce:</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">
+from functools import reduce
+from operator import add
+
+# Map function
+numbers = [1, 2, 3, 4, 5]
+squared = list(map(lambda x: x**2, numbers))
+print(squared)  # [1, 4, 9, 16, 25]
+
+# Filter function
+even_numbers = list(filter(lambda x: x % 2 == 0, numbers))
+print(even_numbers)  # [2, 4]
+
+# Reduce function
+sum_of_numbers = reduce(add, numbers)
+print(sum_of_numbers)  # 15
+
+# Using reduce with a lambda
+product = reduce(lambda x, y: x * y, numbers)
+print(product)  # 120
+
+# List comprehensions as alternatives
+squared = [x**2 for x in numbers]
+even_numbers = [x for x in numbers if x % 2 == 0]
+sum_of_numbers = sum(numbers)
+
+# Partial functions
+from functools import partial
+
+multiply = lambda x, y: x * y
+double = partial(multiply, 2)
+print(double(5))  # 10
+
+# Caching function results
+from functools import lru_cache
+
+@lru_cache(maxsize=128)
+def fibonacci(n):
+    if n < 2:
+        return n
+    return fibonacci(n-1) + fibonacci(n-2)
+
+print(fibonacci(10))  # 55
+
+# Function composition
+def compose(f, g):
+    return lambda x: f(g(x))
+
+add_one = lambda x: x + 1
+square = lambda x: x**2
+add_one_then_square = compose(square, add_one)
+print(add_one_then_square(3))  # 16 (square(3+1))
+
+# Currying
+def curry(f):
+    def curried(*args, **kwargs):
+        if len(args) + len(kwargs) >= f.__code__.co_argcount:
+            return f(*args, **kwargs)
+        return lambda *more_args, **more_kwargs: curried(*(args + more_args), **{**kwargs, **more_kwargs})
+    return curried
+
+@curry
+def add(a, b, c):
+    return a + b + c
+
+add_1 = add(1)
+add_1_2 = add_1(2)
+result = add_1_2(3)
+print(result)  # 6
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h5>Database Operations</h5>
+                        <p>Python can interact with databases using various libraries:</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">
+# SQLite (built-in)
+import sqlite3
+
+# Connect to database (creates if it doesn't exist)
+conn = sqlite3.connect('example.db')
+cursor = conn.cursor()
+
+# Create table
+cursor.execute('''
+    CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY,
+        name TEXT NOT NULL,
+        email TEXT NOT NULL UNIQUE
+    )
+''')
+
+# Insert data
+cursor.execute('INSERT INTO users (name, email) VALUES (?, ?)', ('Alice', 'alice@example.com'))
+cursor.execute('INSERT INTO users (name, email) VALUES (?, ?)', ('Bob', 'bob@example.com'))
+
+# Commit changes
+conn.commit()
+
+# Query data
+cursor.execute('SELECT * FROM users')
+users = cursor.fetchall()
+for user in users:
+    print(user)
+
+# Using context manager for automatic commit/rollback
+with sqlite3.connect('example.db') as conn:
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM users WHERE name = ?', ('Alice',))
+    alice = cursor.fetchone()
+    print(alice)
+
+# Close connection
+conn.close()
+
+# Using SQLAlchemy (ORM)
+# pip install sqlalchemy
+from sqlalchemy import create_engine, Column, Integer, String
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
+
+Base = declarative_base()
+
+class User(Base):
+    __tablename__ = 'users'
+    
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+    email = Column(String, unique=True)
+    
+    def __repr__(self):
+        return f"<User(name='{self.name}', email='{self.email}')>"
+
+# Create engine
+engine = create_engine('sqlite:///example_sqlalchemy.db')
+
+# Create tables
+Base.metadata.create_all(engine)
+
+# Create session
+Session = sessionmaker(bind=engine)
+session = Session()
+
+# Add users
+user1 = User(name='Charlie', email='charlie@example.com')
+user2 = User(name='Diana', email='diana@example.com')
+session.add(user1)
+session.add(user2)
+session.commit()
+
+# Query users
+users = session.query(User).all()
+for user in users:
+    print(user)
+
+# Filter users
+charlie = session.query(User).filter_by(name='Charlie').first()
+print(charlie)
+
+# Update user
+charlie.email = 'charlie_updated@example.com'
+session.commit()
+
+# Delete user
+session.delete(user2)
+session.commit()
+
+# Close session
+session.close()
+
+# Using pandas with databases
+import pandas as pd
+
+# Read SQL query into DataFrame
+with sqlite3.connect('example.db') as conn:
+    df = pd.read_sql_query('SELECT * FROM users', conn)
+    print(df)
+
+# Write DataFrame to SQL
+data = {'name': ['Eve', 'Frank'], 'email': ['eve@example.com', 'frank@example.com']}
+df = pd.DataFrame(data)
+with sqlite3.connect('example.db') as conn:
+    df.to_sql('users', conn, if_exists='append', index=False)
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h5>Web Development with Flask</h5>
+                        <p>Flask is a lightweight web framework for Python:</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">
+# pip install flask
+from flask import Flask, render_template, request, redirect, url_for
+
+app = Flask(__name__)
+
+# Basic route
+@app.route('/')
+def home():
+    return "Hello, World!"
+
+# Route with variable
+@app.route('/user/<name>')
+def user(name):
+    return f"Hello, {name}!"
+
+# Route with template
+@app.route('/hello/<name>')
+def hello(name):
+    return render_template('hello.html', name=name)
+
+# Route with form handling
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        # Validate credentials (in a real app)
+        if username == 'admin' and password == 'password':
+            return redirect(url_for('dashboard'))
+        else:
+            return render_template('login.html', error='Invalid credentials')
+    return render_template('login.html')
+
+@app.route('/dashboard')
+def dashboard():
+    return "Welcome to your dashboard!"
+
+# API route returning JSON
+@app.route('/api/data')
+def api_data():
+    data = {'message': 'This is API data', 'status': 'success'}
+    return data
+
+# Error handling
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+# Templates would be in a 'templates' folder:
+# templates/hello.html:
+"""
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hello</title>
+</head>
+<body>
+    <h1>Hello, {{ name }}!</h1>
+</body>
+</html>
+"""
+
+# templates/login.html:
+"""
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+</head>
+<body>
+    <h1>Login</h1>
+    {% if error %}
+    <p style="color: red;">{{ error }}</p>
+    {% endif %}
+    <form method="post">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username"><br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password"><br>
+        <input type="submit" value="Login">
+    </form>
+</body>
+</html>
+"""
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h5>Data Analysis with Pandas</h5>
+                        <p>Pandas is a powerful library for data manipulation and analysis:</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">
+# pip install pandas numpy matplotlib
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Creating a DataFrame
+data = {
+    'Name': ['Alice', 'Bob', 'Charlie', 'Diana', 'Eve'],
+    'Age': [25, 30, 35, 28, 22],
+    'City': ['New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix'],
+    'Salary': [70000, 80000, 90000, 75000, 65000]
+}
+df = pd.DataFrame(data)
+print(df)
+
+# Reading data from CSV
+# df = pd.read_csv('data.csv')
+
+# Basic information about the DataFrame
+print(df.info())
+print(df.describe())
+print(df.shape)  # (5, 4)
+print(df.columns)  # Index(['Name', 'Age', 'City', 'Salary'], dtype='object')
+
+# Selecting columns
+print(df['Name'])  # Series
+print(df[['Name', 'Age']])  # DataFrame
+
+# Selecting rows
+print(df.loc[0])  # First row by label
+print(df.iloc[0])  # First row by position
+print(df.loc[0:2])  # First 3 rows by label
+print(df.iloc[0:2])  # First 2 rows by position
+
+# Filtering
+print(df[df['Age'] > 30])  # Rows where Age > 30
+print(df[df['City'] == 'New York'])  # Rows where City is New York
+
+# Adding a new column
+df['Bonus'] = df['Salary'] * 0.1
+print(df)
+
+# Grouping
+grouped = df.groupby('City')
+print(grouped.mean())  # Mean values by city
+
+# Sorting
+print(df.sort_values('Age'))  # Sort by Age
+print(df.sort_values(['City', 'Age']))  # Sort by City, then Age
+
+# Handling missing values
+df_with_nan = df.copy()
+df_with_nan.loc[2, 'Salary'] = np.nan
+print(df_with_nan.isnull())  # Check for missing values
+print(df_with_nan.fillna(0))  # Fill missing values with 0
+print(df_with_nan.dropna())  # Drop rows with missing values
+
+# Merging DataFrames
+df2 = pd.DataFrame({
+    'Name': ['Alice', 'Bob', 'Frank'],
+    'Department': ['HR', 'IT', 'Finance']
+})
+merged = pd.merge(df, df2, on='Name', how='left')
+print(merged)
+
+# Pivot tables
+pivot = pd.pivot_table(df, values='Salary', index='City', columns='Age', aggfunc='mean')
+print(pivot)
+
+# Plotting
+df.plot(kind='bar', x='Name', y='Salary')
+plt.title('Salary by Name')
+plt.ylabel('Salary')
+plt.show()
+
+# Time series data
+dates = pd.date_range('20230101', periods=10)
+ts = pd.Series(np.random.randn(10), index=dates)
+print(ts)
+
+# Resampling time series
+daily = ts.resample('D').mean()
+print(daily)
+
+# Reading Excel files
+# df = pd.read_excel('data.xlsx', sheet_name='Sheet1')
+
+# Writing to Excel
+# df.to_excel('output.xlsx', sheet_name='Sheet1', index=False)
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h5>Machine Learning with scikit-learn</h5>
+                        <p>Scikit-learn is a popular machine learning library for Python:</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">
+# pip install scikit-learn
+from sklearn import datasets
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LinearRegression, LogisticRegression
+from sklearn.metrics import accuracy_score, mean_squared_error
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Load dataset
+iris = datasets.load_iris()
+X = iris.data
+y = iris.target
+
+# Split data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Feature scaling
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled = scaler.transform(X_test)
+
+# Linear Regression
+# Generate synthetic data
+np.random.seed(42)
+X_reg = np.random.rand(100, 1) * 10
+y_reg = 2 * X_reg.ravel() + 1 + np.random.randn(100) * 0.5
+
+# Split and scale
+X_train_reg, X_test_reg, y_train_reg, y_test_reg = train_test_split(X_reg, y_reg, test_size=0.2, random_state=42)
+
+# Train model
+reg_model = LinearRegression()
+reg_model.fit(X_train_reg, y_train_reg)
+
+# Make predictions
+y_pred_reg = reg_model.predict(X_test_reg)
+
+# Evaluate model
+mse = mean_squared_error(y_test_reg, y_pred_reg)
+print(f"Mean Squared Error: {mse:.2f}")
+
+# Plot results
+plt.scatter(X_test_reg, y_test_reg, color='blue', label='Actual')
+plt.plot(X_test_reg, y_pred_reg, color='red', label='Predicted')
+plt.xlabel('X')
+plt.ylabel('y')
+plt.title('Linear Regression')
+plt.legend()
+plt.show()
+
+# Logistic Regression (Classification)
+# Train model
+clf_model = LogisticRegression(max_iter=1000)
+clf_model.fit(X_train_scaled, y_train)
+
+# Make predictions
+y_pred = clf_model.predict(X_test_scaled)
+
+# Evaluate model
+accuracy = accuracy_score(y_test, y_pred)
+print(f"Accuracy: {accuracy:.2f}")
+
+# Decision Tree
+from sklearn.tree import DecisionTreeClassifier, plot_tree
+
+tree_model = DecisionTreeClassifier(random_state=42)
+tree_model.fit(X_train, y_train)
+
+# Plot decision tree
+plt.figure(figsize=(12, 8))
+plot_tree(tree_model, filled=True, feature_names=iris.feature_names, class_names=iris.target_names)
+plt.show()
+
+# Random Forest
+from sklearn.ensemble import RandomForestClassifier
+
+rf_model = RandomForestClassifier(n_estimators=100, random_state=42)
+rf_model.fit(X_train, y_train)
+
+# Feature importance
+feature_importance = rf_model.feature_importances_
+for name, importance in zip(iris.feature_names, feature_importance):
+    print(f"{name}: {importance:.4f}")
+
+# Support Vector Machine
+from sklearn.svm import SVC
+
+svm_model = SVC(kernel='rbf', C=1.0, gamma='auto')
+svm_model.fit(X_train_scaled, y_train)
+
+# K-Means Clustering (Unsupervised)
+from sklearn.cluster import KMeans
+
+kmeans = KMeans(n_clusters=3, random_state=42)
+kmeans.fit(X)
+
+# Plot clusters
+plt.scatter(X[:, 0], X[:, 1], c=kmeans.labels_, cmap='viridis')
+plt.scatter(kmeans.cluster_centers_[:, 0], kmeans.cluster_centers_[:, 1], 
+            s=300, c='red', marker='X')
+plt.xlabel('Feature 1')
+plt.ylabel('Feature 2')
+plt.title('K-Means Clustering')
+plt.show()
+
+# Principal Component Analysis (PCA)
+from sklearn.decomposition import PCA
+
+pca = PCA(n_components=2)
+X_pca = pca.fit_transform(X)
+
+# Plot PCA results
+plt.scatter(X_pca[:, 0], X_pca[:, 1], c=y, cmap='viridis')
+plt.xlabel('Principal Component 1')
+plt.ylabel('Principal Component 2')
+plt.title('PCA of Iris Dataset')
+plt.show()
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h5>Performance Optimization</h5>
+                        <p>Optimize your Python code for better performance:</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">
+import time
+import cProfile
+import numpy as np
+
+# Timing execution
+def timer(func):
+    def wrapper(*args, **kwargs):
+        start = time.time()
+        result = func(*args, **kwargs)
+        end = time.time()
+        print(f"{func.__name__} took {end - start:.6f} seconds")
+        return result
+    return wrapper
+
+@timer
+def slow_function():
+    total = 0
+    for i in range(1000000):
+        total += i
+    return total
+
+@timer
+def fast_function():
+    return sum(range(1000000))
+
+slow_function()
+fast_function()
+
+# Using built-in functions and libraries
+@timer
+def manual_sum():
+    total = 0
+    for i in range(1000000):
+        total += i
+    return total
+
+@timer
+def builtin_sum():
+    return sum(range(1000000))
+
+manual_sum()
+builtin_sum()
+
+# Using NumPy for numerical operations
+@timer
+def python_list_operation():
+    list1 = list(range(1000000))
+    list2 = list(range(1000000))
+    return [a + b for a, b in zip(list1, list2)]
+
+@timer
+def numpy_array_operation():
+    array1 = np.arange(1000000)
+    array2 = np.arange(1000000)
+    return array1 + array2
+
+python_list_operation()
+numpy_array_operation()
+
+# Profiling with cProfile
+def profile_function():
+    result = []
+    for i in range(10000):
+        result.append(i * i)
+    return sum(result)
+
+# Profile the function
+cProfile.run('profile_function()')
+
+# Memory optimization with generators
+@timer
+def list_memory():
+    return [i**2 for i in range(1000000)]
+
+@timer
+def generator_memory():
+    return (i**2 for i in range(1000000))
+
+list_result = list_memory()
+generator_result = generator_memory()
+
+# Using memoization
+from functools import lru_cache
+
+@lru_cache(maxsize=128)
+def fibonacci(n):
+    if n < 2:
+        return n
+    return fibonacci(n-1) + fibonacci(n-2)
+
+@timer
+def fibonacci_no_cache(n):
+    if n < 2:
+        return n
+    return fibonacci_no_cache(n-1) + fibonacci_no_cache(n-2)
+
+@timer
+def fibonacci_with_cache(n):
+    return fibonacci(n)
+
+# fibonacci_no_cache(35)  # This would be very slow
+fibonacci_with_cache(35)  # This is fast due to caching
+
+# Using Cython for performance (example of what Cython code might look like)
+"""
+# cython_example.pyx
+def cython_sum(int n):
+    cdef int i
+    cdef int total = 0
+    for i in range(n):
+        total += i
+    return total
+"""
+
+# Multiprocessing for CPU-bound tasks
+from multiprocessing import Pool
+
+def cpu_bound_task(n):
+    total = 0
+    for i in range(n):
+        total += i
+    return total
+
+@timer
+def sequential_processing():
+    results = []
+    for i in range(4):
+        results.append(cpu_bound_task(1000000))
+    return results
+
+@timer
+def parallel_processing():
+    with Pool(4) as p:
+        results = p.map(cpu_bound_task, [1000000] * 4)
+    return results
+
+sequential_processing()
+parallel_processing()
+</code><button class="copy-button">Copy</button></pre>
+
+                        <h5>Python Best Practices</h5>
+                        <p>Follow these best practices to write clean, efficient, and maintainable Python code:</p>
+                        <pre><button class="copy-button">Copy</button><code class="language-python">
+# 1. Follow PEP 8 style guide
+# Use 4 spaces for indentation
+# Limit lines to 79 characters
+# Use snake_case for variable and function names
+# Use PascalCase for class names
+
+# 2. Use meaningful variable and function names
+def calculate_area_of_rectangle(length, width):
+    return length * width
+
+# 3. Write docstrings
+def calculate_compound_interest(principal, rate, time, n):
+    """
+    Calculate compound interest.
+    
+    Args:
+        principal (float): The initial amount of money.
+        rate (float): The annual interest rate (as a decimal).
+        time (float): The time the money is invested for (in years).
+        n (int): The number of times that interest is compounded per year.
+    
+    Returns:
+        float: The amount of money accumulated after n years, including interest.
+    """
+    return principal * (1 + rate/n) ** (n*time)
+
+# 4. Handle exceptions properly
+def divide(a, b):
+    try:
+        return a / b
+    except ZeroDivisionError:
+        return None  # Return None instead of raising an exception
+    except TypeError:
+        raise ValueError("Both arguments must be numbers")
+
+# 5. Use context managers for resource management
+def read_file(filename):
+    with open(filename, 'r') as file:
+        return file.read()
+
+# 6. Use list comprehensions and generator expressions
+# Bad
+squares = []
+for i in range(10):
+    squares.append(i**2)
+
+# Good
+squares = [i**2 for i in range(10)]
+
+# 7. Avoid mutable default arguments
+# Bad
+def append_to(item, list=[]):
+    list.append(item)
+    return list
+
+# Good
+def append_to(item, list=None):
+    if list is None:
+        list = []
+    list.append(item)
+    return list
+
+# 8. Use the 'is' operator for comparing with None
+# Bad
+if x == None:
+    pass
+
+# Good
+if x is None:
+    pass
+
+# 9. Use enumerate instead of manually tracking indices
+# Bad
+i = 0
+for item in items:
+    print(i, item)
+    i += 1
+
+# Good
+for i, item in enumerate(items):
+    print(i, item)
+
+# 10. Use f-strings for string formatting
+name = "Alice"
+age = 30
+# Bad
+message = "My name is " + name + " and I am " + str(age) + " years old."
+# OK
+message = "My name is {} and I am {} years old.".format(name, age)
+# Good
+message = f"My name is {name} and I am {age} years old."
+
+# 11. Use type hints for better code documentation
+def add(a: int, b: int) -> int:
+    return a + b
+
+# 12. Use the 'with' statement for file operations
+# Bad
+file = open('example.txt', 'r')
+content = file.read()
+file.close()
+
+# Good
+with open('example.txt', 'r') as file:
+    content = file.read()
+
+# 13. Use virtual environments for project dependencies
+# Create a virtual environment: python -m venv myenv
+# Activate it: source myenv/bin/activate (Linux/Mac) or myenv\Scripts\activate (Windows)
+# Install packages: pip install package_name
+# Freeze requirements: pip freeze > requirements.txt
+
+# 14. Write tests for your code
+import unittest
+
+class TestMath(unittest.TestCase):
+    def test_add(self):
+        self.assertEqual(add(2, 3), 5)
+        self.assertEqual(add(-1, 1), 0)
+
+# 15. Use logging instead of print for debugging
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+def some_function():
+    logger.info("Starting some_function")
+    # Do something
+    logger.info("Finished some_function")
+
+# 16. Follow the Zen of Python
+import this
+"""
+The Zen of Python, by Tim Peters
+
+Beautiful is better than ugly.
+Explicit is better than implicit.
+Simple is better than complex.
+Complex is better than complicated.
+Flat is better than nested.
+Sparse is better than dense.
+Readability counts.
+Special cases aren't special enough to break the rules.
+Although practicality beats purity.
+Errors should never pass silently.
+Unless explicitly silenced.
+In the face of ambiguity, refuse the temptation to guess.
+There should be one-- and preferably only one --obvious way to do it.
+Although that way may not be obvious at first unless you're Dutch.
+Now is better than never.
+Although never is often better than *right* now.
+If the implementation is hard to explain, it's a bad idea.
+If the implementation is easy to explain, it may be a good idea.
+Namespaces are one honking great idea -- let's do more of those!
+"""
+</code><button class="copy-button">Copy</button></pre>
+
+                        <p>This comprehensive guide covers Python from basics to advanced topics, including data structures, object-oriented programming, functional programming, web development, data analysis, machine learning, and best practices. For specialized domains, explore additional libraries and frameworks as needed.</p>
 
                         <div class="mt-5 text-center">
                             <a href="/practice" class="btn btn-primary btn-lg">Take Practice Test</a>
