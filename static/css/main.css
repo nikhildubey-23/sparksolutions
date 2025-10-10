@@ -384,6 +384,68 @@ a.nav-link:hover {
     #chatbot-panel {
         width: 280px;
     }
+
+    /* Portfolio Hero Enhancements */
+    .portfolio-hero .hero-title {
+        font-size: 2.5rem;
+        word-break: break-word;
+        overflow-wrap: break-word;
+    }
+    .portfolio-hero .hero-subtitle {
+        font-size: 1.1rem;
+        word-break: break-word;
+        overflow-wrap: break-word;
+    }
+    .hero-stats {
+        flex-direction: column;
+        gap: 20px;
+    }
+    .stat-item h3 {
+        font-size: 2rem;
+        text-align: center;
+    }
+    .stat-item p {
+        text-align: center;
+    }
+
+    /* Portfolio Filter Enhancements */
+    .portfolio-filter .nav-pills {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+    .portfolio-filter .nav-pills .nav-link {
+        margin: 5px 0;
+        width: auto;
+    }
+
+    /* Project Card Enhancements */
+    .project-header {
+        padding: 15px;
+    }
+    .project-content {
+        padding: 15px;
+    }
+    .project-features ul {
+        padding-left: 0;
+    }
+    .tech-badge {
+        font-size: 0.75rem;
+        padding: 3px 8px;
+    }
+    .project-links {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .project-links .btn {
+        width: 100%;
+    }
+    .row.g-4 {
+        margin: 0 -10px;
+    }
+    .col-lg-6, .col-lg-4 {
+        padding: 0 10px;
+    }
 }
 /* Services Section Tilt Effect */
 .service-card {
@@ -1179,5 +1241,101 @@ pre {
 .timeline-card p {
     font-size: 0.9rem;
     opacity: 0.9;
+}
+
+/* Additional Responsive Media Queries for previous_work.html */
+
+/* Very Small Mobile (max-width: 480px) */
+@media (max-width: 480px) {
+    .portfolio-hero {
+        padding: 80px 0;
+        min-height: 50vh;
+    }
+    .portfolio-hero .hero-title {
+        font-size: 2rem;
+    }
+    .portfolio-hero .hero-subtitle {
+        font-size: 1rem;
+    }
+    .hero-stats {
+        gap: 15px;
+    }
+    .stat-item h3 {
+        font-size: 1.5rem;
+    }
+    .stat-item p {
+        font-size: 0.9rem;
+    }
+    .portfolio-page {
+        padding: 40px 0;
+    }
+    .portfolio-page h2, .portfolio-page h3 {
+        font-size: 2rem;
+    }
+    .project-card {
+        margin-bottom: 20px;
+    }
+    .project-header h3 {
+        font-size: 1.3rem;
+    }
+    .project-content p {
+        font-size: 0.9rem;
+    }
+    .project-features h5 {
+        font-size: 1rem;
+    }
+    .project-features li {
+        font-size: 0.9rem;
+        padding: 5px 0;
+    }
+    .project-placeholder i {
+        font-size: 3rem;
+    }
+    .portfolio-filter .nav-pills .nav-link {
+        padding: 8px 15px;
+        font-size: 0.9rem;
+    }
+}
+
+/* Tablet (min-width: 769px and max-width: 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .hero-stats {
+        gap: 30px;
+    }
+    .stat-item h3 {
+        font-size: 2.2rem;
+    }
+    .portfolio-page h2 {
+        font-size: 2.8rem;
+    }
+    .project-header {
+        padding: 20px;
+    }
+    .project-content {
+        padding: 20px;
+    }
+    .portfolio-filter .nav-pills {
+        gap: 15px;
+    }
+    .portfolio-filter .nav-pills .nav-link {
+        padding: 12px 20px;
+    }
+    .row.g-4 {
+        gap: 2rem;
+    }
+}
+
+/* Contact info single line */
+.single-line {
+    white-space: nowrap;
+}
+
+/* Fix email overflow on mobile */
+@media (max-width: 768px) {
+    .contact-page .single-line {
+        white-space: normal;
+        word-break: break-word;
+        overflow-wrap: break-word;
+    }
 }
 
