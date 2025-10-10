@@ -3,74 +3,436 @@
 {% block title %}Portfolio - Spark Solutions{% endblock %}
 
 {% block content %}
-    <!-- Previous Work (Portfolio Page) -->
-    <section class="portfolio-page py-5">
+    <!-- Hero Section -->
+    <section class="portfolio-hero">
         <div class="container">
-            <h2 class="text-center mb-4">Our Previous Work</h2>
-
-            <h3 class="mt-5">Software Development Projects</h3>
-            <div class="row">
-                <div class="col-md-4 mb-4">
-                    <div class="card project-card h-100">
-                        <img src="https://via.placeholder.com/300x200" alt="Project 1" class="card-img-top">
-                        <div class="card-body">
-                            <h5 class="card-title">Project 1</h5>
-                            <p class="card-text">Description of Project 1. Technologies used: HTML, CSS, JavaScript.</p>
-                            <a href="#" class="btn btn-primary">View More</a>
-                        </div>
+            <div class="hero-content">
+                <h1 class="hero-title">Our Previous Work</h1>
+                <p class="hero-subtitle">Showcasing innovative solutions and technical expertise</p>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <h3>30+</h3>
+                        <p>Projects Completed</p>
                     </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="card project-card h-100">
-                        <img src="https://via.placeholder.com/300x200" alt="Project 2" class="card-img-top">
-                        <div class="card-body">
-                            <h5 class="card-title">Project 2</h5>
-                            <p class="card-text">Description of Project 2. Technologies used: Python, Django.</p>
-                            <a href="#" class="btn btn-primary">View More</a>
-                        </div>
+                    <div class="stat-item">
+                        <h3>15+</h3>
+                        <p>Technologies Mastered</p>
                     </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="card project-card h-100">
-                        <img src="https://via.placeholder.com/300x200" alt="Project 3" class="card-img-top">
-                        <div class="card-body">
-                            <h5 class="card-title">Project 3</h5>
-                            <p class="card-text">Description of Project 3. Technologies used: React, Node.js.</p>
-                            <a href="#" class="btn btn-primary">View More</a>
-                        </div>
+                    <div class="stat-item">
+                        <h3>100%</h3>
+                        <p>Client Satisfaction</p>
                     </div>
                 </div>
             </div>
+        </div>
+    </section>
 
-            <h3 class="mt-5">Video Editing Samples</h3>
-            <div class="row">
-                <div class="col-md-4 mb-4">
-                    <div class="card project-card h-100">
-                        <img src="https://via.placeholder.com/300x200" alt="Video 1" class="card-img-top">
-                        <div class="card-body">
-                            <h5 class="card-title">Video 1</h5>
-                            <p class="card-text">Description of Video 1. Edited with: Adobe Premiere Pro.</p>
-                            <a href="#" class="btn btn-primary">View More</a>
+    <!-- Previous Work (Portfolio Page) -->
+    <section class="portfolio-page py-5">
+        <div class="container">
+            <h2 class="text-center mb-4">Software Development Projects</h2>
+
+            <h3 class="mt-5">Software Development Projects</h3>
+            <div class="row g-4">
+                <!-- Project 1 -->
+                <div class="col-lg-6">
+                    <div class="project-card animate-slide-up">
+                        <div class="project-header">
+                            <h3>Rudra-Pathoney</h3>
+                            <div class="project-tech">
+                                <span class="tech-badge">Python(Flask)</span>
+                                <span class="tech-badge">IoT</span>
+                                <span class="tech-badge">Artificial intelligence</span>
+                                <span class="tech-badge">Docker</span>
+                            </div>
+                        </div>
+                        <div class="project-image">
+                            <div class="project-placeholder">
+                                <i class="bi bi-shield-lock-fill"></i>
+                            </div>
+                        </div>
+                        <div class="project-content">
+                            <p>A system that behaves like a vulnerable target (honeypot) to trap and log unauthorized
+                                intrusion attempts, creating a dashboard to analyze attacker behavior.</p>
+                            <div class="project-features">
+                                <h5>Key Features:</h5>
+                                <ul>
+                                    <li>Real-time data processing</li>
+                                    <li>Predictive maintenance</li>
+
+                                    <li>Remote monitoring</li>
+                                </ul>
+                            </div>
+                            <div class="project-links">
+                                <a href="https://github.com/nikhildubey-23/Rudra-Pathoney"
+                                    class="btn btn-outline-primary">View Details</a>
+
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4 mb-4">
-                    <div class="card project-card h-100">
-                        <img src="https://via.placeholder.com/300x200" alt="Video 2" class="card-img-top">
-                        <div class="card-body">
-                            <h5 class="card-title">Video 2</h5>
-                            <p class="card-text">Description of Video 2. Edited with: Final Cut Pro.</p>
-                            <a href="#" class="btn btn-primary">View More</a>
+
+                <!-- Project 2 -->
+                <div class="col-lg-6">
+                    <div class="project-card animate-slide-up" style="animation-delay: 0.1s;">
+                        <div class="project-header">
+                            <h3>InvoiceWithGST</h3>
+                            <div class="project-tech">
+                                <span class="tech-badge">Python(Flask)</span>
+                                <span class="tech-badge">JavaScript</span>
+
+                            </div>
+                        </div>
+                        <div class="project-image">
+                            <div class="project-placeholder">
+                                <i class="bi bi-receipt-cutoff"></i>
+                            </div>
+                        </div>
+                        <div class="project-content">
+                            <p>A modern web-based Invoice Management System built with Flask that helps businesses manage
+                                their sales and purchase invoices efficiently.</p>
+                            <div class="project-features">
+                                <h5>Key Features:</h5>
+                                <ul>
+
+                                    <li>Data visualization</li>
+                                    <li>Automated reporting</li>
+                                    <li>Mobile accessibility</li>
+                                </ul>
+                            </div>
+                            <div class="project-links">
+                                <a href="https://github.com/nikhildubey-23/InvoiceWithGST"
+                                    class="btn btn-outline-primary">View Details</a>
+
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4 mb-4">
-                    <div class="card project-card h-100">
-                        <img src="https://via.placeholder.com/300x200" alt="Video 3" class="card-img-top">
-                        <div class="card-body">
-                            <h5 class="card-title">Video 3</h5>
-                            <p class="card-text">Description of Video 3. Edited with: DaVinci Resolve.</p>
-                            <a href="#" class="btn btn-primary">View More</a>
+
+                <!-- Project 3 -->
+                <div class="col-lg-6">
+                    <div class="project-card animate-slide-up" style="animation-delay: 0.2s;">
+                        <div class="project-header">
+                            <h3>drProgammingLanguage</h3>
+                            <div class="project-tech">
+                                <span class="tech-badge">Clang</span>
+
+                            </div>
+                        </div>
+                        <div class="project-image">
+                            <div class="project-placeholder">
+                                <i class="bi bi-code-slash"></i>
+                            </div>
+                        </div>
+                        <div class="project-content">
+                            <p>it is just try to practice how programming languages are made in real world.</p>
+                            <div class="project-features">
+                                <h5>Key Features:</h5>
+                                <ul>
+                                    <li>CLI based Compiler For Linux</li>
+                                </ul>
+                            </div>
+                            <div class="project-links">
+                                <a href="https://github.com/nikhildubey-23/drProgammingLanguage"
+                                    class="btn btn-outline-primary">View Details</a>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 4 -->
+                <div class="col-lg-6">
+                    <div class="project-card animate-slide-up" style="animation-delay: 0.3s;">
+                        <div class="project-header">
+                            <h3>TextUtils
+                            </h3>
+                            <div class="project-tech">
+                                <span class="tech-badge">Python</span>
+                                <span class="tech-badge">Html</span>
+                                <span class="tech-badge">CSS</span>
+                                <span class="tech-badge">JavaScript</span>
+                            </div>
+                        </div>
+                        <div class="project-image">
+                            <div class="project-placeholder">
+                                <i class="bi bi-type"></i>
+                            </div>
+                        </div>
+                        <div class="project-content">
+                            <p>TextUtils is a web application that provides various text analysis tools. It allows users to
+                                enter text, select options to analyze the text, and view the results.</p>
+                            <div class="project-features">
+                                <h5>Key Features:</h5>
+                                <ul>
+                                    <li>Text Correction</li>
+                                    <li>Remove punctuation
+
+                                    </li>
+                                    <li>Convert to uppercase</li>
+                                    <li>Character counter</li>
+                                </ul>
+                            </div>
+                            <div class="project-links">
+                                <a href="https://github.com/nikhildubey-23/TextUtils" class="btn btn-outline-primary">View Details</a>
+                                <a href="https://textutils-ochre.vercel.app" class="btn btn-primary">Live Demo</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 5 -->
+                <div class="col-lg-6">
+                    <div class="project-card animate-slide-up" style="animation-delay: 0.3s;">
+                        <div class="project-header">
+                            <h3>LawGenius
+                            </h3>
+                            <div class="project-tech">
+                                <span class="tech-badge">Python</span>
+                                <span class="tech-badge">Html</span>
+                                <span class="tech-badge">CSS</span>
+                                <span class="tech-badge">JavaScript</span>
+                                <span class="tech-badge">GroqAPI</span>
+                            </div>
+                        </div>
+                        <div class="project-image">
+                            <img src="{{ url_for('static', filename='images/law.svg') }}" alt="LawGenius Logo" class="project-logo" />
+                        </div>
+                        <div class="project-content">
+                            <p>LawGenius is a Django-based AI-powered legal assistant designed to assist lawyers, law students, common people, judiciary members, and startups with legal queries and document analysis.</p>
+                            <div class="project-features">
+                                <h5>Key Features:</h5>
+                                <ul>
+                                    <li>Law Related Project</li>
+                                    <li> Support more than 28 languages
+
+                                    </li>
+                                    <li>Good Looking and User Friendly dashboard</li>
+                                    <li>History Saving</li>
+                                </ul>
+                            </div>
+                            <div class="project-links">
+                                <a href="https://github.com/nikhildubey-23/LawGenius" class="btn btn-outline-primary">View Details</a>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                 <!-- Project 6 -->
+                <div class="col-lg-6">
+                    <div class="project-card animate-slide-up" style="animation-delay: 0.3s;">
+                        <div class="project-header">
+                            <h3>Snake-Water-Gun-Game
+                            </h3>
+                            <div class="project-tech">
+                                <span class="tech-badge">Python</span>
+                            </div>
+                        </div>
+                        <div class="project-image">
+                            <div class="project-placeholder">
+                                <i class="bi bi-controller"></i>
+                            </div>
+                        </div>
+                        <div class="project-content">
+                            <p>About
+The Snake Water Gun game is a console-based competition where players choose between Snake, Water, and Gun. The game tracks scores over multiple rounds, declaring a winner based on the cyclical winning relationships. Input validation ensures only valid choices are accepted from the player.</p>
+                            <div class="project-features">
+                                <h5>Key Features:</h5>
+                                <ul>
+                                    <li>CLI Based Game</li>
+                                    
+                                </ul>
+                            </div>
+                            <div class="project-links">
+                                <a href="https://github.com/nikhildubey-23/Snake-Water-Gun-Game" class="btn btn-outline-primary">View Details</a>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 7 -->
+                <div class="col-lg-6">
+                    <div class="project-card animate-slide-up" style="animation-delay: 0.3s;">
+                        <div class="project-header">
+                            <h3>Cryptnox-a-mini-malware-
+                            </h3>
+                            <div class="project-tech">
+                                <span class="tech-badge">Python</span>
+                            </div>
+                        </div>
+                        <div class="project-image">
+                            <div class="project-placeholder">
+                                <i class="bi bi-key-fill"></i>
+                            </div>
+                        </div>
+                        <div class="project-content">
+                            <p>
+Cryptnox-A Python-based tool for encrypting and decrypting files in a folder. encryptify.py encrypts files and generates a key, while datasavior.py decrypts files using the generated key. Useful for testing file encryption and decryption scenarios.Use responsibly!</p>
+                            <div class="project-features">
+                                <h5>Key Features:</h5>
+                                <ul>
+                                    <li>CLI Based Project</li>
+                                    <li>Cryptography Based Project</li>
+                                    
+                                </ul>
+                            </div>
+                            <div class="project-links">
+                                <a href="https://github.com/nikhildubey-23/Cryptnox-a-mini-malware-" class="btn btn-outline-primary">View Details</a>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 8 -->
+                <div class="col-lg-6">
+                    <div class="project-card animate-slide-up" style="animation-delay: 0.3s;">
+                        <div class="project-header">
+                            <h3>Network-Scanner
+                            </h3>
+                            <div class="project-tech">
+                                <span class="tech-badge">Python</span>
+                            </div>
+                        </div>
+                        <div class="project-image">
+                            <div class="project-placeholder">
+                                <i class="bi bi-diagram-3-fill"></i>
+                            </div>
+                        </div>
+                        <div class="project-content">
+                            <p>
+
+This is the Network scanning tool made for linux operating system it is use to find the live connected host for given range of ip addresses and it is also use to tell the vendor name name of that ip addresses if it's present ,very soon we are going to get the next update for this tool</p>
+                            <div class="project-features">
+                                <h5>Key Features:</h5>
+                                <ul>
+                                    <li>CLI Based Project</li>
+                                    <li>Networking Based Project</li>
+                                    
+                                </ul>
+                            </div>
+                            <div class="project-links">
+                                <a href="https://github.com/nikhildubey-23/Network-Scanner" class="btn btn-outline-primary">View Details</a>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+
+            <!-- Category Filter -->
+            <div class="portfolio-filter mb-5">
+                <ul class="nav nav-pills justify-content-center">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#software" data-bs-toggle="pill">Software Projects</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#video" data-bs-toggle="pill">Video Editing</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#all" data-bs-toggle="pill">All Work</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="row g-4">
+                <!-- Video 1 -->
+                <div class="col-lg-4">
+                    <div class="project-card animate-slide-up">
+                        <div class="project-header">
+                            <h3>Corporate Video</h3>
+                            <div class="project-tech">
+                                <span class="tech-badge">Adobe Premiere Pro</span>
+                                <span class="tech-badge">After Effects</span>
+                            </div>
+                        </div>
+                        <div class="project-image">
+                            <div class="project-placeholder">
+                                <i class="bi bi-camera-video-fill"></i>
+                            </div>
+                        </div>
+                        <div class="project-content">
+                            <p>Professional corporate video production with advanced editing techniques, motion graphics, and color grading.</p>
+                            <div class="project-features">
+                                <h5>Key Features:</h5>
+                                <ul>
+                                    <li>Motion graphics</li>
+                                    <li>Color correction</li>
+                                    <li>Sound design</li>
+                                </ul>
+                            </div>
+                            <div class="project-links">
+                                <a href="#" class="btn btn-outline-primary">View Sample</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Video 2 -->
+                <div class="col-lg-4">
+                    <div class="project-card animate-slide-up" style="animation-delay: 0.1s;">
+                        <div class="project-header">
+                            <h3>Product Demo</h3>
+                            <div class="project-tech">
+                                <span class="tech-badge">Final Cut Pro</span>
+                                <span class="tech-badge">Motion</span>
+                            </div>
+                        </div>
+                        <div class="project-image">
+                            <div class="project-placeholder">
+                                <i class="bi bi-play-circle-fill"></i>
+                            </div>
+                        </div>
+                        <div class="project-content">
+                            <p>Engaging product demonstration video with smooth transitions, text overlays, and professional audio mixing.</p>
+                            <div class="project-features">
+                                <h5>Key Features:</h5>
+                                <ul>
+                                    <li>Smooth transitions</li>
+                                    <li>Text animations</li>
+                                    <li>Audio mixing</li>
+                                </ul>
+                            </div>
+                            <div class="project-links">
+                                <a href="#" class="btn btn-outline-primary">View Sample</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Video 3 -->
+                <div class="col-lg-4">
+                    <div class="project-card animate-slide-up" style="animation-delay: 0.2s;">
+                        <div class="project-header">
+                            <h3>Documentary</h3>
+                            <div class="project-tech">
+                                <span class="tech-badge">DaVinci Resolve</span>
+                                <span class="tech-badge">Fusion</span>
+                            </div>
+                        </div>
+                        <div class="project-image">
+                            <div class="project-placeholder">
+                                <i class="bi bi-film"></i>
+                            </div>
+                        </div>
+                        <div class="project-content">
+                            <p>Cinematic documentary editing with advanced color grading, visual effects, and narrative pacing.</p>
+                            <div class="project-features">
+                                <h5>Key Features:</h5>
+                                <ul>
+                                    <li>Color grading</li>
+                                    <li>Visual effects</li>
+                                    <li>Narrative editing</li>
+                                </ul>
+                            </div>
+                            <div class="project-links">
+                                <a href="#" class="btn btn-outline-primary">View Sample</a>
+                            </div>
                         </div>
                     </div>
                 </div>
