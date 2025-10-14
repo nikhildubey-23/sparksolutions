@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Portfolio - Spark Solutions{% endblock %}
+{% block title %}Portfolio - SN VERSE{% endblock %}
 
 {% block content %}
     <!-- Hero Section -->
@@ -36,7 +36,7 @@
             <div class="row g-4">
                 <!-- Project 1 -->
                 <div class="col-lg-6">
-                    <div class="project-card animate-slide-up">
+                    <div class="project-card animate-slide-up h-100">
                         <div class="project-header">
                             <h3>Rudra-Pathoney</h3>
                             <div class="project-tech">
@@ -51,7 +51,7 @@
                                 <i class="bi bi-shield-lock-fill"></i>
                             </div>
                         </div>
-                        <div class="project-content">
+                        <div class="project-content d-flex flex-column">
                             <p>A system that behaves like a vulnerable target (honeypot) to trap and log unauthorized
                                 intrusion attempts, creating a dashboard to analyze attacker behavior.</p>
                             <div class="project-features">
@@ -63,7 +63,7 @@
                                     <li>Remote monitoring</li>
                                 </ul>
                             </div>
-                            <div class="project-links">
+                            <div class="project-links mt-auto">
                                 <a href="https://github.com/nikhildubey-23/Rudra-Pathoney"
                                     class="btn btn-outline-primary">View Details</a>
 
@@ -74,7 +74,7 @@
 
                 <!-- Project 2 -->
                 <div class="col-lg-6">
-                    <div class="project-card animate-slide-up" style="animation-delay: 0.1s;">
+                    <div class="project-card animate-slide-up h-100" style="animation-delay: 0.1s;">
                         <div class="project-header">
                             <h3>InvoiceWithGST</h3>
                             <div class="project-tech">
@@ -88,7 +88,7 @@
                                 <i class="bi bi-receipt-cutoff"></i>
                             </div>
                         </div>
-                        <div class="project-content">
+                        <div class="project-content d-flex flex-column">
                             <p>A modern web-based Invoice Management System built with Flask that helps businesses manage
                                 their sales and purchase invoices efficiently.</p>
                             <div class="project-features">
@@ -100,7 +100,7 @@
                                     <li>Mobile accessibility</li>
                                 </ul>
                             </div>
-                            <div class="project-links">
+                            <div class="project-links mt-auto">
                                 <a href="https://github.com/nikhildubey-23/InvoiceWithGST"
                                     class="btn btn-outline-primary">View Details</a>
 
@@ -111,7 +111,7 @@
 
                 <!-- Project 3 -->
                 <div class="col-lg-6">
-                    <div class="project-card animate-slide-up" style="animation-delay: 0.2s;">
+                    <div class="project-card animate-slide-up h-100" style="animation-delay: 0.2s;">
                         <div class="project-header">
                             <h3>drProgammingLanguage</h3>
                             <div class="project-tech">
@@ -124,7 +124,7 @@
                                 <i class="bi bi-code-slash"></i>
                             </div>
                         </div>
-                        <div class="project-content">
+                        <div class="project-content d-flex flex-column">
                             <p>it is just try to practice how programming languages are made in real world.</p>
                             <div class="project-features">
                                 <h5>Key Features:</h5>
@@ -132,7 +132,7 @@
                                     <li>CLI based Compiler For Linux</li>
                                 </ul>
                             </div>
-                            <div class="project-links">
+                            <div class="project-links mt-auto">
                                 <a href="https://github.com/nikhildubey-23/drProgammingLanguage"
                                     class="btn btn-outline-primary">View Details</a>
 
@@ -143,7 +143,7 @@
 
                 <!-- Project 4 -->
                 <div class="col-lg-6">
-                    <div class="project-card animate-slide-up" style="animation-delay: 0.3s;">
+                    <div class="project-card animate-slide-up h-100" style="animation-delay: 0.3s;">
                         <div class="project-header">
                             <h3>TextUtils
                             </h3>
@@ -159,7 +159,7 @@
                                 <i class="bi bi-type"></i>
                             </div>
                         </div>
-                        <div class="project-content">
+                        <div class="project-content d-flex flex-column">
                             <p>TextUtils is a web application that provides various text analysis tools. It allows users to
                                 enter text, select options to analyze the text, and view the results.</p>
                             <div class="project-features">
@@ -173,7 +173,7 @@
                                     <li>Character counter</li>
                                 </ul>
                             </div>
-                            <div class="project-links">
+                            <div class="project-links mt-auto">
                                 <a href="https://github.com/nikhildubey-23/TextUtils" class="btn btn-outline-primary">View Details</a>
                                 <a href="https://textutils-ochre.vercel.app" class="btn btn-primary">Live Demo</a>
                             </div>
@@ -183,7 +183,7 @@
 
                 <!-- Project 5 -->
                 <div class="col-lg-6">
-                    <div class="project-card animate-slide-up" style="animation-delay: 0.3s;">
+                    <div class="project-card animate-slide-up h-100" style="animation-delay: 0.3s;">
                         <div class="project-header">
                             <h3>LawGenius
                             </h3>
@@ -198,7 +198,7 @@
                         <div class="project-image">
                             <img src="{{ url_for('static', filename='images/law.svg') }}" alt="LawGenius Logo" class="project-logo" />
                         </div>
-                        <div class="project-content">
+                        <div class="project-content d-flex flex-column">
                             <p>LawGenius is a Django-based AI-powered legal assistant designed to assist lawyers, law students, common people, judiciary members, and startups with legal queries and document analysis.</p>
                             <div class="project-features">
                                 <h5>Key Features:</h5>
@@ -211,9 +211,9 @@
                                     <li>History Saving</li>
                                 </ul>
                             </div>
-                            <div class="project-links">
+                            <div class="project-links mt-auto">
                                 <a href="https://github.com/nikhildubey-23/LawGenius" class="btn btn-outline-primary">View Details</a>
-                                
+
                             </div>
                         </div>
                     </div>
@@ -221,7 +221,7 @@
 
                  <!-- Project 6 -->
                 <div class="col-lg-6">
-                    <div class="project-card animate-slide-up" style="animation-delay: 0.3s;">
+                    <div class="project-card animate-slide-up h-100" style="animation-delay: 0.3s;">
                         <div class="project-header">
                             <h3>Snake-Water-Gun-Game
                             </h3>
@@ -234,19 +234,19 @@
                                 <i class="bi bi-controller"></i>
                             </div>
                         </div>
-                        <div class="project-content">
+                        <div class="project-content d-flex flex-column">
                             <p>About
 The Snake Water Gun game is a console-based competition where players choose between Snake, Water, and Gun. The game tracks scores over multiple rounds, declaring a winner based on the cyclical winning relationships. Input validation ensures only valid choices are accepted from the player.</p>
                             <div class="project-features">
                                 <h5>Key Features:</h5>
                                 <ul>
                                     <li>CLI Based Game</li>
-                                    
+
                                 </ul>
                             </div>
-                            <div class="project-links">
+                            <div class="project-links mt-auto">
                                 <a href="https://github.com/nikhildubey-23/Snake-Water-Gun-Game" class="btn btn-outline-primary">View Details</a>
-                                
+
                             </div>
                         </div>
                     </div>
@@ -254,7 +254,7 @@ The Snake Water Gun game is a console-based competition where players choose bet
 
                 <!-- Project 7 -->
                 <div class="col-lg-6">
-                    <div class="project-card animate-slide-up" style="animation-delay: 0.3s;">
+                    <div class="project-card animate-slide-up h-100" style="animation-delay: 0.3s;">
                         <div class="project-header">
                             <h3>Cryptnox-a-mini-malware-
                             </h3>
@@ -267,7 +267,7 @@ The Snake Water Gun game is a console-based competition where players choose bet
                                 <i class="bi bi-key-fill"></i>
                             </div>
                         </div>
-                        <div class="project-content">
+                        <div class="project-content d-flex flex-column">
                             <p>
 Cryptnox-A Python-based tool for encrypting and decrypting files in a folder. encryptify.py encrypts files and generates a key, while datasavior.py decrypts files using the generated key. Useful for testing file encryption and decryption scenarios.Use responsibly!</p>
                             <div class="project-features">
@@ -275,12 +275,12 @@ Cryptnox-A Python-based tool for encrypting and decrypting files in a folder. en
                                 <ul>
                                     <li>CLI Based Project</li>
                                     <li>Cryptography Based Project</li>
-                                    
+
                                 </ul>
                             </div>
-                            <div class="project-links">
+                            <div class="project-links mt-auto">
                                 <a href="https://github.com/nikhildubey-23/Cryptnox-a-mini-malware-" class="btn btn-outline-primary">View Details</a>
-                                
+
                             </div>
                         </div>
                     </div>
@@ -288,7 +288,7 @@ Cryptnox-A Python-based tool for encrypting and decrypting files in a folder. en
 
                 <!-- Project 8 -->
                 <div class="col-lg-6">
-                    <div class="project-card animate-slide-up" style="animation-delay: 0.3s;">
+                    <div class="project-card animate-slide-up h-100" style="animation-delay: 0.3s;">
                         <div class="project-header">
                             <h3>Network-Scanner
                             </h3>
@@ -301,7 +301,7 @@ Cryptnox-A Python-based tool for encrypting and decrypting files in a folder. en
                                 <i class="bi bi-diagram-3-fill"></i>
                             </div>
                         </div>
-                        <div class="project-content">
+                        <div class="project-content d-flex flex-column">
                             <p>
 
 This is the Network scanning tool made for linux operating system it is use to find the live connected host for given range of ip addresses and it is also use to tell the vendor name name of that ip addresses if it's present ,very soon we are going to get the next update for this tool</p>
@@ -310,12 +310,12 @@ This is the Network scanning tool made for linux operating system it is use to f
                                 <ul>
                                     <li>CLI Based Project</li>
                                     <li>Networking Based Project</li>
-                                    
+
                                 </ul>
                             </div>
-                            <div class="project-links">
+                            <div class="project-links mt-auto">
                                 <a href="https://github.com/nikhildubey-23/Network-Scanner" class="btn btn-outline-primary">View Details</a>
-                                
+
                             </div>
                         </div>
                     </div>
@@ -325,22 +325,9 @@ This is the Network scanning tool made for linux operating system it is use to f
 
             </div>
 
-            <!-- Category Filter -->
-            <div class="portfolio-filter mb-5">
-                <ul class="nav nav-pills justify-content-center">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#software" data-bs-toggle="pill">Software Projects</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#video" data-bs-toggle="pill">Video Editing</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#all" data-bs-toggle="pill">All Work</a>
-                    </li>
-                </ul>
-            </div>
+           
 
-            <div class="row g-4">
+            <div class="row g-4 my-5">
                 <!-- Video 1 -->
                 <div class="col-lg-4">
                     <div class="project-card animate-slide-up">

@@ -1,7 +1,8 @@
-# Spark Solution Website
+# SN VERSE Website
 
 ## Overview
-This is a modern, responsive website for Spark Solution, a freelancing company. It includes a Flask backend, MongoDB Atlas integration, Gmail SMTP email notifications, and a Gemini API-powered chatbot.
+
+This is a modern, responsive website for SN VERSE, a freelancing company. It includes a Flask backend, MongoDB Atlas integration, Gmail SMTP email notifications, and a Gemini API-powered chatbot.
 
 ## Features
 - Home, Services, Portfolio, Contact, and Admin pages
