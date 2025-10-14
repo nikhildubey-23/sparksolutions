@@ -15,6 +15,79 @@
         body {
             font-family: 'Poppins', sans-serif;
         }
+        .email {
+            font-size: 12px;
+        }
+        .footer {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #007bff, #28a745, #ffc107, #dc3545);
+        }
+        .footer-link {
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .footer-link:hover {
+            color: #007bff !important;
+            transform: translateX(5px);
+            text-shadow: 0 0 10px rgba(0,123,255,0.5);
+        }
+        .footer-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #007bff;
+            transition: width 0.3s ease;
+        }
+        .footer-link:hover::after {
+            width: 100%;
+        }
+        .social-icon {
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        .social-icon:hover {
+            transform: scale(1.2) rotate(10deg);
+            color: #007bff !important;
+            text-shadow: 0 0 15px rgba(0,123,255,0.7);
+        }
+        .footer h5, .footer h6 {
+            color: #fff;
+            font-weight: 600;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+        .footer p {
+            color: #ccc;
+        }
+        .footer hr {
+            border-color: rgba(255,255,255,0.1);
+        }
+        .footer .col-lg-4, .footer .col-lg-3 {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        .footer.footer-visible .col-lg-4, .footer.footer-visible .col-lg-3 {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .footer.footer-visible .col-lg-3:nth-child(1) { transition-delay: 0.1s; }
+        .footer.footer-visible .col-lg-3:nth-child(2) { transition-delay: 0.2s; }
+        .footer.footer-visible .col-lg-3:nth-child(3) { transition-delay: 0.3s; }
+        .footer.footer-visible .col-lg-3:nth-child(4) { transition-delay: 0.4s; }
     </style>
     {% block head %}{% endblock %}
 </head>
@@ -78,67 +151,63 @@
         <div class="container">
             <div class="row">
                 <!-- Company Info -->
-                <div class="col-lg-4 col-md-6 mb-4">
+                <div class="col-lg-3 col-md-6 mb-4">
                     <h5 class="mb-3">SN VERSE</h5>
                     <p class="mb-3">Empowering individuals and businesses through innovative solutions and quality education in the digital age.</p>
                     <div class="social-links">
-                        <a href="https://www.facebook.com/share/176o6XWNi2/" class="text-light me-3"><i class="bi bi-facebook"></i></a>
-                        <a href="https://www.instagram.com/sn_verse_official?igsh=Mmcyb3E2dmxlbG95" class="text-light me-3"><i class="bi bi-instagram"></i></a>
-                        <a href="#" class="text-light me-3"><i class="bi bi-linkedin"></i></a>
-                        <a href="https://whatsapp.com/channel/0029Vb6PDXaCRs1qmbDcQo1A" class="text-light me-3"><i class="bi bi-whatsapp"></i></a>
+                        <a href="https://www.facebook.com/share/176o6XWNi2/" class="text-light me-3 social-icon"><i class="bi bi-facebook"></i></a>
+                        <a href="https://www.instagram.com/sn_verse_official?igsh=Mmcyb3E2dmxlbG95" class="text-light me-3 social-icon"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="text-light me-3 social-icon"><i class="bi bi-linkedin"></i></a>
+                        <a href="https://whatsapp.com/channel/0029Vb6PDXaCRs1qmbDcQo1A" class="text-light me-3 social-icon"><i class="bi bi-whatsapp"></i></a>
                     </div>
+                    <li class="mb-2 email"><i class="bi bi-envelope me-2"></i>sparksolutionfreelancing@gmail.com</li>
+                    
+                        <li class="mb-2"><i class="bi bi-phone me-2"></i>+91 7646831492</li>
+                        <li class="mb-2"><i class="bi bi-phone me-2"></i>+91 6263471930</li
+                        <li class="mb-2"><i class="bi bi-geo-alt me-2"></i>India</li>
                 </div>
 
                 <!-- Quick Links -->
-                <div class="col-lg-2 col-md-6 mb-4">
+                <div class="col-lg-3 col-md-6 mb-4">
                     <h6 class="mb-3">Quick Links</h6>
                     <ul class="list-unstyled">
-                        <li class="mb-2"><a href="/" class="text-light text-decoration-none">Home</a></li>
-                        <li class="mb-2"><a href="/about" class="text-light text-decoration-none">About</a></li>
-                        <li class="mb-2"><a href="/services" class="text-light text-decoration-none">Services</a></li>
-                        <li class="mb-2"><a href="/courses" class="text-light text-decoration-none">Courses</a></li>
-                        <li class="mb-2"><a href="/team" class="text-light text-decoration-none">Team</a></li>
-                        <li class="mb-2"><a href="/previous-work" class="text-light text-decoration-none">Portfolio</a></li>
-                        <li class="mb-2"><a href="/contact" class="text-light text-decoration-none">Contact</a></li>
-                    </ul>
-                </div>
-
-                <!-- Services -->
-                <div class="col-lg-2 col-md-6 mb-4">
-                    <h6 class="mb-3">Services</h6>
-                    <ul class="list-unstyled">
-                        <li class="mb-2"><a href="#" class="text-light text-decoration-none">Software Development</a></li>
-                        <li class="mb-2"><a href="#" class="text-light text-decoration-none">Video Editing</a></li>
-                        <li class="mb-2"><a href="#" class="text-light text-decoration-none">Teaching</a></li>
-                        <li class="mb-2"><a href="#" class="text-light text-decoration-none">Content Writing</a></li>
+                        <li class="mb-2"><a href="/" class="text-light text-decoration-none footer-link">Home</a></li>
+                        <li class="mb-2"><a href="/about" class="text-light text-decoration-none footer-link">About</a></li>
+                        <li class="mb-2"><a href="/services" class="text-light text-decoration-none footer-link">Services</a></li>
+                        <li class="mb-2"><a href="/courses" class="text-light text-decoration-none footer-link">Courses</a></li>
+                        <li class="mb-2"><a href="/team" class="text-light text-decoration-none footer-link">Team</a></li>
+                        <li class="mb-2"><a href="/previous-work" class="text-light text-decoration-none footer-link">Portfolio</a></li>
+                        <li class="mb-2"><a href="/contact" class="text-light text-decoration-none footer-link">Contact</a></li>
                     </ul>
                 </div>
 
                 <!-- Documentation -->
-                <div class="col-lg-2 col-md-6 mb-4">
+                <div class="col-lg-3 col-md-6 mb-4">
                     <h6 class="mb-3">Documentation</h6>
                     <ul class="list-unstyled">
-                        <li class="mb-2"><a href="/python" class="text-light text-decoration-none">Python</a></li>
-                        <li class="mb-2"><a href="/html" class="text-light text-decoration-none">HTML</a></li>
-                        <li class="mb-2"><a href="/css" class="text-light text-decoration-none">CSS</a></li>
-                        <li class="mb-2"><a href="/js" class="text-light text-decoration-none">JavaScript</a></li>
-                        <li class="mb-2"><a href="/react" class="text-light text-decoration-none">React.js</a></li>
-                        <li class="mb-2"><a href="/node" class="text-light text-decoration-none">Node.js</a></li>
-                        <li class="mb-2"><a href="/flask" class="text-light text-decoration-none">Flask</a></li>
-                        <li class="mb-2"><a href="/django" class="text-light text-decoration-none">Django</a></li>
+                        <li class="mb-2"><a href="/python" class="text-light text-decoration-none footer-link">Python</a></li>
+                        <li class="mb-2"><a href="/html" class="text-light text-decoration-none footer-link">HTML</a></li>
+                        <li class="mb-2"><a href="/css" class="text-light text-decoration-none footer-link">CSS</a></li>
+                        <li class="mb-2"><a href="/js" class="text-light text-decoration-none footer-link">JavaScript</a></li>
+                        <li class="mb-2"><a href="/react" class="text-light text-decoration-none footer-link">React.js</a></li>
+                        <li class="mb-2"><a href="/node" class="text-light text-decoration-none footer-link">Node.js</a></li>
+                        <li class="mb-2"><a href="/flask" class="text-light text-decoration-none footer-link">Flask</a></li>
+                        <li class="mb-2"><a href="/django" class="text-light text-decoration-none footer-link">Django</a></li>
                     </ul>
                 </div>
 
-                <!-- Contact Info -->
-                <div class="col-lg-2 col-md-6 mb-4">
-                    <h6 class="mb-3">Contact Info</h6>
+                <!-- Services -->
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h6 class="mb-3">Services</h6>
                     <ul class="list-unstyled">
-                        <li class="mb-2"><i class="bi bi-envelope me-2"></i>sparksolutionfreelancing@gmail.com</li>
-                        <li class="mb-2"><i class="bi bi-phone me-2"></i>+91 7646831492</li>
-                        <li class="mb-2"><i class="bi bi-phone me-2"></i>+91 6263471930</li
-                        <li class="mb-2"><i class="bi bi-geo-alt me-2"></i>Global</li>
+                        <li class="mb-2"><a href="#" class="text-light text-decoration-none footer-link">Software Development</a></li>
+                        <li class="mb-2"><a href="#" class="text-light text-decoration-none footer-link">Video Editing</a></li>
+                        <li class="mb-2"><a href="#" class="text-light text-decoration-none footer-link">Teaching</a></li>
+                        <li class="mb-2"><a href="#" class="text-light text-decoration-none footer-link">Content Writing</a></li>
                     </ul>
                 </div>
+
+                
             </div>
 
             <hr class="my-4">

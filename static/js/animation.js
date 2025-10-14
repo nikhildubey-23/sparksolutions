@@ -25,6 +25,19 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('scroll', revealOnScroll);
     revealOnScroll();
 
+    // Footer animation on scroll
+    const footer = document.querySelector('.footer');
+    if (footer) {
+        const footerObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    footer.classList.add('footer-visible');
+                }
+            });
+        }, { threshold: 0.1 });
+        footerObserver.observe(footer);
+    }
+
     // 3D background animation setup with different geometries per page
     if (window.THREE) {
         const scene = new THREE.Scene();
