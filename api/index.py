@@ -15,19 +15,9 @@ import io
 import csv
 import datetime
 import re
-import firebase_admin
-from firebase_admin import credentials, auth
-from datetime import datetime as dt
 
 # Load environment variables
 load_dotenv()
-
-# Initialize Firebase Admin SDK
-try:
-    cred = credentials.Certificate('firebase-service-account.json')
-    firebase_admin.initialize_app(cred)
-except Exception as e:
-    print(f"Firebase initialization error: {e}")
 
 app = Flask(__name__, template_folder='../templates', static_folder='../static')
 app.secret_key = os.getenv("FLASK_SECRET_KEY", "supersecretkey")
@@ -246,80 +236,9 @@ def contact():
         flash("An error occurred. Please try again.", "error")
         return redirect(url_for('contact'))
 
-@app.route('/login')
-def login():
-    return render_template('login.html')
 
-@app.route('/signup')
-def signup():
-    return render_template('signup.html')
 
-@app.route('/logout')
-def logout():
-    # Client-side logout handled by Firebase JS
-    return redirect(url_for('home'))
 
-@app.route('/admin/login', methods=['GET', 'POST'])
-def admin_login():
-    try:
-        if request.method == 'POST':
-            username = request.form.get('username')
-            password = request.form.get('password')
-
-            if username == 'founder' and password == 'nickfounder@123':
-                session['admin_logged_in'] = True
-                return redirect(url_for('admin_panel'))
-            else:
-                flash('Invalid credentials', 'error')
-
-        return render_template('admin_login.html')
-    except Exception as e:
-        print(f"Admin login error: {e}")
-        flash('An error occurred during login', 'error')
-        return render_template('admin_login.html')
-
-@app.route('/admin')
-def admin_panel():
-    try:
-        if not session.get('admin_logged_in'):
-            return redirect(url_for('admin_login'))
-
-        # Get all users from Firebase Auth
-        users = []
-        page = auth.list_users()
-        while page:
-            for user in page.users:
-                # Format timestamps
-                creation_time = dt.fromtimestamp(user.user_metadata.creation_timestamp / 1000) if user.user_metadata.creation_timestamp else None
-                last_sign_in_time = dt.fromtimestamp(user.user_metadata.last_sign_in_timestamp / 1000) if user.user_metadata.last_sign_in_timestamp else None
-
-                users.append({
-                    'uid': user.uid,
-                    'email': user.email,
-                    'display_name': user.display_name,
-                    'phone_number': user.phone_number,
-                    'email_verified': user.email_verified,
-                    'disabled': user.disabled,
-                    'creation_timestamp': creation_time.strftime('%Y-%m-%d %H:%M:%S') if creation_time else 'N/A',
-                    'last_sign_in_timestamp': last_sign_in_time.strftime('%Y-%m-%d %H:%M:%S') if last_sign_in_time else 'N/A',
-                    'provider_data': [{'provider_id': provider.provider_id, 'email': provider.email} for provider in user.provider_data]
-                })
-            page = page.get_next_page()
-
-        return render_template('admin_panel.html', users=users)
-    except Exception as e:
-        print(f"Admin panel error: {e}")
-        flash(f'Error fetching users: {str(e)}', 'error')
-        return render_template('admin_panel.html', users=[])
-
-@app.route('/admin/logout')
-def admin_logout():
-    try:
-        session.pop('admin_logged_in', None)
-        return redirect(url_for('home'))
-    except Exception as e:
-        print(f"Admin logout error: {e}")
-        return redirect(url_for('home'))
 
 # Vercel serverless function handler
 def handler(event, context):

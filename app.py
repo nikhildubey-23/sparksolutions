@@ -13,15 +13,8 @@ import io
 import csv
 import datetime
 import re
-import firebase_admin
-from firebase_admin import credentials, auth
-from datetime import datetime as dt
 
 load_dotenv()
-
-# Initialize Firebase Admin SDK
-cred = credentials.Certificate('firebase-service-account.json')
-firebase_admin.initialize_app(cred)
 
 app = Flask(__name__)
 app.secret_key = os.getenv("FLASK_SECRET_KEY", "supersecretkey")
@@ -231,70 +224,7 @@ def contact():
 
     return render_template('contact.html', form=form)
 
-@app.route('/login')
-def login():
-    return render_template('login.html')
 
-@app.route('/signup')
-def signup():
-    return render_template('signup.html')
-
-@app.route('/logout')
-def logout():
-    # Client-side logout handled by Firebase JS
-    return redirect(url_for('home'))
-
-@app.route('/admin/login', methods=['GET', 'POST'])
-def admin_login():
-    if request.method == 'POST':
-        username = request.form.get('username')
-        password = request.form.get('password')
-
-        if username == 'founder' and password == 'nickfounder@123':
-            session['admin_logged_in'] = True
-            return redirect(url_for('admin_panel'))
-        else:
-            flash('Invalid credentials', 'error')
-
-    return render_template('admin_login.html')
-
-@app.route('/admin')
-def admin_panel():
-    if not session.get('admin_logged_in'):
-        return redirect(url_for('admin_login'))
-
-    try:
-        # Get all users from Firebase Auth
-        users = []
-        page = auth.list_users()
-        while page:
-            for user in page.users:
-                # Format timestamps
-                creation_time = dt.fromtimestamp(user.user_metadata.creation_timestamp / 1000) if user.user_metadata.creation_timestamp else None
-                last_sign_in_time = dt.fromtimestamp(user.user_metadata.last_sign_in_timestamp / 1000) if user.user_metadata.last_sign_in_timestamp else None
-
-                users.append({
-                    'uid': user.uid,
-                    'email': user.email,
-                    'display_name': user.display_name,
-                    'phone_number': user.phone_number,
-                    'email_verified': user.email_verified,
-                    'disabled': user.disabled,
-                    'creation_timestamp': creation_time.strftime('%Y-%m-%d %H:%M:%S') if creation_time else 'N/A',
-                    'last_sign_in_timestamp': last_sign_in_time.strftime('%Y-%m-%d %H:%M:%S') if last_sign_in_time else 'N/A',
-                    'provider_data': [{'provider_id': provider.provider_id, 'email': provider.email} for provider in user.provider_data]
-                })
-            page = page.get_next_page()
-
-        return render_template('admin_panel.html', users=users)
-    except Exception as e:
-        flash(f'Error fetching users: {str(e)}', 'error')
-        return render_template('admin_panel.html', users=[])
-
-@app.route('/admin/logout')
-def admin_logout():
-    session.pop('admin_logged_in', None)
-    return redirect(url_for('home'))
 
 if __name__ == '__main__':
     app.run(debug=True)
