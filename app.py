@@ -15,6 +15,7 @@ import datetime
 import re
 import firebase_admin
 from firebase_admin import credentials, auth
+from datetime import datetime as dt
 
 load_dotenv()
 
@@ -268,6 +269,10 @@ def admin_panel():
         page = auth.list_users()
         while page:
             for user in page.users:
+                # Format timestamps
+                creation_time = dt.fromtimestamp(user.user_metadata.creation_timestamp / 1000) if user.user_metadata.creation_timestamp else None
+                last_sign_in_time = dt.fromtimestamp(user.user_metadata.last_sign_in_timestamp / 1000) if user.user_metadata.last_sign_in_timestamp else None
+
                 users.append({
                     'uid': user.uid,
                     'email': user.email,
@@ -275,8 +280,8 @@ def admin_panel():
                     'phone_number': user.phone_number,
                     'email_verified': user.email_verified,
                     'disabled': user.disabled,
-                    'creation_timestamp': user.user_metadata.creation_timestamp,
-                    'last_sign_in_timestamp': user.user_metadata.last_sign_in_timestamp,
+                    'creation_timestamp': creation_time.strftime('%Y-%m-%d %H:%M:%S') if creation_time else 'N/A',
+                    'last_sign_in_timestamp': last_sign_in_time.strftime('%Y-%m-%d %H:%M:%S') if last_sign_in_time else 'N/A',
                     'provider_data': [{'provider_id': provider.provider_id, 'email': provider.email} for provider in user.provider_data]
                 })
             page = page.get_next_page()
