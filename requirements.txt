@@ -1,7 +1,6 @@
-flask
-flask_cors
+Flask
+Flask-CORS
 bcrypt
+python-dotenv
 flask_wtf
 email-validator
-WTForms
-Werkzeug
