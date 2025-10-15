@@ -69,14 +69,14 @@
                       </td>
                       <td>
                         {% if user.creation_timestamp %}
-                          <small>{{ user.creation_timestamp | datetime }}</small>
+                          <small>{{ user.creation_timestamp }}</small>
                         {% else %}
                           N/A
                         {% endif %}
                       </td>
                       <td>
                         {% if user.last_sign_in_timestamp %}
-                          <small>{{ user.last_sign_in_timestamp | datetime }}</small>
+                          <small>{{ user.last_sign_in_timestamp }}</small>
                         {% else %}
                           Never
                         {% endif %}
