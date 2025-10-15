@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block title %}Sign Up - SN VERSE{% endblock %}
+
+{% block head %}
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+  import { getAuth, createUserWithEmailAndPassword, updateProfile, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyBI6hmNvBXMlfPk2BXogdnawMIce7Hy2_Q",
+    authDomain: "snverse-8c20d.firebaseapp.com",
+    projectId: "snverse-8c20d",
+    storageBucket: "snverse-8c20d.firebasestorage.app",
+    messagingSenderId: "214576349099",
+    appId: "1:214576349099:web:4f6517e2d58e00174b9cee",
+    measurementId: "G-2DBRZXKCC4"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const provider = new GoogleAuthProvider();
+
+  document.getElementById('signupForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const phone = document.getElementById('phone').value;
+
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      // Update profile with phone number (Firebase Auth doesn't store phone directly, but we can use displayName or custom claims)
+      await updateProfile(user, {
+        displayName: phone // Storing phone in displayName for simplicity; in production, use Firestore or custom claims
+      });
+
+      alert('Sign up successful!');
+      window.location.href = '/';
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Sign up failed: ' + error.message);
+    }
+  });
+
+  document.getElementById('googleSignup').addEventListener('click', async () => {
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+      const idToken = await user.getIdToken();
+
+      alert('Google sign up successful!');
+      window.location.href = '/';
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Google sign up failed: ' + error.message);
+    }
+  });
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Sign Up</h3>
+      </div>
+      <div class="card-body">
+        <form id="signupForm">
+          <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" required>
+          </div>
+          <div class="mb-3">
+            <label for="phone" class="form-label">Phone Number</label>
+            <input type="tel" class="form-control" id="phone" required>
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password" required>
+          </div>
+          <button type="submit" class="btn btn-primary">Sign Up</button>
+        </form>
+        <hr>
+        <button id="googleSignup" class="btn btn-outline-danger w-100">
+          <i class="fab fa-google"></i> Sign Up with Google
+        </button>
+        <p class="mt-3">Already have an account? <a href="/login">Login</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block title %}Login - SN VERSE{% endblock %}
+
+{% block head %}
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+  import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyBI6hmNvBXMlfPk2BXogdnawMIce7Hy2_Q",
+    authDomain: "snverse-8c20d.firebaseapp.com",
+    projectId: "snverse-8c20d",
+    storageBucket: "snverse-8c20d.firebasestorage.app",
+    messagingSenderId: "214576349099",
+    appId: "1:214576349099:web:4f6517e2d58e00174b9cee",
+    measurementId: "G-2DBRZXKCC4"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const provider = new GoogleAuthProvider();
+
+  document.getElementById('loginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+      const idToken = await user.getIdToken();
+
+      alert('Login successful!');
+      window.location.href = '/';
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Login failed: ' + error.message);
+    }
+  });
+
+  document.getElementById('googleLogin').addEventListener('click', async () => {
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+      const idToken = await user.getIdToken();
+
+      alert('Google login successful!');
+      window.location.href = '/';
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Google login failed: ' + error.message);
+    }
+  });
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Login</h3>
+      </div>
+      <div class="card-body">
+        <form id="loginForm">
+          <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" required>
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password" required>
+          </div>
+          <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+        <hr>
+        <button id="googleLogin" class="btn btn-outline-danger w-100">
+          <i class="fab fa-google"></i> Login with Google
+        </button>
+        <p class="mt-3">Don't have an account? <a href="/signup">Sign up</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

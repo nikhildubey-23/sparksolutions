@@ -4,3 +4,4 @@ bcrypt
 python-dotenv
 flask_wtf
 email-validator
+firebase-admin
