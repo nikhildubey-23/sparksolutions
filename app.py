@@ -13,12 +13,19 @@ import io
 import csv
 import datetime
 import re
+from flask_sqlalchemy import SQLAlchemy
 
 load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = os.getenv("FLASK_SECRET_KEY", "supersecretkey")
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///practice_results.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
 CORS(app)
+
+with app.app_context():
+    db.create_all()
 
 # Email setup
 EMAIL_USER = "sparksolutionfreelancing@gmail.com"
@@ -50,6 +57,13 @@ def validate_phone(phone):
         return True
     regex = r'^\+?[\d\s\-]{7,15}$'
     return re.match(regex, phone)
+
+class PracticeResult(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    mobile = db.Column(db.String(20), nullable=False)
+    email = db.Column(db.String(100), nullable=False)
+    marks = db.Column(db.Integer, nullable=False)
 
 class ContactForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
@@ -225,17 +239,13 @@ def submit_practice():
     if 'for' in code2 or 'while' in code2:
         score += 2
 
-    # Save to CSV
-    csv_file = 'practice_results.csv'
+    # Save to DB
     try:
-        file_exists = os.path.isfile(csv_file)
-        with open(csv_file, 'a', newline='') as f:
-            writer = csv.writer(f)
-            if not file_exists:
-                writer.writerow(['Name', 'Mobile', 'Email', 'Marks'])
-            writer.writerow([name, mobile, email, score])
+        new_result = PracticeResult(name=name, mobile=mobile, email=email, marks=score)
+        db.session.add(new_result)
+        db.session.commit()
     except Exception as e:
-        print(f"CSV save failed: {e}")
+        print(f"DB save failed: {e}")
         # Continue without saving for serverless environments
 
     flash(f"Test submitted! Your score: {score}/27", "success")
@@ -260,17 +270,13 @@ def admin():
     if not session.get('admin'):
         return render_template('admin_login.html')
 
-    # Load CSV data
-    csv_file = 'practice_results.csv'
-    data = []
+    # Load DB data
     try:
-        if os.path.isfile(csv_file):
-            with open(csv_file, 'r') as f:
-                reader = csv.DictReader(f)
-                data = list(reader)
+        results = PracticeResult.query.all()
+        data = [{'id': r.id, 'Name': r.name, 'Mobile': r.mobile, 'Email': r.email, 'Marks': str(r.marks)} for r in results]
     except Exception as e:
-        print(f"CSV load failed: {e}")
-        # Continue with empty data for serverless environments
+        print(f"DB load failed: {e}")
+        data = []
 
     # Sort by marks descending
     data.sort(key=lambda x: int(x['Marks']), reverse=True)
@@ -282,25 +288,24 @@ def admin():
 
     return render_template('admin.html', data=data, filter_name=filter_name)
 
-@app.route('/delete/<int:index>', methods=['POST'])
-def delete_record(index):
+@app.route('/delete/<int:id>', methods=['POST'])
+def delete(id):
     if not session.get('admin'):
+        flash("Access denied!", "error")
         return redirect(url_for('admin'))
 
-    csv_file = 'practice_results.csv'
-    if os.path.isfile(csv_file):
-        with open(csv_file, 'r') as f:
-            reader = csv.DictReader(f)
-            data = list(reader)
-
-        if 0 <= index < len(data):
-            del data[index]
-
-        with open(csv_file, 'w', newline='') as f:
-            if data:
-                writer = csv.DictWriter(f, fieldnames=['Name', 'Mobile', 'Email', 'Marks'])
-                writer.writeheader()
-                writer.writerows(data)
+    # Delete from DB
+    try:
+        result = PracticeResult.query.get(id)
+        if result:
+            db.session.delete(result)
+            db.session.commit()
+            flash("Record deleted successfully!", "success")
+        else:
+            flash("Record not found!", "error")
+    except Exception as e:
+        print(f"DB delete failed: {e}")
+        flash("Delete failed!", "error")
 
     return redirect(url_for('admin'))
 
