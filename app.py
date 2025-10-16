@@ -150,10 +150,12 @@ def submit_practice():
     Email: {email}
     Marks: {score}/27
     """
-    send_email("New Practice Test Submission", email_body, EMAIL_USER)
-
-    flash(f"Test submitted! Your score: {score}/27", "success")
-    return redirect(url_for('practice'))
+    if send_email("New Practice Test Submission", email_body, EMAIL_USER):
+        flash(f"Test submitted! Your score: {score}/27. Email notification sent.", "success")
+        return render_template('success.html')
+    else:
+        flash(f"Test submitted! Your score: {score}/27. Email notification failed - please contact support.", "error")
+        return redirect(url_for('practice'))
 
 @app.route('/css')
 def css():
