@@ -227,12 +227,16 @@ def submit_practice():
 
     # Save to CSV
     csv_file = 'practice_results.csv'
-    file_exists = os.path.isfile(csv_file)
-    with open(csv_file, 'a', newline='') as f:
-        writer = csv.writer(f)
-        if not file_exists:
-            writer.writerow(['Name', 'Mobile', 'Email', 'Marks'])
-        writer.writerow([name, mobile, email, score])
+    try:
+        file_exists = os.path.isfile(csv_file)
+        with open(csv_file, 'a', newline='') as f:
+            writer = csv.writer(f)
+            if not file_exists:
+                writer.writerow(['Name', 'Mobile', 'Email', 'Marks'])
+            writer.writerow([name, mobile, email, score])
+    except Exception as e:
+        print(f"CSV save failed: {e}")
+        # Continue without saving for serverless environments
 
     flash(f"Test submitted! Your score: {score}/27", "success")
     return redirect(url_for('practice'))
@@ -259,10 +263,14 @@ def admin():
     # Load CSV data
     csv_file = 'practice_results.csv'
     data = []
-    if os.path.isfile(csv_file):
-        with open(csv_file, 'r') as f:
-            reader = csv.DictReader(f)
-            data = list(reader)
+    try:
+        if os.path.isfile(csv_file):
+            with open(csv_file, 'r') as f:
+                reader = csv.DictReader(f)
+                data = list(reader)
+    except Exception as e:
+        print(f"CSV load failed: {e}")
+        # Continue with empty data for serverless environments
 
     # Sort by marks descending
     data.sort(key=lambda x: int(x['Marks']), reverse=True)
