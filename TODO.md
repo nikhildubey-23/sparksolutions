@@ -1,16 +1,7 @@
-# TODO: Replace CSV with SQLAlchemy for Practice Results
+# TODO List for Practice Test Update
 
-## Steps to Complete
-
-- [x] Add SQLAlchemy imports and setup in app.py
-- [x] Define PracticeResult model with id, name, mobile, email, marks
-- [x] Update /submit-practice route to save to DB instead of CSV
-- [x] Update /admin route to query, sort, and filter from DB
-- [x] Update /delete/<int:index> to /delete/<int:id> and delete by id
-- [x] Ensure DB is created on app startup
-- [x] Test /submit-practice for saving
-- [x] Test /admin for loading, sorting, filtering
-- [x] Test /delete/<id> for deletion
-- [x] Verify no CSV file is used anymore
-- [x] Update practice.html with student details form
-- [x] Create admin panel templates
+- [x] Update practice.html: Add input fields for student name, mobile number, and email before the questions.
+- [x] Update app.py: Modify /submit-practice to send email with name, mobile, email, and marks instead of saving to CSV.
+- [x] Remove admin panel routes and templates since no CSV storage.
+- [x] Add negative marking: -1 mark for each wrong answer in multiple choice questions.
+- [ ] Test the functionality: Submit form and check if email is sent with correct score calculation.

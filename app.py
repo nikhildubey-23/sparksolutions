@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, request, redirect, url_for, flash, session, send_file, jsonify
+from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, SelectField
 from wtforms.validators import DataRequired, Email, Optional
@@ -8,32 +8,13 @@ from dotenv import load_dotenv
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-import bcrypt
-import io
-import csv
-import datetime
 import re
-from flask_sqlalchemy import SQLAlchemy
 
 load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = os.getenv("FLASK_SECRET_KEY", "supersecretkey")
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///practice_results.db')
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db = SQLAlchemy(app)
 CORS(app)
-
-# Create tables on startup
-def create_tables():
-    try:
-        with app.app_context():
-            db.create_all()
-            print("Tables created on startup")
-    except Exception as e:
-        print(f"Table creation failed: {e}")
-
-create_tables()
 
 # Email setup
 EMAIL_USER = "sparksolutionfreelancing@gmail.com"
@@ -66,12 +47,7 @@ def validate_phone(phone):
     regex = r'^\+?[\d\s\-]{7,15}$'
     return re.match(regex, phone)
 
-class PracticeResult(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    mobile = db.Column(db.String(20), nullable=False)
-    email = db.Column(db.String(100), nullable=False)
-    marks = db.Column(db.Integer, nullable=False)
+
 
 class ContactForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
@@ -131,6 +107,53 @@ def previous_work():
 @app.route('/practice')
 def practice():
     return render_template('practice.html')
+
+@app.route('/submit-practice', methods=['POST'])
+def submit_practice():
+    name = request.form.get('name')
+    mobile = request.form.get('mobile')
+    email = request.form.get('email')
+
+    if not all([name, mobile, email]):
+        flash("All student details are required!", "error")
+        return redirect(url_for('practice'))
+
+    # Calculate score with negative marking
+    score = 0
+    answers = {
+        'q1': 'a', 'q2': 'a', 'q3': 'a', 'q4': 'b', 'q5': 'b', 'q6': 'a', 'q7': 'a', 'q8': 'b', 'q9': 'a', 'q10': 'b',
+        'q11': 'b', 'q12': 'c', 'q13': 'c', 'q14': 'b', 'q15': 'd', 'q16': 'b', 'q17': 'b', 'q18': 'b', 'q19': 'b',
+        'q20': 'a', 'q21': 'b', 'q22': 'b', 'q23': 'c', 'q24': 'd', 'q25': 'b'
+    }
+
+    for q, ans in answers.items():
+        selected = request.form.get(q)
+        if selected == ans:
+            score += 1
+        elif selected:  # If answered but wrong
+            score -= 1
+
+    # Coding checks (bonus, no negative)
+    code1 = request.form.get('code1', '')
+    code2 = request.form.get('code2', '')
+    if 'def' in code1 and 'return' in code1:
+        score += 2
+    if 'for' in code2 or 'while' in code2:
+        score += 2
+
+    # Send email with details
+    email_body = f"""
+    New Practice Test Submission:
+
+    Name: {name}
+    Mobile: {mobile}
+    Email: {email}
+    Marks: {score}/27
+    """
+    send_email("New Practice Test Submission", email_body, EMAIL_USER)
+
+    flash(f"Test submitted! Your score: {score}/27", "success")
+    return redirect(url_for('practice'))
 
 @app.route('/css')
 def css():
@@ -216,113 +239,11 @@ def enroll():
     flash("Enrollment successful! We will contact you soon.", "success")
     return render_template('success.html')
 
-@app.route('/submit-practice', methods=['POST'])
-def submit_practice():
-    name = request.form.get('name')
-    mobile = request.form.get('mobile')
-    email = request.form.get('email')
 
-    if not all([name, mobile, email]):
-        flash("All student details are required!", "error")
-        return redirect(url_for('practice'))
 
-    # Calculate score
-    score = 0
-    answers = {
-        'q1': 'a', 'q2': 'a', 'q3': 'a', 'q4': 'b', 'q5': 'b', 'q6': 'a', 'q7': 'a', 'q8': 'b', 'q9': 'a', 'q10': 'b',
-        'q11': 'b', 'q12': 'c', 'q13': 'c', 'q14': 'b', 'q15': 'd', 'q16': 'b', 'q17': 'b', 'q18': 'b', 'q19': 'b',
-        'q20': 'a', 'q21': 'b', 'q22': 'b', 'q23': 'c', 'q24': 'd', 'q25': 'b'
-    }
 
-    for q, ans in answers.items():
-        selected = request.form.get(q)
-        if selected == ans:
-            score += 1
 
-    # Coding checks
-    code1 = request.form.get('code1', '')
-    code2 = request.form.get('code2', '')
-    if 'def' in code1 and 'return' in code1:
-        score += 2
-    if 'for' in code2 or 'while' in code2:
-        score += 2
 
-    # Save to DB
-    try:
-        new_result = PracticeResult(name=name, mobile=mobile, email=email, marks=score)
-        db.session.add(new_result)
-        db.session.commit()
-        print(f"DB save successful: {name}, {score}")
-    except Exception as e:
-        print(f"DB save failed: {e}")
-        db.session.rollback()
-        # Continue without saving for serverless environments
-        flash("Test submitted but data not saved due to server issue.", "warning")
-
-    flash(f"Test submitted! Your score: {score}/27", "success")
-    return redirect(url_for('practice'))
-
-@app.route('/admin', methods=['GET', 'POST'])
-def admin():
-    if request.args.get('logout'):
-        session.pop('admin', None)
-        return redirect(url_for('admin'))
-
-    if request.method == 'POST':
-        username = request.form.get('username')
-        password = request.form.get('password')
-        if username == 'nick' and password == 'nick@123':
-            session['admin'] = True
-            return redirect(url_for('admin'))
-        else:
-            flash("Invalid credentials!", "error")
-            return redirect(url_for('admin'))
-
-    if not session.get('admin'):
-        return render_template('admin_login.html')
-
-    # Load DB data
-    try:
-        results = PracticeResult.query.all()
-        data = [{'id': r.id, 'Name': r.name, 'Mobile': r.mobile, 'Email': r.email, 'Marks': str(r.marks)} for r in results]
-        print(f"DB load successful: {len(data)} records")
-    except Exception as e:
-        print(f"DB load failed: {e}")
-        data = []
-        flash("Failed to load data due to server issue.", "error")
-
-    # Sort by marks descending
-    data.sort(key=lambda x: int(x['Marks']), reverse=True)
-
-    # Filter by name if provided
-    filter_name = request.args.get('filter_name', '').lower()
-    if filter_name:
-        data = [row for row in data if filter_name in row['Name'].lower()]
-
-    return render_template('admin.html', data=data, filter_name=filter_name)
-
-@app.route('/delete/<int:id>', methods=['POST'])
-def delete(id):
-    if not session.get('admin'):
-        flash("Access denied!", "error")
-        return redirect(url_for('admin'))
-
-    # Delete from DB
-    try:
-        result = PracticeResult.query.get(id)
-        if result:
-            db.session.delete(result)
-            db.session.commit()
-            print(f"DB delete successful: {id}")
-            flash("Record deleted successfully!", "success")
-        else:
-            flash("Record not found!", "error")
-    except Exception as e:
-        print(f"DB delete failed: {e}")
-        db.session.rollback()
-        flash("Delete failed due to server issue!", "error")
-
-    return redirect(url_for('admin'))
 
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
@@ -355,4 +276,4 @@ def contact():
     return render_template('contact.html', form=form)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
