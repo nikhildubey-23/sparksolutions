@@ -26,16 +26,27 @@ def send_email(subject, body, to_email):
     msg['To'] = to_email
     msg['Subject'] = subject
     msg.attach(MIMEText(body, 'plain'))
+
+    # Try SSL port 465 first (more compatible with serverless)
     try:
-        server = smtplib.SMTP('smtp.gmail.com', 587)
-        server.starttls()
+        server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
         server.login(EMAIL_USER, EMAIL_APP_PASSWORD)
         server.send_message(msg)
         server.quit()
         return True
     except Exception as e:
-        print(f"Email sending failed: {e}")
-        return False
+        print(f"SSL SMTP failed: {e}")
+        # Fallback to TLS port 587
+        try:
+            server = smtplib.SMTP('smtp.gmail.com', 587)
+            server.starttls()
+            server.login(EMAIL_USER, EMAIL_APP_PASSWORD)
+            server.send_message(msg)
+            server.quit()
+            return True
+        except Exception as e2:
+            print(f"TLS SMTP also failed: {e2}")
+            return False
 
 def validate_email(email):
     regex = r'^\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b'
