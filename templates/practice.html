@@ -8,7 +8,22 @@
         <h1 class="mb-4">Python Practice Test</h1>
         <p>Test your Python knowledge with multiple choice questions and coding challenges.</p>
 
-        <form id="practice-form">
+        <form id="practice-form" action="/submit-practice" method="POST">
+            <!-- Student Details -->
+            <h3>Student Information</h3>
+            <div class="mb-3">
+                <label for="student-name" class="form-label">Name</label>
+                <input type="text" class="form-control" id="student-name" name="name" required>
+            </div>
+            <div class="mb-3">
+                <label for="student-mobile" class="form-label">Mobile Number</label>
+                <input type="tel" class="form-control" id="student-mobile" name="mobile" required>
+            </div>
+            <div class="mb-3">
+                <label for="student-email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="student-email" name="email" required>
+            </div>
+
             <!-- Original Questions -->
             <h3>Python Basics</h3>
             <div class="mb-3">
@@ -486,15 +501,15 @@
             <h3>Coding Questions</h3>
             <div class="mb-3">
                 <p>26. Write a function to add two numbers.</p>
-                <textarea class="form-control" id="code1" rows="5" placeholder="Write your code here"></textarea>
+                <textarea class="form-control" id="code1" name="code1" rows="5" placeholder="Write your code here"></textarea>
             </div>
 
             <div class="mb-3">
                 <p>27. Write a loop to print numbers 1 to 5.</p>
-                <textarea class="form-control" id="code2" rows="5" placeholder="Write your code here"></textarea>
+                <textarea class="form-control" id="code2" name="code2" rows="5" placeholder="Write your code here"></textarea>
             </div>
 
-            <button type="button" class="btn btn-primary" onclick="submitTest()">Submit Test</button>
+            <button type="submit" class="btn btn-primary">Submit Test</button>
         </form>
 
         <div id="results" class="mt-4" style="display: none;">
@@ -504,59 +519,5 @@
     </div>
 </section>
 
-<script>
-function submitTest() {
-    let score = 0;
-    const answers = {
-        // Original questions answers
-        q1: 'a',
-        q2: 'a',
-        q3: 'a',
-        q4: 'b',
-        q5: 'b',
-        q6: 'a',
-        q7: 'a',
-        q8: 'b',
-        q9: 'a',
-        q10: 'b',
-        // New questions answers
-        q11: 'b',
-        q12: 'c',
-        q13: 'c',
-        q14: 'b',
-        q15: 'd',
-        q16: 'b',
-        q17: 'b',
-        q18: 'b',
-        q19: 'b',
-        q20: 'a',
-        q21: 'b',
-        q22: 'b',
-        q23: 'c',
-        q24: 'd',
-        q25: 'b'
-    };
 
-    for (let q in answers) {
-        const selected = document.querySelector(`input[name="${q}"]:checked`);
-        if (selected && selected.value === answers[q]) {
-            score++;
-        }
-    }
-
-    // Simple coding checks
-    const code1 = document.getElementById('code1').value;
-    const code2 = document.getElementById('code2').value;
-
-    if (code1.includes('def') && code1.includes('return')) {
-        score += 2;
-    }
-    if (code2.includes('for') || code2.includes('while')) {
-        score += 2;
-    }
-
-    document.getElementById('score').textContent = `You scored ${score}/27`;
-    document.getElementById('results').style.display = 'block';
-}
-</script>
 {% endblock %}

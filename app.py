@@ -194,6 +194,108 @@ def enroll():
     flash("Enrollment successful! We will contact you soon.", "success")
     return render_template('success.html')
 
+@app.route('/submit-practice', methods=['POST'])
+def submit_practice():
+    name = request.form.get('name')
+    mobile = request.form.get('mobile')
+    email = request.form.get('email')
+
+    if not all([name, mobile, email]):
+        flash("All student details are required!", "error")
+        return redirect(url_for('practice'))
+
+    # Calculate score
+    score = 0
+    answers = {
+        'q1': 'a', 'q2': 'a', 'q3': 'a', 'q4': 'b', 'q5': 'b', 'q6': 'a', 'q7': 'a', 'q8': 'b', 'q9': 'a', 'q10': 'b',
+        'q11': 'b', 'q12': 'c', 'q13': 'c', 'q14': 'b', 'q15': 'd', 'q16': 'b', 'q17': 'b', 'q18': 'b', 'q19': 'b',
+        'q20': 'a', 'q21': 'b', 'q22': 'b', 'q23': 'c', 'q24': 'd', 'q25': 'b'
+    }
+
+    for q, ans in answers.items():
+        selected = request.form.get(q)
+        if selected == ans:
+            score += 1
+
+    # Coding checks
+    code1 = request.form.get('code1', '')
+    code2 = request.form.get('code2', '')
+    if 'def' in code1 and 'return' in code1:
+        score += 2
+    if 'for' in code2 or 'while' in code2:
+        score += 2
+
+    # Save to CSV
+    csv_file = 'practice_results.csv'
+    file_exists = os.path.isfile(csv_file)
+    with open(csv_file, 'a', newline='') as f:
+        writer = csv.writer(f)
+        if not file_exists:
+            writer.writerow(['Name', 'Mobile', 'Email', 'Marks'])
+        writer.writerow([name, mobile, email, score])
+
+    flash(f"Test submitted! Your score: {score}/27", "success")
+    return redirect(url_for('practice'))
+
+@app.route('/admin', methods=['GET', 'POST'])
+def admin():
+    if request.args.get('logout'):
+        session.pop('admin', None)
+        return redirect(url_for('admin'))
+
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+        if username == 'nick' and password == 'nick@123':
+            session['admin'] = True
+            return redirect(url_for('admin'))
+        else:
+            flash("Invalid credentials!", "error")
+            return redirect(url_for('admin'))
+
+    if not session.get('admin'):
+        return render_template('admin_login.html')
+
+    # Load CSV data
+    csv_file = 'practice_results.csv'
+    data = []
+    if os.path.isfile(csv_file):
+        with open(csv_file, 'r') as f:
+            reader = csv.DictReader(f)
+            data = list(reader)
+
+    # Sort by marks descending
+    data.sort(key=lambda x: int(x['Marks']), reverse=True)
+
+    # Filter by name if provided
+    filter_name = request.args.get('filter_name', '').lower()
+    if filter_name:
+        data = [row for row in data if filter_name in row['Name'].lower()]
+
+    return render_template('admin.html', data=data, filter_name=filter_name)
+
+@app.route('/delete/<int:index>', methods=['POST'])
+def delete_record(index):
+    if not session.get('admin'):
+        return redirect(url_for('admin'))
+
+    csv_file = 'practice_results.csv'
+    if os.path.isfile(csv_file):
+        with open(csv_file, 'r') as f:
+            reader = csv.DictReader(f)
+            data = list(reader)
+
+        if 0 <= index < len(data):
+            del data[index]
+
+        with open(csv_file, 'w', newline='') as f:
+            if data:
+                writer = csv.DictWriter(f, fieldnames=['Name', 'Mobile', 'Email', 'Marks'])
+                writer.writeheader()
+                writer.writerows(data)
+
+    return redirect(url_for('admin'))
+
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
     form = ContactForm()
