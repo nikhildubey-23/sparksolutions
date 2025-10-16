@@ -152,8 +152,9 @@ def submit_practice():
     if 'for' in code2 or 'while' in code2:
         score += 2
 
-    # Send email with details
-    email_body = f"""
+    # Send email to admin
+    admin_subject = f"New Practice Test Submission from {name}"
+    admin_body = f"""
     New Practice Test Submission:
 
     Name: {name}
@@ -161,11 +162,32 @@ def submit_practice():
     Email: {email}
     Marks: {score}/27
     """
-    if send_email("New Practice Test Submission", email_body, EMAIL_USER):
-        flash(f"Test submitted! Your score: {score}/27. Email notification sent.", "success")
+    admin_sent = send_email(admin_subject, admin_body, EMAIL_USER)
+
+    # Send confirmation email to student
+    student_subject = "Your Practice Test Result"
+    student_body = f"""
+    Dear {name},
+
+    Your practice test has been submitted successfully.
+
+    Your score: {score}/27
+
+    Thank you for participating!
+
+    Best regards,
+    Spark Solution Team
+    """
+    student_sent = send_email(student_subject, student_body, email)
+
+    if admin_sent and student_sent:
+        flash(f"Test submitted! Your score: {score}/27. Email notifications sent.", "success")
+        return render_template('success.html')
+    elif admin_sent or student_sent:
+        flash(f"Test submitted! Your score: {score}/27. Some email notifications sent.", "warning")
         return render_template('success.html')
     else:
-        flash(f"Test submitted! Your score: {score}/27. Email notification failed - please contact support.", "error")
+        flash(f"Test submitted! Your score: {score}/27. Email notifications failed.", "error")
         return redirect(url_for('practice'))
 
 @app.route('/css')
