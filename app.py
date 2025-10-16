@@ -19,13 +19,21 @@ load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = os.getenv("FLASK_SECRET_KEY", "supersecretkey")
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///practice_results.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///practice_results.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 CORS(app)
 
-with app.app_context():
-    db.create_all()
+# Create tables on startup
+def create_tables():
+    try:
+        with app.app_context():
+            db.create_all()
+            print("Tables created on startup")
+    except Exception as e:
+        print(f"Table creation failed: {e}")
+
+create_tables()
 
 # Email setup
 EMAIL_USER = "sparksolutionfreelancing@gmail.com"
@@ -244,9 +252,12 @@ def submit_practice():
         new_result = PracticeResult(name=name, mobile=mobile, email=email, marks=score)
         db.session.add(new_result)
         db.session.commit()
+        print(f"DB save successful: {name}, {score}")
     except Exception as e:
         print(f"DB save failed: {e}")
+        db.session.rollback()
         # Continue without saving for serverless environments
+        flash("Test submitted but data not saved due to server issue.", "warning")
 
     flash(f"Test submitted! Your score: {score}/27", "success")
     return redirect(url_for('practice'))
@@ -274,9 +285,11 @@ def admin():
     try:
         results = PracticeResult.query.all()
         data = [{'id': r.id, 'Name': r.name, 'Mobile': r.mobile, 'Email': r.email, 'Marks': str(r.marks)} for r in results]
+        print(f"DB load successful: {len(data)} records")
     except Exception as e:
         print(f"DB load failed: {e}")
         data = []
+        flash("Failed to load data due to server issue.", "error")
 
     # Sort by marks descending
     data.sort(key=lambda x: int(x['Marks']), reverse=True)
@@ -300,12 +313,14 @@ def delete(id):
         if result:
             db.session.delete(result)
             db.session.commit()
+            print(f"DB delete successful: {id}")
             flash("Record deleted successfully!", "success")
         else:
             flash("Record not found!", "error")
     except Exception as e:
         print(f"DB delete failed: {e}")
-        flash("Delete failed!", "error")
+        db.session.rollback()
+        flash("Delete failed due to server issue!", "error")
 
     return redirect(url_for('admin'))
 

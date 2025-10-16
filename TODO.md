@@ -12,3 +12,5 @@
 - [x] Test /admin for loading, sorting, filtering
 - [x] Test /delete/<id> for deletion
 - [x] Verify no CSV file is used anymore
+- [x] Update practice.html with student details form
+- [x] Create admin panel templates
