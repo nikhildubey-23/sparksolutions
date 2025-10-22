@@ -1,14 +1,13 @@
-# TODO: Fix Email Sending on Deployed System (Vercel)
+# TODO List for Adding Course Modules
 
-## Issue Summary
-- Email sending works on local system but fails on Vercel deployment.
-- Vercel blocks SMTP connections (port 587), causing Gmail SMTP to fail.
-- Logs show 302 error (redirect after email failure).
-
-## Alternative Solutions (Since SendGrid not wanted)
-- [x] Try using Gmail SMTP with different port (465 SSL) instead of 587 TLS.
-- [x] Modified practice page to send emails to both admin and student (like contact and course pages).
-- [ ] Check if Vercel allows outbound connections to smtp.gmail.com.
-- [ ] Consider using a different email provider that works with Vercel.
-- [ ] Test with a simple curl command to check SMTP connectivity from Vercel.
-- [ ] Deploy changes to Vercel and test.
+- [x] Add module routes in app.py for all 9 courses
+- [x] Create python_module.html template
+- [x] Create data_analysis_module.html template
+- [x] Create html_css_js_react_module.html template
+- [x] Create javascript_dsa_module.html template
+- [x] Create nodejs_module.html template
+- [x] Create flask_module.html template
+- [x] Create django_module.html template
+- [x] Create nextjs_module.html template
+- [x] Create video_editing_module.html template
+- [x] Update button links in courses.html to point to new module routes

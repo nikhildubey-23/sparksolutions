@@ -280,6 +280,42 @@ def enroll():
 
 
 
+@app.route('/python-module')
+def python_module():
+    return render_template('python_module.html')
+
+@app.route('/data-analysis-module')
+def data_analysis_module():
+    return render_template('data_analysis_module.html')
+
+@app.route('/html-css-js-react-module')
+def html_css_js_react_module():
+    return render_template('html_css_js_react_module.html')
+
+@app.route('/javascript-dsa-module')
+def javascript_dsa_module():
+    return render_template('javascript_dsa_module.html')
+
+@app.route('/nodejs-module')
+def nodejs_module():
+    return render_template('nodejs_module.html')
+
+@app.route('/flask-module')
+def flask_module():
+    return render_template('flask_module.html')
+
+@app.route('/django-module')
+def django_module():
+    return render_template('django_module.html')
+
+@app.route('/nextjs-module')
+def nextjs_module():
+    return render_template('nextjs_module.html')
+
+@app.route('/video-editing-module')
+def video_editing_module():
+    return render_template('video_editing_module.html')
+
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
     form = ContactForm()
