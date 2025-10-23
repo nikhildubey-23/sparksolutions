@@ -7,6 +7,11 @@
     <section class="courses-listing service-highlights2 py-5">
         <div class="container">
             <h2 class="text-center mb-4">Our Courses</h2>
+            <div class="row justify-content-center mb-4">
+                <div class="col-md-6">
+                    <input type="text" id="courseSearch" class="form-control" placeholder="Search courses..." onkeyup="filterCourses()">
+                </div>
+            </div>
             <div class="row">
                 <div class="col-md-4 mb-4">
                     <div class="card course-card h-100">
@@ -130,6 +135,119 @@
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="card course-card h-100">
+                        <div class="card-body">
+                            <div style="width: 100%; max-width: 380px; height: 200px; display: flex; justify-content: center; align-items: center; margin: 0 auto 20px;">
+                                <img src="/static/images/docker.jpg" alt="" srcset="" class="img-fluid" style="object-fit: contain; border-radius: 8px;">
+                            </div>
+                            <h5 class="card-title">Docker</h5>
+                            <p class="card-text">Duration: 6 hrs<br>Fee: ₹500 </p>
+                            <a href="/form" class="btn btn-primary">Enroll</a>
+                            <a href="/docker-module" class="btn btn-secondary">Course Module</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card course-card h-100">
+                        <div class="card-body">
+                            <div style="width: 100%; max-width: 380px; height: 200px; display: flex; justify-content: center; align-items: center; margin: 0 auto 20px;">
+                                <img src="/static/images/deb.png" alt="" srcset="" class="img-fluid" style="object-fit: contain; border-radius: 8px;">
+                            </div>
+                            <h5 class="card-title">Linux (deb)</h5>
+                            <p class="card-text">Duration: 6 hrs<br>Fee: ₹600</p>
+                            <a href="/form" class="btn btn-primary">Enroll</a>
+                            <a href="/linux-deb-module" class="btn btn-secondary">Course Module</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card course-card h-100">
+                        <div class="card-body">
+                            <div style="width: 100%; max-width: 380px; height: 200px; display: flex; justify-content: center; align-items: center; margin: 0 auto 20px;">
+                                <img src="/static/images/arch.png" alt="" srcset="" class="img-fluid" style="object-fit: contain; border-radius: 8px;">
+                            </div>
+                            <h5 class="card-title">Linux (arch)</h5>
+                            <p class="card-text">Duration: 6 hrs<br>Fee: ₹600</p>
+                            <a href="/form" class="btn btn-primary">Enroll</a>
+                            <a href="/linux-arch-module" class="btn btn-secondary">Course Module</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="card course-card h-100">
+                        <div class="card-body">
+                            <div style="width: 100%; max-width: 380px; height: 200px; display: flex; justify-content: center; align-items: center; margin: 0 auto 20px;">
+                                <img src="/static/images/c.png" alt="" srcset="" class="img-fluid" style="object-fit: contain; border-radius: 8px;">
+                            </div>
+                            <h5 class="card-title">C lang</h5>
+                            <p class="card-text">Duration: 6 hrs<br>Fee: ₹199 </p>
+                            <a href="/form" class="btn btn-primary">Enroll</a>
+                            <a href="/c-lang-module" class="btn btn-secondary">Course Module</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card course-card h-100">
+                        <div class="card-body">
+                            <div style="width: 100%; max-width: 380px; height: 200px; display: flex; justify-content: center; align-items: center; margin: 0 auto 20px;">
+                                <img src="/static/images/c++.jpg" alt="" srcset="" class="img-fluid" style="object-fit: contain; border-radius: 8px;">
+                            </div>
+                            <h5 class="card-title">C++</h5>
+                            <p class="card-text">Duration: 7 hrs<br>Fee: ₹250 </p>
+                            <a href="/form" class="btn btn-primary">Enroll</a>
+                            <a href="/cpp-module" class="btn btn-secondary">Course Module</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card course-card h-100">
+                        <div class="card-body">
+                            <div style="width: 100%; max-width: 380px; height: 200px; display: flex; justify-content: center; align-items: center; margin: 0 auto 20px;">
+                                <img src="/static/images/java.jpg" alt="" srcset="" class="img-fluid" style="object-fit: contain; border-radius: 8px;">
+                            </div>
+                            <h5 class="card-title">Java with OOPs</h5>
+                            <p class="card-text">Duration: 7 hrs<br>Fee: ₹250</p>
+                            <a href="/form" class="btn btn-primary">Enroll</a>
+                            <a href="/java-oops-module" class="btn btn-secondary">Course Module</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="card course-card h-100">
+                        <div class="card-body">
+                            <div style="width: 100%; max-width: 380px; height: 200px; display: flex; justify-content: center; align-items: center; margin: 0 auto 20px;">
+                                <img src="/static/images/git.jpeg" alt="" srcset="" class="img-fluid" style="object-fit: contain; border-radius: 8px;">
+                            </div>
+                            <h5 class="card-title">Git and GitHub</h5>
+                            <p class="card-text">Duration: 5 hrs<br>Fee: ₹200</p>
+                            <a href="/form" class="btn btn-primary">Enroll</a>
+                            <a href="/git-github-module" class="btn btn-secondary">Course Module</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
+
+    <script>
+        function filterCourses() {
+            const searchInput = document.getElementById('courseSearch').value.toLowerCase();
+            const courseCards = document.querySelectorAll('.course-card');
+
+            courseCards.forEach(card => {
+                const title = card.querySelector('.card-title').textContent.toLowerCase();
+                if (title.includes(searchInput)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    </script>
 {% endblock %}

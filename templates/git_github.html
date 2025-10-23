@@ -1,0 +1,2089 @@
+{% extends 'base.html' %}
+
+{% block title %}Git and GitHub Documentation - SN VERSE{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/github.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/languages/bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.3/purify.min.js"></script>
+    <style>
+        body {
+            background: #f8f9fa;
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #212529;
+        }
+        .sidebar {
+            position: fixed;
+            top: 70px;
+            left: 0;
+            width: 280px;
+            height: calc(100vh - 70px);
+            background: #343a40;
+            border-right: 1px solid #495057;
+            overflow-y: auto;
+            z-index: 1000;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+        }
+        .sidebar .nav-link {
+            color: #adb5bd;
+            padding: 12px 20px;
+            border-radius: 0;
+            margin: 0;
+            transition: all 0.2s ease;
+            font-weight: 500;
+            border-left: 3px solid transparent;
+        }
+        .sidebar .nav-link:hover {
+            background: #495057;
+            color: #fff;
+            text-decoration: none;
+            border-left-color: #f05032;
+        }
+        .sidebar .nav-link.active {
+            background: #f05032;
+            color: #fff;
+            border-left-color: #f05032;
+        }
+        .main-content {
+            margin-left: 280px;
+            padding: 30px;
+            max-width: 1200px;
+        }
+
+        .content-card {
+            margin-bottom: 30px;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            background: #fff;
+        }
+        .content-card .card-header {
+            background: #f05032;
+            color: white;
+            font-weight: 600;
+            font-size: 1.1rem;
+            border-bottom: 1px solid #dee2e6;
+            padding: 15px 20px;
+            border-radius: 8px 8px 0 0;
+        }
+        .search-container {
+            background: rgba(255,255,255,0.9);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .accordion-button:not(.collapsed) {
+            background: #ffeaea;
+            color: #f05032;
+            font-weight: 500;
+        }
+        .accordion-button {
+            border-radius: 0;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+        .accordion-button:focus {
+            box-shadow: none;
+        }
+        .badge-note {
+            background: #e9ecef;
+            color: #495057;
+            font-weight: 500;
+        }
+        .badge-tip {
+            background: #d1ecf1;
+            color: #0c5460;
+            font-weight: 500;
+        }
+        .btn {
+            border-radius: 6px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .copy-button {
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 4px 8px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .copy-button:hover {
+            background: #5a6268;
+            transform: scale(1.05);
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Inter', sans-serif;
+            color: #212529;
+            font-weight: 600;
+        }
+        .card-body {
+            padding: 20px;
+        }
+        .table {
+            margin-bottom: 0;
+        }
+        .table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            border-top: none;
+        }
+        pre {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+        }
+        code {
+            background: #f1f3f4;
+            color: #d73a49;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+        .git-logo {
+            color: #f05032;
+            font-weight: 700;
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+            .main-content {
+                margin-left: 0;
+            }
+        }
+    </style>
+    <script>
+        hljs.highlightAll();
+    </script>
+{% endblock %}
+
+{% block content %}
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar">
+        <div class="p-3">
+            <h5 class="text-center mb-3" style="font-size: 1.1rem; color: #fff; font-weight: 600;"><i class="fab fa-git-alt"></i> <span class="git-logo">Git and GitHub</span> Documentation</h5>
+
+            <!-- Search Box -->
+            <div class="search-container">
+                <input type="text" id="search-input" class="form-control" placeholder="Search documentation..." style="background: rgba(255,255,255,0.9); border: 1px solid #495057; color: #212529;">
+                <button class="btn btn-sm btn-outline-dark mt-2 w-100" onclick="clearSearch()">Clear Search</button>
+            </div>
+
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link" href="#module1"><i class="fas fa-info-circle"></i> Module 1: Introduction to Version Control</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module2"><i class="fas fa-download"></i> Module 2: Git Installation and Setup</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module3"><i class="fas fa-code"></i> Module 3: Basic Git Commands</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module4"><i class="fas fa-code-branch"></i> Module 4: Branching and Merging</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module5"><i class="fab fa-github"></i> Module 5: GitHub Introduction</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module6"><i class="fas fa-cloud-upload-alt"></i> Module 6: Remote Repositories</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module7"><i class="fas fa-pull-request"></i> Module 7: Pull Requests</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module8"><i class="fas fa-tasks"></i> Module 8: Git Workflows</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module9"><i class="fas fa-cogs"></i> Module 9: GitHub Actions</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module10"><i class="fas fa-tools"></i> Module 10: Advanced Git</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div id="content">
+            <h1 class="mb-4" style="text-align: center;"><span class="git-logo">Git and GitHub</span> Documentation</h1>
+            <p style="text-align: center; font-size: 1.1rem; color: #6c757d;">Complete guide to version control with Git and GitHub</p>
+
+            <!-- Module 1: Introduction to Version Control -->
+            <div class="content-card" id="module1">
+                <div class="card-header">
+                    <i class="fas fa-info-circle"></i> Module 1: Introduction to Version Control
+                </div>
+                <div class="card-body">
+                    <h5>What is Version Control?</h5>
+                    <p>Version control is a system that records changes to files over time so you can recall specific versions later. It allows you to track modifications, compare different versions, and collaborate with others on the same project.</p>
+
+                    <h5>Why Use Version Control?</h5>
+                    <ul>
+                        <li><strong>Track Changes:</strong> Keep a history of every change made to your project</li>
+                        <li><strong>Collaboration:</strong> Multiple people can work on the same project simultaneously</li>
+                        <li><strong>Backup:</strong> Your code is stored in multiple locations, reducing risk of data loss</li>
+                        <li><strong>Experimentation:</strong> Create branches to try new ideas without affecting the main code</li>
+                        <li><strong>Revert Changes:</strong> Easily go back to previous versions if something goes wrong</li>
+                    </ul>
+
+                    <h5>Types of Version Control Systems</h5>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                    <th>Examples</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Local VCS</td>
+                                    <td>Single-machine version control</td>
+                                    <td>RCS</td>
+                                </tr>
+                                <tr>
+                                    <td>Centralized VCS</td>
+                                    <td>Single central server containing all versions</td>
+                                    <td>CVS, Subversion</td>
+                                </tr>
+                                <tr>
+                                    <td>Distributed VCS</td>
+                                    <td>Every client has a full copy of the repository</td>
+                                    <td>Git, Mercurial</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h5>Introduction to Git</h5>
+                    <p>Git is a distributed version control system created by Linus Torvalds in 2005. It is:</p>
+                    <ul>
+                        <li><strong>Fast and Efficient:</strong> Most operations are performed locally</li>
+                        <li><strong>Distributed:</strong> Every developer has a full copy of the repository</li>
+                        <li><strong>Secure:</strong> Uses SHA-1 hashing for integrity</li>
+                        <li><strong>Flexible:</strong> Supports various workflows</li>
+                    </ul>
+
+                    <h5>Basic Git Terminology</h5>
+                    <ul>
+                        <li><strong>Repository:</strong> A project's database containing all files and history</li>
+                        <li><strong>Commit:</strong> A snapshot of the repository at a specific point in time</li>
+                        <li><strong>Branch:</strong> An independent line of development</li>
+                        <li><strong>Merge:</strong> Combining changes from different branches</li>
+                        <li><strong>Clone:</strong> Creating a copy of a remote repository</li>
+                        <li><strong>Push:</strong> Sending local commits to a remote repository</li>
+                        <li><strong>Pull:</strong> Fetching changes from a remote repository and merging them</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Module 2: Git Installation and Setup -->
+            <div class="content-card" id="module2">
+                <div class="card-header">
+                    <i class="fas fa-download"></i> Module 2: Git Installation and Setup
+                </div>
+                <div class="card-body">
+                    <h5>Installing Git</h5>
+                    <p>Git can be installed on various operating systems:</p>
+                    
+                    <div class="accordion" id="installAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="windowsInstall">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWindows" aria-expanded="false" aria-controls="collapseWindows">
+                                    Windows Installation
+                                </button>
+                            </h2>
+                            <div id="collapseWindows" class="accordion-collapse collapse" aria-labelledby="windowsInstall" data-bs-parent="#installAccordion">
+                                <div class="accordion-body">
+                                    <p>For Windows, download the installer from the official Git website:</p>
+                                    <ol>
+                                        <li>Visit <a href="https://git-scm.com/download/win" target="_blank">https://git-scm.com/download/win</a></li>
+                                        <li>Download the installer and run it</li>
+                                        <li>Follow the installation wizard, accepting the default settings</li>
+                                        <li>After installation, open Git Bash from the Start menu</li>
+                                    </ol>
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Verify installation
+git --version
+</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="macInstall">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMac" aria-expanded="false" aria-controls="collapseMac">
+                                    macOS Installation
+                                </button>
+                            </h2>
+                            <div id="collapseMac" class="accordion-collapse collapse" aria-labelledby="macInstall" data-bs-parent="#installAccordion">
+                                <div class="accordion-body">
+                                    <p>For macOS, you have several options:</p>
+                                    <ol>
+                                        <li><strong>Download Installer:</strong> Visit <a href="https://git-scm.com/download/mac" target="_blank">https://git-scm.com/download/mac</a> and download the installer</li>
+                                        <li><strong>Homebrew:</strong> If you have Homebrew installed, run:
+                                            <pre><button class="copy-button">Copy</button><code class="language-bash">
+brew install git
+</code></pre>
+                                        </li>
+                                        <li><strong>Xcode Command Line Tools:</strong> Install Xcode Command Line Tools which include Git:
+                                            <pre><button class="copy-button">Copy</button><code class="language-bash">
+xcode-select --install
+</code></pre>
+                                        </li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="linuxInstall">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLinux" aria-expanded="false" aria-controls="collapseLinux">
+                                    Linux Installation
+                                </button>
+                            </h2>
+                            <div id="collapseLinux" class="accordion-collapse collapse" aria-labelledby="linuxInstall" data-bs-parent="#installAccordion">
+                                <div class="accordion-body">
+                                    <p>For Linux distributions, use the package manager:</p>
+                                    <div class="tab-content">
+                                        <div class="tab-pane fade show active" id="ubuntu" role="tabpanel">
+                                            <p><strong>Ubuntu/Debian:</strong></p>
+                                            <pre><button class="copy-button">Copy</button><code class="language-bash">
+sudo apt update
+sudo apt install git
+</code></pre>
+                                        </div>
+                                        <div class="tab-pane fade" id="fedora" role="tabpanel">
+                                            <p><strong>Fedora/CentOS:</strong></p>
+                                            <pre><button class="copy-button">Copy</button><code class="language-bash">
+sudo dnf install git
+# or for older systems
+sudo yum install git
+</code></pre>
+                                        </div>
+                                        <div class="tab-pane fade" id="arch" role="tabpanel">
+                                            <p><strong>Arch Linux:</strong></p>
+                                            <pre><button class="copy-button">Copy</button><code class="language-bash">
+sudo pacman -S git
+</code></pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h5>Initial Git Configuration</h5>
+                    <p>After installing Git, you need to configure your name and email address. This information will be embedded in your commits.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Set your name
+git config --global user.name "Your Name"
+
+# Set your email
+git config --global user.email "your.email@example.com"
+
+# Verify configuration
+git config --list
+</code></pre>
+
+                    <h5>Common Configuration Options</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Set default branch name
+git config --global init.defaultBranch main
+
+# Set default text editor
+git config --global core.editor "code --wait"  # For VS Code
+# git config --global core.editor "nano"     # For nano
+# git config --global core.editor "vim"      # For vim
+
+# Set line ending handling
+git config --global core.autocrlf input  # For Linux/Mac
+# git config --global core.autocrlf true  # For Windows
+
+# Enable colored output
+git config --global color.ui auto
+
+# Set default push behavior
+git config --global push.default simple
+
+# Set up credential helper (cache credentials for a period)
+git config --global credential.helper cache
+git config --global credential.helper 'cache --timeout=3600'  # Cache for 1 hour
+</code></pre>
+
+                    <h5>SSH Key Setup</h5>
+                    <p>SSH keys allow you to connect to GitHub without entering your password each time:</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Check if you have existing SSH keys
+ls -al ~/.ssh
+
+# Generate a new SSH key
+ssh-keygen -t ed25519 -C "your.email@example.com"
+
+# Start the ssh-agent in the background
+eval "$(ssh-agent -s)"
+
+# Add your SSH private key to the ssh-agent
+ssh-add ~/.ssh/id_ed25519
+
+# Copy your public key to clipboard
+# On macOS:
+pbcopy < ~/.ssh/id_ed25519.pub
+# On Linux (requires xclip):
+xclip -selection clipboard < ~/.ssh/id_ed25519.pub
+# On Windows Git Bash:
+clip < ~/.ssh/id_ed25519.pub
+</code></pre>
+                    <p>Then add the copied public key to your GitHub account:</p>
+                    <ol>
+                        <li>Go to GitHub.com and sign in</li>
+                        <li>Click your profile photo in the top right</li>
+                        <li>Click "Settings"</li>
+                        <li>In the left sidebar, click "SSH and GPG keys"</li>
+                        <li>Click "New SSH key" or "Add SSH key"</li>
+                        <li>Paste your key into the "Key" field</li>
+                        <li>Click "Add SSH key"</li>
+                    </ol>
+
+                    <h5>Verifying Your SSH Connection</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Test your SSH connection to GitHub
+ssh -T git@github.com
+
+# You should see a message like:
+# Hi YourUsername! You've successfully authenticated, but GitHub does not provide shell access.
+</code></pre>
+                </div>
+            </div>
+
+            <!-- Module 3: Basic Git Commands -->
+            <div class="content-card" id="module3">
+                <div class="card-header">
+                    <i class="fas fa-code"></i> Module 3: Basic Git Commands (init, add, commit)
+                </div>
+                <div class="card-body">
+                    <h5>Creating a Git Repository</h5>
+                    <p>To start tracking a project with Git, you need to initialize a repository:</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Create a new directory for your project
+mkdir my-project
+cd my-project
+
+# Initialize a Git repository
+git init
+
+# Initialize with a specific branch name
+git init -b main
+</code></pre>
+
+                    <h5>Checking Repository Status</h5>
+                    <p>The <code>git status</code> command shows the state of your working directory and staging area:</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Check the status of your repository
+git status
+
+# Get a more compact status
+git status --short
+# or
+git status -s
+</code></pre>
+
+                    <h5>Adding Files to the Staging Area</h5>
+                    <p>Before committing changes, you need to add them to the staging area:</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Create a new file
+echo "# My Project" > README.md
+
+# Add a specific file to the staging area
+git add README.md
+
+# Add multiple files
+git add file1.txt file2.txt
+
+# Add all files in the current directory
+git add .
+
+# Add all files, including deleted ones
+git add -A
+
+# Interactive staging
+git add -i
+</code></pre>
+
+                    <h5>Committing Changes</h5>
+                    <p>A commit is a snapshot of your repository at a specific point in time:</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Commit with a message
+git commit -m "Initial commit: Add README"
+
+# Commit with a detailed message
+git commit -m "Add user authentication feature
+
+- Implement login functionality
+- Add password reset feature
+- Update user model"
+
+# Commit without staging (adds all tracked files)
+git commit -a -m "Fix typos in documentation"
+
+# Amend the last commit (use with caution)
+git commit --amend -m "Updated commit message"
+</code></pre>
+
+                    <h5>Viewing Commit History</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# View commit history
+git log
+
+# View compact history
+git log --oneline
+
+# View history with graph
+git log --oneline --graph --decorate
+
+# View history of a specific file
+git log --follow README.md
+
+# View history with statistics
+git log --stat
+
+# View history with patch
+git log -p
+
+# Limit number of commits
+git log -5
+</code></pre>
+
+                    <h5>Viewing Changes</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Show differences between working directory and staging area
+git diff
+
+# Show differences between staging area and last commit
+git diff --staged
+# or
+git diff --cached
+
+# Show differences between two commits
+git diff commit1 commit2
+
+# Show differences in a specific file
+git diff README.md
+
+# Show changes in a more compact format
+git diff --stat
+</code></pre>
+
+                    <h5>Removing and Moving Files</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Remove a file from the working directory and staging area
+git rm file.txt
+
+# Remove a file from the staging area but keep it in the working directory
+git rm --cached file.txt
+
+# Move or rename a file
+git mv old-name.txt new-name.txt
+
+# This is equivalent to:
+mv old-name.txt new-name.txt
+git rm old-name.txt
+git add new-name.txt
+</code></pre>
+
+                    <h5>Ignoring Files</h5>
+                    <p>Create a <code>.gitignore</code> file to specify files that Git should ignore:</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Create a .gitignore file
+touch .gitignore
+
+# Add patterns to .gitignore
+echo "*.log" >> .gitignore
+echo "node_modules/" >> .gitignore
+echo ".env" >> .gitignore
+echo "*.tmp" >> .gitignore
+
+# Add .gitignore to your repository
+git add .gitignore
+git commit -m "Add .gitignore file"
+</code></pre>
+
+                    <h5>Undoing Changes</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Discard changes in the working directory
+git checkout -- file.txt
+# or (Git 2.23+)
+git restore file.txt
+
+# Unstage a file
+git reset HEAD file.txt
+# or (Git 2.23+)
+git restore --staged file.txt
+
+# Reset to a specific commit (destructive)
+git reset --hard commit-hash
+
+# Reset to a specific commit but keep changes
+git reset --soft commit-hash
+</code></pre>
+                </div>
+            </div>
+
+            <!-- Module 4: Branching and Merging -->
+            <div class="content-card" id="module4">
+                <div class="card-header">
+                    <i class="fas fa-code-branch"></i> Module 4: Branching and Merging
+                </div>
+                <div class="card-body">
+                    <h5>Understanding Branches</h5>
+                    <p>In Git, a branch is a movable pointer to a commit. It allows you to develop features, fix bugs, or experiment with ideas in isolation from the main codebase.</p>
+
+                    <h5>Creating and Switching Branches</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# List all branches
+git branch
+
+# List all remote branches
+git branch -r
+
+# List all local and remote branches
+git branch -a
+
+# Create a new branch
+git branch feature-xyz
+
+# Switch to a branch
+git checkout feature-xyz
+# or (Git 2.23+)
+git switch feature-xyz
+
+# Create and switch to a new branch
+git checkout -b feature-xyz
+# or (Git 2.23+)
+git switch -c feature-xyz
+
+# Switch to the previous branch
+git checkout -
+</code></pre>
+
+                    <h5>Making Changes on a Branch</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Make changes to files
+echo "New feature code" > feature.js
+
+# Add and commit changes
+git add feature.js
+git commit -m "Add new feature"
+
+# Make more changes
+echo "Update feature" >> feature.js
+git add feature.js
+git commit -m "Update feature implementation"
+</code></pre>
+
+                    <h5>Merging Branches</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Switch to the target branch (e.g., main)
+git checkout main
+
+# Merge the feature branch into main
+git merge feature-xyz
+
+# Merge with a custom commit message
+git merge feature-xyz -m "Merge feature-xyz into main"
+
+# Merge without fast-forward (creates a merge commit)
+git merge --no-ff feature-xyz
+
+# Abort a merge in progress
+git merge --abort
+</code></pre>
+
+                    <h5>Resolving Merge Conflicts</h5>
+                    <p>When Git can't automatically merge changes, it will stop and ask you to resolve conflicts:</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# After a merge attempt with conflicts, check status
+git status
+
+# Open the conflicted file(s) and resolve conflicts
+# Conflicts will be marked like this:
+# <<<<<<< HEAD
+# Current branch content
+# =======
+# Incoming branch content
+# >>>>>>> feature-xyz
+
+# After resolving conflicts, mark them as resolved
+git add conflicted-file.js
+
+# Continue the merge
+git commit
+# Git will open an editor with a default merge commit message
+</code></pre>
+
+                    <h5>Deleting Branches</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Delete a local branch (must be merged)
+git branch -d feature-xyz
+
+# Force delete a local branch (even if not merged)
+git branch -D feature-xyz
+
+# Delete a remote branch
+git push origin --delete feature-xyz
+# or
+git push origin :feature-xyz
+</code></pre>
+
+                    <h5>Rebasing</h5>
+                    <p>Rebasing is an alternative to merging that rewrites commit history:</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Rebase the current branch onto main
+git checkout feature-xyz
+git rebase main
+
+# Interactive rebase (for editing history)
+git rebase -i HEAD~3
+
+# Continue after resolving conflicts during rebase
+git rebase --continue
+
+# Abort a rebase in progress
+git rebase --abort
+</code></pre>
+
+                    <h5>Cherry-picking</h5>
+                    <p>Cherry-picking allows you to apply specific commits from one branch to another:</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Cherry-pick a specific commit
+git cherry-pick commit-hash
+
+# Cherry-pick without committing
+git cherry-pick --no-commit commit-hash
+
+# Cherry-pick multiple commits
+git cherry-pick start-commit..end-commit
+</code></pre>
+
+                    <h5>Stashing Changes</h5>
+                    <p>Stashing allows you to temporarily save changes without committing them:</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Stash current changes
+git stash
+
+# Stash with a message
+git stash push -m "Work in progress on feature X"
+
+# List stashes
+git stash list
+
+# Apply the most recent stash
+git stash apply
+
+# Apply and remove the most recent stash
+git stash pop
+
+# Apply a specific stash
+git stash apply stash@{1}
+
+# Drop a stash
+git stash drop stash@{1}
+
+# Clear all stashes
+git stash clear
+</code></pre>
+                </div>
+            </div>
+
+            <!-- Module 5: GitHub Introduction and Account Setup -->
+            <div class="content-card" id="module5">
+                <div class="card-header">
+                    <i class="fab fa-github"></i> Module 5: GitHub Introduction and Account Setup
+                </div>
+                <div class="card-body">
+                    <h5>What is GitHub?</h5>
+                    <p>GitHub is a web-based hosting service for Git repositories. It provides:</p>
+                    <ul>
+                        <li>Cloud storage for Git repositories</li>
+                        <li>Collaboration tools like pull requests and code reviews</li>
+                        <li>Issue tracking and project management</li>
+                        <li>Continuous integration and deployment (GitHub Actions)</li>
+                        <li>Social networking features for developers</li>
+                        <li>Documentation hosting with GitHub Pages</li>
+                    </ul>
+
+                    <h5>Creating a GitHub Account</h5>
+                    <ol>
+                        <li>Go to <a href="https://github.com" target="_blank">https://github.com</a></li>
+                        <li>Click "Sign up" in the top right corner</li>
+                        <li>Enter your username, email, and password</li>
+                        <li>Verify your email address</li>
+                        <li>Complete your profile by adding a profile picture and bio</li>
+                    </ol>
+
+                    <h5>GitHub Pricing Plans</h5>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Plan</th>
+                                    <th>Public Repositories</th>
+                                    <th>Private Repositories</th>
+                                    <th>Collaborators</th>
+                                    <th>Price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Free</td>
+                                    <td>Unlimited</td>
+                                    <td>Unlimited</td>
+                                    <td>Unlimited</td>
+                                    <td>$0</td>
+                                </tr>
+                                <tr>
+                                    <td>Team</td>
+                                    <td>Unlimited</td>
+                                    <td>Unlimited</td>
+                                    <td>Unlimited</td>
+                                    <td>$4/user/month</td>
+                                </tr>
+                                <tr>
+                                    <td>Enterprise</td>
+                                    <td>Unlimited</td>
+                                    <td>Unlimited</td>
+                                    <td>Unlimited</td>
+                                    <td>Custom</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h5>Creating a New Repository on GitHub</h5>
+                    <ol>
+                        <li>Click the "+" icon in the top right corner and select "New repository"</li>
+                        <li>Enter a repository name</li>
+                        <li>Add a description (optional)</li>
+                        <li>Choose between Public or Private</li>
+                        <li>Optionally initialize with a README file, .gitignore, or license</li>
+                        <li>Click "Create repository"</li>
+                    </ol>
+
+                    <h5>GitHub Profile Customization</h5>
+                    <p>Make your GitHub profile stand out by:</p>
+                    <ul>
+                        <li>Adding a professional profile picture</li>
+                        <li>Writing a clear bio</li>
+                        <li>Pinning your most important repositories</li>
+                        <li>Creating a special README repository with your username</li>
+                    </ul>
+
+                    <h5>Creating a Profile README</h5>
+                    <ol>
+                        <li>Create a new repository with your exact username as the repository name</li>
+                        <li>Add a README.md file with information about yourself</li>
+                        <li>Include badges, skills, projects, and contact information</li>
+                    </ol>
+                    <pre><button class="copy-button">Copy</button><code class="language-markdown">
+# Hi there! 👋
+
+I'm [Your Name], a passionate [Your Role] from [Your Location].
+
+## 🚀 About Me
+
+- 🔭 I'm currently working on [Project Name]
+- 🌱 I'm currently learning [Technology/Concept]
+- 👯 I'm looking to collaborate on [Project Type]
+- 🤔 I'm looking for help with [Technology/Concept]
+- 💬 Ask me about [Technology/Topic]
+- 📫 How to reach me: [Your Email]
+- 😄 Pronouns: [Your Pronouns]
+- ⚡ Fun fact: [Interesting Fact]
+
+## 🛠️ Skills
+
+[Add skill badges or list your skills]
+
+## 📊 GitHub Stats
+
+![Your GitHub stats](https://github-readme-stats.vercel.app/api?username=yourusername&show_icons=true&theme=radical)
+
+## 📫 Get in Touch
+
+- [LinkedIn](https://linkedin.com/in/yourprofile)
+- [Twitter](https://twitter.com/yourhandle)
+- [Email](mailto:your.email@example.com)
+</code></pre>
+
+                    <h5>GitHub Security Settings</h5>
+                    <p>Secure your GitHub account by:</p>
+                    <ul>
+                        <li>Enabling two-factor authentication (2FA)</li>
+                        <li>Using a strong, unique password</li>
+                        <li>Reviewing authorized applications and OAuth apps</li>
+                        <li>Setting up SSH keys instead of HTTPS</li>
+                    </ul>
+
+                    <h5>Enabling Two-Factor Authentication</h5>
+                    <ol>
+                        <li>Go to your account settings</li>
+                        <li>Click "Security" in the left sidebar</li>
+                        <li>Click "Enable two-factor authentication"</li>
+                        <li>Choose between using an authenticator app or SMS</li>
+                        <li>Follow the setup instructions</li>
+                        <li>Save your recovery codes in a secure location</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- Module 6: Remote Repositories -->
+            <div class="content-card" id="module6">
+                <div class="card-header">
+                    <i class="fas fa-cloud-upload-alt"></i> Module 6: Remote Repositories (clone, push, pull)
+                </div>
+                <div class="card-body">
+                    <h5>Understanding Remote Repositories</h5>
+                    <p>A remote repository is a version of your project that is hosted on the internet or network. It allows you to collaborate with others and have a backup of your work.</p>
+
+                    <h5>Cloning a Repository</h5>
+                    <p>Cloning creates a local copy of a remote repository:</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Clone a repository using HTTPS
+git clone https://github.com/username/repository.git
+
+# Clone a repository using SSH
+git clone git@github.com:username/repository.git
+
+# Clone into a specific directory
+git clone https://github.com/username/repository.git my-project
+
+# Clone a specific branch
+git clone -b branch-name https://github.com/username/repository.git
+
+# Clone with depth (shallow clone - gets only recent history)
+git clone --depth=1 https://github.com/username/repository.git
+</code></pre>
+
+                    <h5>Adding Remote Repositories</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Add a remote repository
+git remote add origin https://github.com/username/repository.git
+
+# Add a remote with a different name
+git remote add upstream https://github.com/original-owner/repository.git
+
+# List all remote repositories
+git remote
+
+# List remote repositories with URLs
+git remote -v
+
+# Show information about a remote
+git remote show origin
+</code></pre>
+
+                    <h5>Fetching from Remote Repositories</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Fetch all changes from the remote
+git fetch
+
+# Fetch from a specific remote
+git fetch origin
+
+# Fetch a specific branch
+git fetch origin branch-name
+
+# Fetch all remotes
+git fetch --all
+
+# Fetch and prune (remove deleted remote branches)
+git fetch --prune
+</code></pre>
+
+                    <h5>Pulling Changes from Remote</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Pull changes from the remote (fetch + merge)
+git pull
+
+# Pull from a specific remote and branch
+git pull origin main
+
+# Pull with rebase instead of merge
+git pull --rebase
+
+# Pull without committing automatically
+git pull --no-commit
+</code></pre>
+
+                    <h5>Pushing Changes to Remote</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Push changes to the remote
+git push
+
+# Push to a specific remote and branch
+git push origin main
+
+# Push a new branch to the remote
+git push -u origin feature-branch
+
+# Push all branches
+git push --all
+
+# Push tags
+git push --tags
+
+# Force push (use with caution - rewrites history)
+git push --force
+
+# Force push with lease (safer alternative)
+git push --force-with-lease
+</code></pre>
+
+                    <h5>Tracking Branches</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Set up tracking for an existing branch
+git branch --set-upstream-to=origin/main main
+
+# Create a new branch that tracks a remote branch
+git checkout -b feature-branch origin/feature-branch
+
+# Show tracking information
+git branch -vv
+</code></pre>
+
+                    <h5>Managing Remote Branches</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# List all remote branches
+git branch -r
+
+# List all local and remote branches
+git branch -a
+
+# Create a local branch from a remote branch
+git checkout -b local-branch origin/remote-branch
+
+# Delete a remote branch
+git push origin --delete remote-branch
+# or
+git push origin :remote-branch
+</code></pre>
+
+                    <h5>Renaming and Removing Remotes</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Rename a remote
+git remote rename old-name new-name
+
+# Remove a remote
+git remote remove remote-name
+# or
+git remote rm remote-name
+</code></pre>
+
+                    <h5>Working with Forks</h5>
+                    <p>When you fork a repository, you create a personal copy that you can modify:</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Clone your fork
+git clone https://github.com/yourusername/repository.git
+
+# Add the original repository as a remote (upstream)
+git remote add upstream https://github.com/original-owner/repository.git
+
+# Fetch changes from the original repository
+git fetch upstream
+
+# Merge changes from the original repository
+git merge upstream/main
+
+# Push changes to your fork
+git push origin main
+</code></pre>
+                </div>
+            </div>
+
+            <!-- Module 7: Pull Requests and Code Reviews -->
+            <div class="content-card" id="module7">
+                <div class="card-header">
+                    <i class="fas fa-pull-request"></i> Module 7: Pull Requests and Code Reviews
+                </div>
+                <div class="card-body">
+                    <h5>What is a Pull Request?</h5>
+                    <p>A pull request (PR) is a mechanism for a developer to notify team members that they have completed a feature. It allows others to review the code before it's merged into the main branch.</p>
+
+                    <h5>Creating a Pull Request</h5>
+                    <ol>
+                        <li>Push your feature branch to GitHub</li>
+                        <li>Navigate to the repository on GitHub</li>
+                        <li>Click the "Pull requests" tab</li>
+                        <li>Click "New pull request"</li>
+                        <li>Select the base and compare branches</li>
+                        <li>Add a title and description for your PR</li>
+                        <li>Click "Create pull request"</li>
+                    </ol>
+
+                    <h5>Pull Request Template</h5>
+                    <p>Create a <code>.github/pull_request_template.md</code> file in your repository:</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-markdown">
+## Description
+Please include a summary of the change and which issue is fixed. Please also include relevant motivation and context.
+
+## Type of Change
+- [ ] Bug fix (non-breaking change which fixes an issue)
+- [ ] New feature (non-breaking change which adds functionality)
+- [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
+- [ ] Documentation update
+
+## How Has This Been Tested?
+Please describe the tests that you ran to verify your changes.
+
+## Checklist:
+- [ ] My code follows the style guidelines of this project
+- [ ] I have performed a self-review of my own code
+- [ ] I have commented my code, particularly in hard-to-understand areas
+- [ ] I have made corresponding changes to the documentation
+- [ ] My changes generate no new warnings
+- [ ] I have added tests that prove my fix is effective or that my feature works
+- [ ] New and existing unit tests pass locally with my changes
+- [ ] Any dependent changes have been merged and published in downstream modules
+</code></pre>
+
+                    <h5>Reviewing Pull Requests</h5>
+                    <ul>
+                        <li><strong>Overall Review:</strong> Check if the PR achieves its stated goal</li>
+                        <li><strong>Code Quality:</strong> Look for clean, readable code</li>
+                        <li><strong>Functionality:</strong> Ensure the code works as expected</li>
+                        <li><strong>Performance:</strong> Check for potential performance issues</li>
+                        <li><strong>Security:</strong> Look for security vulnerabilities</li>
+                        <li><strong>Tests:</strong> Verify that tests are included and passing</li>
+                    </ul>
+
+                    <h5>Reviewing and Commenting</h5>
+                    <ol>
+                        <li>Navigate to the "Files changed" tab in the PR</li>
+                        <li>Click on a line to add a general comment</li>
+                        <li>Highlight code to add a specific comment</li>
+                        <li>Use the suggestion feature to propose code changes</li>
+                        <li>Leave a general review comment at the bottom</li>
+                        <li>Approve, request changes, or comment on the PR</li>
+                    </ol>
+
+                    <h5>Making Changes to a Pull Request</h5>
+                    <p>After receiving feedback:</p>
+                    <ol>
+                        <li>Make the necessary changes in your local branch</li>
+                        <li>Commit and push the changes to the same branch</li>
+                        <li>The PR will automatically update with the new changes</li>
+                    </ol>
+
+                    <h5>Merging a Pull Request</h5>
+                    <p>There are several merge options:</p>
+                    <ul>
+                        <li><strong>Create a merge commit:</strong> Merges the branch with a merge commit</li>
+                        <li><strong>Squash and merge:</strong> Combines all commits into one</li>
+                        <li><strong>Rebase and merge:</strong> Replays commits on top of the base branch</li>
+                    </ul>
+
+                    <h5>Code Review Best Practices</h5>
+                    <ul>
+                        <li>Be constructive and respectful in your feedback</li>
+                        <li>Focus on the code, not the person</li>
+                        <li>Explain why a change is needed, not just what to change</li>
+                        <li>Ask questions to understand the developer's intent</li>
+                        <li>Recognize good work and positive contributions</li>
+                        <li>Respond to comments in a timely manner</li>
+                    </ul>
+
+                    <h5>Protected Branches</h5>
+                    <p>Protect important branches by:</p>
+                    <ol>
+                        <li>Going to repository settings</li>
+                        <li>Clicking "Branches" in the left sidebar</li>
+                        <li>Adding branch protection rules</li>
+                        <li>Configuring requirements like:
+                            <ul>
+                                <li>Require pull request reviews before merging</li>
+                                <li>Require status checks to pass before merging</li>
+                                <li>Require branches to be up to date before merging</li>
+                                <li>Restrict who can push to the branch</li>
+                            </ul>
+                        </li>
+                    </ol>
+
+                    <h5>Using GitHub's Review Features</h5>
+                    <ul>
+                        <li><strong>Suggested Changes:</strong> Propose code changes directly in the review</li>
+                        <li><strong>Request Changes:</strong> Block merging until changes are made</li>
+                        <li><strong>Approve:</strong> Indicate that the PR is ready to merge</li>
+                        <li><strong>Assign Reviewers:</strong> Specify who should review the PR</li>
+                        <li><strong>Assignees:</strong> Specify who is working on the PR</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Module 8: Git Workflows and Best Practices -->
+            <div class="content-card" id="module8">
+                <div class="card-header">
+                    <i class="fas fa-tasks"></i> Module 8: Git Workflows and Best Practices
+                </div>
+                <div class="card-body">
+                    <h5>Common Git Workflows</h5>
+                    <p>There are several established workflows for using Git in a team environment:</p>
+
+                    <div class="accordion" id="workflowAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="gitflow">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseGitflow" aria-expanded="true" aria-controls="collapseGitflow">
+                                    Git Flow Workflow
+                                </button>
+                            </h2>
+                            <div id="collapseGitflow" class="accordion-collapse collapse show" aria-labelledby="gitflow" data-bs-parent="#workflowAccordion">
+                                <div class="accordion-body">
+                                    <p>Git Flow is a strict branching model designed for projects with scheduled releases:</p>
+                                    <ul>
+                                        <li><strong>main:</strong> Contains production-ready code</li>
+                                        <li><strong>develop:</strong> Integration branch for features</li>
+                                        <li><strong>feature:</strong> Branches for new features</li>
+                                        <li><strong>release:</strong> Branches for preparing releases</li>
+                                        <li><strong>hotfix:</strong> Branches for urgent fixes</li>
+                                    </ul>
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Initialize Git Flow
+git flow init
+
+# Start a new feature
+git flow feature start feature-name
+
+# Finish a feature
+git flow feature finish feature-name
+
+# Start a release
+git flow release start v1.0.0
+
+# Finish a release
+git flow release finish v1.0.0
+
+# Start a hotfix
+git flow hotfix start hotfix-name
+
+# Finish a hotfix
+git flow hotfix finish hotfix-name
+</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="githubflow">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseGithubflow" aria-expanded="false" aria-controls="collapseGithubflow">
+                                    GitHub Flow Workflow
+                                </button>
+                            </h2>
+                            <div id="collapseGithubflow" class="accordion-collapse collapse" aria-labelledby="githubflow" data-bs-parent="#workflowAccordion">
+                                <div class="accordion-body">
+                                    <p>GitHub Flow is a simpler workflow that works well for continuous deployment:</p>
+                                    <ol>
+                                        <li>Anything in the main branch is deployable</li>
+                                        <li>Create descriptive branches for new features</li>
+                                        <li>Push to the named branch and open a pull request</li>
+                                        <li>Discuss and review the code with teammates</li>
+                                        <li>Merge to main after approval</li>
+                                        <li>Deploy immediately</li>
+                                    </ol>
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Create a new feature branch
+git checkout -b feature-user-authentication
+
+# Make changes and commit
+git add .
+git commit -m "Add user authentication"
+
+# Push to GitHub
+git push origin feature-user-authentication
+
+# Create a pull request on GitHub
+# After review and approval, merge to main
+# Pull the latest changes
+git pull origin main
+
+# Deploy
+</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="gitlabflow">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseGitlabflow" aria-expanded="false" aria-controls="collapseGitlabflow">
+                                    GitLab Flow Workflow
+                                </button>
+                            </h2>
+                            <div id="collapseGitlabflow" class="accordion-collapse collapse" aria-labelledby="gitlabflow" data-bs-parent="#workflowAccordion">
+                                <div class="accordion-body">
+                                    <p>GitLab Flow combines features of Git Flow and GitHub Flow:</p>
+                                    <ul>
+                                        <li>Primary branch (main) is always deployable</li>
+                                        <li>Environment branches (staging, production)</li>
+                                        <li>Feature branches for new work</li>
+                                        <li>Merge requests for code review</li>
+                                    </ul>
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Create a feature branch
+git checkout -b feature-new-dashboard
+
+# Make changes and commit
+git add .
+git commit -m "Add new dashboard UI"
+
+# Push to GitLab
+git push origin feature-new-dashboard
+
+# Create a merge request on GitLab
+# After review, merge to main
+
+# Deploy to staging
+git checkout -b staging origin/staging
+git merge main
+git push origin staging
+
+# After testing, deploy to production
+git checkout production
+git merge staging
+git push origin production
+</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h5>Commit Message Best Practices</h5>
+                    <p>Write clear, consistent commit messages:</p>
+                    <ul>
+                        <li>Use the present tense ("Add feature" not "Added feature")</li>
+                        <li>Keep the first line under 50 characters</li>
+                        <li>Separate subject from body with a blank line</li>
+                        <li>Wrap the body at 72 characters</li>
+                        <li>Use the body to explain what and why, not how</li>
+                    </ul>
+                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Good commit message format
+feat: Add user authentication
+
+Implement login and registration functionality with JWT tokens.
+This allows users to create accounts and securely access the application.
+
+- Add login form with validation
+- Implement JWT token generation
+- Create registration endpoint
+- Add password reset functionality
+
+Closes #123
+</code></pre>
+
+                    <h5>Conventional Commits</h5>
+                    <p>Follow the Conventional Commits specification:</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Format: type(scope): description
+
+# Types
+feat: A new feature
+fix: A bug fix
+docs: Documentation changes
+style: Code style changes (formatting, etc.)
+refactor: Code refactoring
+test: Adding or updating tests
+chore: Maintenance tasks
+
+# Examples
+feat(auth): add JWT token refresh mechanism
+fix(api): handle null response in user endpoint
+docs(readme): update installation instructions
+style(components): fix linting errors
+refactor(utils): simplify date formatting function
+test(auth): add unit tests for login service
+chore(deps): update react to v18.2.0
+</code></pre>
+
+                    <h5>Branch Naming Conventions</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Feature branches
+feature/user-authentication
+feat/add-payment-gateway
+
+# Bugfix branches
+bugfix/login-validation-error
+fix/responsive-layout-issue
+
+# Release branches
+release/v1.2.0
+release/2023.10.15
+
+# Hotfix branches
+hotfix/security-vulnerability
+hotfix/critical-bug-fix
+
+# Task branches
+task/update-dependencies
+task/code-cleanup
+</code></pre>
+
+                    <h5>Git Best Practices</h5>
+                    <ul>
+                        <li>Commit often with small, logical changes</li>
+                        <li>Write clear, descriptive commit messages</li>
+                        <li>Use branches for features and bug fixes</li>
+                        <li>Keep the main branch stable and deployable</li>
+                        <li>Use pull requests for code review</li>
+                        <li>Resolve conflicts as soon as possible</li>
+                        <li>Use .gitignore to exclude unnecessary files</li>
+                        <li>Regularly pull changes from the main branch</li>
+                        <li>Use semantic versioning for releases</li>
+                        <li>Document your workflow for the team</li>
+                    </ul>
+
+                    <h5>Git Hooks</h5>
+                    <p>Git hooks allow you to run custom scripts at certain points in the Git workflow:</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# List available hooks
+ls .git/hooks
+
+# Enable a hook (remove .sample extension)
+cp .git/hooks/pre-commit.sample .git/hooks/pre-commit
+
+# Example pre-commit hook to run tests
+#!/bin/sh
+npm test
+RESULT=$?
+if [ $RESULT -ne 0 ]; then
+  echo "Tests failed. Commit aborted."
+  exit 1
+fi
+</code></pre>
+                </div>
+            </div>
+
+            <!-- Module 9: GitHub Actions and CI/CD Basics -->
+            <div class="content-card" id="module9">
+                <div class="card-header">
+                    <i class="fas fa-cogs"></i> Module 9: GitHub Actions and CI/CD Basics
+                </div>
+                <div class="card-body">
+                    <h5>What is GitHub Actions?</h5>
+                    <p>GitHub Actions is a CI/CD (Continuous Integration/Continuous Deployment) platform that allows you to automate your build, test, and deployment pipeline directly in your GitHub repository.</p>
+
+                    <h5>Key Concepts</h5>
+                    <ul>
+                        <li><strong>Workflow:</strong> A configurable automated process</li>
+                        <li><strong>Event:</strong> An activity that triggers a workflow</li>
+                        <li><strong>Job:</strong> A set of steps in a workflow</li>
+                        <li><strong>Step:</strong> A single task that can run commands</li>
+                        <li><strong>Action:</strong> A custom application for the GitHub Actions platform</li>
+                        <li><strong>Runner:</strong> A server that runs your workflows</li>
+                    </ul>
+
+                    <h5>Creating a Simple Workflow</h5>
+                    <p>Create a <code>.github/workflows/main.yml</code> file:</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-yaml">
+name: CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs
+jobs:
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+
+      # Runs a single command using the runners shell
+      - name: Run a one-line script
+        run: echo Hello, world!
+
+      # Runs a set of commands using the runners shell
+      - name: Run a multi-line script
+        run: |
+          echo Add other actions to build,
+          echo test, and deploy your project.
+</code></pre>
+
+                    <h5>Node.js CI/CD Workflow</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-yaml">
+name: Node.js CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.x, 16.x, 18.x]
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Use Node.js {% raw %}${{ matrix.node-version }}{% endraw %}
+      uses: actions/setup-node@v3
+      with:
+        node-version: {% raw %}${{ matrix.node-version }}{% endraw %}
+        cache: 'npm'
+    
+    - run: npm ci
+    - run: npm run build --if-present
+    - run: npm test
+    
+    - name: Upload coverage reports
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./coverage/lcov.info
+</code></pre>
+
+                    <h5>Python CI/CD Workflow</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-yaml">
+name: Python CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9, "3.10", "3.11"]
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python {% raw %}${{ matrix.python-version }}{% endraw %}
+      uses: actions/setup-python@v4
+      with:
+        python-version: {% raw %}${{ matrix.python-version }}{% endraw %}
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pytest pytest-cov
+    
+    - name: Run tests
+      run: |
+        pytest --cov=./ --cov-report=xml
+    
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
+</code></pre>
+
+                    <h5>Deploying to GitHub Pages</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-yaml">
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    
+    - name: Setup Pages
+      uses: actions/configure-pages@v3
+    
+    - name: Build with Jekyll
+      uses: actions/jekyll-build-pages@v1
+      with:
+        source: ./
+        destination: ./_site
+    
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v2
+
+  deploy:
+    environment:
+      name: github-pages
+      url: {% raw %}${{ steps.deployment.outputs.page_url }}{% endraw %}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v2
+</code></pre>
+
+                    <h5>Docker Build and Push</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-yaml">
+name: Docker Build and Push
+
+on:
+  push:
+    branches: [ main ]
+    tags: [ 'v*.*.*' ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: {% raw %}${{ github.repository }}{% endraw %}
+
+jobs:
+  build-and-push-image:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Log in to the Container registry
+      uses: docker/login-action@v2
+      with:
+        registry: {% raw %}${{ env.REGISTRY }}{% endraw %}
+        username: {% raw %}${{ github.actor }}{% endraw %}
+        password: {% raw %}${{ secrets.GITHUB_TOKEN }}{% endraw %}
+
+    - name: Extract metadata
+      id: meta
+      uses: docker/metadata-action@v4
+      with:
+        images: {% raw %}${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}{% endraw %}
+
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v4
+      with:
+        context: .
+        push: true
+        tags: {% raw %}${{ steps.meta.outputs.tags }}{% endraw %}
+        labels: {% raw %}${{ steps.meta.outputs.labels }}{% endraw %}
+</code></pre>
+
+                    <h5>Using Secrets in Workflows</h5>
+                    <p>Store sensitive information in repository secrets:</p>
+                    <ol>
+                        <li>Go to your repository settings</li>
+                        <li>Click "Secrets" in the left sidebar</li>
+                        <li>Click "New repository secret"</li>
+                        <li>Add your secret (e.g., API_KEY, PASSWORD)</li>
+                    </ol>
+                    <pre><button class="copy-button">Copy</button><code class="language-yaml">
+name: Use Secrets
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Use secret
+      env:
+        API_KEY: {% raw %}${{ secrets.API_KEY }}{% endraw %}
+      run: |
+        echo "Using API key (but not showing it)"
+        # Use the API key in your commands
+</code></pre>
+
+                    <h5>Scheduling Workflows</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-yaml">
+name: Scheduled Tasks
+
+on:
+  schedule:
+    # Run at 00:00 UTC every day
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+jobs:
+  run-scheduled-task:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Run scheduled task
+      run: |
+        echo "Running scheduled task"
+        # Add your task here
+</code></pre>
+
+                    <h5>Using Marketplace Actions</h5>
+                    <p>Find pre-built actions in the GitHub Marketplace:</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-yaml">
+name: Use Marketplace Actions
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    
+    # Send a Slack notification
+    - name: Send Slack notification
+      uses: 8398a7/action-slack@v3
+      with:
+        status: {% raw %}${{ job.status }}{% endraw %}
+        channel: '#deployments'
+        webhook_url: {% raw %}${{ secrets.SLACK_WEBHOOK }}{% endraw %}
+    
+    # Create a release
+    - name: Create Release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: {% raw %}${{ secrets.GITHUB_TOKEN }}{% endraw %}
+      with:
+        tag_name: {% raw %}${{ github.ref }}{% endraw %}
+        release_name: Release {% raw %}${{ github.ref }}{% endraw %}
+        draft: false
+        prerelease: false
+</code></pre>
+                </div>
+            </div>
+
+            <!-- Module 10: Advanced Git Techniques and Troubleshooting -->
+            <div class="content-card" id="module10">
+                <div class="card-header">
+                    <i class="fas fa-tools"></i> Module 10: Advanced Git Techniques and Troubleshooting
+                </div>
+                <div class="card-body">
+                    <h5>Advanced Git Techniques</h5>
+
+                    <h6>Interactive Rebase</h6>
+                    <p>Interactive rebase allows you to rewrite commit history:</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Start an interactive rebase for the last 3 commits
+git rebase -i HEAD~3
+
+# Commands available in interactive rebase:
+# pick: use the commit
+# reword: use the commit, but edit the commit message
+# edit: use the commit, but stop for amending
+# squash: use the commit, but meld into previous commit
+# fixup: like squash, but discard this commit's log message
+# exec: run command (the rest of the line) using shell
+# drop: remove commit
+</code></pre>
+
+                    <h6>Bisecting</h6>
+                    <p>Use binary search to find the commit that introduced a bug:</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Start bisecting
+git bisect start
+
+# Mark the current commit as bad
+git bisect bad
+
+# Mark a known good commit
+git bisect good v1.0.0
+
+# Git will checkout a commit in the middle
+# Test the code and mark as good or bad
+git bisect good  # or git bisect bad
+
+# Continue until the bad commit is found
+# Once found, you can examine the commit or fix it
+
+# End bisecting and return to original state
+git bisect reset
+</code></pre>
+
+                    <h6>Reflog</h6>
+                    <p>Reference log (reflog) tracks all movements of HEAD and branch references:</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Show the reflog
+git reflog
+
+# Show the reflog for a specific branch
+git reflog main
+
+# Restore a lost commit using reflog
+git checkout HEAD@{2}
+
+# Reset to a previous state using reflog
+git reset --hard HEAD@{5}
+</code></pre>
+
+                    <h6>Submodules</h6>
+                    <p>Submodules allow you to keep a Git repository as a subdirectory of another Git repository:</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Add a submodule
+git submodule add https://github.com/user/repo.git path/to/submodule
+
+# Clone a repository with submodules
+git clone --recursive https://github.com/user/main-repo.git
+
+# Initialize and update submodules in an existing repository
+git submodule update --init --recursive
+
+# Update all submodules to their latest commits
+git submodule update --remote
+
+# Remove a submodule
+git submodule deinit path/to/submodule
+git rm path/to/submodule
+rm -rf .git/modules/path/to/submodule
+</code></pre>
+
+                    <h6>Worktrees</h6>
+                    <p>Worktrees allow you to check out multiple branches into different directories:</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Create a new worktree for a branch
+git worktree add ../feature-branch feature-branch
+
+# List all worktrees
+git worktree list
+
+# Remove a worktree
+git worktree remove ../feature-branch
+
+# Prune stale worktree information
+git worktree prune
+</code></pre>
+
+                    <h5>Troubleshooting Common Issues</h5>
+
+                    <h6>Undoing a Pushed Commit</h6>
+                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# If the commit is the most recent:
+git reset --hard HEAD~1
+git push --force-with-lease
+
+# If the commit is not the most recent:
+git rebase -i HEAD~n  # where n is the number of commits back
+# Mark the commit as 'drop' in the editor
+git push --force-with-lease
+</code></pre>
+
+                    <h6>Recovering a Deleted Branch</h6>
+                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Find the commit hash of the deleted branch
+git reflog
+
+# Recreate the branch
+git branch branch-name commit-hash
+</code></pre>
+
+                    <h6>Resolving Merge Conflicts</h6>
+                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# When you encounter a merge conflict:
+
+# 1. Check which files have conflicts
+git status
+
+# 2. Open the conflicted files and resolve conflicts
+# Look for <<<<<<<, =======, and >>>>>>> markers
+
+# 3. After resolving conflicts, mark them as resolved
+git add path/to/resolved/file.js
+
+# 4. Continue the merge
+git commit
+
+# 5. If you want to abort the merge
+git merge --abort
+</code></pre>
+
+                    <h6>Fixing a Broken Repository</h6>
+                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Check repository integrity
+git fsck
+
+# Fix dangling objects
+git fsck --lost-found
+
+# If you have a corrupted object, try to recover it
+# First, identify the corrupted object
+git fsck --full
+
+# Then try to restore it from a backup or remote
+git fetch origin
+git reset --hard origin/main
+</code></pre>
+
+                    <h6>Dealing with Large Files</h6>
+                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Use Git LFS (Large File Storage) for large files
+# Install Git LFS first
+git lfs install
+
+# Track specific file types
+git lfs track "*.psd"
+git lfs track "*.zip"
+
+# Add .gitattributes to repository
+git add .gitattributes
+git commit -m "Configure Git LFS"
+
+# Add and commit large files as normal
+git add large-file.zip
+git commit -m "Add large file"
+git push
+</code></pre>
+
+                    <h6>Performance Optimization</h6>
+                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Speed up Git operations
+git config --global core.preloadindex true
+git config --global core.fscache true
+git config --global gc.auto 256
+
+# Clean up unnecessary files and optimize the repository
+git gc --aggressive --prune=now
+
+# Check for large files that might be slowing down operations
+git rev-list --objects --all | git cat-file --batch-check='%(objecttype) %(objectname) %(objectsize) %(rest)' | sed -n 's/^blob //p' | sort --numeric-sort --key=2 | tail -10
+</code></pre>
+
+                    <h5>Advanced Git Configuration</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Configure diff and merge tools
+git config --global diff.tool meld
+git config --global merge.tool meld
+git config --global difftool.prompt false
+
+# Configure aliases for common commands
+git config --global alias.st status
+git config --global alias.co checkout
+git config --global alias.br branch
+git config --global alias.cm commit
+git config --global alias.unstage 'reset HEAD --'
+git config --global alias.last 'log -1 HEAD'
+git config --global alias.visual '!gitk'
+
+# Configure rebase behavior
+git config --global pull.rebase true
+git config --global rebase.autosquash true
+</code></pre>
+                </div>
+            </div>
+
+            <div class="mt-5 text-center">
+                <a href="/practice" class="btn btn-primary btn-lg">Take Practice Test</a>
+            </div>
+
+            <div id="animation-container-docs" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1;"></div>
+        </div>
+    </div>
+
+    <script>
+        // Smooth scrolling for sidebar navigation
+        document.querySelectorAll('.sidebar .nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }
+                // Update active state
+                document.querySelectorAll('.sidebar .nav-link').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Search functionality
+        document.getElementById('search-input').addEventListener('input', function() {
+            const query = this.value.toLowerCase();
+            const content = document.getElementById('content');
+            const elements = content.querySelectorAll('h2, h3, h4, h5, h6, p, pre, .card');
+            
+            elements.forEach(element => {
+                const text = element.textContent.toLowerCase();
+                if (query === '' || text.includes(query)) {
+                    element.style.display = '';
+                } else {
+                    element.style.display = 'none';
+                }
+            });
+        });
+
+        // Clear search function
+        function clearSearch() {
+            document.getElementById('search-input').value = '';
+            const content = document.getElementById('content');
+            const elements = content.querySelectorAll('h2, h3, h4, h5, h6, p, pre, .card');
+            elements.forEach(element => {
+                element.style.display = '';
+            });
+        }
+
+        // Copy to clipboard functionality
+        const copyButtons = document.querySelectorAll('.copy-button');
+        copyButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const code = this.parentNode.querySelector('code').textContent;
+                navigator.clipboard.writeText(code);
+                this.textContent = 'Copied!';
+                setTimeout(() => {
+                    this.textContent = 'Copy';
+                }, 2000);
+            });
+        });
+
+        // Highlight active section in sidebar based on scroll position
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('[id]');
+            const navLinks = document.querySelectorAll('.sidebar .nav-link');
+
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+{% endblock %}

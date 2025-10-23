@@ -1,0 +1,1642 @@
+{% extends 'base.html' %}
+
+{% block title %}C++ Documentation - SN VERSE{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/github.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.3/purify.min.js"></script>
+    <style>
+        body {
+            background: #f8f9fa;
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #212529;
+        }
+        .sidebar {
+            position: fixed;
+            top: 70px;
+            left: 0;
+            width: 280px;
+            height: calc(100vh - 70px);
+            background: #343a40;
+            border-right: 1px solid #495057;
+            overflow-y: auto;
+            z-index: 1000;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+        }
+        .sidebar .nav-link {
+            color: #adb5bd;
+            padding: 12px 20px;
+            border-radius: 0;
+            margin: 0;
+            transition: all 0.2s ease;
+            font-weight: 500;
+            border-left: 3px solid transparent;
+        }
+        .sidebar .nav-link:hover {
+            background: #495057;
+            color: #fff;
+            text-decoration: none;
+            border-left-color: #00599c;
+        }
+        .sidebar .nav-link.active {
+            background: #00599c;
+            color: #fff;
+            border-left-color: #00599c;
+        }
+        .main-content {
+            margin-left: 280px;
+            padding: 30px;
+            max-width: 1200px;
+        }
+
+        .content-card {
+            margin-bottom: 30px;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            background: #fff;
+        }
+        .content-card .card-header {
+            background: #00599c;
+            color: white;
+            font-weight: 600;
+            font-size: 1.1rem;
+            border-bottom: 1px solid #dee2e6;
+            padding: 15px 20px;
+            border-radius: 8px 8px 0 0;
+        }
+        .search-container {
+            background: rgba(255,255,255,0.9);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .accordion-button:not(.collapsed) {
+            background: #e7f3ff;
+            color: #00599c;
+            font-weight: 500;
+        }
+        .accordion-button {
+            border-radius: 0;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+        .accordion-button:focus {
+            box-shadow: none;
+        }
+        .badge-note {
+            background: #e9ecef;
+            color: #495057;
+            font-weight: 500;
+        }
+        .badge-tip {
+            background: #d1ecf1;
+            color: #0c5460;
+            font-weight: 500;
+        }
+        .btn {
+            border-radius: 6px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .copy-button {
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 4px 8px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .copy-button:hover {
+            background: #5a6268;
+            transform: scale(1.05);
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Inter', sans-serif;
+            color: #212529;
+            font-weight: 600;
+        }
+        .card-body {
+            padding: 20px;
+        }
+        .table {
+            margin-bottom: 0;
+        }
+        .table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            border-top: none;
+        }
+        pre {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+        }
+        code {
+            background: #f1f3f4;
+            color: #d73a49;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+        .cpp-logo {
+            color: #00599c;
+            font-weight: 700;
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+            .main-content {
+                margin-left: 0;
+            }
+        }
+    </style>
+    <script>
+        hljs.highlightAll();
+    </script>
+{% endblock %}
+
+{% block content %}
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar">
+        <div class="p-3">
+            <h5 class="text-center mb-3" style="font-size: 1.1rem; color: #fff; font-weight: 600;"><i class="fas fa-code"></i> <span class="cpp-logo">C++ Programming</span> Documentation</h5>
+
+            <!-- Search Box -->
+            <div class="search-container">
+                <input type="text" id="search-input" class="form-control" placeholder="Search documentation..." style="background: rgba(255,255,255,0.9); border: 1px solid #495057; color: #212529;">
+                <button class="btn btn-sm btn-outline-dark mt-2 w-100" onclick="clearSearch()">Clear Search</button>
+            </div>
+
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link" href="#module0"><i class="fas fa-book"></i> Module 0: Basic Concepts</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module1"><i class="fas fa-info-circle"></i> Module 1: Introduction</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#module2"><i class="fas fa-cube"></i> Module 2: Classes & Objects</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module3"><i class="fas fa-sitemap"></i> Module 3: Inheritance</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module4"><i class="fas fa-layer-group"></i> Module 4: Templates</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module5"><i class="fas fa-exclamation-triangle"></i> Module 5: Exceptions</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module6"><i class="fas fa-database"></i> Module 6: STL</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module7"><i class="fas fa-file-alt"></i> Module 7: File I/O</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module8"><i class="fas fa-memory"></i> Module 8: Memory</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module9"><i class="fas fa-rocket"></i> Module 9: Advanced</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module10"><i class="fas fa-laptop-code"></i> Module 10: Applications</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div id="content">
+            <h1 class="mb-4" style="text-align: center;"><span class="cpp-logo">C++ Programming</span> Documentation</h1>
+            <p style="text-align: center; font-size: 1.1rem; color: #6c757d;">Comprehensive guide to C++ programming language</p>
+
+            <!-- Module 0: Basic Concepts -->
+            <div class="content-card" id="module0">
+                <div class="card-header">
+                    <i class="fas fa-book"></i> Module 0: Basic Concepts
+                </div>
+                <div class="card-body">
+                    <h5>Basic C++ Concepts</h5>
+                    <p>This module covers the fundamental building blocks of C++ programming including variables, data types, operators, control structures, and functions.</p>
+
+                    <div class="accordion" id="basicConceptsAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#variablesDataTypes">
+                                    <i class="fas fa-database"></i> Variables and Data Types
+                                </button>
+                            </h2>
+                            <div id="variablesDataTypes" class="accordion-collapse collapse show" data-bs-parent="#basicConceptsAccordion">
+                                <div class="accordion-body">
+                                    <h6>Basic Data Types</h6>
+                                    <div class="table-responsive">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Type</th>
+                                                    <th>Description</th>
+                                                    <th>Size</th>
+                                                    <th>Example</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td><code>int</code></td>
+                                                    <td>Integer</td>
+                                                    <td>4 bytes</td>
+                                                    <td><code>int age = 25;</code></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><code>float</code></td>
+                                                    <td>Single precision floating point</td>
+                                                    <td>4 bytes</td>
+                                                    <td><code>float price = 19.99f;</code></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><code>double</code></td>
+                                                    <td>Double precision floating point</td>
+                                                    <td>8 bytes</td>
+                                                    <td><code>double pi = 3.14159;</code></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><code>char</code></td>
+                                                    <td>Single character</td>
+                                                    <td>1 byte</td>
+                                                    <td><code>char grade = 'A';</code></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><code>bool</code></td>
+                                                    <td>Boolean (true/false)</td>
+                                                    <td>1 byte</td>
+                                                    <td><code>bool isReady = true;</code></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><code>string</code></td>
+                                                    <td>Text string</td>
+                                                    <td>Variable</td>
+                                                    <td><code>string name = "John";</code></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    
+                                    <h6>Variable Declaration and Initialization</h6>
+                                    <pre><button class="copy-button">Copy</button><code class="language-cpp">
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+int main() {
+    // Declaration and initialization
+    int age = 25;
+    double salary = 50000.50;
+    char grade = 'A';
+    bool isEmployed = true;
+    std::string name = "John Doe";
+    
+    // Output variables
+    std::cout << "Name: " << name << std::endl;
+    std::cout << "Age: " << age << std::endl;
+    std::cout << "Salary: $" << salary << std::endl;
+    std::cout << "Grade: " << grade << std::endl;
+    std::cout << "Employed: " << std::boolalpha << isEmployed << std::endl;
+    
+    // Constants
+    const double PI = 3.14159;
+    const int MAX_STUDENTS = 100;
+    
+    std::cout << "PI: " << PI << std::endl;
+    std::cout << "Max students: " << MAX_STUDENTS << std::endl;
+    
+    return 0;
+}
+</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#operators">
+                                    <i class="fas fa-calculator"></i> Operators
+                                </button>
+                            </h2>
+                            <div id="operators" class="accordion-collapse collapse" data-bs-parent="#basicConceptsAccordion">
+                                <div class="accordion-body">
+                                    <h6>Arithmetic Operators</h6>
+                                    <pre><button class="copy-button">Copy</button><code class="language-cpp">
+#include &lt;iostream&gt;
+
+int main() {
+    int a = 10, b = 3;
+    
+    // Arithmetic operations
+    std::cout << "Addition: " << (a + b) << std::endl;      // 13
+    std::cout << "Subtraction: " << (a - b) << std::endl;   // 7
+    std::cout << "Multiplication: " << (a * b) << std::endl; // 30
+    std::cout << "Division: " << (a / b) << std::endl;       // 3 (integer division)
+    std::cout << "Modulus: " << (a % b) << std::endl;        // 1 (remainder)
+    
+    // Floating point division
+    double c = 10.0, d = 3.0;
+    std::cout << "Float division: " << (c / d) << std::endl; // 3.33333
+    
+    return 0;
+}
+</code></pre>
+                                    
+                                    <h6>Comparison Operators</h6>
+                                    <pre><button class="copy-button">Copy</button><code class="language-cpp">
+#include &lt;iostream&gt;
+
+int main() {
+    int x = 5, y = 10;
+    
+    std::cout << "Equal: " << (x == y) << std::endl;        // false (0)
+    std::cout << "Not equal: " << (x != y) << std::endl;     // true (1)
+    std::cout << "Greater than: " << (x > y) << std::endl;   // false (0)
+    std::cout << "Less than: " << (x < y) << std::endl;      // true (1)
+    std::cout << "Greater or equal: " << (x >= y) << std::endl; // false (0)
+    std::cout << "Less or equal: " << (x <= y) << std::endl;    // true (1)
+    
+    return 0;
+}
+</code></pre>
+                                    
+                                    <h6>Logical Operators</h6>
+                                    <pre><button class="copy-button">Copy</button><code class="language-cpp">
+#include &lt;iostream&gt;
+
+int main() {
+    bool a = true, b = false;
+    
+    std::cout << "AND: " << (a && b) << std::endl;           // false (0)
+    std::cout << "OR: " << (a || b) << std::endl;            // true (1)
+    std::cout << "NOT a: " << (!a) << std::endl;             // false (0)
+    std::cout << "NOT b: " << (!b) << std::endl;             // true (1)
+    
+    return 0;
+}
+</code></pre>
+                                    
+                                    <h6>Assignment Operators</h6>
+                                    <pre><button class="copy-button">Copy</button><code class="language-cpp">
+#include &lt;iostream&gt;
+
+int main() {
+    int x = 10;
+    
+    // Assignment operators
+    x += 5;  // x = x + 5;  (x = 15)
+    std::cout << "After += 5: " << x << std::endl;
+    
+    x -= 3;  // x = x - 3;  (x = 12)
+    std::cout << "After -= 3: " << x << std::endl;
+    
+    x *= 2;  // x = x * 2;  (x = 24)
+    std::cout << "After *= 2: " << x << std::endl;
+    
+    x /= 4;  // x = x / 4;  (x = 6)
+    std::cout << "After /= 4: " << x << std::endl;
+    
+    x %= 4;  // x = x % 4;  (x = 2)
+    std::cout << "After %= 4: " << x << std::endl;
+    
+    return 0;
+}
+</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#conditionalStatements">
+                                    <i class="fas fa-code-branch"></i> Conditional Statements
+                                </button>
+                            </h2>
+                            <div id="conditionalStatements" class="accordion-collapse collapse" data-bs-parent="#basicConceptsAccordion">
+                                <div class="accordion-body">
+                                    <h6>if Statement</h6>
+                                    <pre><button class="copy-button">Copy</button><code class="language-cpp">
+#include &lt;iostream&gt;
+
+int main() {
+    int age = 18;
+    
+    if (age >= 18) {
+        std::cout << "You are eligible to vote!" << std::endl;
+    } else {
+        std::cout << "You are not eligible to vote yet." << std::endl;
+    }
+    
+    return 0;
+}
+</code></pre>
+                                    
+                                    <h6>if-else if-else Statement</h6>
+                                    <pre><button class="copy-button">Copy</button><code class="language-cpp">
+#include &lt;iostream&gt;
+
+int main() {
+    int score = 85;
+    
+    if (score >= 90) {
+        std::cout << "Grade: A" << std::endl;
+    } else if (score >= 80) {
+        std::cout << "Grade: B" << std::endl;
+    } else if (score >= 70) {
+        std::cout << "Grade: C" << std::endl;
+    } else if (score >= 60) {
+        std::cout << "Grade: D" << std::endl;
+    } else {
+        std::cout << "Grade: F" << std::endl;
+    }
+    
+    return 0;
+}
+</code></pre>
+                                    
+                                    <h6>switch Statement</h6>
+                                    <pre><button class="copy-button">Copy</button><code class="language-cpp">
+#include &lt;iostream&gt;
+
+int main() {
+    char grade = 'B';
+    
+    switch (grade) {
+        case 'A':
+            std::cout << "Excellent!" << std::endl;
+            break;
+        case 'B':
+            std::cout << "Good!" << std::endl;
+            break;
+        case 'C':
+            std::cout << "Average!" << std::endl;
+            break;
+        case 'D':
+            std::cout << "Below Average!" << std::endl;
+            break;
+        case 'F':
+            std::cout << "Fail!" << std::endl;
+            break;
+        default:
+            std::cout << "Invalid grade!" << std::endl;
+    }
+    
+    return 0;
+}
+</code></pre>
+                                    
+                                    <h6>Ternary Operator</h6>
+                                    <pre><button class="copy-button">Copy</button><code class="language-cpp">
+#include &lt;iostream&gt;
+
+int main() {
+    int age = 20;
+    std::string message = (age >= 18) ? "Adult" : "Minor";
+    
+    std::cout << "Status: " << message << std::endl;
+    
+    return 0;
+}
+</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#loops">
+                                    <i class="fas fa-sync"></i> Loops
+                                </button>
+                            </h2>
+                            <div id="loops" class="accordion-collapse collapse" data-bs-parent="#basicConceptsAccordion">
+                                <div class="accordion-body">
+                                    <h6>for Loop</h6>
+                                    <pre><button class="copy-button">Copy</button><code class="language-cpp">
+#include &lt;iostream&gt;
+
+int main() {
+    // Basic for loop
+    for (int i = 1; i <= 5; i++) {
+        std::cout << "Count: " << i << std::endl;
+    }
+    
+    // Nested for loop
+    for (int i = 1; i <= 3; i++) {
+        for (int j = 1; j <= 3; j++) {
+            std::cout << i << " * " << j << " = " << (i * j) << std::endl;
+        }
+        std::cout << "---" << std::endl;
+    }
+    
+    return 0;
+}
+</code></pre>
+                                    
+                                    <h6>while Loop</h6>
+                                    <pre><button class="copy-button">Copy</button><code class="language-cpp">
+#include &lt;iostream&gt;
+
+int main() {
+    int count = 1;
+    
+    // while loop
+    while (count <= 5) {
+        std::cout << "Count: " << count << std::endl;
+        count++;
+    }
+    
+    // Input validation with while loop
+    int number;
+    std::cout << "Enter a positive number: ";
+    std::cin >> number;
+    
+    while (number <= 0) {
+        std::cout << "Invalid! Please enter a positive number: ";
+        std::cin >> number;
+    }
+    
+    std::cout << "You entered: " << number << std::endl;
+    
+    return 0;
+}
+</code></pre>
+                                    
+                                    <h6>do-while Loop</h6>
+                                    <pre><button class="copy-button">Copy</button><code class="language-cpp">
+#include &lt;iostream&gt;
+
+int main() {
+    int choice;
+    
+    do {
+        std::cout << "\nMenu:" << std::endl;
+        std::cout << "1. Option 1" << std::endl;
+        std::cout << "2. Option 2" << std::endl;
+        std::cout << "3. Exit" << std::endl;
+        std::cout << "Enter your choice: ";
+        std::cin >> choice;
+        
+        switch (choice) {
+            case 1:
+                std::cout << "You selected Option 1" << std::endl;
+                break;
+            case 2:
+                std::cout << "You selected Option 2" << std::endl;
+                break;
+            case 3:
+                std::cout << "Exiting..." << std::endl;
+                break;
+            default:
+                std::cout << "Invalid choice!" << std::endl;
+        }
+    } while (choice != 3);
+    
+    return 0;
+}
+</code></pre>
+                                    
+                                    <h6>Loop Control Statements</h6>
+                                    <pre><button class="copy-button">Copy</button><code class="language-cpp">
+#include &lt;iostream&gt;
+
+int main() {
+    // break statement
+    for (int i = 1; i <= 10; i++) {
+        if (i == 6) {
+            break;  // Exit the loop when i equals 6
+        }
+        std::cout << i << " ";
+    }
+    std::cout << "\n";
+    
+    // continue statement
+    for (int i = 1; i <= 10; i++) {
+        if (i % 2 == 0) {
+            continue;  // Skip even numbers
+        }
+        std::cout << i << " ";
+    }
+    std::cout << "\n";
+    
+    return 0;
+}
+</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#arrays">
+                                    <i class="fas fa-th"></i> Arrays
+                                </button>
+                            </h2>
+                            <div id="arrays" class="accordion-collapse collapse" data-bs-parent="#basicConceptsAccordion">
+                                <div class="accordion-body">
+                                    <h6>One-Dimensional Arrays</h6>
+                                    <pre><button class="copy-button">Copy</button><code class="language-cpp">
+#include &lt;iostream&gt;
+
+int main() {
+    // Declaration and initialization
+    int numbers[5] = {10, 20, 30, 40, 50};
+    
+    // Accessing array elements
+    std::cout << "First element: " << numbers[0] << std::endl;
+    std::cout << "Third element: " << numbers[2] << std::endl;
+    
+    // Modifying array elements
+    numbers[1] = 25;
+    std::cout << "Modified second element: " << numbers[1] << std::endl;
+    
+    // Iterating through an array
+    std::cout << "All elements: ";
+    for (int i = 0; i < 5; i++) {
+        std::cout << numbers[i] << " ";
+    }
+    std::cout << std::endl;
+    
+    // Range-based for loop (C++11 and later)
+    std::cout << "Using range-based for loop: ";
+    for (int num : numbers) {
+        std::cout << num << " ";
+    }
+    std::cout << std::endl;
+    
+    return 0;
+}
+</code></pre>
+                                    
+                                    <h6>Multi-Dimensional Arrays</h6>
+                                    <pre><button class="copy-button">Copy</button><code class="language-cpp">
+#include &lt;iostream&gt;
+
+int main() {
+    // 2D array
+    int matrix[3][3] = {
+        {1, 2, 3},
+        {4, 5, 6},
+        {7, 8, 9}
+    };
+    
+    // Accessing 2D array elements
+    std::cout << "Element at [1][2]: " << matrix[1][2] << std::endl;
+    
+    // Iterating through a 2D array
+    std::cout << "Matrix:" << std::endl;
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            std::cout << matrix[i][j] << " ";
+        }
+        std::cout << std::endl;
+    }
+    
+    return 0;
+}
+</code></pre>
+                                    
+                                    <h6>Array Operations</h6>
+                                    <pre><button class="copy-button">Copy</button><code class="language-cpp">
+#include &lt;iostream&gt;
+
+int main() {
+    int arr[5] = {10, 20, 30, 40, 50};
+    int size = 5;
+    
+    // Find sum
+    int sum = 0;
+    for (int i = 0; i < size; i++) {
+        sum += arr[i];
+    }
+    std::cout << "Sum: " << sum << std::endl;
+    
+    // Find maximum
+    int max = arr[0];
+    for (int i = 1; i < size; i++) {
+        if (arr[i] > max) {
+            max = arr[i];
+        }
+    }
+    std::cout << "Maximum: " << max << std::endl;
+    
+    // Find minimum
+    int min = arr[0];
+    for (int i = 1; i < size; i++) {
+        if (arr[i] < min) {
+            min = arr[i];
+        }
+    }
+    std::cout << "Minimum: " << min << std::endl;
+    
+    return 0;
+}
+</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#functions">
+                                    <i class="fas fa-cogs"></i> Functions
+                                </button>
+                            </h2>
+                            <div id="functions" class="accordion-collapse collapse" data-bs-parent="#basicConceptsAccordion">
+                                <div class="accordion-body">
+                                    <h6>Function Declaration and Definition</h6>
+                                    <pre><button class="copy-button">Copy</button><code class="language-cpp">
+#include &lt;iostream&gt;
+
+// Function declaration (prototype)
+int add(int a, int b);
+double multiply(double x, double y);
+void greet(std::string name);
+
+int main() {
+    // Calling functions
+    int result1 = add(5, 3);
+    std::cout << "5 + 3 = " << result1 << std::endl;
+    
+    double result2 = multiply(2.5, 4.0);
+    std::cout << "2.5 * 4.0 = " << result2 << std::endl;
+    
+    greet("Alice");
+    
+    return 0;
+}
+
+// Function definitions
+int add(int a, int b) {
+    return a + b;
+}
+
+double multiply(double x, double y) {
+    return x * y;
+}
+
+void greet(std::string name) {
+    std::cout << "Hello, " << name << "!" << std::endl;
+}
+</code></pre>
+                                    
+                                    <h6>Function with Default Parameters</h6>
+                                    <pre><button class="copy-button">Copy</button><code class="language-cpp">
+#include &lt;iostream&gt;
+
+// Function with default parameters
+void printMessage(std::string message, int times = 1) {
+    for (int i = 0; i < times; i++) {
+        std::cout << message << std::endl;
+    }
+}
+
+int main() {
+    printMessage("Hello!");          // Uses default times = 1
+    printMessage("Hi!", 3);          // Uses provided times = 3
+    
+    return 0;
+}
+</code></pre>
+                                    
+                                    <h6>Function Overloading</h6>
+                                    <pre><button class="copy-button">Copy</button><code class="language-cpp">
+#include &lt;iostream&gt;
+
+// Function overloading
+int calculate(int a, int b) {
+    return a + b;
+}
+
+double calculate(double a, double b) {
+    return a * b;
+}
+
+int calculate(int a, int b, int c) {
+    return a + b + c;
+}
+
+int main() {
+    std::cout << "calculate(5, 3): " << calculate(5, 3) << std::endl;
+    std::cout << "calculate(2.5, 4.0): " << calculate(2.5, 4.0) << std::endl;
+    std::cout << "calculate(1, 2, 3): " << calculate(1, 2, 3) << std::endl;
+    
+    return 0;
+}
+</code></pre>
+                                    
+                                    <h6>Pass by Value vs Pass by Reference</h6>
+                                    <pre><button class="copy-button">Copy</button><code class="language-cpp">
+#include &lt;iostream&gt;
+
+// Pass by value
+void incrementByValue(int x) {
+    x++;
+    std::cout << "Inside function (by value): " << x << std::endl;
+}
+
+// Pass by reference
+void incrementByReference(int &x) {
+    x++;
+    std::cout << "Inside function (by reference): " << x << std::endl;
+}
+
+int main() {
+    int num1 = 10;
+    int num2 = 10;
+    
+    std::cout << "Before call (by value): " << num1 << std::endl;
+    incrementByValue(num1);
+    std::cout << "After call (by value): " << num1 << std::endl;
+    
+    std::cout << "\nBefore call (by reference): " << num2 << std::endl;
+    incrementByReference(num2);
+    std::cout << "After call (by reference): " << num2 << std::endl;
+    
+    return 0;
+}
+</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#inputOutput">
+                                    <i class="fas fa-exchange-alt"></i> Input and Output
+                                </button>
+                            </h2>
+                            <div id="inputOutput" class="accordion-collapse collapse" data-bs-parent="#basicConceptsAccordion">
+                                <div class="accordion-body">
+                                    <h6>Basic Input/Output</h6>
+                                    <pre><button class="copy-button">Copy</button><code class="language-cpp">
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+int main() {
+    // Output
+    std::cout << "Hello, World!" << std::endl;
+    std::cout << "This is a C++ program." << std::endl;
+    
+    // Input
+    std::string name;
+    int age;
+    
+    std::cout << "Enter your name: ";
+    std::getline(std::cin, name);  // Read entire line including spaces
+    
+    std::cout << "Enter your age: ";
+    std::cin >> age;
+    
+    std::cout << "Hello, " << name << "! You are " << age << " years old." << std::endl;
+    
+    return 0;
+}
+</code></pre>
+                                    
+                                    <h6>Formatted Output</h6>
+                                    <pre><button class="copy-button">Copy</button><code class="language-cpp">
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;  // For formatting
+
+int main() {
+    double pi = 3.14159265359;
+    
+    // Set precision
+    std::cout << std::fixed << std::setprecision(2);
+    std::cout << "Pi to 2 decimal places: " << pi << std::endl;
+    
+    // Set width and alignment
+    std::cout << std::setw(10) << std::left << "Name:" 
+              << std::setw(10) << std::right << "Age:" << std::endl;
+    std::cout << std::setw(10) << std::left << "John:" 
+              << std::setw(10) << std::right << "25:" << std::endl;
+    
+    return 0;
+}
+</code></pre>
+                                    
+                                    <h6>Input Validation</h6>
+                                    <pre><button class="copy-button">Copy</button><code class="language-cpp">
+#include &lt;iostream&gt;
+#include &lt;limits&gt;  // For numeric_limits
+
+int main() {
+    int number;
+    
+    std::cout << "Enter an integer: ";
+    
+    // Input validation loop
+    while (!(std::cin >> number)) {
+        std::cout << "Invalid input! Please enter an integer: ";
+        std::cin.clear();  // Clear error flags
+        std::cin.ignore(std::numeric_limits&lt;std::streamsize&gt;::max(), '\n');  // Discard bad input
+    }
+    
+    std::cout << "You entered: " << number << std::endl;
+    
+    return 0;
+}
+</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module 1: Introduction to C++ -->
+            <div class="content-card" id="module1">
+                <div class="card-header">
+                    <i class="fas fa-info-circle"></i> Module 1: Introduction to C++
+                </div>
+                <div class="card-body">
+                    <h5>What is C++?</h5>
+                    <p>C++ is a general-purpose programming language created by Bjarne Stroustrup as an extension of the C programming language. It was first released in 1985 as "C with Classes" and has since evolved into a powerful, multi-paradigm language supporting procedural, object-oriented, generic, and functional programming.</p>
+
+                    <h5>History of C++</h5>
+                    <ul>
+                        <li><strong>1979:</strong> Bjarne Stroustrup begins work on "C with Classes"</li>
+                        <li><strong>1985:</strong> First commercial release of C++</li>
+                        <li><strong>1998:</strong> C++ standardization by ISO/IEC</li>
+                        <li><strong>2011:</strong> C++11 standard with new features</li>
+                        <li><strong>2014:</strong> C++14 standard with improvements</li>
+                        <li><strong>2017:</strong> C++17 standard with more features</li>
+                        <li><strong>2020:</strong> C++20 standard with major additions</li>
+                    </ul>
+
+                    <h5>Features of C++</h5>
+                    <ul>
+                        <li><i class="fas fa-object-group"></i> <strong>Object-Oriented Programming:</strong> Encapsulation, inheritance, polymorphism</li>
+                        <li><i class="fas fa-layer-group"></i> <strong>Generic Programming:</strong> Templates for type-independent code</li>
+                        <li><i class="fas fa-bolt"></i> <strong>High Performance:</strong> Low-level memory manipulation</li>
+                        <li><i class="fas fa-shield-alt"></i> <strong>Type Safety:</strong> Strong typing and compile-time checks</li>
+                        <li><i class="fas fa-expand"></i> <strong>Standard Library:</strong> Rich set of containers and algorithms</li>
+                        <li><i class="fas fa-code"></i> <strong>Compatibility:</strong> Largely compatible with C code</li>
+                    </ul>
+
+                    <h5>Your First C++ Program</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-cpp">
+#include &lt;iostream&gt;
+
+int main() {
+    std::cout << "Hello, World!" << std::endl;
+    return 0;
+}
+</code></pre>
+                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Compile the program
+g++ hello.cpp -o hello
+
+# Run the program
+./hello
+</code></pre>
+                </div>
+            </div>
+
+            <!-- Module 2: Classes and Objects -->
+            <div class="content-card" id="module2">
+                <div class="card-header">
+                    <i class="fas fa-cube"></i> Module 2: Classes and Objects
+                </div>
+                <div class="card-body">
+                    <h5>Classes and Objects in C++</h5>
+                    <p>Classes are blueprints for creating objects. An object is an instance of a class. Classes encapsulate data (attributes) and functions (methods) that operate on that data.</p>
+
+                    <div class="accordion" id="classesObjectsAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#classDefinition">
+                                    <i class="fas fa-cube"></i> Class Definition
+                                </button>
+                            </h2>
+                            <div id="classDefinition" class="accordion-collapse collapse show" data-bs-parent="#classesObjectsAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-cpp">
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+class Student {
+private:
+    std::string name;
+    int age;
+    
+public:
+    // Constructor
+    Student(std::string n, int a) {
+        name = n;
+        age = a;
+    }
+    
+    // Method
+    void displayInfo() {
+        std::cout << "Name: " << name << ", Age: " << age << std::endl;
+    }
+    
+    // Getter methods
+    std::string getName() {
+        return name;
+    }
+    
+    int getAge() {
+        return age;
+    }
+    
+    // Setter methods
+    void setName(std::string n) {
+        name = n;
+    }
+    
+    void setAge(int a) {
+        age = a;
+    }
+};
+
+int main() {
+    // Create an object
+    Student student1("John", 20);
+    
+    // Call method
+    student1.displayInfo();
+    
+    // Use getter methods
+    std::cout << "Name: " << student1.getName() << std::endl;
+    std::cout << "Age: " << student1.getAge() << std::endl;
+    
+    // Use setter methods
+    student1.setName("Jane");
+    student1.setAge(22);
+    student1.displayInfo();
+    
+    return 0;
+}
+</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#constructors">
+                                    <i class="fas fa-tools"></i> Constructors and Destructors
+                                </button>
+                            </h2>
+                            <div id="constructors" class="accordion-collapse collapse" data-bs-parent="#classesObjectsAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-cpp">
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+class Rectangle {
+private:
+    double length;
+    double width;
+    
+public:
+    // Default constructor
+    Rectangle() : length(0.0), width(0.0) {
+        std::cout << "Default constructor called" << std::endl;
+    }
+    
+    // Parameterized constructor
+    Rectangle(double l, double w) : length(l), width(w) {
+        std::cout << "Parameterized constructor called" << std::endl;
+    }
+    
+    // Copy constructor
+    Rectangle(const Rectangle& other) : length(other.length), width(other.width) {
+        std::cout << "Copy constructor called" << std::endl;
+    }
+    
+    // Destructor
+    ~Rectangle() {
+        std::cout << "Destructor called" << std::endl;
+    }
+    
+    double getArea() {
+        return length * width;
+    }
+};
+
+int main() {
+    // Create objects using different constructors
+    Rectangle rect1;  // Default constructor
+    Rectangle rect2(5.0, 3.0);  // Parameterized constructor
+    Rectangle rect3 = rect2;  // Copy constructor
+    
+    std::cout << "Area of rect1: " << rect1.getArea() << std::endl;
+    std::cout << "Area of rect2: " << rect2.getArea() << std::endl;
+    std::cout << "Area of rect3: " << rect3.getArea() << std::endl;
+    
+    return 0;
+}
+</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module 3: Inheritance and Polymorphism -->
+            <div class="content-card" id="module3">
+                <div class="card-header">
+                    <i class="fas fa-sitemap"></i> Module 3: Inheritance and Polymorphism
+                </div>
+                <div class="card-body">
+                    <h5>Inheritance and Polymorphism in C++</h5>
+                    <p>Inheritance allows a class to inherit properties and methods from another class. Polymorphism allows objects of different classes to be treated as objects of a common base class.</p>
+
+                    <div class="accordion" id="inheritancePolymorphismAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#inheritance">
+                                    <i class="fas fa-sitemap"></i> Inheritance
+                                </button>
+                            </h2>
+                            <div id="inheritance" class="accordion-collapse collapse show" data-bs-parent="#inheritancePolymorphismAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-cpp">
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+// Base class
+class Animal {
+protected:
+    std::string name;
+    
+public:
+    Animal(std::string n) : name(n) {
+        std::cout << "Animal constructor called" << std::endl;
+    }
+    
+    virtual void makeSound() {
+        std::cout << "Some generic animal sound" << std::endl;
+    }
+    
+    std::string getName() {
+        return name;
+    }
+};
+
+// Derived class
+class Dog : public Animal {
+public:
+    Dog(std::string n) : Animal(n) {
+        std::cout << "Dog constructor called" << std::endl;
+    }
+    
+    void makeSound() override {
+        std::cout << "Woof! Woof!" << std::endl;
+    }
+};
+
+int main() {
+    Animal* animalPtr;
+    
+    // Create objects
+    Dog dog("Buddy");
+    
+    // Use base class pointer to derived class objects
+    animalPtr = &dog;
+    animalPtr->makeSound();  // Calls Dog's makeSound method
+    
+    return 0;
+}
+</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module 4: Templates -->
+            <div class="content-card" id="module4">
+                <div class="card-header">
+                    <i class="fas fa-layer-group"></i> Module 4: Templates
+                </div>
+                <div class="card-body">
+                    <h5>Templates in C++</h5>
+                    <p>Templates allow you to write generic functions and classes that can work with different data types. Templates are a powerful feature of C++ that enables generic programming.</p>
+
+                    <div class="accordion" id="templatesAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#functionTemplates">
+                                    <i class="fas fa-code"></i> Function Templates
+                                </button>
+                            </h2>
+                            <div id="functionTemplates" class="accordion-collapse collapse show" data-bs-parent="#templatesAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-cpp">
+#include &lt;iostream&gt;
+
+// Function template
+template &lt;typename T&gt;
+T add(T a, T b) {
+    return a + b;
+}
+
+int main() {
+    // Use function template with integers
+    int sum = add(5, 3);
+    std::cout << "Sum of 5 and 3: " << sum << std::endl;
+    
+    return 0;
+}
+</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module 5: Exception Handling -->
+            <div class="content-card" id="module5">
+                <div class="card-header">
+                    <i class="fas fa-exclamation-triangle"></i> Module 5: Exception Handling
+                </div>
+                <div class="card-body">
+                    <h5>Exception Handling in C++</h5>
+                    <p>C++ provides a robust exception handling mechanism to handle runtime errors gracefully without crashing the program.</p>
+
+                    <div class="accordion" id="exceptionHandlingAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#basicsExceptions">
+                                    <i class="fas fa-exclamation-triangle"></i> Basic Exception Handling
+                                </button>
+                            </h2>
+                            <div id="basicsExceptions" class="accordion-collapse collapse show" data-bs-parent="#exceptionHandlingAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-cpp">
+#include &lt;iostream&gt;
+#include &lt;stdexcept&gt;
+
+int main() {
+    try {
+        // Code that might throw an exception
+        int denominator = 0;
+        if (denominator == 0) {
+            throw std::runtime_error("Division by zero");
+        }
+        
+        int result = 10 / denominator;
+        std::cout << "Result: " << result << std::endl;
+    }
+    catch (const std::runtime_error& e) {
+        std::cerr << "Runtime error: " << e.what() << std::endl;
+    }
+    
+    return 0;
+}
+</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module 6: Standard Template Library (STL) -->
+            <div class="content-card" id="module6">
+                <div class="card-header">
+                    <i class="fas fa-database"></i> Module 6: Standard Template Library (STL)
+                </div>
+                <div class="card-body">
+                    <h5>Standard Template Library (STL)</h5>
+                    <p>The Standard Template Library (STL) is a collection of template classes that provide common data structures and algorithms. It is part of the C++ standard library.</p>
+
+                    <div class="accordion" id="stlAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#containers">
+                                    <i class="fas fa-database"></i> Containers
+                                </button>
+                            </h2>
+                            <div id="containers" class="accordion-collapse collapse show" data-bs-parent="#stlAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;list&gt;
+#include &lt;map&gt;
+#include &lt;set&gt;
+#include &lt;queue&gt;
+#include &lt;stack&gt;
+
+int main() {
+    // Vector
+    std::vector&lt;int&gt; vec = {1, 2, 3, 4, 5};
+    
+    std::cout << "Vector elements: ";
+    for (const auto& item : vec) {
+        std::cout << item << " ";
+    }
+    std::cout << std::endl;
+    
+    // List
+    std::list&lt;std::string&gt; list = {"apple", "banana", "cherry"};
+    
+    std::cout << "List elements: ";
+    for (const auto& item : list) {
+        std::cout << item << " ";
+    }
+    std::cout << std::endl;
+    
+    return 0;
+}
+</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module 7: File I/O -->
+            <div class="content-card" id="module7">
+                <div class="card-header">
+                    <i class="fas fa-file-alt"></i> Module 7: File I/O
+                </div>
+                <div class="card-body">
+                    <h5>File I/O in C++</h5>
+                    <p>C++ provides robust file I/O capabilities through the fstream library for text files and binary files.</p>
+
+                    <div class="accordion" id="fileIOAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#textFiles">
+                                    <i class="fas fa-file-alt"></i> Text Files
+                                </button>
+                            </h2>
+                            <div id="textFiles" class="accordion-collapse collapse show" data-bs-parent="#fileIOAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-cpp">
+#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include &lt;string&gt;
+
+int main() {
+    // Writing to a text file
+    std::ofstream outFile("example.txt");
+    if (outFile.is_open()) {
+        outFile << "Hello, World!" << std::endl;
+        outFile.close();
+    }
+    
+    // Reading from a text file
+    std::ifstream inFile("example.txt");
+    if (inFile.is_open()) {
+        std::string line;
+        while (std::getline(inFile, line)) {
+            std::cout << line << std::endl;
+        }
+        inFile.close();
+    }
+    
+    return 0;
+}
+</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module 8: Memory Management -->
+            <div class="content-card" id="module8">
+                <div class="card-header">
+                    <i class="fas fa-memory"></i> Module 8: Memory Management
+                </div>
+                <div class="card-body">
+                    <h5>Memory Management in C++</h5>
+                    <p>C++ provides both manual memory management through pointers and automatic memory management through smart pointers and RAII (Resource Acquisition Is Initialization).</p>
+
+                    <div class="accordion" id="memoryManagementAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#rawPointers">
+                                    <i class="fas fa-arrow-right"></i> Raw Pointers
+                                </button>
+                            </h2>
+                            <div id="rawPointers" class="accordion-collapse collapse show" data-bs-parent="#memoryManagementAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-cpp">
+#include &lt;iostream&gt;
+
+int main() {
+    // Allocate memory
+    int* ptr = new int(10);
+    
+    // Use the memory
+    *ptr = 20;
+    std::cout << "Value: " << *ptr << std::endl;
+    
+    // Free the memory
+    delete ptr;
+    ptr = nullptr;  // Set pointer to null after deletion
+    
+    return 0;
+}
+</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module 9: Advanced Topics -->
+            <div class="content-card" id="module9">
+                <div class="card-header">
+                    <i class="fas fa-rocket"></i> Module 9: Advanced Topics
+                </div>
+                <div class="card-body">
+                    <h5>Advanced C++ Topics</h5>
+                    <p>This module covers advanced C++ concepts that enhance your programming capabilities.</p>
+
+                    <div class="accordion" id="advancedTopicsAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#lambda">
+                                    <i class="fas fa-code"></i> Lambda Expressions
+                                </button>
+                            </h2>
+                            <div id="lambda" class="accordion-collapse collapse show" data-bs-parent="#advancedTopicsAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+
+int main() {
+    // Simple lambda expression
+    auto add = [](int a, int b) { return a + b; };
+    std::cout << "5 + 3 = " << add(5, 3) << std::endl;
+    
+    return 0;
+}
+</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module 10: Real-world C++ Applications -->
+            <div class="content-card" id="module10">
+                <div class="card-header">
+                    <i class="fas fa-laptop-code"></i> Module 10: Real-world C++ Applications
+                </div>
+                <div class="card-body">
+                    <h5>Real-world C++ Applications</h5>
+                    <p>C++ is widely used in various domains due to its performance, control, and versatility. Here are some real-world applications of C++:</p>
+
+                    <div class="accordion" id="realWorldAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#gameDevelopment">
+                                    <i class="fas fa-gamepad"></i> Game Development
+                                </button>
+                            </h2>
+                            <div id="gameDevelopment" class="accordion-collapse collapse show" data-bs-parent="#realWorldAccordion">
+                                <div class="accordion-body">
+                                    <p>C++ is the language of choice for game development due to its performance and control over hardware. Many popular game engines are built with C++:</p>
+                                    <ul>
+                                        <li>Unreal Engine</li>
+                                        <li>Unity (core components)</li>
+                                        <li>CryEngine</li>
+                                        <li>Godot (core components)</li>
+                                    </ul>
+                                    <pre><button class="copy-button">Copy</button><code class="language-cpp">
+#include &lt;iostream&gt;
+
+class GameObject {
+protected:
+    std::string name;
+    float x, y;
+    
+public:
+    GameObject(std::string n, float xPos, float yPos) 
+        : name(n), x(xPos), y(yPos) {}
+    
+    virtual void update() {
+        std::cout << "Updating " << name << " at position (" 
+                  << x << ", " << y << ")" << std::endl;
+    }
+};
+
+class Player : public GameObject {
+private:
+    int health;
+    
+public:
+    Player(std::string n, float xPos, float yPos, int h) 
+        : GameObject(n, xPos, yPos), health(h) {}
+    
+    void update() override {
+        // Update player position
+        x += 0.1f;
+        y += 0.05f;
+        
+        std::cout << "Player " << name << " moved to (" 
+                  << x << ", " << y << ") with health " 
+                  << health << std::endl;
+    }
+};
+
+int main() {
+    Player player("Hero", 0.0f, 0.0f, 100);
+    
+    // Game loop simulation
+    for (int i = 0; i < 5; i++) {
+        player.update();
+    }
+    
+    return 0;
+}
+</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Search functionality
+        document.getElementById('search-input').addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const modules = document.querySelectorAll('.content-card');
+            
+            modules.forEach(module => {
+                const content = module.textContent.toLowerCase();
+                if (content.includes(searchTerm) || searchTerm === '') {
+                    module.style.display = 'block';
+                } else {
+                    module.style.display = 'none';
+                }
+            });
+        });
+        
+        function clearSearch() {
+            document.getElementById('search-input').value = '';
+            const modules = document.querySelectorAll('.content-card');
+            modules.forEach(module => {
+                module.style.display = 'block';
+            });
+        }
+        
+        // Copy button functionality
+        document.querySelectorAll('.copy-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const codeBlock = this.parentElement.querySelector('code');
+                const textArea = document.createElement('textarea');
+                textArea.value = codeBlock.textContent;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                
+                // Change button text temporarily
+                const originalText = this.textContent;
+                this.textContent = 'Copied!';
+                setTimeout(() => {
+                    this.textContent = originalText;
+                }, 2000);
+            });
+        });
+        
+        // Active navigation link
+        document.querySelectorAll('.sidebar .nav-link').forEach(link => {
+            link.addEventListener('click', function() {
+                document.querySelectorAll('.sidebar .nav-link').forEach(l => {
+                    l.classList.remove('active');
+                });
+                this.classList.add('active');
+            });
+        });
+    </script>
+{% endblock %}

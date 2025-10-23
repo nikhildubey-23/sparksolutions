@@ -1,0 +1,3452 @@
+{% extends 'base.html' %}
+
+{% block title %}Java Programming Documentation - SN VERSE{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/github.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/languages/java.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.3/purify.min.js"></script>
+    <style>
+        body {
+            background: #f8f9fa;
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #212529;
+        }
+        .sidebar {
+            position: fixed;
+            top: 70px;
+            left: 0;
+            width: 280px;
+            height: calc(100vh - 70px);
+            background: #343a40;
+            border-right: 1px solid #495057;
+            overflow-y: auto;
+            z-index: 1000;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+        }
+        .sidebar .nav-link {
+            color: #adb5bd;
+            padding: 12px 20px;
+            border-radius: 0;
+            margin: 0;
+            transition: all 0.2s ease;
+            font-weight: 500;
+            border-left: 3px solid transparent;
+        }
+        .sidebar .nav-link:hover {
+            background: #495057;
+            color: #fff;
+            text-decoration: none;
+            border-left-color: #e74c3c;
+        }
+        .sidebar .nav-link.active {
+            background: #e74c3c;
+            color: #fff;
+            border-left-color: #e74c3c;
+        }
+        .main-content {
+            margin-left: 280px;
+            padding: 30px;
+            max-width: 1200px;
+        }
+
+        .content-card {
+            margin-bottom: 30px;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            background: #fff;
+        }
+        .content-card .card-header {
+            background: #e74c3c;
+            color: white;
+            font-weight: 600;
+            font-size: 1.1rem;
+            border-bottom: 1px solid #dee2e6;
+            padding: 15px 20px;
+            border-radius: 8px 8px 0 0;
+        }
+        .search-container {
+            background: rgba(255,255,255,0.9);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .accordion-button:not(.collapsed) {
+            background: #ffeaea;
+            color: #e74c3c;
+            font-weight: 500;
+        }
+        .accordion-button {
+            border-radius: 0;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+        .accordion-button:focus {
+            box-shadow: none;
+        }
+        .badge-note {
+            background: #e9ecef;
+            color: #495057;
+            font-weight: 500;
+        }
+        .badge-tip {
+            background: #d1ecf1;
+            color: #0c5460;
+            font-weight: 500;
+        }
+        .btn {
+            border-radius: 6px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .copy-button {
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 4px 8px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .copy-button:hover {
+            background: #5a6268;
+            transform: scale(1.05);
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Inter', sans-serif;
+            color: #212529;
+            font-weight: 600;
+        }
+        .card-body {
+            padding: 20px;
+        }
+        .table {
+            margin-bottom: 0;
+        }
+        .table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            border-top: none;
+        }
+        pre {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+        }
+        code {
+            background: #f1f3f4;
+            color: #d73a49;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+        .java-logo {
+            color: #e74c3c;
+            font-weight: 700;
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+            .main-content {
+                margin-left: 0;
+            }
+        }
+    </style>
+    <script>
+        hljs.highlightAll();
+    </script>
+{% endblock %}
+
+{% block content %}
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar">
+        <div class="p-3">
+            <h5 class="text-center mb-3" style="font-size: 1.1rem; color: #fff; font-weight: 600;"><i class="fab fa-java"></i> <span class="java-logo">Java Programming</span> Documentation</h5>
+
+            <!-- Search Box -->
+            <div class="search-container">
+                <input type="text" id="search-input" class="form-control" placeholder="Search documentation..." style="background: rgba(255,255,255,0.9); border: 1px solid #495057; color: #212529;">
+                <button class="btn btn-sm btn-outline-dark mt-2 w-100" onclick="clearSearch()">Clear Search</button>
+            </div>
+
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link" href="#module1"><i class="fas fa-info-circle"></i> Module 1: Introduction</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module2"><i class="fas fa-code"></i> Module 2: Basic Syntax</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module3"><i class="fas fa-calculator"></i> Module 3: Operators</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module4"><i class="fas fa-sitemap"></i> Module 4: Control Flow</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module5"><i class="fas fa-functions"></i> Module 5: Methods</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module6"><i class="fas fa-list"></i> Module 6: Arrays</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module7"><i class="fas fa-cube"></i> Module 7: Classes & Objects</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module8"><i class="fas fa-sitemap"></i> Module 8: Inheritance & Polymorphism</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module9"><i class="fas fa-shield-alt"></i> Module 9: Abstraction & Encapsulation</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module10"><i class="fas fa-exclamation-triangle"></i> Module 10: Exception Handling</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module11"><i class="fas fa-layer-group"></i> Module 11: Collections Framework</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module12"><i class="fas fa-code-branch"></i> Module 12: Multithreading</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module13"><i class="fas fa-file-alt"></i> Module 13: File I/O</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module14"><i class="fas fa-database"></i> Module 14: JDBC & Database</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module15"><i class="fas fa-rocket"></i> Module 15: Advanced Concepts</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div id="content">
+            <h1 class="mb-4" style="text-align: center;"><span class="java-logo">Java Programming</span> Documentation</h1>
+            <p style="text-align: center; font-size: 1.1rem; color: #6c757d;">Complete guide to Java programming from basics to advanced</p>
+
+            <!-- Module 1-6 content remains the same as previous code -->
+            <!-- Module 1: Introduction to Java -->
+            <div class="content-card" id="module1">
+                <div class="card-header">
+                    <i class="fas fa-info-circle"></i> Module 1: Introduction to Java
+                </div>
+                <div class="card-body">
+                    <h5>What is Java?</h5>
+                    <p>Java is a high-level, object-oriented programming language developed by Sun Microsystems (now owned by Oracle). It is platform-independent, secure, and widely used for enterprise applications, web development, mobile apps (Android), and more.</p>
+
+                    <h5>Key Features of Java</h5>
+                    <ul>
+                        <li><strong>Platform Independent:</strong> Write once, run anywhere (WORA)</li>
+                        <li><strong>Object-Oriented:</strong> Based on objects and classes</li>
+                        <li><strong>Simple:</strong> Easy to learn and use</li>
+                        <li><strong>Secure:</strong> Built-in security features</li>
+                        <li><strong>Multithreaded:</strong> Supports concurrent programming</li>
+                        <li><strong>Robust:</strong> Strong memory management and exception handling</li>
+                    </ul>
+
+                    <h5>Java Development Kit (JDK) Setup</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Download JDK from Oracle website
+# Set JAVA_HOME environment variable
+# Add JAVA_HOME/bin to PATH
+
+# Verify installation
+java -version
+javac -version
+</code></pre>
+
+                    <h5>Your First Java Program</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-java">
+// HelloWorld.java
+public class HelloWorld {
+    // Main method - program entry point
+    public static void main(String[] args) {
+        // Print statement
+        System.out.println("Hello, World!");
+        System.out.println("Welcome to Java Programming!");
+    }
+}
+</code></pre>
+                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Compile the program
+javac HelloWorld.java
+
+# Run the program
+java HelloWorld
+</code></pre>
+                </div>
+            </div>
+
+            <!-- Module 2: Basic Syntax -->
+            <div class="content-card" id="module2">
+                <div class="card-header">
+                    <i class="fas fa-code"></i> Module 2: Basic Syntax
+                </div>
+                <div class="card-body">
+                    <h5>Java Program Structure</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-java">
+// Class declaration
+public class BasicSyntax {
+    
+    // Main method - program entry point
+    public static void main(String[] args) {
+        
+        // Statements end with semicolon
+        System.out.println("Hello Java!");
+        
+        // Code blocks are enclosed in curly braces
+        {
+            System.out.println("Inside code block");
+        }
+    }
+}
+</code></pre>
+
+                    <h5>Comments in Java</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-java">
+public class CommentsExample {
+    public static void main(String[] args) {
+        
+        // This is a single-line comment
+        
+        /*
+         * This is a multi-line comment
+         * It can span multiple lines
+         */
+        
+        System.out.println("Comments example"); // Inline comment
+        
+        /**
+         * This is a JavaDoc comment
+         * Used for documentation
+         * @param args command line arguments
+         */
+    }
+}
+</code></pre>
+
+                    <h5>Variables and Data Types</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-java">
+public class VariablesDemo {
+    public static void main(String[] args) {
+        
+        // Primitive Data Types
+        byte age = 25;              // 1 byte, -128 to 127
+        short year = 2024;          // 2 bytes, -32,768 to 32,767
+        int population = 8000000;   // 4 bytes, -2^31 to 2^31-1
+        long distance = 15000000000L; // 8 bytes, -2^63 to 2^63-1
+        
+        float price = 19.99f;       // 4 bytes, floating point
+        double salary = 75000.50;   // 8 bytes, double precision
+        char grade = 'A';           // 2 bytes, single character
+        boolean isJavaFun = true;   // 1 bit, true or false
+        
+        // Reference Data Types
+        String name = "John Doe";   // String object
+        int[] numbers = {1, 2, 3};  // Array
+        
+        // Variable naming rules
+        int studentAge = 20;        // camelCase
+        final double PI = 3.14159;  // Constants in UPPER_CASE
+        String firstName = "Alice";
+        
+        // Displaying variables
+        System.out.println("Name: " + name);
+        System.out.println("Age: " + age);
+        System.out.println("Salary: $" + salary);
+        System.out.println("Grade: " + grade);
+        System.out.println("Is Java Fun? " + isJavaFun);
+    }
+}
+</code></pre>
+
+                    <h5>Type Conversion</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-java">
+public class TypeConversion {
+    public static void main(String[] args) {
+        
+        // Implicit Type Conversion (Widening)
+        int intValue = 100;
+        long longValue = intValue;      // int to long
+        float floatValue = longValue;   // long to float
+        double doubleValue = floatValue; // float to double
+        
+        System.out.println("Int: " + intValue);
+        System.out.println("Long: " + longValue);
+        System.out.println("Float: " + floatValue);
+        System.out.println("Double: " + doubleValue);
+        
+        // Explicit Type Conversion (Narrowing) - Casting
+        double d = 100.04;
+        long l = (long) d;     // double to long
+        int i = (int) l;       // long to int
+        byte b = (byte) i;     // int to byte
+        
+        System.out.println("\nDouble: " + d);
+        System.out.println("Long: " + l);
+        System.out.println("Int: " + i);
+        System.out.println("Byte: " + b);
+        
+        // String to number conversion
+        String numberStr = "123";
+        int number = Integer.parseInt(numberStr);
+        double decimal = Double.parseDouble("45.67");
+        
+        System.out.println("\nString to int: " + number);
+        System.out.println("String to double: " + decimal);
+        
+        // Number to String conversion
+        String ageStr = String.valueOf(25);
+        String salaryStr = Double.toString(50000.75);
+        
+        System.out.println("Int to String: " + ageStr);
+        System.out.println("Double to String: " + salaryStr);
+    }
+}
+</code></pre>
+                </div>
+            </div>
+
+            <!-- Module 3: Operators -->
+            <div class="content-card" id="module3">
+                <div class="card-header">
+                    <i class="fas fa-calculator"></i> Module 3: Operators
+                </div>
+                <div class="card-body">
+                    <h5>Arithmetic Operators</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-java">
+public class ArithmeticOperators {
+    public static void main(String[] args) {
+        int a = 10, b = 3;
+        
+        // Basic arithmetic operations
+        System.out.println("a + b = " + (a + b));  // Addition
+        System.out.println("a - b = " + (a - b));  // Subtraction
+        System.out.println("a * b = " + (a * b));  // Multiplication
+        System.out.println("a / b = " + (a / b));  // Division
+        System.out.println("a % b = " + (a % b));  // Modulus
+        
+        // Floating point division
+        double x = 10.0, y = 3.0;
+        System.out.println("x / y = " + (x / y));
+        
+        // Increment and Decrement operators
+        int count = 5;
+        System.out.println("Original count: " + count);
+        System.out.println("Post-increment: " + (count++)); // Use then increment
+        System.out.println("After post-increment: " + count);
+        System.out.println("Pre-increment: " + (++count));  // Increment then use
+        System.out.println("After pre-increment: " + count);
+        
+        // Compound assignment operators
+        int num = 10;
+        num += 5;  // num = num + 5
+        System.out.println("After += 5: " + num);
+        
+        num -= 3;  // num = num - 3
+        System.out.println("After -= 3: " + num);
+        
+        num *= 2;  // num = num * 2
+        System.out.println("After *= 2: " + num);
+        
+        num /= 4;  // num = num / 4
+        System.out.println("After /= 4: " + num);
+    }
+}
+</code></pre>
+
+                    <h5>Relational and Logical Operators</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-java">
+public class RelationalLogical {
+    public static void main(String[] args) {
+        int a = 10, b = 5, c = 10;
+        
+        // Relational Operators
+        System.out.println("a == b: " + (a == b));  // Equal to
+        System.out.println("a != b: " + (a != b));  // Not equal to
+        System.out.println("a > b: " + (a > b));    // Greater than
+        System.out.println("a < b: " + (a < b));    // Less than
+        System.out.println("a >= c: " + (a >= c));  // Greater than or equal
+        System.out.println("a <= c: " + (a <= c));  // Less than or equal
+        
+        // Logical Operators
+        boolean x = true, y = false;
+        System.out.println("x && y: " + (x && y));  // Logical AND
+        System.out.println("x || y: " + (x || y));  // Logical OR
+        System.out.println("!x: " + (!x));          // Logical NOT
+        
+        // Complex logical expressions
+        int age = 25;
+        boolean hasLicense = true;
+        boolean canDrive = (age >= 18) && hasLicense;
+        System.out.println("Can drive: " + canDrive);
+        
+        // Ternary Operator
+        int score = 85;
+        String result = (score >= 50) ? "Pass" : "Fail";
+        System.out.println("Result: " + result);
+        
+        // Operator precedence example
+        int calculation = 10 + 5 * 2;  // Multiplication first
+        System.out.println("10 + 5 * 2 = " + calculation);
+        
+        calculation = (10 + 5) * 2;    // Parentheses first
+        System.out.println("(10 + 5) * 2 = " + calculation);
+    }
+}
+</code></pre>
+
+                    <h5>Bitwise Operators</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-java">
+public class BitwiseOperators {
+    public static void main(String[] args) {
+        int a = 5;  // Binary: 0101
+        int b = 3;  // Binary: 0011
+        
+        // Bitwise operators
+        System.out.println("a & b: " + (a & b));   // AND: 0001 (1)
+        System.out.println("a | b: " + (a | b));   // OR: 0111 (7)
+        System.out.println("a ^ b: " + (a ^ b));   // XOR: 0110 (6)
+        System.out.println("~a: " + (~a));         // NOT: 11111111111111111111111111111010 (-6)
+        
+        // Shift operators
+        int num = 8;  // Binary: 1000
+        System.out.println("num << 1: " + (num << 1));  // Left shift: 10000 (16)
+        System.out.println("num >> 1: " + (num >> 1));  // Right shift: 0100 (4)
+        System.out.println("num >>> 1: " + (num >>> 1)); // Unsigned right shift
+        
+        // Practical example: Checking even/odd using bitwise
+        int number = 7;
+        boolean isEven = (number & 1) == 0;
+        System.out.println(number + " is even: " + isEven);
+    }
+}
+</code></pre>
+                </div>
+            </div>
+            <!-- Module 4: Control Flow -->
+            <div class="content-card" id="module4">
+                <div class="card-header">
+                    <i class="fas fa-sitemap"></i> Module 4: Control Flow
+                </div>
+                <div class="card-body">
+                    <h5>If-Else Statements</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-java">
+public class IfElseDemo {
+    public static void main(String[] args) {
+        int number = 10;
+        
+        // Simple if statement
+        if (number > 0) {
+            System.out.println("Number is positive");
+        }
+        
+        // If-else statement
+        if (number % 2 == 0) {
+            System.out.println("Number is even");
+        } else {
+            System.out.println("Number is odd");
+        }
+        
+        // If-else if ladder
+        int score = 85;
+        char grade;
+        
+        if (score >= 90) {
+            grade = 'A';
+        } else if (score >= 80) {
+            grade = 'B';
+        } else if (score >= 70) {
+            grade = 'C';
+        } else if (score >= 60) {
+            grade = 'D';
+        } else {
+            grade = 'F';
+        }
+        System.out.println("Score: " + score + ", Grade: " + grade);
+        
+        // Nested if statements
+        int age = 20;
+        boolean hasLicense = true;
+        
+        if (age >= 18) {
+            if (hasLicense) {
+                System.out.println("You can drive a car");
+            } else {
+                System.out.println("You need a license to drive");
+            }
+        } else {
+            System.out.println("You are too young to drive");
+        }
+    }
+}
+</code></pre>
+
+                    <h5>Switch Statement</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-java">
+public class SwitchDemo {
+    public static void main(String[] args) {
+        int day = 3;
+        String dayName;
+        
+        // Traditional switch statement
+        switch (day) {
+            case 1:
+                dayName = "Monday";
+                break;
+            case 2:
+                dayName = "Tuesday";
+                break;
+            case 3:
+                dayName = "Wednesday";
+                break;
+            case 4:
+                dayName = "Thursday";
+                break;
+            case 5:
+                dayName = "Friday";
+                break;
+            case 6:
+                dayName = "Saturday";
+                break;
+            case 7:
+                dayName = "Sunday";
+                break;
+            default:
+                dayName = "Invalid day";
+        }
+        System.out.println("Day " + day + " is " + dayName);
+        
+        // Switch with multiple cases
+        char grade = 'B';
+        switch (grade) {
+            case 'A':
+            case 'B':
+            case 'C':
+                System.out.println("Pass");
+                break;
+            case 'D':
+            case 'F':
+                System.out.println("Fail");
+                break;
+            default:
+                System.out.println("Invalid grade");
+        }
+        
+        // Enhanced switch (Java 14+)
+        int month = 2;
+        int year = 2020;
+        int days = switch (month) {
+            case 1, 3, 5, 7, 8, 10, 12 -> 31;
+            case 4, 6, 9, 11 -> 30;
+            case 2 -> {
+                if ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)) {
+                    yield 29; // leap year
+                } else {
+                    yield 28;
+                }
+            }
+            default -> 0;
+        };
+        System.out.println("Month " + month + " has " + days + " days");
+    }
+}
+</code></pre>
+
+                    <h5>Loops</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-java">
+public class LoopsDemo {
+    public static void main(String[] args) {
+        
+        // For loop
+        System.out.println("For loop:");
+        for (int i = 1; i <= 5; i++) {
+            System.out.println("Count: " + i);
+        }
+        
+        // While loop
+        System.out.println("\nWhile loop:");
+        int j = 1;
+        while (j <= 5) {
+            System.out.println("Count: " + j);
+            j++;
+        }
+        
+        // Do-while loop
+        System.out.println("\nDo-while loop:");
+        int k = 1;
+        do {
+            System.out.println("Count: " + k);
+            k++;
+        } while (k <= 5);
+        
+        // Nested loops
+        System.out.println("\nMultiplication table:");
+        for (int row = 1; row <= 3; row++) {
+            for (int col = 1; col <= 3; col++) {
+                System.out.print(row * col + "\t");
+            }
+            System.out.println();
+        }
+        
+        // Loop control statements
+        System.out.println("\nBreak and Continue:");
+        for (int i = 1; i <= 10; i++) {
+            if (i == 3) {
+                continue; // Skip iteration when i is 3
+            }
+            if (i == 8) {
+                break; // Exit loop when i is 8
+            }
+            System.out.println("i = " + i);
+        }
+        
+        // Enhanced for loop (for-each)
+        System.out.println("\nEnhanced for loop:");
+        int[] numbers = {10, 20, 30, 40, 50};
+        for (int num : numbers) {
+            System.out.println("Number: " + num);
+        }
+        
+        // Infinite loop with break condition
+        System.out.println("\nInfinite loop with break:");
+        int count = 0;
+        while (true) {
+            System.out.println("Count: " + count);
+            count++;
+            if (count >= 5) {
+                break;
+            }
+        }
+    }
+}
+</code></pre>
+                </div>
+            </div>
+            <!-- Module 5: Methods -->
+            <div class="content-card" id="module5">
+                
+                <div class="content-card" id="module5">
+                <div class="card-header">
+                    <i class="fas fa-functions"></i> Module 5: Methods
+                </div>
+                <div class="card-body">
+                    <h5>Method Basics</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-java">
+public class MethodBasics {
+    
+    // Method with no parameters and no return value
+    public static void greet() {
+        System.out.println("Hello, welcome to Java methods!");
+    }
+    
+    // Method with parameters and no return value
+    public static void greetPerson(String name) {
+        System.out.println("Hello, " + name + "!");
+    }
+    
+    // Method with parameters and return value
+    public static int add(int a, int b) {
+        return a + b;
+    }
+    
+    // Method with multiple parameters
+    public static double calculateBMI(double weight, double height) {
+        return weight / (height * height);
+    }
+    
+    // Method overloading - same name, different parameters
+    public static int multiply(int a, int b) {
+        return a * b;
+    }
+    
+    public static double multiply(double a, double b) {
+        return a * b;
+    }
+    
+    public static int multiply(int a, int b, int c) {
+        return a * b * c;
+    }
+    
+    public static void main(String[] args) {
+        // Calling methods
+        greet();
+        greetPerson("Alice");
+        greetPerson("Bob");
+        
+        int sum = add(5, 3);
+        System.out.println("5 + 3 = " + sum);
+        
+        double bmi = calculateBMI(70.5, 1.75);
+        System.out.println("BMI: " + bmi);
+        
+        // Method overloading examples
+        System.out.println("Multiply integers: " + multiply(4, 5));
+        System.out.println("Multiply doubles: " + multiply(4.5, 2.5));
+        System.out.println("Multiply three numbers: " + multiply(2, 3, 4));
+        
+        // Using return values in expressions
+        int result = add(multiply(2, 3), multiply(4, 5));
+        System.out.println("(2*3) + (4*5) = " + result);
+    }
+}
+</code></pre>
+
+                    <h5>Method Parameters and Return Types</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-java">
+public class MethodParameters {
+    
+    // Method with different return types
+    public static boolean isEven(int number) {
+        return number % 2 == 0;
+    }
+    
+    public static String getGrade(int score) {
+        if (score >= 90) return "A";
+        else if (score >= 80) return "B";
+        else if (score >= 70) return "C";
+        else if (score >= 60) return "D";
+        else return "F";
+    }
+    
+    public static void printNumbers(int start, int end) {
+        for (int i = start; i <= end; i++) {
+            System.out.print(i + " ");
+        }
+        System.out.println();
+    }
+    
+    // Method with array parameter
+    public static int findMax(int[] numbers) {
+        if (numbers.length == 0) {
+            return -1; // or throw exception
+        }
+        
+        int max = numbers[0];
+        for (int num : numbers) {
+            if (num > max) {
+                max = num;
+            }
+        }
+        return max;
+    }
+    
+    // Method that modifies array elements
+    public static void doubleArray(int[] arr) {
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] *= 2;
+        }
+    }
+    
+    // Variable arguments (varargs)
+    public static double average(int... numbers) {
+        if (numbers.length == 0) return 0;
+        
+        int sum = 0;
+        for (int num : numbers) {
+            sum += num;
+        }
+        return (double) sum / numbers.length;
+    }
+    
+    public static void main(String[] args) {
+        // Testing various methods
+        System.out.println("Is 10 even? " + isEven(10));
+        System.out.println("Is 7 even? " + isEven(7));
+        
+        System.out.println("Score 85 gets grade: " + getGrade(85));
+        
+        System.out.print("Numbers from 1 to 5: ");
+        printNumbers(1, 5);
+        
+        // Array methods
+        int[] nums = {5, 2, 8, 1, 9};
+        System.out.println("Maximum number: " + findMax(nums));
+        
+        System.out.print("Original array: ");
+        for (int num : nums) System.out.print(num + " ");
+        System.out.println();
+        
+        doubleArray(nums);
+        System.out.print("After doubling: ");
+        for (int num : nums) System.out.print(num + " ");
+        System.out.println();
+        
+        // Varargs examples
+        System.out.println("Average of 1,2,3: " + average(1, 2, 3));
+        System.out.println("Average of 10,20,30,40: " + average(10, 20, 30, 40));
+        System.out.println("Average of no numbers: " + average());
+    }
+}
+</code></pre>
+
+                    <h5>Recursion</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-java">
+public class RecursionDemo {
+    
+    // Factorial using recursion
+    public static int factorial(int n) {
+        // Base case
+        if (n <= 1) {
+            return 1;
+        }
+        // Recursive case
+        return n * factorial(n - 1);
+    }
+    
+    // Fibonacci sequence using recursion
+    public static int fibonacci(int n) {
+        // Base cases
+        if (n <= 0) return 0;
+        if (n == 1) return 1;
+        
+        // Recursive case
+        return fibonacci(n - 1) + fibonacci(n - 2);
+    }
+    
+    // Sum of digits using recursion
+    public static int sumOfDigits(int number) {
+        // Base case
+        if (number == 0) {
+            return 0;
+        }
+        // Recursive case
+        return (number % 10) + sumOfDigits(number / 10);
+    }
+    
+    // Power calculation using recursion
+    public static double power(double base, int exponent) {
+        // Base case
+        if (exponent == 0) {
+            return 1;
+        }
+        // Recursive case for positive exponent
+        if (exponent > 0) {
+            return base * power(base, exponent - 1);
+        }
+        // Recursive case for negative exponent
+        else {
+            return 1 / power(base, -exponent);
+        }
+    }
+    
+    // GCD using recursion (Euclidean algorithm)
+    public static int gcd(int a, int b) {
+        // Base case
+        if (b == 0) {
+            return a;
+        }
+        // Recursive case
+        return gcd(b, a % b);
+    }
+    
+    public static void main(String[] args) {
+        // Testing recursive methods
+        System.out.println("Factorial of 5: " + factorial(5));
+        System.out.println("Factorial of 0: " + factorial(0));
+        
+        System.out.println("\nFibonacci sequence:");
+        for (int i = 0; i <= 10; i++) {
+            System.out.print(fibonacci(i) + " ");
+        }
+        System.out.println();
+        
+        System.out.println("Sum of digits of 12345: " + sumOfDigits(12345));
+        System.out.println("2^5 = " + power(2, 5));
+        System.out.println("2^-3 = " + power(2, -3));
+        System.out.println("GCD of 48 and 18: " + gcd(48, 18));
+        
+        // Warning about recursion
+        System.out.println("\nNote: Recursion can be inefficient for large inputs");
+        System.out.println("and may cause stack overflow for deep recursion.");
+    }
+}
+</code></pre>
+                </div>
+            </div>
+
+            <!-- Module 6: Arrays -->
+            <div class="content-card" id="module6">
+                <div class="card-header">
+                    <i class="fas fa-list"></i> Module 6: Arrays
+                </div>
+                <div class="card-body">
+                    <h5>Array Basics</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-java">
+public class ArrayBasics {
+    public static void main(String[] args) {
+        
+        // Array declaration and initialization
+        int[] numbers = new int[5]; // Array of 5 integers
+        numbers[0] = 10;
+        numbers[1] = 20;
+        numbers[2] = 30;
+        numbers[3] = 40;
+        numbers[4] = 50;
+        
+        // Array initialization with values
+        int[] primes = {2, 3, 5, 7, 11, 13, 17, 19};
+        
+        // String array
+        String[] fruits = {"Apple", "Banana", "Orange", "Mango"};
+        
+        // Accessing array elements
+        System.out.println("First element: " + numbers[0]);
+        System.out.println("Third prime: " + primes[2]);
+        System.out.println("Second fruit: " + fruits[1]);
+        
+        // Array length
+        System.out.println("Numbers array length: " + numbers.length);
+        System.out.println("Primes array length: " + primes.length);
+        
+        // Iterating through arrays
+        System.out.println("\nAll numbers:");
+        for (int i = 0; i < numbers.length; i++) {
+            System.out.println("numbers[" + i + "] = " + numbers[i]);
+        }
+        
+        System.out.println("\nAll primes:");
+        for (int prime : primes) {
+            System.out.print(prime + " ");
+        }
+        System.out.println();
+        
+        // Multi-dimensional arrays
+        int[][] matrix = {
+            {1, 2, 3},
+            {4, 5, 6},
+            {7, 8, 9}
+        };
+        
+        System.out.println("\n2D Array:");
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[i].length; j++) {
+                System.out.print(matrix[i][j] + " ");
+            }
+            System.out.println();
+        }
+        
+        // Array of objects
+        String[] students = {"Alice", "Bob", "Charlie", "Diana"};
+        System.out.println("\nStudents:");
+        for (String student : students) {
+            System.out.println(student);
+        }
+    }
+}
+</code></pre>
+
+                    <h5>Array Operations</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-java">
+import java.util.Arrays;
+
+public class ArrayOperations {
+    public static void main(String[] args) {
+        int[] numbers = {5, 2, 8, 1, 9, 3, 7, 4, 6};
+        
+        System.out.println("Original array: " + Arrays.toString(numbers));
+        
+        // Sorting arrays
+        Arrays.sort(numbers);
+        System.out.println("Sorted array: " + Arrays.toString(numbers));
+        
+        // Searching in arrays
+        int key = 7;
+        int index = Arrays.binarySearch(numbers, key);
+        System.out.println("Index of " + key + ": " + index);
+        
+        // Copying arrays
+        int[] copy1 = Arrays.copyOf(numbers, numbers.length);
+        int[] copy2 = Arrays.copyOfRange(numbers, 2, 6);
+        System.out.println("Full copy: " + Arrays.toString(copy1));
+        System.out.println("Partial copy (2-5): " + Arrays.toString(copy2));
+        
+        // Filling arrays
+        int[] filledArray = new int[5];
+        Arrays.fill(filledArray, 42);
+        System.out.println("Filled array: " + Arrays.toString(filledArray));
+        
+        // Comparing arrays
+        int[] arr1 = {1, 2, 3};
+        int[] arr2 = {1, 2, 3};
+        int[] arr3 = {1, 2, 4};
+        
+        System.out.println("arr1 equals arr2: " + Arrays.equals(arr1, arr2));
+        System.out.println("arr1 equals arr3: " + Arrays.equals(arr1, arr3));
+        
+        // Common array operations
+        System.out.println("\nArray Statistics:");
+        System.out.println("Sum: " + sumArray(numbers));
+        System.out.println("Average: " + averageArray(numbers));
+        System.out.println("Maximum: " + findMax(numbers));
+        System.out.println("Minimum: " + findMin(numbers));
+        
+        // Reverse array
+        reverseArray(numbers);
+        System.out.println("Reversed array: " + Arrays.toString(numbers));
+    }
+    
+    // Method to calculate sum of array elements
+    public static int sumArray(int[] arr) {
+        int sum = 0;
+        for (int num : arr) {
+            sum += num;
+        }
+        return sum;
+    }
+    
+    // Method to calculate average of array elements
+    public static double averageArray(int[] arr) {
+        if (arr.length == 0) return 0;
+        return (double) sumArray(arr) / arr.length;
+    }
+    
+    // Method to find maximum element
+    public static int findMax(int[] arr) {
+        if (arr.length == 0) return -1;
+        
+        int max = arr[0];
+        for (int num : arr) {
+            if (num > max) {
+                max = num;
+            }
+        }
+        return max;
+    }
+    
+    // Method to find minimum element
+    public static int findMin(int[] arr) {
+        if (arr.length == 0) return -1;
+        
+        int min = arr[0];
+        for (int num : arr) {
+            if (num < min) {
+                min = num;
+            }
+        }
+        return min;
+    }
+    
+    // Method to reverse array
+    public static void reverseArray(int[] arr) {
+        int left = 0;
+        int right = arr.length - 1;
+        
+        while (left < right) {
+            // Swap elements
+            int temp = arr[left];
+            arr[left] = arr[right];
+            arr[right] = temp;
+            
+            left++;
+            right--;
+        }
+    }
+}
+</code></pre>
+
+                    <h5>String Arrays and Manipulation</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-java">
+import java.util.Arrays;
+
+public class StringArrays {
+    public static void main(String[] args) {
+        // String array examples
+        String[] countries = {"USA", "Canada", "UK", "Australia", "Japan", "Germany"};
+        String[] colors = {"Red", "Green", "Blue", "Yellow", "Purple"};
+        
+        System.out.println("Countries: " + Arrays.toString(countries));
+        System.out.println("Colors: " + Arrays.toString(colors));
+        
+        // Sorting string arrays
+        Arrays.sort(countries);
+        System.out.println("Sorted countries: " + Arrays.toString(countries));
+        
+        // Searching in string arrays
+        String searchCountry = "UK";
+        int countryIndex = Arrays.binarySearch(countries, searchCountry);
+        System.out.println("Index of " + searchCountry + ": " + countryIndex);
+        
+        // String array operations
+        System.out.println("\nString Array Operations:");
+        
+        // Find strings starting with specific letter
+        System.out.println("Countries starting with 'A':");
+        for (String country : countries) {
+            if (country.startsWith("A")) {
+                System.out.println(country);
+            }
+        }
+        
+        // Find longest string
+        String longest = findLongestString(colors);
+        System.out.println("Longest color name: " + longest);
+        
+        // Convert array to uppercase
+        String[] upperColors = convertToUpperCase(colors);
+        System.out.println("Uppercase colors: " + Arrays.toString(upperColors));
+        
+        // Count strings with specific length
+        int count = countStringsWithLength(countries, 5);
+        System.out.println("Countries with 5 letters: " + count);
+        
+        // Join array elements into single string
+        String joined = String.join(", ", colors);
+        System.out.println("Joined colors: " + joined);
+    }
+    
+    // Method to find longest string in array
+    public static String findLongestString(String[] arr) {
+        if (arr.length == 0) return "";
+        
+        String longest = arr[0];
+        for (String str : arr) {
+            if (str.length() > longest.length()) {
+                longest = str;
+            }
+        }
+        return longest;
+    }
+    
+    // Method to convert string array to uppercase
+    public static String[] convertToUpperCase(String[] arr) {
+        String[] result = new String[arr.length];
+        for (int i = 0; i < arr.length; i++) {
+            result[i] = arr[i].toUpperCase();
+        }
+        return result;
+    }
+    
+    // Method to count strings with specific length
+    public static int countStringsWithLength(String[] arr, int length) {
+        int count = 0;
+        for (String str : arr) {
+            if (str.length() == length) {
+                count++;
+            }
+        }
+        return count;
+    }
+}
+</code></pre>
+                </div>
+            </div>
+
+            <!-- Module 7: Classes & Objects -->
+            <div class="content-card" id="module7">
+                <div class="card-header">
+                    <i class="fas fa-cube"></i> Module 7: Classes & Objects
+                </div>
+                <div class="card-body">
+                    <h5>Classes and Objects in Java</h5>
+                    <p>Java is an object-oriented programming language. Everything in Java is associated with classes and objects.</p>
+
+                    <pre><button class="copy-button">Copy</button><code class="language-java">
+// Class definition
+class Car {
+    // Fields (attributes)
+    String brand;
+    String model;
+    int year;
+    
+    // Constructor
+    public Car(String brand, String model, int year) {
+        this.brand = brand;
+        this.model = model;
+        this.year = year;
+    }
+    
+    // Method
+    public void displayInfo() {
+        System.out.println("Brand: " + brand + ", Model: " + model + ", Year: " + year);
+    }
+    
+    // Getter and Setter methods
+    public String getBrand() {
+        return brand;
+    }
+    
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        // Creating objects
+        Car car1 = new Car("Toyota", "Camry", 2023);
+        Car car2 = new Car("Honda", "Civic", 2022);
+        
+        // Using objects
+        car1.displayInfo();
+        car2.displayInfo();
+        
+        // Using getter and setter
+        car1.setBrand("Ford");
+        System.out.println("Updated brand: " + car1.getBrand());
+    }
+}
+</code></pre>
+
+                    <h5>Constructors</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-java">
+class Student {
+    String name;
+    int age;
+    double gpa;
+    
+    // Default constructor
+    public Student() {
+        this.name = "Unknown";
+        this.age = 0;
+        this.gpa = 0.0;
+    }
+    
+    // Parameterized constructor
+    public Student(String name, int age, double gpa) {
+        this.name = name;
+        this.age = age;
+        this.gpa = gpa;
+    }
+    
+    // Copy constructor
+    public Student(Student other) {
+        this.name = other.name;
+        this.age = other.age;
+        this.gpa = other.gpa;
+    }
+    
+    public void display() {
+        System.out.println("Name: " + name + ", Age: " + age + ", GPA: " + gpa);
+    }
+}
+
+public class ConstructorDemo {
+    public static void main(String[] args) {
+        Student student1 = new Student(); // Default constructor
+        Student student2 = new Student("Alice", 20, 3.8); // Parameterized
+        Student student3 = new Student(student2); // Copy constructor
+        
+        student1.display();
+        student2.display();
+        student3.display();
+    }
+}
+</code></pre>
+
+                    <h5>Static Members</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-java">
+class MathUtils {
+    // Static variable
+    static int operationCount = 0;
+    
+    // Static method
+    public static int add(int a, int b) {
+        operationCount++;
+        return a + b;
+    }
+    
+    public static int multiply(int a, int b) {
+        operationCount++;
+        return a * b;
+    }
+    
+    // Static block
+    static {
+        System.out.println("MathUtils class loaded");
+    }
+}
+
+public class StaticDemo {
+    public static void main(String[] args) {
+        // Calling static methods without creating object
+        int sum = MathUtils.add(5, 3);
+        int product = MathUtils.multiply(4, 6);
+        
+        System.out.println("Sum: " + sum);
+        System.out.println("Product: " + product);
+        System.out.println("Total operations: " + MathUtils.operationCount);
+    }
+}
+</code></pre>
+
+                    <h5>this Keyword</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-java">
+class Person {
+    private String name;
+    private int age;
+    
+    public Person(String name, int age) {
+        // Using 'this' to refer to instance variables
+        this.name = name;
+        this.age = age;
+    }
+    
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    // Using 'this' to call another constructor
+    public Person(String name) {
+        this(name, 0); // Calls the main constructor
+    }
+    
+    // Using 'this' to return current object
+    public Person setAge(int age) {
+        this.age = age;
+        return this; // Method chaining
+    }
+    
+    public void display() {
+        System.out.println("Name: " + this.name + ", Age: " + this.age);
+    }
+}
+
+public class ThisKeywordDemo {
+    public static void main(String[] args) {
+        Person person = new Person("John", 25);
+        person.display();
+        
+        // Method chaining
+        person.setAge(30).display();
+    }
+}
+</code></pre>
+                </div>
+            </div>
+
+            <!-- Module 8: Inheritance & Polymorphism -->
+            <div class="content-card" id="module8">
+                <div class="card-header">
+                    <i class="fas fa-sitemap"></i> Module 8: Inheritance & Polymorphism
+                </div>
+                <div class="card-body">
+                    <h5>Inheritance in Java</h5>
+                    <p>Inheritance allows a class to inherit properties and methods from another class.</p>
+
+                    <pre><button class="copy-button">Copy</button><code class="language-java">
+// Parent class (Superclass)
+class Animal {
+    String name;
+    
+    public Animal(String name) {
+        this.name = name;
+    }
+    
+    public void eat() {
+        System.out.println(name + " is eating.");
+    }
+    
+    public void sleep() {
+        System.out.println(name + " is sleeping.");
+    }
+}
+
+// Child class (Subclass)
+class Dog extends Animal {
+    String breed;
+    
+    public Dog(String name, String breed) {
+        super(name); // Call parent constructor
+        this.breed = breed;
+    }
+    
+    // Method overriding
+    @Override
+    public void eat() {
+        System.out.println(name + " the " + breed + " is eating dog food.");
+    }
+    
+    // Additional method
+    public void bark() {
+        System.out.println(name + " is barking.");
+    }
+}
+
+class Cat extends Animal {
+    public Cat(String name) {
+        super(name);
+    }
+    
+    @Override
+    public void eat() {
+        System.out.println(name + " is eating cat food.");
+    }
+    
+    public void meow() {
+        System.out.println(name + " is meowing.");
+    }
+}
+
+public class InheritanceDemo {
+    public static void main(String[] args) {
+        Dog dog = new Dog("Buddy", "Golden Retriever");
+        Cat cat = new Cat("Whiskers");
+        
+        dog.eat();
+        dog.sleep();
+        dog.bark();
+        
+        cat.eat();
+        cat.sleep();
+        cat.meow();
+    }
+}
+</code></pre>
+
+                    <h5>Polymorphism</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-java">
+class Shape {
+    public void draw() {
+        System.out.println("Drawing a shape");
+    }
+    
+    public double calculateArea() {
+        return 0.0;
+    }
+}
+
+class Circle extends Shape {
+    double radius;
+    
+    public Circle(double radius) {
+        this.radius = radius;
+    }
+    
+    @Override
+    public void draw() {
+        System.out.println("Drawing a circle with radius " + radius);
+    }
+    
+    @Override
+    public double calculateArea() {
+        return Math.PI * radius * radius;
+    }
+}
+
+class Rectangle extends Shape {
+    double width, height;
+    
+    public Rectangle(double width, double height) {
+        this.width = width;
+        this.height = height;
+    }
+    
+    @Override
+    public void draw() {
+        System.out.println("Drawing a rectangle " + width + "x" + height);
+    }
+    
+    @Override
+    public double calculateArea() {
+        return width * height;
+    }
+}
+
+public class PolymorphismDemo {
+    public static void main(String[] args) {
+        // Polymorphism - same type, different behaviors
+        Shape shape1 = new Circle(5.0);
+        Shape shape2 = new Rectangle(4.0, 6.0);
+        
+        shape1.draw();
+        System.out.println("Area: " + shape1.calculateArea());
+        
+        shape2.draw();
+        System.out.println("Area: " + shape2.calculateArea());
+        
+        // Array of shapes
+        Shape[] shapes = {
+            new Circle(3.0),
+            new Rectangle(2.0, 4.0),
+            new Circle(7.0)
+        };
+        
+        for (Shape shape : shapes) {
+            shape.draw();
+            System.out.println("Area: " + shape.calculateArea());
+            System.out.println("---");
+        }
+    }
+}
+</code></pre>
+
+                    <h5>Method Overloading</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-java">
+class Calculator {
+    // Method overloading - same name, different parameters
+    public int add(int a, int b) {
+        return a + b;
+    }
+    
+    public int add(int a, int b, int c) {
+        return a + b + c;
+    }
+    
+    public double add(double a, double b) {
+        return a + b;
+    }
+    
+    public String add(String a, String b) {
+        return a + b;
+    }
+}
+
+public class OverloadingDemo {
+    public static void main(String[] args) {
+        Calculator calc = new Calculator();
+        
+        System.out.println("add(5, 3): " + calc.add(5, 3));
+        System.out.println("add(1, 2, 3): " + calc.add(1, 2, 3));
+        System.out.println("add(2.5, 3.7): " + calc.add(2.5, 3.7));
+        System.out.println("add(\"Hello\", \"World\"): " + calc.add("Hello", "World"));
+    }
+}
+</code></pre>
+
+                    <h5>super Keyword and final Keyword</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-java">
+class Vehicle {
+    final int WHEELS = 4; // final variable
+    
+    public Vehicle() {
+        System.out.println("Vehicle constructor");
+    }
+    
+    public final void start() { // final method
+        System.out.println("Vehicle starting...");
+    }
+}
+
+final class Car extends Vehicle { // final class - cannot be extended
+    public Car() {
+        super(); // Call parent constructor
+        System.out.println("Car constructor");
+    }
+    
+    // Cannot override start() method because it's final
+    // public void start() { } // This would cause error
+    
+    public void showWheels() {
+        System.out.println("Number of wheels: " + super.WHEELS);
+    }
+}
+
+public class SuperFinalDemo {
+    public static void main(String[] args) {
+        Car car = new Car();
+        car.start();
+        car.showWheels();
+        
+        // WHEELS is final, cannot be changed
+        // car.WHEELS = 6; // This would cause error
+    }
+}
+</code></pre>
+                </div>
+            </div>
+
+            <!-- Module 9: Abstraction & Encapsulation -->
+            <div class="content-card" id="module9">
+                <div class="card-header">
+                    <i class="fas fa-shield-alt"></i> Module 9: Abstraction & Encapsulation
+                </div>
+                <div class="card-body">
+                    <h5>Abstraction with Abstract Classes</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-java">
+// Abstract class
+abstract class Vehicle {
+    protected String brand;
+    protected int speed;
+    
+    public Vehicle(String brand) {
+        this.brand = brand;
+        this.speed = 0;
+    }
+    
+    // Abstract method (must be implemented by subclasses)
+    public abstract void start();
+    public abstract void stop();
+    
+    // Concrete method
+    public void displayInfo() {
+        System.out.println("Brand: " + brand + ", Speed: " + speed + " km/h");
+    }
+    
+    // Getter and Setter with encapsulation
+    public int getSpeed() {
+        return speed;
+    }
+    
+    protected void setSpeed(int speed) {
+        this.speed = speed;
+    }
+}
+
+class Car extends Vehicle {
+    public Car(String brand) {
+        super(brand);
+    }
+    
+    @Override
+    public void start() {
+        System.out.println(brand + " car is starting...");
+        setSpeed(10);
+    }
+    
+    @Override
+    public void stop() {
+        System.out.println(brand + " car is stopping...");
+        setSpeed(0);
+    }
+    
+    public void accelerate(int increment) {
+        setSpeed(getSpeed() + increment);
+        System.out.println("Accelerating to " + getSpeed() + " km/h");
+    }
+}
+
+class Motorcycle extends Vehicle {
+    public Motorcycle(String brand) {
+        super(brand);
+    }
+    
+    @Override
+    public void start() {
+        System.out.println(brand + " motorcycle is starting...");
+        setSpeed(5);
+    }
+    
+    @Override
+    public void stop() {
+        System.out.println(brand + " motorcycle is stopping...");
+        setSpeed(0);
+    }
+}
+
+public class AbstractionDemo {
+    public static void main(String[] args) {
+        Vehicle car = new Car("Toyota");
+        Vehicle motorcycle = new Motorcycle("Honda");
+        
+        car.start();
+        ((Car) car).accelerate(30);
+        car.displayInfo();
+        car.stop();
+        
+        System.out.println();
+        
+        motorcycle.start();
+        motorcycle.displayInfo();
+        motorcycle.stop();
+    }
+}
+</code></pre>
+
+                    <h5>Interfaces</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-java">
+// Interface definition
+interface Flyable {
+    // Constant (implicitly public static final)
+    int MAX_ALTITUDE = 10000;
+    
+    // Abstract methods (implicitly public abstract)
+    void takeOff();
+    void land();
+    void fly();
+    
+    // Default method (Java 8+)
+    default void emergencyLand() {
+        System.out.println("Emergency landing procedure initiated");
+        land();
+    }
+    
+    // Static method (Java 8+)
+    static void showMaxAltitude() {
+        System.out.println("Maximum altitude: " + MAX_ALTITUDE + " feet");
+    }
+}
+
+interface SoundMaker {
+    void makeSound();
+}
+
+// Class implementing multiple interfaces
+class Airplane implements Flyable, SoundMaker {
+    private String model;
+    
+    public Airplane(String model) {
+        this.model = model;
+    }
+    
+    @Override
+    public void takeOff() {
+        System.out.println(model + " is taking off");
+    }
+    
+    @Override
+    public void land() {
+        System.out.println(model + " is landing");
+    }
+    
+    @Override
+    public void fly() {
+        System.out.println(model + " is flying at cruising altitude");
+    }
+    
+    @Override
+    public void makeSound() {
+        System.out.println(model + " makes roaring engine sound");
+    }
+}
+
+class Bird implements Flyable, SoundMaker {
+    private String species;
+    
+    public Bird(String species) {
+        this.species = species;
+    }
+    
+    @Override
+    public void takeOff() {
+        System.out.println(species + " is taking off by flapping wings");
+    }
+    
+    @Override
+    public void land() {
+        System.out.println(species + " is landing on a branch");
+    }
+    
+    @Override
+    public void fly() {
+        System.out.println(species + " is soaring in the sky");
+    }
+    
+    @Override
+    public void makeSound() {
+        System.out.println(species + " is chirping");
+    }
+}
+
+public class InterfaceDemo {
+    public static void main(String[] args) {
+        Flyable airplane = new Airplane("Boeing 747");
+        Flyable bird = new Bird("Eagle");
+        
+        airplane.takeOff();
+        airplane.fly();
+        ((SoundMaker) airplane).makeSound();
+        airplane.land();
+        
+        System.out.println();
+        
+        bird.takeOff();
+        bird.fly();
+        ((SoundMaker) bird).makeSound();
+        bird.land();
+        
+        // Using static method from interface
+        Flyable.showMaxAltitude();
+        
+        // Using default method
+        airplane.emergencyLand();
+    }
+}
+</code></pre>
+
+                    <h5>Encapsulation</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-java">
+class BankAccount {
+    // Private fields - encapsulated
+    private String accountNumber;
+    private String accountHolder;
+    private double balance;
+    private String password;
+    
+    // Constructor
+    public BankAccount(String accountNumber, String accountHolder, double initialBalance, String password) {
+        this.accountNumber = accountNumber;
+        this.accountHolder = accountHolder;
+        this.balance = initialBalance;
+        this.password = password;
+    }
+    
+    // Public methods to access private fields (getters and setters)
+    public String getAccountNumber() {
+        return accountNumber;
+    }
+    
+    public String getAccountHolder() {
+        return accountHolder;
+    }
+    
+    public double getBalance() {
+        return balance;
+    }
+    
+    // Business logic methods
+    public boolean deposit(double amount) {
+        if (amount > 0) {
+            balance += amount;
+            System.out.println("Deposited: $" + amount);
+            return true;
+        }
+        System.out.println("Invalid deposit amount");
+        return false;
+    }
+    
+    public boolean withdraw(double amount, String password) {
+        if (!authenticate(password)) {
+            System.out.println("Invalid password");
+            return false;
+        }
+        
+        if (amount > 0 && amount <= balance) {
+            balance -= amount;
+            System.out.println("Withdrawn: $" + amount);
+            return true;
+        }
+        System.out.println("Invalid withdrawal amount or insufficient funds");
+        return false;
+    }
+    
+    public boolean transfer(BankAccount recipient, double amount, String password) {
+        if (!authenticate(password)) {
+            System.out.println("Invalid password for transfer");
+            return false;
+        }
+        
+        if (withdraw(amount, password)) {
+            recipient.deposit(amount);
+            System.out.println("Transferred $" + amount + " to " + recipient.getAccountHolder());
+            return true;
+        }
+        return false;
+    }
+    
+    // Private helper method
+    private boolean authenticate(String password) {
+        return this.password.equals(password);
+    }
+    
+    // Display account info (without password)
+    public void displayAccountInfo() {
+        System.out.println("Account Number: " + accountNumber);
+        System.out.println("Account Holder: " + accountHolder);
+        System.out.println("Balance: $" + balance);
+    }
+}
+
+public class EncapsulationDemo {
+    public static void main(String[] args) {
+        BankAccount account1 = new BankAccount("123456", "John Doe", 1000.0, "password123");
+        BankAccount account2 = new BankAccount("789012", "Jane Smith", 500.0, "secret456");
+        
+        account1.displayAccountInfo();
+        System.out.println();
+        
+        account1.deposit(200.0);
+        account1.withdraw(150.0, "password123");
+        account1.transfer(account2, 100.0, "password123");
+        
+        System.out.println();
+        account1.displayAccountInfo();
+        account2.displayAccountInfo();
+        
+        // This would not compile - private field access
+        // System.out.println(account1.balance);
+        // System.out.println(account1.password);
+    }
+}
+</code></pre>
+
+                    <h5>Access Modifiers</h5>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Modifier</th>
+                                    <th>Class</th>
+                                    <th>Package</th>
+                                    <th>Subclass</th>
+                                    <th>World</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>public</td>
+                                    <td>✓</td>
+                                    <td>✓</td>
+                                    <td>✓</td>
+                                    <td>✓</td>
+                                </tr>
+                                <tr>
+                                    <td>protected</td>
+                                    <td>✓</td>
+                                    <td>✓</td>
+                                    <td>✓</td>
+                                    <td>✗</td>
+                                </tr>
+                                <tr>
+                                    <td>default</td>
+                                    <td>✓</td>
+                                    <td>✓</td>
+                                    <td>✗</td>
+                                    <td>✗</td>
+                                </tr>
+                                <tr>
+                                    <td>private</td>
+                                    <td>✓</td>
+                                    <td>✗</td>
+                                    <td>✗</td>
+                                    <td>✗</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module 10: Exception Handling -->
+            <div class="content-card" id="module10">
+                <div class="card-header">
+                    <i class="fas fa-exclamation-triangle"></i> Module 10: Exception Handling
+                </div>
+                <div class="card-body">
+                    <h5>Exception Handling in Java</h5>
+                    <p>Java provides a robust exception handling mechanism to deal with runtime errors.</p>
+
+                    <pre><button class="copy-button">Copy</button><code class="language-java">
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
+public class ExceptionHandling {
+    
+    // Method that throws an exception
+    public static int divide(int a, int b) throws ArithmeticException {
+        if (b == 0) {
+            throw new ArithmeticException("Division by zero is not allowed");
+        }
+        return a / b;
+    }
+    
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        // Try-catch block
+        try {
+            System.out.print("Enter numerator: ");
+            int numerator = scanner.nextInt();
+            
+            System.out.print("Enter denominator: ");
+            int denominator = scanner.nextInt();
+            
+            int result = divide(numerator, denominator);
+            System.out.println("Result: " + result);
+            
+        } catch (ArithmeticException e) {
+            System.out.println("Arithmetic Error: " + e.getMessage());
+        } catch (InputMismatchException e) {
+            System.out.println("Input Error: Please enter valid integers");
+            scanner.next(); // Clear invalid input
+        } catch (Exception e) {
+            System.out.println("Unexpected error: " + e.getMessage());
+        } finally {
+            System.out.println("This block always executes");
+            scanner.close();
+        }
+        
+        // Multiple catch blocks example
+        System.out.println("\n=== Array Example ===");
+        int[] numbers = {1, 2, 3, 4, 5};
+        
+        try {
+            System.out.println("Accessing element at index 10: " + numbers[10]);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("Array index error: " + e.getMessage());
+        } finally {
+            System.out.println("Array operation completed");
+        }
+        
+        // Custom exception
+        System.out.println("\n=== Custom Exception ===");
+        try {
+            validateAge(15);
+        } catch (InvalidAgeException e) {
+            System.out.println("Custom Exception: " + e.getMessage());
+        }
+        
+        System.out.println("Program continues normally...");
+    }
+    
+    public static void validateAge(int age) throws InvalidAgeException {
+        if (age < 18) {
+            throw new InvalidAgeException("Age must be 18 or older");
+        }
+        System.out.println("Valid age: " + age);
+    }
+}
+
+// Custom exception class
+class InvalidAgeException extends Exception {
+    public InvalidAgeException(String message) {
+        super(message);
+    }
+}
+</code></pre>
+
+                    <h5>Try-with-Resources</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-java">
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
+public class TryWithResources {
+    public static void main(String[] args) {
+        // Try-with-resources (Java 7+)
+        // Automatically closes resources
+        try (BufferedReader reader = new BufferedReader(new FileReader("example.txt"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading file: " + e.getMessage());
+        }
+        // reader is automatically closed here
+        
+        // Multiple resources
+        try (FileReader fr = new FileReader("file1.txt");
+             BufferedReader br = new BufferedReader(fr)) {
+            // Use resources
+            System.out.println(br.readLine());
+        } catch (IOException e) {
+            System.out.println("IO Error: " + e.getMessage());
+        }
+    }
+}
+</code></pre>
+
+                    <h5>Exception Hierarchy and Types</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-java">
+import java.io.*;
+
+public class ExceptionTypes {
+    public static void main(String[] args) {
+        // Checked Exception - must be handled
+        try {
+            readFile("nonexistent.txt");
+        } catch (IOException e) {
+            System.out.println("Checked exception handled: " + e.getMessage());
+        }
+        
+        // Unchecked Exception - runtime exceptions
+        try {
+            int result = 10 / 0;
+        } catch (ArithmeticException e) {
+            System.out.println("Unchecked exception handled: " + e.getMessage());
+        }
+        
+        // Multiple exception types
+        try {
+            String str = null;
+            System.out.println(str.length());
+            int num = Integer.parseInt("abc");
+        } catch (NullPointerException e) {
+            System.out.println("Null pointer: " + e.getMessage());
+        } catch (NumberFormatException e) {
+            System.out.println("Number format: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("General exception: " + e.getMessage());
+        }
+    }
+    
+    // Checked exception must be declared in method signature
+    public static void readFile(String filename) throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader(filename));
+        String line = reader.readLine();
+        reader.close();
+    }
+}
+</code></pre>
+
+                    <h5>Exception Hierarchy</h5>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Exception Type</th>
+                                    <th>Description</th>
+                                    <th>Examples</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Checked Exceptions</td>
+                                    <td>Checked at compile time, must be handled</td>
+                                    <td>IOException, SQLException, ClassNotFoundException</td>
+                                </tr>
+                                <tr>
+                                    <td>Unchecked Exceptions</td>
+                                    <td>Checked at runtime, not required to handle</td>
+                                    <td>NullPointerException, ArrayIndexOutOfBoundsException, IllegalArgumentException</td>
+                                </tr>
+                                <tr>
+                                    <td>Errors</td>
+                                    <td>Serious problems that applications should not try to catch</td>
+                                    <td>OutOfMemoryError, StackOverflowError, VirtualMachineError</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module 11: Collections Framework -->
+            <div class="content-card" id="module11">
+                <div class="card-header">
+                    <i class="fas fa-layer-group"></i> Module 11: Collections Framework
+                </div>
+                <div class="card-body">
+                    <h5>Java Collections Framework</h5>
+                    <p>The Collections Framework provides various data structures and algorithms for storing and manipulating groups of objects.</p>
+
+                    <pre><button class="copy-button">Copy</button><code class="language-java">
+import java.util.*;
+
+public class CollectionsDemo {
+    public static void main(String[] args) {
+        // List implementations
+        System.out.println("=== LISTS ===");
+        
+        // ArrayList - resizable array
+        List<String> arrayList = new ArrayList<>();
+        arrayList.add("Apple");
+        arrayList.add("Banana");
+        arrayList.add("Orange");
+        arrayList.add(1, "Grapes"); // Insert at specific position
+        
+        System.out.println("ArrayList: " + arrayList);
+        System.out.println("Element at index 2: " + arrayList.get(2));
+        
+        // LinkedList - doubly linked list
+        List<Integer> linkedList = new LinkedList<>();
+        linkedList.add(10);
+        linkedList.add(20);
+        linkedList.add(30);
+        System.out.println("LinkedList: " + linkedList);
+        
+        // Set implementations
+        System.out.println("\n=== SETS ===");
+        
+        // HashSet - no duplicates, no order
+        Set<String> hashSet = new HashSet<>();
+        hashSet.add("John");
+        hashSet.add("Jane");
+        hashSet.add("John"); // Duplicate, won't be added
+        hashSet.add("Alice");
+        System.out.println("HashSet: " + hashSet);
+        
+        // TreeSet - sorted set
+        Set<Integer> treeSet = new TreeSet<>();
+        treeSet.add(50);
+        treeSet.add(10);
+        treeSet.add(30);
+        treeSet.add(20);
+        System.out.println("TreeSet (sorted): " + treeSet);
+        
+        // Map implementations
+        System.out.println("\n=== MAPS ===");
+        
+        // HashMap - key-value pairs
+        Map<String, Integer> hashMap = new HashMap<>();
+        hashMap.put("John", 25);
+        hashMap.put("Jane", 30);
+        hashMap.put("Alice", 28);
+        hashMap.put("John", 26); // Update existing key
+        
+        System.out.println("HashMap: " + hashMap);
+        System.out.println("John's age: " + hashMap.get("John"));
+        
+        // TreeMap - sorted by keys
+        Map<String, Integer> treeMap = new TreeMap<>();
+        treeMap.put("Orange", 50);
+        treeMap.put("Apple", 30);
+        treeMap.put("Banana", 40);
+        System.out.println("TreeMap (sorted by key): " + treeMap);
+        
+        // Queue implementations
+        System.out.println("\n=== QUEUES ===");
+        
+        // PriorityQueue - natural ordering
+        Queue<Integer> priorityQueue = new PriorityQueue<>();
+        priorityQueue.offer(30);
+        priorityQueue.offer(10);
+        priorityQueue.offer(20);
+        System.out.println("PriorityQueue: " + priorityQueue);
+        System.out.println("Poll: " + priorityQueue.poll());
+        System.out.println("After poll: " + priorityQueue);
+    }
+}
+</code></pre>
+
+                    <h5>Iterating through Collections</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-java">
+import java.util.*;
+
+public class IterationDemo {
+    public static void main(String[] args) {
+        List<String> fruits = Arrays.asList("Apple", "Banana", "Orange", "Grapes");
+        
+        // Different ways to iterate
+        
+        // 1. Enhanced for loop
+        System.out.println("Enhanced for loop:");
+        for (String fruit : fruits) {
+            System.out.println(fruit);
+        }
+        
+        // 2. Iterator
+        System.out.println("\nUsing Iterator:");
+        Iterator<String> iterator = fruits.iterator();
+        while (iterator.hasNext()) {
+            System.out.println(iterator.next());
+        }
+        
+        // 3. ListIterator (for List only)
+        System.out.println("\nUsing ListIterator (reverse):");
+        ListIterator<String> listIterator = fruits.listIterator(fruits.size());
+        while (listIterator.hasPrevious()) {
+            System.out.println(listIterator.previous());
+        }
+        
+        // 4. forEach with lambda (Java 8+)
+        System.out.println("\nUsing forEach with lambda:");
+        fruits.forEach(fruit -> System.out.println(fruit));
+        
+        // 5. forEach with method reference
+        System.out.println("\nUsing forEach with method reference:");
+        fruits.forEach(System.out::println);
+        
+        // Iterating through Map
+        Map<String, Integer> ageMap = new HashMap<>();
+        ageMap.put("John", 25);
+        ageMap.put("Jane", 30);
+        ageMap.put("Alice", 28);
+        
+        System.out.println("\n=== Iterating Map ===");
+        
+        // Using keySet
+        System.out.println("Using keySet:");
+        for (String name : ageMap.keySet()) {
+            System.out.println(name + ": " + ageMap.get(name));
+        }
+        
+        // Using entrySet
+        System.out.println("\nUsing entrySet:");
+        for (Map.Entry<String, Integer> entry : ageMap.entrySet()) {
+            System.out.println(entry.getKey() + ": " + entry.getValue());
+        }
+        
+        // Using forEach with lambda
+        System.out.println("\nUsing forEach with lambda:");
+        ageMap.forEach((name, age) -> System.out.println(name + ": " + age));
+    }
+}
+</code></pre>
+
+                    <h5>Collections Utility Methods</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-java">
+import java.util.*;
+
+public class CollectionsUtility {
+    public static void main(String[] args) {
+        List<Integer> numbers = new ArrayList<>(Arrays.asList(5, 2, 8, 1, 9, 3));
+        
+        System.out.println("Original list: " + numbers);
+        
+        // Sorting
+        Collections.sort(numbers);
+        System.out.println("After sorting: " + numbers);
+        
+        // Reverse order
+        Collections.sort(numbers, Collections.reverseOrder());
+        System.out.println("Reverse order: " + numbers);
+        
+        // Shuffling
+        Collections.shuffle(numbers);
+        System.out.println("After shuffling: " + numbers);
+        
+        // Binary search (list must be sorted)
+        Collections.sort(numbers);
+        int index = Collections.binarySearch(numbers, 8);
+        System.out.println("Index of 8: " + index);
+        
+        // Finding min and max
+        System.out.println("Min: " + Collections.min(numbers));
+        System.out.println("Max: " + Collections.max(numbers));
+        
+        // Filling list with specific value
+        Collections.fill(numbers, 0);
+        System.out.println("After filling with 0: " + numbers);
+        
+        // Frequency
+        List<String> words = Arrays.asList("apple", "banana", "apple", "orange", "apple");
+        int frequency = Collections.frequency(words, "apple");
+        System.out.println("Frequency of 'apple': " + frequency);
+    }
+}
+</code></pre>
+                </div>
+            </div>
+
+            <!-- Module 12: Multithreading -->
+            <div class="content-card" id="module12">
+                <div class="card-header">
+                    <i class="fas fa-code-branch"></i> Module 12: Multithreading
+                </div>
+                <div class="card-body">
+                    <h5>Multithreading in Java</h5>
+                    <p>Java provides built-in support for multithreaded programming, allowing concurrent execution of multiple threads.</p>
+
+                    <pre><button class="copy-button">Copy</button><code class="language-java">
+// Extending Thread class
+class MyThread extends Thread {
+    private String threadName;
+    
+    public MyThread(String name) {
+        this.threadName = name;
+    }
+    
+    @Override
+    public void run() {
+        for (int i = 1; i <= 5; i++) {
+            System.out.println(threadName + " - Count: " + i);
+            try {
+                Thread.sleep(1000); // Pause for 1 second
+            } catch (InterruptedException e) {
+                System.out.println(threadName + " interrupted");
+            }
+        }
+        System.out.println(threadName + " finished");
+    }
+}
+
+// Implementing Runnable interface
+class MyRunnable implements Runnable {
+    private String threadName;
+    
+    public MyRunnable(String name) {
+        this.threadName = name;
+    }
+    
+    @Override
+    public void run() {
+        for (int i = 1; i <= 5; i++) {
+            System.out.println(threadName + " - Count: " + i);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                System.out.println(threadName + " interrupted");
+            }
+        }
+        System.out.println(threadName + " finished");
+    }
+}
+
+public class MultithreadingDemo {
+    public static void main(String[] args) {
+        System.out.println("Main thread started");
+        
+        // Creating threads by extending Thread class
+        MyThread thread1 = new MyThread("Thread-1");
+        MyThread thread2 = new MyThread("Thread-2");
+        
+        // Creating threads by implementing Runnable interface
+        Thread thread3 = new Thread(new MyRunnable("Thread-3"));
+        Thread thread4 = new Thread(new MyRunnable("Thread-4"));
+        
+        // Start threads
+        thread1.start();
+        thread2.start();
+        thread3.start();
+        thread4.start();
+        
+        // Wait for all threads to complete
+        try {
+            thread1.join();
+            thread2.join();
+            thread3.join();
+            thread4.join();
+        } catch (InterruptedException e) {
+            System.out.println("Main thread interrupted");
+        }
+        
+        System.out.println("Main thread finished");
+    }
+}
+</code></pre>
+
+                    <h5>Synchronization</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-java">
+class Counter {
+    private int count = 0;
+    
+    // Synchronized method
+    public synchronized void increment() {
+        count++;
+    }
+    
+    // Synchronized block
+    public void decrement() {
+        synchronized(this) {
+            count--;
+        }
+    }
+    
+    public int getCount() {
+        return count;
+    }
+}
+
+class CounterTask implements Runnable {
+    private Counter counter;
+    private boolean increment;
+    
+    public CounterTask(Counter counter, boolean increment) {
+        this.counter = counter;
+        this.increment = increment;
+    }
+    
+    @Override
+    public void run() {
+        for (int i = 0; i < 1000; i++) {
+            if (increment) {
+                counter.increment();
+            } else {
+                counter.decrement();
+            }
+        }
+    }
+}
+
+public class SynchronizationDemo {
+    public static void main(String[] args) throws InterruptedException {
+        Counter counter = new Counter();
+        
+        Thread t1 = new Thread(new CounterTask(counter, true));
+        Thread t2 = new Thread(new CounterTask(counter, true));
+        Thread t3 = new Thread(new CounterTask(counter, false));
+        
+        t1.start();
+        t2.start();
+        t3.start();
+        
+        t1.join();
+        t2.join();
+        t3.join();
+        
+        System.out.println("Final count: " + counter.getCount());
+        // Should be 1000 (2000 increments - 1000 decrements)
+    }
+}
+</code></pre>
+
+                    <h5>Thread Pool and Executor Service</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-java">
+import java.util.concurrent.*;
+
+class Task implements Runnable {
+    private int taskId;
+    
+    public Task(int id) {
+        this.taskId = id;
+    }
+    
+    @Override
+    public void run() {
+        System.out.println("Task " + taskId + " started by " + Thread.currentThread().getName());
+        try {
+            Thread.sleep(2000); // Simulate work
+        } catch (InterruptedException e) {
+            System.out.println("Task " + taskId + " interrupted");
+        }
+        System.out.println("Task " + taskId + " completed by " + Thread.currentThread().getName());
+    }
+}
+
+public class ThreadPoolDemo {
+    public static void main(String[] args) {
+        // Create thread pool with 3 threads
+        ExecutorService executor = Executors.newFixedThreadPool(3);
+        
+        // Submit tasks to thread pool
+        for (int i = 1; i <= 10; i++) {
+            executor.execute(new Task(i));
+        }
+        
+        // Shutdown executor
+        executor.shutdown();
+        
+        try {
+            // Wait for all tasks to complete
+            if (!executor.awaitTermination(60, TimeUnit.SECONDS)) {
+                executor.shutdownNow();
+            }
+        } catch (InterruptedException e) {
+            executor.shutdownNow();
+        }
+        
+        System.out.println("All tasks completed");
+    }
+}
+</code></pre>
+                </div>
+            </div>
+
+            <!-- Module 13: File I/O -->
+            <div class="content-card" id="module13">
+                <div class="card-header">
+                    <i class="fas fa-file-alt"></i> Module 13: File I/O
+                </div>
+                <div class="card-body">
+                    <h5>File Input/Output Operations</h5>
+                    <p>Java provides comprehensive I/O capabilities for reading from and writing to files.</p>
+
+                    <pre><button class="copy-button">Copy</button><code class="language-java">
+import java.io.*;
+import java.nio.file.*;
+import java.util.Scanner;
+
+public class FileIO {
+    public static void main(String[] args) {
+        String fileName = "example.txt";
+        
+        // Writing to a file
+        try (FileWriter writer = new FileWriter(fileName)) {
+            writer.write("Hello, File I/O!\n");
+            writer.write("This is a sample text file.\n");
+            writer.write("Java makes file handling easy.\n");
+            System.out.println("File written successfully");
+        } catch (IOException e) {
+            System.out.println("Error writing to file: " + e.getMessage());
+        }
+        
+        // Reading from a file using FileReader
+        System.out.println("\n=== Reading with FileReader ===");
+        try (FileReader reader = new FileReader(fileName)) {
+            int character;
+            while ((character = reader.read()) != -1) {
+                System.out.print((char) character);
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading file: " + e.getMessage());
+        }
+        
+        // Reading with BufferedReader (more efficient)
+        System.out.println("\n=== Reading with BufferedReader ===");
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading file: " + e.getMessage());
+        }
+        
+        // Reading with Scanner
+        System.out.println("\n=== Reading with Scanner ===");
+        try (Scanner scanner = new Scanner(new File(fileName))) {
+            while (scanner.hasNextLine()) {
+                System.out.println(scanner.nextLine());
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found: " + e.getMessage());
+        }
+        
+        // File operations with java.nio.file (Java 7+)
+        System.out.println("\n=== NIO File Operations ===");
+        Path path = Paths.get(fileName);
+        
+        try {
+            // Check if file exists
+            if (Files.exists(path)) {
+                System.out.println("File exists: " + path.toAbsolutePath());
+                System.out.println("File size: " + Files.size(path) + " bytes");
+                
+                // Read all lines at once
+                System.out.println("\n=== Reading all lines with NIO ===");
+                Files.readAllLines(path).forEach(System.out::println);
+                
+                // Copy file
+                Path copyPath = Paths.get("example_copy.txt");
+                Files.copy(path, copyPath, StandardCopyOption.REPLACE_EXISTING);
+                System.out.println("File copied to: " + copyPath);
+            }
+        } catch (IOException e) {
+            System.out.println("NIO operation failed: " + e.getMessage());
+        }
+    }
+}
+</code></pre>
+
+                    <h5>Object Serialization</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-java">
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+
+// Serializable class
+class Person implements Serializable {
+    private static final long serialVersionUID = 1L;
+    
+    private String name;
+    private int age;
+    private transient String password; // transient fields are not serialized
+    
+    public Person(String name, int age, String password) {
+        this.name = name;
+        this.age = age;
+        this.password = password;
+    }
+    
+    @Override
+    public String toString() {
+        return "Person{name='" + name + "', age=" + age + ", password='" + password + "'}";
+    }
+}
+
+public class SerializationDemo {
+    public static void main(String[] args) {
+        String filename = "persons.ser";
+        
+        // Create list of persons
+        List<Person> persons = new ArrayList<>();
+        persons.add(new Person("John Doe", 25, "secret123"));
+        persons.add(new Person("Jane Smith", 30, "password456"));
+        persons.add(new Person("Alice Johnson", 28, "secure789"));
+        
+        // Serialize objects to file
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename))) {
+            oos.writeObject(persons);
+            System.out.println("Objects serialized successfully");
+        } catch (IOException e) {
+            System.out.println("Serialization error: " + e.getMessage());
+        }
+        
+        // Deserialize objects from file
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename))) {
+            @SuppressWarnings("unchecked")
+            List<Person> deserializedPersons = (List<Person>) ois.readObject();
+            
+            System.out.println("\nDeserialized objects:");
+            for (Person person : deserializedPersons) {
+                System.out.println(person);
+                // Note: password will be null because it's transient
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("Deserialization error: " + e.getMessage());
+        }
+    }
+}
+</code></pre>
+                </div>
+            </div>
+
+            <!-- Module 14: JDBC and Database Connectivity -->
+            <div class="content-card" id="module14">
+                <div class="card-header">
+                    <i class="fas fa-database"></i> Module 14: JDBC and Database Connectivity
+                </div>
+                <div class="card-body">
+                    <h5>JDBC (Java Database Connectivity)</h5>
+                    <p>JDBC provides a standard API for connecting Java applications to relational databases.</p>
+
+                    <pre><button class="copy-button">Copy</button><code class="language-java">
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+class Student {
+    private int id;
+    private String name;
+    private int age;
+    private double gpa;
+    
+    public Student(int id, String name, int age, double gpa) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+        this.gpa = gpa;
+    }
+    
+    // Getters and toString
+    public int getId() { return id; }
+    public String getName() { return name; }
+    public int getAge() { return age; }
+    public double getGpa() { return gpa; }
+    
+    @Override
+    public String toString() {
+        return String.format("Student{id=%d, name='%s', age=%d, gpa=%.2f}", id, name, age, gpa);
+    }
+}
+
+public class JDBCDemo {
+    // Database connection details
+    private static final String URL = "jdbc:mysql://localhost:3306/student_db";
+    private static final String USERNAME = "root";
+    private static final String PASSWORD = "password";
+    
+    public static void main(String[] args) {
+        // Load JDBC driver (not required for newer JDBC versions)
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            System.out.println("MySQL JDBC Driver not found");
+            return;
+        }
+        
+        // Create table if not exists
+        createTable();
+        
+        // CRUD operations
+        insertStudent(new Student(0, "John Doe", 20, 3.5));
+        insertStudent(new Student(0, "Jane Smith", 22, 3.8));
+        insertStudent(new Student(0, "Alice Johnson", 21, 3.2));
+        
+        System.out.println("All students:");
+        getAllStudents().forEach(System.out::println);
+        
+        System.out.println("\nStudents with GPA > 3.5:");
+        getStudentsByGPA(3.5).forEach(System.out::println);
+        
+        // Update student
+        updateStudentGPA(1, 3.9);
+        
+        System.out.println("\nAfter update:");
+        getAllStudents().forEach(System.out::println);
+        
+        // Delete student
+        deleteStudent(3);
+        
+        System.out.println("\nAfter deletion:");
+        getAllStudents().forEach(System.out::println);
+    }
+    
+    private static void createTable() {
+        String sql = "CREATE TABLE IF NOT EXISTS students (" +
+                     "id INT AUTO_INCREMENT PRIMARY KEY, " +
+                     "name VARCHAR(100) NOT NULL, " +
+                     "age INT NOT NULL, " +
+                     "gpa DECIMAL(3,2) NOT NULL)";
+        
+        try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+             Statement stmt = conn.createStatement()) {
+            stmt.execute(sql);
+            System.out.println("Table created successfully");
+        } catch (SQLException e) {
+            System.out.println("Error creating table: " + e.getMessage());
+        }
+    }
+    
+    private static void insertStudent(Student student) {
+        String sql = "INSERT INTO students (name, age, gpa) VALUES (?, ?, ?)";
+        
+        try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            
+            pstmt.setString(1, student.getName());
+            pstmt.setInt(2, student.getAge());
+            pstmt.setDouble(3, student.getGpa());
+            
+            int rowsAffected = pstmt.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Student inserted: " + student.getName());
+            }
+        } catch (SQLException e) {
+            System.out.println("Error inserting student: " + e.getMessage());
+        }
+    }
+    
+    private static List<Student> getAllStudents() {
+        List<Student> students = new ArrayList<>();
+        String sql = "SELECT * FROM students";
+        
+        try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            
+            while (rs.next()) {
+                Student student = new Student(
+                    rs.getInt("id"),
+                    rs.getString("name"),
+                    rs.getInt("age"),
+                    rs.getDouble("gpa")
+                );
+                students.add(student);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error retrieving students: " + e.getMessage());
+        }
+        
+        return students;
+    }
+    
+    private static List<Student> getStudentsByGPA(double minGPA) {
+        List<Student> students = new ArrayList<>();
+        String sql = "SELECT * FROM students WHERE gpa > ?";
+        
+        try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            
+            pstmt.setDouble(1, minGPA);
+            ResultSet rs = pstmt.executeQuery();
+            
+            while (rs.next()) {
+                Student student = new Student(
+                    rs.getInt("id"),
+                    rs.getString("name"),
+                    rs.getInt("age"),
+                    rs.getDouble("gpa")
+                );
+                students.add(student);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error retrieving students by GPA: " + e.getMessage());
+        }
+        
+        return students;
+    }
+    
+    private static void updateStudentGPA(int id, double newGPA) {
+        String sql = "UPDATE students SET gpa = ? WHERE id = ?";
+        
+        try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            
+            pstmt.setDouble(1, newGPA);
+            pstmt.setInt(2, id);
+            
+            int rowsAffected = pstmt.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Student ID " + id + " GPA updated to " + newGPA);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error updating student: " + e.getMessage());
+        }
+    }
+    
+    private static void deleteStudent(int id) {
+        String sql = "DELETE FROM students WHERE id = ?";
+        
+        try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            
+            pstmt.setInt(1, id);
+            
+            int rowsAffected = pstmt.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Student ID " + id + " deleted");
+            }
+        } catch (SQLException e) {
+            System.out.println("Error deleting student: " + e.getMessage());
+        }
+    }
+}
+</code></pre>
+
+                    <h5>Transaction Management</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-java">
+import java.sql.*;
+
+public class TransactionDemo {
+    private static final String URL = "jdbc:mysql://localhost:3306/bank_db";
+    private static final String USERNAME = "root";
+    private static final String PASSWORD = "password";
+    
+    public static void main(String[] args) {
+        transferMoney(1, 2, 100.0); // Transfer $100 from account 1 to account 2
+    }
+    
+    public static void transferMoney(int fromAccount, int toAccount, double amount) {
+        Connection conn = null;
+        
+        try {
+            conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            conn.setAutoCommit(false); // Start transaction
+            
+            // Deduct from sender
+            String deductSQL = "UPDATE accounts SET balance = balance - ? WHERE id = ? AND balance >= ?";
+            PreparedStatement deductStmt = conn.prepareStatement(deductSQL);
+            deductStmt.setDouble(1, amount);
+            deductStmt.setInt(2, fromAccount);
+            deductStmt.setDouble(3, amount);
+            
+            int rowsUpdated = deductStmt.executeUpdate();
+            if (rowsUpdated == 0) {
+                throw new SQLException("Insufficient funds or account not found");
+            }
+            
+            // Add to receiver
+            String addSQL = "UPDATE accounts SET balance = balance + ? WHERE id = ?";
+            PreparedStatement addStmt = conn.prepareStatement(addSQL);
+            addStmt.setDouble(1, amount);
+            addStmt.setInt(2, toAccount);
+            
+            addStmt.executeUpdate();
+            
+            // Commit transaction
+            conn.commit();
+            System.out.println("Transfer successful: $" + amount + " from account " + fromAccount + " to account " + toAccount);
+            
+        } catch (SQLException e) {
+            // Rollback transaction in case of error
+            if (conn != null) {
+                try {
+                    conn.rollback();
+                    System.out.println("Transaction rolled back due to error: " + e.getMessage());
+                } catch (SQLException ex) {
+                    System.out.println("Error during rollback: " + ex.getMessage());
+                }
+            }
+        } finally {
+            // Restore auto-commit and close connection
+            if (conn != null) {
+                try {
+                    conn.setAutoCommit(true);
+                    conn.close();
+                } catch (SQLException e) {
+                    System.out.println("Error closing connection: " + e.getMessage());
+                }
+            }
+        }
+    }
+}
+</code></pre>
+                </div>
+            </div>
+
+            <!-- Module 15: Advanced Concepts -->
+            <div class="content-card" id="module15">
+                <div class="card-header">
+                    <i class="fas fa-rocket"></i> Module 15: Advanced Concepts
+                </div>
+                <div class="card-body">
+                    <h5>Lambda Expressions and Functional Interfaces</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-java">
+import java.util.*;
+import java.util.function.*;
+
+@FunctionalInterface
+interface Calculator {
+    int operate(int a, int b);
+}
+
+public class AdvancedJava {
+    public static void main(String[] args) {
+        // Lambda expressions
+        System.out.println("=== Lambda Expressions ===");
+        
+        // Traditional way with anonymous class
+        Calculator addTraditional = new Calculator() {
+            @Override
+            public int operate(int a, int b) {
+                return a + b;
+            }
+        };
+        
+        // Lambda expression
+        Calculator add = (a, b) -> a + b;
+        Calculator multiply = (a, b) -> a * b;
+        Calculator subtract = (a, b) -> a - b;
+        
+        System.out.println("5 + 3 = " + add.operate(5, 3));
+        System.out.println("5 * 3 = " + multiply.operate(5, 3));
+        System.out.println("5 - 3 = " + subtract.operate(5, 3));
+        
+        // Built-in functional interfaces
+        System.out.println("\n=== Built-in Functional Interfaces ===");
+        
+        // Predicate - tests a condition
+        Predicate<Integer> isEven = n -> n % 2 == 0;
+        System.out.println("Is 10 even? " + isEven.test(10));
+        System.out.println("Is 7 even? " + isEven.test(7));
+        
+        // Function - transforms input to output
+        Function<String, Integer> stringLength = s -> s.length();
+        System.out.println("Length of 'Hello': " + stringLength.apply("Hello"));
+        
+        // Consumer - consumes a value
+        Consumer<String> printUpperCase = s -> System.out.println(s.toUpperCase());
+        printUpperCase.accept("hello world");
+        
+        // Supplier - provides a value
+        Supplier<Double> randomSupplier = () -> Math.random();
+        System.out.println("Random number: " + randomSupplier.get());
+        
+        // Method references
+        System.out.println("\n=== Method References ===");
+        List<String> names = Arrays.asList("John", "Jane", "Alice", "Bob");
+        
+        // Static method reference
+        names.forEach(System.out::println);
+        
+        // Instance method reference
+        names.sort(String::compareToIgnoreCase);
+        System.out.println("Sorted names: " + names);
+    }
+}
+</code></pre>
+
+                    <h5>Streams API</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-java">
+import java.util.*;
+import java.util.stream.*;
+
+public class StreamsDemo {
+    public static void main(String[] args) {
+        List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+        
+        System.out.println("Original numbers: " + numbers);
+        
+        // Filter even numbers
+        List<Integer> evenNumbers = numbers.stream()
+            .filter(n -> n % 2 == 0)
+            .collect(Collectors.toList());
+        System.out.println("Even numbers: " + evenNumbers);
+        
+        // Square each number
+        List<Integer> squares = numbers.stream()
+            .map(n -> n * n)
+            .collect(Collectors.toList());
+        System.out.println("Squares: " + squares);
+        
+        // Sum of numbers
+        int sum = numbers.stream()
+            .mapToInt(Integer::intValue)
+            .sum();
+        System.out.println("Sum: " + sum);
+        
+        // Find maximum
+        Optional<Integer> max = numbers.stream()
+            .max(Integer::compare);
+        System.out.println("Max: " + max.orElse(0));
+        
+        // Count numbers greater than 5
+        long count = numbers.stream()
+            .filter(n -> n > 5)
+            .count();
+        System.out.println("Count > 5: " + count);
+        
+        // Reduce - product of all numbers
+        Optional<Integer> product = numbers.stream()
+            .reduce((a, b) -> a * b);
+        System.out.println("Product: " + product.orElse(0));
+        
+        // Collect to Map
+        List<String> words = Arrays.asList("apple", "banana", "cherry", "date");
+        Map<Character, String> firstLetterMap = words.stream()
+            .collect(Collectors.toMap(
+                s -> s.charAt(0),
+                s -> s,
+                (existing, replacement) -> existing
+            ));
+        System.out.println("First letter map: " + firstLetterMap);
+        
+        // Grouping
+        Map<Boolean, List<Integer>> partitioned = numbers.stream()
+            .collect(Collectors.partitioningBy(n -> n % 2 == 0));
+        System.out.println("Partitioned: " + partitioned);
+        
+        // Parallel stream
+        List<Integer> parallelProcessed = numbers.parallelStream()
+            .map(n -> n * 2)
+            .collect(Collectors.toList());
+        System.out.println("Parallel processed: " + parallelProcessed);
+    }
+}
+</code></pre>
+
+                    <h5>Optional Class</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-java">
+import java.util.Optional;
+
+public class OptionalDemo {
+    public static void main(String[] args) {
+        // Creating Optional objects
+        Optional<String> emptyOptional = Optional.empty();
+        Optional<String> nonEmptyOptional = Optional.of("Hello");
+        Optional<String> nullableOptional = Optional.ofNullable(null);
+        
+        // Checking presence
+        System.out.println("Empty optional is present: " + emptyOptional.isPresent());
+        System.out.println("Non-empty optional is present: " + nonEmptyOptional.isPresent());
+        
+        // Getting values
+        nonEmptyOptional.ifPresent(value -> System.out.println("Value: " + value));
+        
+        // Default values
+        String value1 = emptyOptional.orElse("Default Value");
+        String value2 = emptyOptional.orElseGet(() -> "Generated Default");
+        System.out.println("Value1: " + value1);
+        System.out.println("Value2: " + value2);
+        
+        // Throwing exception
+        try {
+            String value3 = emptyOptional.orElseThrow(() -> new IllegalArgumentException("Value not present"));
+        } catch (IllegalArgumentException e) {
+            System.out.println("Exception: " + e.getMessage());
+        }
+        
+        // Filtering and mapping
+        Optional<String> result = nonEmptyOptional
+            .filter(s -> s.length() > 3)
+            .map(String::toUpperCase);
+        System.out.println("Filtered and mapped: " + result.orElse("No value"));
+        
+        // Practical example
+        System.out.println("\n=== Practical Example ===");
+        UserRepository repository = new UserRepository();
+        
+        // Safe way to handle potentially null values
+        Optional<User> user = repository.findUserById(1);
+        
+        user.ifPresentOrElse(
+            u -> System.out.println("User found: " + u.getName()),
+            () -> System.out.println("User not found")
+        );
+        
+        // Chain operations safely
+        String email = user
+            .map(User::getEmail)
+            .orElse("No email available");
+        System.out.println("Email: " + email);
+    }
+}
+
+class User {
+    private String name;
+    private String email;
+    
+    public User(String name, String email) {
+        this.name = name;
+        this.email = email;
+    }
+    
+    public String getName() { return name; }
+    public String getEmail() { return email; }
+}
+
+class UserRepository {
+    public Optional<User> findUserById(int id) {
+        // Simulate database lookup
+        if (id == 1) {
+            return Optional.of(new User("John Doe", "john@example.com"));
+        } else {
+            return Optional.empty();
+        }
+    }
+}
+</code></pre>
+
+                    <h5>Java New Features (Records, Sealed Classes)</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-java">
+// Records (Java 14+)
+record PersonRecord(String name, int age, String email) {
+    // Compact constructor for validation
+    public PersonRecord {
+        if (age < 0) {
+            throw new IllegalArgumentException("Age cannot be negative");
+        }
+    }
+    
+    // Additional methods can be added
+    public boolean isAdult() {
+        return age >= 18;
+    }
+}
+
+// Sealed Classes (Java 17+)
+sealed interface Shape permits Circle, Rectangle, Triangle {
+    double area();
+}
+
+final class Circle implements Shape {
+    private final double radius;
+    
+    public Circle(double radius) {
+        this.radius = radius;
+    }
+    
+    @Override
+    public double area() {
+        return Math.PI * radius * radius;
+    }
+}
+
+non-sealed class Rectangle implements Shape {
+    private final double width, height;
+    
+    public Rectangle(double width, double height) {
+        this.width = width;
+        this.height = height;
+    }
+    
+    @Override
+    public double area() {
+        return width * height;
+    }
+}
+
+final class Triangle implements Shape {
+    private final double base, height;
+    
+    public Triangle(double base, double height) {
+        this.base = base;
+        this.height = height;
+    }
+    
+    @Override
+    public double area() {
+        return 0.5 * base * height;
+    }
+}
+
+public class NewFeaturesDemo {
+    public static void main(String[] args) {
+        // Using Records
+        PersonRecord person = new PersonRecord("Alice", 25, "alice@example.com");
+        System.out.println("Record: " + person);
+        System.out.println("Name: " + person.name());
+        System.out.println("Is adult: " + person.isAdult());
+        
+        // Using Sealed Classes
+        Shape circle = new Circle(5.0);
+        Shape rectangle = new Rectangle(4.0, 6.0);
+        
+        System.out.println("Circle area: " + circle.area());
+        System.out.println("Rectangle area: " + rectangle.area());
+        
+        // Pattern matching with instanceof (Java 16+)
+        processShape(circle);
+        processShape(rectangle);
+    }
+    
+    public static void processShape(Shape shape) {
+        // Pattern matching instanceof
+        if (shape instanceof Circle c) {
+            System.out.println("Processing circle with radius: " + c.radius);
+        } else if (shape instanceof Rectangle r) {
+            System.out.println("Processing rectangle: " + r.width + "x" + r.height);
+        }
+    }
+}
+</code></pre>
+
+                    <div class="alert alert-info mt-3">
+                        <strong>Note:</strong> Java continues to evolve with new features in each release. 
+                        Stay updated with the latest Java versions (Java 17 LTS, Java 21 LTS) for new features 
+                        like Records, Sealed Classes, Pattern Matching, and more.
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-5 text-center">
+                <a href="/practice" class="btn btn-primary btn-lg">Take Practice Test</a>
+            </div>
+
+            <div id="animation-container-docs" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1;"></div>
+        </div>
+    </div>
+
+    <script>
+        // Smooth scrolling for sidebar navigation
+        document.querySelectorAll('.sidebar .nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }
+                // Update active state
+                document.querySelectorAll('.sidebar .nav-link').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Search functionality
+        document.getElementById('search-input').addEventListener('input', function() {
+            const query = this.value.toLowerCase();
+            const content = document.getElementById('content');
+            const elements = content.querySelectorAll('h2, h3, h4, h5, h6, p, pre, .card');
+            
+            elements.forEach(element => {
+                const text = element.textContent.toLowerCase();
+                if (query === '' || text.includes(query)) {
+                    element.style.display = '';
+                } else {
+                    element.style.display = 'none';
+                }
+            });
+        });
+
+        // Clear search function
+        function clearSearch() {
+            document.getElementById('search-input').value = '';
+            const content = document.getElementById('content');
+            const elements = content.querySelectorAll('h2, h3, h4, h5, h6, p, pre, .card');
+            elements.forEach(element => {
+                element.style.display = '';
+            });
+        }
+
+        // Copy to clipboard functionality
+        const copyButtons = document.querySelectorAll('.copy-button');
+        copyButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const code = this.parentNode.querySelector('code').textContent;
+                navigator.clipboard.writeText(code);
+                this.textContent = 'Copied!';
+                setTimeout(() => {
+                    this.textContent = 'Copy';
+                }, 2000);
+            });
+        });
+
+        // Highlight active section in sidebar based on scroll position
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('[id]');
+            const navLinks = document.querySelectorAll('.sidebar .nav-link');
+
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+{% endblock %}

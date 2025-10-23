@@ -316,6 +316,62 @@ def nextjs_module():
 def video_editing_module():
     return render_template('video_editing_module.html')
 
+@app.route('/docker-module')
+def docker_module():
+    return render_template('docker_module.html')
+
+@app.route('/linux-deb-module')
+def linux_deb_module():
+    return render_template('linux_deb_module.html')
+
+@app.route('/linux-arch-module')
+def linux_arch_module():
+    return render_template('linux_arch_module.html')
+
+@app.route('/c-lang-module')
+def c_lang_module():
+    return render_template('c_lang_module.html')
+
+@app.route('/cpp-module')
+def cpp_module():
+    return render_template('cpp_module.html')
+
+@app.route('/java-oops-module')
+def java_oops_module():
+    return render_template('java_oops_module.html')
+
+@app.route('/git-github-module')
+def git_github_module():
+    return render_template('git_github_module.html')
+
+@app.route('/docker')
+def docker():
+    return render_template('docker.html')
+
+@app.route('/java')
+def java():
+    return render_template('java.html')
+
+@app.route('/c-lang')
+def c_lang():
+    return render_template('c_lang.html')
+
+@app.route('/cpp-lang')
+def cpp_lang():
+    return render_template('cpp_lang.html')
+
+@app.route('/linux-arch')
+def linux_arch():
+    return render_template('linux_arch.html')
+
+@app.route('/linux-deb')
+def linux_deb():
+    return render_template('linux_deb.html')
+
+@app.route('/git-github')
+def git_github():
+    return render_template('git_github.html')
+
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
     form = ContactForm()

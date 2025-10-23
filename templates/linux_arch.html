@@ -1,0 +1,2046 @@
+{% extends 'base.html' %}
+
+{% block title %}Arch Linux Documentation - SN VERSE{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/github.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.3/purify.min.js"></script>
+    <style>
+        body {
+            background: #f8f9fa;
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #212529;
+        }
+        .sidebar {
+            position: fixed;
+            top: 70px;
+            left: 0;
+            width: 280px;
+            height: calc(100vh - 70px);
+            background: #343a40;
+            border-right: 1px solid #495057;
+            overflow-y: auto;
+            z-index: 1000;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+        }
+        .sidebar .nav-link {
+            color: #adb5bd;
+            padding: 12px 20px;
+            border-radius: 0;
+            margin: 0;
+            transition: all 0.2s ease;
+            font-weight: 500;
+            border-left: 3px solid transparent;
+        }
+        .sidebar .nav-link:hover {
+            background: #495057;
+            color: #fff;
+            text-decoration: none;
+            border-left-color: #1793d1;
+        }
+        .sidebar .nav-link.active {
+            background: #1793d1;
+            color: #fff;
+            border-left-color: #1793d1;
+        }
+        .main-content {
+            margin-left: 280px;
+            padding: 30px;
+            max-width: 1200px;
+        }
+
+        .content-card {
+            margin-bottom: 30px;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            background: #fff;
+        }
+        .content-card .card-header {
+            background: #1793d1;
+            color: white;
+            font-weight: 600;
+            font-size: 1.1rem;
+            border-bottom: 1px solid #dee2e6;
+            padding: 15px 20px;
+            border-radius: 8px 8px 0 0;
+        }
+        .search-container {
+            background: rgba(255,255,255,0.9);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .accordion-button:not(.collapsed) {
+            background: #e7f3ff;
+            color: #1793d1;
+            font-weight: 500;
+        }
+        .accordion-button {
+            border-radius: 0;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+        .accordion-button:focus {
+            box-shadow: none;
+        }
+        .badge-note {
+            background: #e9ecef;
+            color: #495057;
+            font-weight: 500;
+        }
+        .badge-tip {
+            background: #d1ecf1;
+            color: #0c5460;
+            font-weight: 500;
+        }
+        .btn {
+            border-radius: 6px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .copy-button {
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 4px 8px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .copy-button:hover {
+            background: #5a6268;
+            transform: scale(1.05);
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Inter', sans-serif;
+            color: #212529;
+            font-weight: 600;
+        }
+        .card-body {
+            padding: 20px;
+        }
+        .table {
+            margin-bottom: 0;
+        }
+        .table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            border-top: none;
+        }
+        pre {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+        }
+        code {
+            background: #f1f3f4;
+            color: #d73a49;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+        .arch-logo {
+            color: #1793d1;
+            font-weight: 700;
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+            .main-content {
+                margin-left: 0;
+            }
+        }
+    </style>
+    <script>
+        hljs.highlightAll();
+    </script>
+{% endblock %}
+
+{% block content %}
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar">
+        <div class="p-3">
+            <h5 class="text-center mb-3" style="font-size: 1.1rem; color: #fff; font-weight: 600;"><i class="fab fa-linux"></i> <span class="arch-logo">Arch Linux</span> Documentation</h5>
+
+            <!-- Search Box -->
+            <div class="search-container">
+                <input type="text" id="search-input" class="form-control" placeholder="Search documentation..." style="background: rgba(255,255,255,0.9); border: 1px solid #495057; color: #212529;">
+                <button class="btn btn-sm btn-outline-dark mt-2 w-100" onclick="clearSearch()">Clear Search</button>
+            </div>
+
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link" href="#module1"><i class="fas fa-info-circle"></i> Module 1: Introduction</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module2"><i class="fas fa-download"></i> Module 2: Installation</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module3"><i class="fas fa-box"></i> Module 3: Pacman</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module4"><i class="fas fa-archive"></i> Module 4: AUR</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module5"><i class="fas fa-cogs"></i> Module 5: Configuration</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module6"><i class="fas fa-microchip"></i> Module 6: Kernel</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module7"><i class="fas fa-boxes"></i> Module 7: Advanced Packages</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module8"><i class="fas fa-tools"></i> Module 8: Maintenance</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module9"><i class="fas fa-search"></i> Module 9: Troubleshooting</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module10"><i class="fas fa-sync-alt"></i> Module 10: Rolling Release</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div id="content">
+            <h1 class="mb-4" style="text-align: center;"><span class="arch-logo">Arch Linux</span> Documentation</h1>
+            <p style="text-align: center; font-size: 1.1rem; color: #6c757d;">A simple, lightweight distribution following the KISS principle</p>
+
+            <!-- Module 1: Introduction to Arch Linux -->
+            <div class="content-card" id="module1">
+                <div class="card-header">
+                    <i class="fas fa-info-circle"></i> Module 1: Introduction to Arch Linux
+                </div>
+                <div class="card-body">
+                    <h5>What is Arch Linux?</h5>
+                    <p>Arch Linux is an independently developed, x86-64 general-purpose GNU/Linux distribution that strives to provide the latest stable versions of most software by following a rolling-release model. The default installation is a minimal base system, configured by the user to only add what is purposely required.</p>
+
+                    <h5>Arch Linux Philosophy</h5>
+                    <p>Arch Linux is built around the following principles:</p>
+                    <ul>
+                        <li><strong>Simplicity:</strong> Arch Linux defines simplicity as "without unnecessary additions or modifications". It provides a minimal base environment that users can build upon.</li>
+                        <li><strong>Modernity:</strong> Arch Linux keeps software packages as up-to-date as possible, following a rolling-release model.</li>
+                        <li><strong>Pragmatism:</strong> Arch Linux is pragmatic rather than ideological, making decisions based on technical merit.</li>
+                        <li><strong>User-centric:</strong> Arch Linux is designed for users who are comfortable with the command line and willing to read documentation.</li>
+                        <li><strong>Versatility:</strong> Arch Linux can be configured for any purpose, from a minimal server to a full-featured desktop.</li>
+                    </ul>
+
+                    <h5>Key Features</h5>
+                    <ul>
+                        <li><i class="fas fa-sync-alt"></i> <strong>Rolling Release:</strong> No major releases, continuous updates</li>
+                        <li><i class="fas fa-box"></i> <strong>Pacman Package Manager:</strong> Simple, powerful package management</li>
+                        <li><i class="fas fa-archive"></i> <strong>Arch User Repository (AUR):</strong> Community-driven software repository</li>
+                        <li><i class="fas fa-book"></i> <strong>Comprehensive Documentation:</strong> Detailed Arch Wiki</li>
+                        <li><i class="fas fa-terminal"></i> <strong>CLI-focused:</strong> Command-line interface first approach</li>
+                        <li><i class="fas fa-users"></i> <strong>Active Community:</strong> Helpful and knowledgeable user base</li>
+                    </ul>
+
+                    <h5>Arch Linux vs. Other Distributions</h5>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Feature</th>
+                                    <th>Arch Linux</th>
+                                    <th>Ubuntu</th>
+                                    <th>Fedora</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Release Model</td>
+                                    <td>Rolling Release</td>
+                                    <td>Fixed Release (LTS)</td>
+                                    <td>Semi-Rolling</td>
+                                </tr>
+                                <tr>
+                                    <td>Package Manager</td>
+                                    <td>Pacman</td>
+                                    <td>APT</td>
+                                    <td>DNF</td>
+                                </tr>
+                                <tr>
+                                    <td>Installation</td>
+                                    <td>Manual (CLI)</td>
+                                    <td>Automated (GUI)</td>
+                                    <td>Both options</td>
+                                </tr>
+                                <tr>
+                                    <td>Target Audience</td>
+                                    <td>Experienced users</td>
+                                    <td>Beginners</td>
+                                    <td>Developers</td>
+                                </tr>
+                                <tr>
+                                    <td>Customization</td>
+                                    <td>High</td>
+                                    <td>Moderate</td>
+                                    <td>High</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h5>Who Should Use Arch Linux?</h5>
+                    <p>Arch Linux is ideal for users who:</p>
+                    <ul>
+                        <li>Want full control over their system</li>
+                        <li>Prefer a minimal, clean installation</li>
+                        <li>Enjoy learning and configuring their system manually</li>
+                        <li>Want access to the latest software versions</li>
+                        <li>Are comfortable with the command line</li>
+                        <li>Value documentation and community support</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Module 2: Installation and Boot Process -->
+            <div class="content-card" id="module2">
+                <div class="card-header">
+                    <i class="fas fa-download"></i> Module 2: Installation and Boot Process
+                </div>
+                <div class="card-body">
+                    <h5>Arch Linux Installation</h5>
+                    <p>Arch Linux provides a minimal ISO image that boots directly to a command-line environment. The installation process is manual and requires users to follow the Arch Wiki installation guide.</p>
+
+                    <div class="accordion" id="installationAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#preInstallation">
+                                    <i class="fas fa-clipboard-list"></i> Pre-Installation Steps
+                                </button>
+                            </h2>
+                            <div id="preInstallation" class="accordion-collapse collapse show" data-bs-parent="#installationAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Verify boot mode (UEFI or BIOS)
+ls /sys/firmware/efi
+
+# Connect to the internet (WiFi)
+iwctl
+[iwd]# device list
+[iwd]# station device scan
+[iwd]# station device get-networks
+[iwd]# station device connect SSID
+
+# Connect to the internet (Ethernet)
+dhcpcd
+
+# Verify internet connection
+ping archlinux.org
+
+# Update system clock
+timedatectl set-ntp true
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#diskPartitioning">
+                                    <i class="fas fa-hdd"></i> Disk Partitioning
+                                </button>
+                            </h2>
+                            <div id="diskPartitioning" class="accordion-collapse collapse" data-bs-parent="#installationAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Identify disks
+lsblk
+
+# Launch partitioning tool
+fdisk /dev/sda
+
+# Create partitions (example for UEFI):
+# 1: EFI System Partition (512M)
+# 2: Root partition (remaining space)
+
+# Format partitions
+mkfs.fat -F32 /dev/sda1
+mkfs.ext4 /dev/sda2
+
+# Mount partitions
+mount /dev/sda2 /mnt
+mkdir /mnt/efi
+mount /dev/sda1 /mnt/efi
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#baseInstallation">
+                                    <i class="fas fa-download"></i> Base System Installation
+                                </button>
+                            </h2>
+                            <div id="baseInstallation" class="accordion-collapse collapse" data-bs-parent="#installationAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Install base system
+pacstrap /mnt base linux linux-firmware
+
+# Install essential packages
+pacstrap /mnt base-devel networkmanager
+
+# Generate fstab
+genfstab -U /mnt >> /mnt/etc/fstab
+
+# Change root into new system
+arch-chroot /mnt
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#systemConfiguration">
+                                    <i class="fas fa-cogs"></i> System Configuration
+                                </button>
+                            </h2>
+                            <div id="systemConfiguration" class="accordion-collapse collapse" data-bs-parent="#installationAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Set timezone
+ln -sf /usr/share/zoneinfo/Region/City /etc/localtime
+
+# Set hardware clock
+hwclock --systohc
+
+# Set locale
+sed -i 's/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
+locale-gen
+echo "LANG=en_US.UTF-8" > /etc/locale.conf
+
+# Set hostname
+echo "myhostname" > /etc/hostname
+
+# Configure hosts file
+echo "127.0.0.1 localhost" >> /etc/hosts
+echo "::1 localhost" >> /etc/hosts
+echo "127.0.1.1 myhostname.localdomain myhostname" >> /etc/hosts
+
+# Set root password
+passwd
+
+# Create user
+useradd -m username
+passwd username
+usermod -aG wheel,audio,video,optical,storage username
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#bootLoader">
+                                    <i class="fas fa-play-circle"></i> Boot Loader Installation
+                                </button>
+                            </h2>
+                            <div id="bootLoader" class="accordion-collapse collapse" data-bs-parent="#installationAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Install GRUB (for BIOS)
+pacman -S grub
+grub-install --target=i386-pc /dev/sda
+grub-mkconfig -o /boot/grub/grub.cfg
+
+# Install GRUB (for UEFI)
+pacman -S grub efibootmgr
+grub-install --target=x86_64-efi --efi-directory=/efi --bootloader-id=GRUB
+grub-mkconfig -o /boot/grub/grub.cfg
+
+# Enable NetworkManager
+systemctl enable NetworkManager
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#finalSteps">
+                                    <i class="fas fa-check-circle"></i> Final Steps
+                                </button>
+                            </h2>
+                            <div id="finalSteps" class="accordion-collapse collapse" data-bs-parent="#installationAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Exit chroot
+exit
+
+# Unmount partitions
+umount -R /mnt
+
+# Reboot
+reboot
+</code><button class="copy-button">Copy</button></pre>
+                                    <p><span class="badge badge-tip">Tip</span> After reboot, you'll have a minimal Arch Linux system. You can then install additional packages and configure your desktop environment.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h5>Arch Linux Boot Process</h5>
+                    <p>Understanding the boot process can help with troubleshooting:</p>
+                    <ol>
+                        <li><strong>BIOS/UEFI:</strong> Initializes hardware and loads the boot loader</li>
+                        <li><strong>Boot Loader (GRUB):strong> Loads the kernel and initramfs</li>
+                        <li><strong>Kernel:</strong> Initializes hardware and mounts the root filesystem</li>
+                        <li><strong>Init (systemd):strong> Starts system services</li>
+                        <li><strong>Target:</strong> Reaches the default target (multi-user or graphical)</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- Module 3: Pacman Package Manager -->
+            <div class="content-card" id="module3">
+                <div class="card-header">
+                    <i class="fas fa-box"></i> Module 3: Pacman Package Manager
+                </div>
+                <div class="card-body">
+                    <h5>Introduction to Pacman</h5>
+                    <p>Pacman is Arch Linux's package manager. It combines a simple binary package format with an easy-to-use build system. Pacman makes it easy to install, update, and remove packages from the system.</p>
+
+                    <div class="accordion" id="pacmanAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#basicPacman">
+                                    <i class="fas fa-download"></i> Basic Pacman Commands
+                                </button>
+                            </h2>
+                            <div id="basicPacman" class="accordion-collapse collapse show" data-bs-parent="#pacmanAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Synchronize package databases
+sudo pacman -Sy
+
+# Upgrade all packages
+sudo pacman -Syu
+
+# Install package
+sudo pacman -S package_name
+
+# Install multiple packages
+sudo pacman -S package1 package2 package3
+
+# Remove package
+sudo pacman -R package_name
+
+# Remove package and dependencies
+sudo pacman -Rs package_name
+
+# Search for packages
+pacman -Ss keyword
+
+# Install package from local file
+sudo pacman -U /path/to/package.pkg.tar.xz
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#queryPacman">
+                                    <i class="fas fa-search"></i> Querying Packages
+                                </button>
+                            </h2>
+                            <div id="queryPacman" class="accordion-collapse collapse" data-bs-parent="#pacmanAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# List installed packages
+pacman -Q
+
+# Search for installed packages
+pacman -Qs keyword
+
+# Show package information
+pacman -Qi package_name
+
+# List files owned by package
+pacman -Ql package_name
+
+# Check which package owns a file
+pacman -Qo /path/to/file
+
+# List orphan packages
+pacman -Qdt
+
+# List foreign packages (AUR)
+pacman -Qm
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#databasePacman">
+                                    <i class="fas fa-database"></i> Database Management
+                                </button>
+                            </h2>
+                            <div id="databasePacman" class="accordion-collapse collapse" data-bs-parent="#pacmanAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Clean package cache
+sudo pacman -Scc
+
+# Remove old packages from cache
+sudo pacman -Sc
+
+# Refresh package databases
+sudo pacman -Sy
+
+# Download packages without installing
+sudo pacman -Sw package_name
+
+# Check for package updates
+pacman -Qu
+
+# Show sync database information
+pacman -Si package_name
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#pacmanConfig">
+                                    <i class="fas fa-cog"></i> Pacman Configuration
+                                </button>
+                            </h2>
+                            <div id="pacmanConfig" class="accordion-collapse collapse" data-bs-parent="#pacmanAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Edit pacman configuration
+sudo nano /etc/pacman.conf
+
+# Common configuration options:
+# Color output
+Color
+
+# Verbose package lists
+VerbosePkgLists
+
+# Parallel downloads
+ParallelDownloads = 5
+
+# Enable multilib repository (for 32-bit software on 64-bit system)
+[multilib]
+Include = /etc/pacman.d/mirrorlist
+
+# Update system after configuration changes
+sudo pacman -Syu
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h5>Pacman vs. Other Package Managers</h5>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Feature</th>
+                                    <th>Pacman (Arch)</th>
+                                    <th>APT (Debian/Ubuntu)</th>
+                                    <th>DNF (Fedora)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Package Format</td>
+                                    <td>.pkg.tar.xz</td>
+                                    <td>.deb</td>
+                                    <td>.rpm</td>
+                                </tr>
+                                <tr>
+                                    <td>Dependency Resolution</td>
+                                    <td>Built-in</td>
+                                    <td>Built-in</td>
+                                    <td>Built-in</td>
+                                </tr>
+                                <tr>
+                                    <td>Rolling Release</td>
+                                    <td>Yes</td>
+                                    <td>No</td>
+                                    <td>No</td>
+                                </tr>
+                                <tr>
+                                    <td>Community Repository</td>
+                                    <td>AUR</td>
+                                    <td>PPA</td>
+                                    <td>COPR</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module 4: AUR and Custom Packages -->
+            <div class="content-card" id="module4">
+                <div class="card-header">
+                    <i class="fas fa-archive"></i> Module 4: AUR and Custom Packages
+                </div>
+                <div class="card-body">
+                    <h5>Arch User Repository (AUR)</h5>
+                    <p>The Arch User Repository (AUR) is a community-driven repository for Arch Linux users. It contains package descriptions (PKGBUILDs) that allow users to compile software from source and create installable packages.</p>
+
+                    <h5>AUR Helpers</h5>
+                    <p>AUR helpers are tools that simplify the process of installing packages from the AUR. Popular AUR helpers include:</p>
+                    <ul>
+                        <li><strong>yay:</strong> Yet Another Yogurt - Simple and popular</li>
+                        <li><strong>paru:</strong> AUR helper based on yay</li>
+                        <li><strong>trizen:</strong> AUR helper with additional features</li>
+                        <li><strong>pikaur:</strong> AUR helper with pacman-like interface</li>
+                    </ul>
+
+                    <div class="accordion" id="aurAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#installAurHelper">
+                                    <i class="fas fa-download"></i> Installing an AUR Helper
+                                </button>
+                            </h2>
+                            <div id="installAurHelper" class="accordion-collapse collapse show" data-bs-parent="#aurAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Install yay
+git clone https://aur.archlinux.org/yay.git
+cd yay
+makepkg -si
+
+# Install paru
+git clone https://aur.archlinux.org/paru.git
+cd paru
+makepkg -si
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#usingAurHelper">
+                                    <i class="fas fa-box"></i> Using an AUR Helper
+                                </button>
+                            </h2>
+                            <div id="usingAurHelper" class="accordion-collapse collapse" data-bs-parent="#aurAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Search for packages (yay)
+yay -Ss keyword
+
+# Install package from AUR (yay)
+yay -S package_name
+
+# Update system including AUR packages (yay)
+yay -Syu
+
+# Remove package including dependencies (yay)
+yay -Rns package_name
+
+# Clean cache (yay)
+yay -Sc
+
+# Show package information (yay)
+yay -Si package_name
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#pkgbuild">
+                                    <i class="fas fa-file-code"></i> Understanding PKGBUILD
+                                </button>
+                            </h2>
+                            <div id="pkgbuild" class="accordion-collapse collapse" data-bs-parent="#aurAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Example PKGBUILD file
+pkgname=example-package
+pkgver=1.0.0
+pkgrel=1
+pkgdesc="An example package"
+arch=('x86_64')
+url="https://example.com"
+license=('MIT')
+depends=('gcc' 'make')
+source=("https://example.com/source.tar.gz")
+md5sums=('abcdef123456')
+
+build() {
+  cd "$pkgname-$pkgver"
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd "$pkgname-$pkgver"
+  make DESTDIR="$pkgdir" install
+}
+</code><button class="copy-button">Copy</button></pre>
+                                    <p><span class="badge badge-tip">Tip</span> PKGBUILD files are shell scripts that define how to build and package software.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#customPackages">
+                                    <i class="fas fa-cube"></i> Creating Custom Packages
+                                </button>
+                            </h2>
+                            <div id="customPackages" class="accordion-collapse collapse" data-bs-parent="#aurAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Create package directory
+mkdir mypackage
+cd mypackage
+
+# Create PKGBUILD
+nano PKGBUILD
+
+# Download source files
+makepkg -g
+
+# Build package
+makepkg -s
+
+# Install package
+sudo pacman -U mypackage-1.0.0-1-x86_64.pkg.tar.xz
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h5>AUR Best Practices</h5>
+                    <ul>
+                        <li>Always review PKGBUILD files before installing</li>
+                        <li>Check comments and votes on AUR packages</li>
+                        <li>Be cautious with packages that haven't been updated recently</li>
+                        <li>Consider the security implications of AUR packages</li>
+                        <li>Keep your system updated before installing AUR packages</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Module 5: System Configuration -->
+            <div class="content-card" id="module5">
+                <div class="card-header">
+                    <i class="fas fa-cogs"></i> Module 5: System Configuration
+                </div>
+                <div class="card-body">
+                    <h5>System Configuration in Arch Linux</h5>
+                    <p>Arch Linux provides a minimal base system that users configure according to their needs. This module covers essential system configuration tasks.</p>
+
+                    <div class="accordion" id="configAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#networkConfig">
+                                    <i class="fas fa-network-wired"></i> Network Configuration
+                                </button>
+                            </h2>
+                            <div id="networkConfig" class="accordion-collapse collapse show" data-bs-parent="#configAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Enable NetworkManager
+sudo systemctl enable NetworkManager
+sudo systemctl start NetworkManager
+
+# Configure network with NetworkManager CLI
+nmcli device wifi list
+nmcli device wifi connect SSID password password
+
+# Configure static IP
+nmcli connection modify connection-name ipv4.addresses 192.168.1.100/24
+nmcli connection modify connection-name ipv4.gateway 192.168.1.1
+nmcli connection modify connection-name ipv4.dns "8.8.8.8 8.8.4.4"
+nmcli connection up connection-name
+
+# Configure network with systemd-networkd
+sudo nano /etc/systemd/network/20-wired.network
+
+# Content for 20-wired.network:
+[Match]
+Name=enp3s0
+
+[Network]
+Address=192.168.1.100/24
+Gateway=192.168.1.1
+DNS=8.8.8.8
+
+# Enable systemd-networkd
+sudo systemctl enable systemd-networkd
+sudo systemctl start systemd-networkd
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#displayServer">
+                                    <i class="fas fa-desktop"></i> Display Server Configuration
+                                </button>
+                            </h2>
+                            <div id="displayServer" class="accordion-collapse collapse" data-bs-parent="#configAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Install Xorg (display server)
+sudo pacman -S xorg-server xorg-xinit
+
+# Install video driver (example for Intel)
+sudo pacman -S xf86-video-intel
+
+# Install display manager (example for SDDM)
+sudo pacman -S sddm
+sudo systemctl enable sddm
+
+# Install desktop environment (example for KDE Plasma)
+sudo pacman -S plasma
+
+# Install window manager (example for i3)
+sudo pacman -S i3-wm i3status i3lock dmenu
+
+# Configure .xinitrc for window manager
+echo "exec i3" > ~/.xinitrc
+
+# Start Xorg with startx
+startx
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#audioConfig">
+                                    <i class="fas fa-volume-up"></i> Audio Configuration
+                                </button>
+                            </h2>
+                            <div id="audioConfig" class="accordion-collapse collapse" data-bs-parent="#configAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Install PulseAudio
+sudo pacman -S pulseaudio pulseaudio-alsa
+
+# Install ALSA (alternative to PulseAudio)
+sudo pacman -S alsa-utils
+
+# Configure audio with ALSA
+amixer sset Master unmute
+amixer sset Master 100%
+
+# Test audio
+speaker-test -c 2
+
+# Install audio equalizer
+sudo pacman -S pulseaudio-equalizer-ladspa
+
+# Configure audio with Pipewire (modern alternative)
+sudo pacman -S pipewire pipewire-pulse pipewire-alsa
+systemctl --user enable pipewire pipewire-pulse
+systemctl --user start pipewire pipewire-pulse
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#localeConfig">
+                                    <i class="fas fa-globe"></i> Locale and Time Configuration
+                                </button>
+                            </h2>
+                            <div id="localeConfig" class="accordion-collapse collapse" data-bs-parent="#configAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Configure locale
+sudo nano /etc/locale.gen
+
+# Uncomment desired locales
+# en_US.UTF-8 UTF-8
+
+# Generate locales
+sudo locale-gen
+
+# Set system locale
+sudo localectl set-locale LANG=en_US.UTF-8
+
+# Configure timezone
+sudo timedatectl set-timezone America/New_York
+
+# Configure hardware clock
+sudo timedatectl set-local-rtc 0
+
+# Configure NTP
+sudo timedatectl set-ntp true
+
+# View time and date status
+timedatectl status
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#systemdConfig">
+                                    <i class="fas fa-cogs"></i> Systemd Configuration
+                                </button>
+                            </h2>
+                            <div id="systemdConfig" class="accordion-collapse collapse" data-bs-parent="#configAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# View available services
+systemctl list-unit-files --type=service
+
+# Enable service
+sudo systemctl enable service_name
+
+# Start service
+sudo systemctl start service_name
+
+# Check service status
+systemctl status service_name
+
+# View service logs
+journalctl -u service_name
+
+# Create custom service
+sudo nano /etc/systemd/system/myservice.service
+
+# Content for myservice.service:
+[Unit]
+Description=My Custom Service
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/mycommand
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+
+# Reload systemd configuration
+sudo systemctl daemon-reload
+
+# Enable and start custom service
+sudo systemctl enable myservice
+sudo systemctl start myservice
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module 6: Kernel Management -->
+            <div class="content-card" id="module6">
+                <div class="card-header">
+                    <i class="fas fa-microchip"></i> Module 6: Kernel Management
+                </div>
+                <div class="card-body">
+                    <h5>Linux Kernel in Arch Linux</h5>
+                    <p>Arch Linux provides the latest stable Linux kernel by default. Users can choose from different kernel variants and customize kernel parameters.</p>
+
+                    <div class="accordion" id="kernelAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#kernelVariants">
+                                    <i class="fas fa-list"></i> Kernel Variants
+                                </button>
+                            </h2>
+                            <div id="kernelVariants" class="accordion-collapse collapse show" data-bs-parent="#kernelAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Install mainline kernel
+sudo pacman -S linux
+
+# Install LTS kernel
+sudo pacman -S linux-lts
+
+# Install hardened kernel
+sudo pacman -S linux-hardened
+
+# Install zen kernel
+sudo pacman -S linux-zen
+
+# Install headers (required for building modules)
+sudo pacman -S linux-headers
+
+# View installed kernels
+pacman -Q | grep linux
+
+# Remove old kernel
+sudo pacman -R linux-old-version
+</code><button class="copy-button">Copy</button></pre>
+                                    <p><span class="badge badge-tip">Tip</span> You can have multiple kernels installed and select which one to boot from the GRUB menu.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#kernelModules">
+                                    <i class="fas fa-cube"></i> Kernel Modules
+                                </button>
+                            </h2>
+                            <div id="kernelModules" class="accordion-collapse collapse" data-bs-parent="#kernelAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# List loaded modules
+lsmod
+
+# List all available modules
+modinfo -l
+
+# Show module information
+modinfo module_name
+
+# Load module
+sudo modprobe module_name
+
+# Unload module
+sudo modprobe -r module_name
+
+# Load module at boot
+echo "module_name" | sudo tee /etc/modules-load.d/module.conf
+
+# Blacklist module
+echo "blacklist module_name" | sudo tee /etc/modprobe.d/blacklist.conf
+
+# View module parameters
+modinfo -p module_name
+
+# Set module parameter
+sudo modprobe module_name parameter=value
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#kernelParameters">
+                                    <i class="fas fa-sliders-h"></i> Kernel Parameters
+                                </button>
+                            </h2>
+                            <div id="kernelParameters" class="accordion-collapse collapse" data-bs-parent="#kernelAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# View current kernel parameters
+sysctl -a
+
+# View specific parameter
+sysctl parameter.name
+
+# Set parameter temporarily
+sudo sysctl parameter.name=value
+
+# Set parameter permanently
+echo "parameter.name=value" | sudo tee /etc/sysctl.d/99-custom.conf
+
+# Apply sysctl configuration
+sudo sysctl --system
+
+# Common kernel parameters:
+# Enable IPv6 forwarding
+echo "net.ipv6.conf.all.forwarding=1" | sudo tee /etc/sysctl.d/99-forwarding.conf
+
+# Increase file descriptor limit
+echo "fs.file-max=100000" | sudo tee /etc/sysctl.d/99-filelimit.conf
+
+# Optimize network performance
+echo "net.core.rmem_max=16777216" | sudo tee /etc/sysctl.d/99-network.conf
+echo "net.core.wmem_max=16777216" | sudo tee /etc/sysctl.d/99-network.conf
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#kernelCompilation">
+                                    <i class="fas fa-code"></i> Custom Kernel Compilation
+                                </button>
+                            </h2>
+                            <div id="kernelCompilation" class="accordion-collapse collapse" data-bs-parent="#kernelAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Install required packages
+sudo pacman -S base-devel bc kmod libelf pahole
+
+# Download kernel source
+wget https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.15.12.tar.xz
+tar -xf linux-5.15.12.tar.xz
+cd linux-5.15.12
+
+# Copy current kernel config
+cp /boot/config-$(uname -r) .config
+
+# Configure kernel
+make menuconfig
+
+# Build kernel
+make -j$(nproc)
+
+# Install modules
+sudo make modules_install
+
+# Install kernel
+sudo make install
+
+# Update GRUB
+sudo grub-mkconfig -o /boot/grub/grub.cfg
+</code><button class="copy-button">Copy</button></pre>
+                                    <p><span class="badge badge-note">Note</span> Custom kernel compilation is advanced and should only be done if you have specific requirements not met by the default kernels.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module 7: Advanced Package Management -->
+            <div class="content-card" id="module7">
+                <div class="card-header">
+                    <i class="fas fa-boxes"></i> Module 7: Advanced Package Management
+                </div>
+                <div class="card-body">
+                    <h5>Advanced Package Management in Arch Linux</h5>
+                    <p>This module covers advanced package management techniques, including handling dependencies, managing repositories, and troubleshooting package issues.</p>
+
+                    <div class="accordion" id="advancedPacmanAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#dependencyManagement">
+                                    <i class="fas fa-project-diagram"></i> Dependency Management
+                                </button>
+                            </h2>
+                            <div id="dependencyManagement" class="accordion-collapse collapse show" data-bs-parent="#advancedPacmanAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Check package dependencies
+pactree package_name
+
+# Check reverse dependencies
+pacman -Qi package_name | grep "Required By"
+
+# Find packages that depend on a specific package
+pacman -Qii package_name | grep "Depends On"
+
+# Install package without dependencies
+sudo pacman -Sdd package_name
+
+# Remove package and all its dependencies
+sudo pacman -Rsc package_name
+
+# Check for broken dependencies
+sudo pacman -Dk
+
+# Fix broken dependencies
+sudo pacman -Syyu
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#repositoryManagement">
+                                    <i class="fas fa-server"></i> Repository Management
+                                </button>
+                            </h2>
+                            <div id="repositoryManagement" class="accordion-collapse collapse" data-bs-parent="#advancedPacmanAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# View configured repositories
+cat /etc/pacman.conf
+
+# View mirror list
+cat /etc/pacman.d/mirrorlist
+
+# Rank mirrors by speed
+sudo pacman -S pacman-contrib
+sudo cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup
+sudo rankmirrors -n 6 /etc/pacman.d/mirrorlist.backup > /etc/pacman.d/mirrorlist
+
+# Add custom repository
+sudo nano /etc/pacman.conf
+
+# Add to pacman.conf:
+[customrepo]
+Server = https://example.com/customrepo/$arch
+
+# Update package databases
+sudo pacman -Sy
+
+# Install package from specific repository
+sudo pacman -S repo/package_name
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#packageDowngrades">
+                                    <i class="fas fa-arrow-down"></i> Package Downgrades
+                                </button>
+                            </h2>
+                            <div id="packageDowngrades" class="accordion-collapse collapse" data-bs-parent="#advancedPacmanAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# View package history
+sudo pacman -Si package_name
+
+# Install downgrade tool
+sudo pacman -S downgrade
+
+# Downgrade package
+sudo downgrade package_name
+
+# Downgrade package manually
+sudo pacman -U /var/cache/pacman/pkg/package_name-old-version.pkg.tar.xz
+
+# Clear cache to prevent re-upgrade
+sudo pacman -Scc
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#packageCache">
+                                    <i class="fas fa-database"></i> Package Cache Management
+                                </button>
+                            </h2>
+                            <div id="packageCache" class="accordion-collapse collapse" data-bs-parent="#advancedPacmanAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# View cache directory
+ls /var/cache/pacman/pkg/
+
+# Clean cache (keep last 3 versions)
+sudo paccache -r
+
+# Clean cache (keep last version)
+sudo paccache -rk 1
+
+# Clean all uninstalled packages
+sudo paccache -ruk0
+
+# Clean all packages
+sudo paccache -r -k 0
+
+# View cache size
+du -sh /var/cache/pacman/pkg/
+
+# Configure cache cleaning in pacman.conf
+sudo nano /etc/pacman.conf
+
+# Add to pacman.conf:
+[options]
+CleanMethod = KeepInstalled
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#packageTroubleshooting">
+                                    <i class="fas fa-tools"></i> Package Troubleshooting
+                                </button>
+                            </h2>
+                            <div id="packageTroubleshooting" class="accordion-collapse collapse" data-bs-parent="#advancedPacmanAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Check for file conflicts
+sudo pacman -Qo /path/to/file
+
+# Check for package conflicts
+sudo pacman -Dkk
+
+# Fix database lock
+sudo rm /var/lib/pacman/db.lck
+
+# Rebuild local database
+sudo pacman -Sy
+
+# Refresh package databases
+sudo pacman -Syy
+
+# Check for orphan packages
+sudo pacman -Qtd
+
+# Remove orphan packages
+sudo pacman -Rns $(pacman -Qtdq)
+
+# Check for package signature issues
+sudo pacman -Syy --noconfirm
+sudo pacman-key --init
+sudo pacman-key --populate archlinux
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module 8: System Maintenance -->
+            <div class="content-card" id="module8">
+                <div class="card-header">
+                    <i class="fas fa-tools"></i> Module 8: System Maintenance
+                </div>
+                <div class="card-body">
+                    <h5>System Maintenance in Arch Linux</h5>
+                    <p>Regular system maintenance is essential for keeping your Arch Linux system running smoothly. This module covers maintenance tasks and best practices.</p>
+
+                    <div class="accordion" id="maintenanceAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#systemUpdates">
+                                    <i class="fas fa-sync-alt"></i> System Updates
+                                </button>
+                            </h2>
+                            <div id="systemUpdates" class="accordion-collapse collapse show" data-bs-parent="#maintenanceAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Update system packages
+sudo pacman -Syu
+
+# Update AUR packages (with yay)
+yay -Syu
+
+# Check for news before updating
+pacman -Syu --ignore linux
+curl https://www.archlinux.org/news/
+
+# Check for orphan packages
+sudo pacman -Qtd
+
+# Remove orphan packages
+sudo pacman -Rns $(pacman -Qtdq)
+
+# Clean package cache
+sudo pacman -Scc
+
+# Update GRUB configuration
+sudo grub-mkconfig -o /boot/grub/grub.cfg
+</code><button class="copy-button">Copy</button></pre>
+                                    <p><span class="badge badge-tip">Tip</span> Always check the Arch Linux news before updating, especially for major updates like kernel or systemd changes.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#logManagement">
+                                    <i class="fas fa-file-alt"></i> Log Management
+                                </button>
+                            </h2>
+                            <div id="logManagement" class="accordion-collapse collapse" data-bs-parent="#maintenanceAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# View system logs
+journalctl
+
+# View logs for specific service
+journalctl -u service_name
+
+# View logs from current boot
+journalctl -b
+
+# View logs from previous boot
+journalctl -b -1
+
+# Follow logs in real-time
+journalctl -f
+
+# Clean old logs
+sudo journalctl --vacuum-size=100M
+
+# Configure log retention
+sudo nano /etc/systemd/journald.conf
+
+# Add to journald.conf:
+[Journal]
+Storage=persistent
+Compress=yes
+SystemMaxUse=100M
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#diskMaintenance">
+                                    <i class="fas fa-hdd"></i> Disk Maintenance
+                                </button>
+                            </h2>
+                            <div id="diskMaintenance" class="accordion-collapse collapse" data-bs-parent="#maintenanceAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Check disk usage
+df -h
+
+# Check directory sizes
+du -sh /path/to/directory
+
+# Find large files
+find / -type f -size +100M 2>/dev/null | head -n 20
+
+# Clean old package cache
+sudo paccache -r
+
+# Clean temporary files
+sudo rm -rf /tmp/*
+
+# Clean journal logs
+sudo journalctl --vacuum-time=7d
+
+# Check for broken symlinks
+find / -type l -exec test ! -e {} \; -print
+
+# Check filesystem health
+sudo fsck -f /dev/sdaX
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#backupMaintenance">
+                                    <i class="fas fa-save"></i> Backup and Recovery
+                                </button>
+                            </h2>
+                            <div id="backupMaintenance" class="accordion-collapse collapse" data-bs-parent="#maintenanceAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Create backup script
+nano backup.sh
+
+# Content for backup.sh:
+#!/bin/bash
+rsync -aAXv --exclude={"/dev/*","/proc/*","/sys/*","/tmp/*","/run/*","/mnt/*","/media/*","/lost+found"} / /path/to/backup
+
+# Make script executable
+chmod +x backup.sh
+
+# Schedule backup with cron
+crontab -e
+
+# Add to crontab:
+0 2 * * * /path/to/backup.sh
+
+# Create system snapshot with timeshift
+sudo pacman -S timeshift
+
+# Create backup with rsync
+rsync -aAXv / /path/to/backup
+
+# Restore from backup
+rsync -aAXv /path/to/backup /
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#performanceMaintenance">
+                                    <i class="fas fa-tachometer-alt"></i> Performance Maintenance
+                                </button>
+                            </h2>
+                            <div id="performanceMaintenance" class="accordion-collapse collapse" data-bs-parent="#maintenanceAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# View system resource usage
+top
+htop
+
+# View memory usage
+free -h
+
+# View disk I/O
+iotop
+
+# Optimize system performance
+sudo pacman -S preload
+sudo systemctl enable preload
+
+# Clean system
+sudo pacman -Scc
+sudo journalctl --vacuum-size=100M
+
+# Optimize database
+sudo pacman-optimize
+
+# Update GRUB configuration
+sudo grub-mkconfig -o /boot/grub/grub.cfg
+
+# Rebuild initramfs
+sudo mkinitcpio -P
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module 9: Troubleshooting -->
+            <div class="content-card" id="module9">
+                <div class="card-header">
+                    <i class="fas fa-search"></i> Module 9: Troubleshooting
+                </div>
+                <div class="card-body">
+                    <h5>Troubleshooting Arch Linux</h5>
+                    <p>Even with careful maintenance, issues can arise. This module covers common problems and their solutions in Arch Linux.</p>
+
+                    <div class="accordion" id="troubleshootingAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#bootIssues">
+                                    <i class="fas fa-power-off"></i> Boot Issues
+                                </button>
+                            </h2>
+                            <div id="bootIssues" class="accordion-collapse collapse show" data-bs-parent="#troubleshootingAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Boot into live environment
+# Mount root partition
+mount /dev/sdaX /mnt
+
+# Check journal logs
+journalctl -b -1
+
+# Check fstab
+cat /mnt/etc/fstab
+
+# Reinstall GRUB
+arch-chroot /mnt
+pacman -S grub
+grub-install --target=x86_64-efi --efi-directory=/efi --bootloader-id=GRUB
+grub-mkconfig -o /boot/grub/grub.cfg
+
+# Rebuild initramfs
+mkinitcpio -P
+
+# Check for missing hooks
+cat /etc/mkinitcpio.conf
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#networkIssues">
+                                    <i class="fas fa-network-wired"></i> Network Issues
+                                </button>
+                            </h2>
+                            <div id="networkIssues" class="accordion-collapse collapse" data-bs-parent="#troubleshootingAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Check network interface
+ip addr show
+
+# Check network status
+systemctl status NetworkManager
+
+# Restart NetworkManager
+sudo systemctl restart NetworkManager
+
+# Check DNS
+nslookup archlinux.org
+
+# Check routing
+ip route show
+
+# Check firewall
+sudo ufw status
+
+# Check network logs
+journalctl -u NetworkManager
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#packageIssues">
+                                    <i class="fas fa-box"></i> Package Issues
+                                </button>
+                            </h2>
+                            <div id="packageIssues" class="accordion-collapse collapse" data-bs-parent="#troubleshootingAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Fix database lock
+sudo rm /var/lib/pacman/db.lck
+
+# Rebuild local database
+sudo pacman -Sy
+
+# Fix broken dependencies
+sudo pacman -Syyu
+
+# Check for file conflicts
+sudo pacman -Qo /path/to/file
+
+# Remove problematic package
+sudo pacman -Rdd package_name
+
+# Reinstall package
+sudo pacman -S package_name
+
+# Reset all packages
+sudo pacman -Syyu --ignore linux
+sudo pacman -Suu
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#displayIssues">
+                                    <i class="fas fa-desktop"></i> Display Issues
+                                </button>
+                            </h2>
+                            <div id="displayIssues" class="accordion-collapse collapse" data-bs-parent="#troubleshootingAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Check Xorg log
+cat /var/log/Xorg.0.log
+
+# Check video driver
+lspci -k | grep -A 2 -i VGA
+
+# Reinstall video driver
+sudo pacman -S xf86-video-intel
+
+# Check display manager status
+systemctl status sddm
+
+# Restart display manager
+sudo systemctl restart sddm
+
+# Check .xinitrc
+cat ~/.xinitrc
+
+# Test Xorg
+startx
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#performanceIssues">
+                                    <i class="fas fa-tachometer-alt"></i> Performance Issues
+                                </button>
+                            </h2>
+                            <div id="performanceIssues" class="accordion-collapse collapse" data-bs-parent="#troubleshootingAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Check system resource usage
+top
+htop
+
+# Check disk usage
+df -h
+du -sh /path/to/directory
+
+# Check memory usage
+free -h
+
+# Check for high CPU usage
+ps aux --sort=-%cpu | head
+
+# Check for high memory usage
+ps aux --sort=-%mem | head
+
+# Check I/O usage
+iotop
+
+# Optimize system
+sudo pacman -S preload
+sudo systemctl enable preload
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module 10: Rolling Release Philosophy -->
+            <div class="content-card" id="module10">
+                <div class="card-header">
+                    <i class="fas fa-sync-alt"></i> Module 10: Rolling Release Philosophy
+                </div>
+                <div class="card-body">
+                    <h5>Understanding Rolling Release</h5>
+                    <p>Arch Linux follows a rolling release model, which means there are no major releases. Instead, packages are continuously updated as soon as new versions are released upstream.</p>
+
+                    <h5>Advantages of Rolling Release</h5>
+                    <ul>
+                        <li><i class="fas fa-arrow-up"></i> <strong>Latest Software:</strong> Always have access to the latest versions of software</li>
+                        <li><i class="fas fa-sync"></i> <strong>Continuous Updates:</strong> No need to wait for major releases</li>
+                        <li><i class="fas fa-bug"></i> <strong>Quick Fixes:</strong> Security updates and bug fixes are available immediately</li>
+                        <li><i class="fas fa-cogs"></i> <strong>No Reinstallation:</strong> No need to reinstall the system for new versions</li>
+                    </ul>
+
+                    <h5>Challenges of Rolling Release</h5>
+                    <ul>
+                        <li><i class="fas fa-exclamation-triangle"></i> <strong>Potential Instability:</strong> Updates can sometimes break the system</li>
+                        <li><i class="fas fa-clock"></i> <strong>More Maintenance:</strong> Requires more frequent updates and maintenance</li>
+                        <li><i class="fas fa-book"></i> <strong>Need for Documentation:</strong> Must keep up with changes in the system</li>
+                    </ul>
+
+                    <div class="accordion" id="rollingAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#updateStrategy">
+                                    <i class="fas fa-sync-alt"></i> Update Strategy
+                                </button>
+                            </h2>
+                            <div id="updateStrategy" class="accordion-collapse collapse show" data-bs-parent="#rollingAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Check for news before updating
+curl https://www.archlinux.org/news/
+
+# Update system regularly
+sudo pacman -Syu
+
+# Update AUR packages
+yay -Syu
+
+# Check for orphan packages
+sudo pacman -Qtd
+
+# Remove orphan packages
+sudo pacman -Rns $(pacman -Qtdq)
+
+# Clean package cache
+sudo pacman -Scc
+
+# Update GRUB after kernel updates
+sudo grub-mkconfig -o /boot/grub/grub.cfg
+</code><button class="copy-button">Copy</button></pre>
+                                    <p><span class="badge badge-tip">Tip</span> Update your system regularly to avoid large, potentially problematic updates.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#backupStrategy">
+                                    <i class="fas fa-save"></i> Backup Strategy
+                                </button>
+                            </h2>
+                            <div id="backupStrategy" class="accordion-collapse collapse" data-bs-parent="#rollingAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Create system snapshot before major updates
+sudo pacman -S timeshift
+
+# Create backup with rsync
+rsync -aAXv / /path/to/backup
+
+# Create backup script
+nano backup.sh
+
+# Content for backup.sh:
+#!/bin/bash
+DATE=$(date +%Y%m%d)
+rsync -aAXv --exclude={"/dev/*","/proc/*","/sys/*","/tmp/*","/run/*","/mnt/*","/media/*","/lost+found"} / /path/to/backup/backup_$DATE
+
+# Make script executable
+chmod +x backup.sh
+
+# Schedule backup with cron
+crontab -e
+
+# Add to crontab:
+0 2 * * * /path/to/backup.sh
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#testingStrategy">
+                                    <i class="fas fa-flask"></i> Testing Strategy
+                                </button>
+                            </h2>
+                            <div id="testingStrategy" class="accordion-collapse collapse" data-bs-parent="#rollingAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Use testing repository
+sudo nano /etc/pacman.conf
+
+# Add to pacman.conf:
+[testing]
+Include = /etc/pacman.d/mirrorlist
+
+# Update with testing packages
+sudo pacman -Syu
+
+# Use unstable packages
+sudo nano /etc/pacman.conf
+
+# Add to pacman.conf:
+[community-testing]
+Include = /etc/pacman.d/mirrorlist
+
+# Test AUR packages
+yay -S --aur package_name
+
+# Check package information before installing
+pacman -Si package_name
+
+# Read package comments
+pacman -Qi package_name
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#recoveryStrategy">
+                                    <i class="fas fa-life-ring"></i> Recovery Strategy
+                                </button>
+                            </h2>
+                            <div id="recoveryStrategy" class="accordion-collapse collapse" data-bs-parent="#rollingAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Boot into live environment
+# Mount root partition
+mount /dev/sdaX /mnt
+
+# Restore from backup
+rsync -aAXv /path/to/backup /mnt
+
+# Restore from timeshift
+sudo timeshift --restore
+
+# Downgrade problematic package
+sudo downgrade package_name
+
+# Remove problematic package
+sudo pacman -Rdd package_name
+
+# Reinstall system
+pacstrap /mnt base linux linux-firmware
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h5>Best Practices for Rolling Release</h5>
+                    <ul>
+                        <li>Update your system regularly</li>
+                        <li>Check the Arch Linux news before updating</li>
+                        <li>Keep backups of important data</li>
+                        <li>Test updates in a virtual machine first</li>
+                        <li>Read package comments before installing</li>
+                        <li>Be prepared to troubleshoot issues</li>
+                        <li>Join the Arch Linux community for support</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="mt-5 text-center">
+                <a href="/practice" class="btn btn-primary btn-lg">Take Practice Test</a>
+            </div>
+        </div>
+    </div>
+    <div id="animation-container-docs" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1;">
+    </div>
+    </section>
+
+    <script>
+        // Smooth scrolling for sidebar navigation
+        document.querySelectorAll('.sidebar .nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }
+                // Update active state
+                document.querySelectorAll('.sidebar .nav-link').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Search functionality
+        document.getElementById('search-input').addEventListener('input', function() {
+            const query = this.value.toLowerCase();
+            const content = document.getElementById('content');
+            const elements = content.querySelectorAll('h2, h3, h4, h5, p, pre, .card');
+
+            elements.forEach(element => {
+                const text = element.textContent.toLowerCase();
+                if (query === '' || text.includes(query)) {
+                    element.style.display = '';
+                } else {
+                    element.style.display = 'none';
+                }
+            });
+        });
+
+        // Clear search function
+        function clearSearch() {
+            document.getElementById('search-input').value = '';
+            const content = document.getElementById('content');
+            const elements = content.querySelectorAll('h2, h3, h4, h5, p, pre, .card');
+            elements.forEach(element => {
+                element.style.display = '';
+            });
+        }
+
+        // Copy to clipboard functionality
+        const copyButtons = document.querySelectorAll('.copy-button');
+        copyButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const code = this.parentNode.querySelector('code').textContent;
+                navigator.clipboard.writeText(code);
+                this.textContent = 'Copied!';
+                setTimeout(() => {
+                    this.textContent = 'Copy';
+                }, 2000);
+            });
+        });
+
+        // Highlight active section in sidebar based on scroll position
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('[id]');
+            const navLinks = document.querySelectorAll('.sidebar .nav-link');
+
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+{% endblock %}

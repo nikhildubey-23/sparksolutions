@@ -1,0 +1,1322 @@
+{% extends 'base.html' %}
+
+{% block title %}C Programming Documentation - SN VERSE{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/github.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.3/purify.min.js"></script>
+    <style>
+        body {
+            background: #f8f9fa;
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #212529;
+        }
+        .sidebar {
+            position: fixed;
+            top: 70px;
+            left: 0;
+            width: 280px;
+            height: calc(100vh - 70px);
+            background: #343a40;
+            border-right: 1px solid #495057;
+            overflow-y: auto;
+            z-index: 1000;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+        }
+        .sidebar .nav-link {
+            color: #adb5bd;
+            padding: 12px 20px;
+            border-radius: 0;
+            margin: 0;
+            transition: all 0.2s ease;
+            font-weight: 500;
+            border-left: 3px solid transparent;
+        }
+        .sidebar .nav-link:hover {
+            background: #495057;
+            color: #fff;
+            text-decoration: none;
+            border-left-color: #0353a4;
+        }
+        .sidebar .nav-link.active {
+            background: #0353a4;
+            color: #fff;
+            border-left-color: #0353a4;
+        }
+        .main-content {
+            margin-left: 280px;
+            padding: 30px;
+            max-width: 1200px;
+        }
+
+        .content-card {
+            margin-bottom: 30px;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            background: #fff;
+        }
+        .content-card .card-header {
+            background: #0353a4;
+            color: white;
+            font-weight: 600;
+            font-size: 1.1rem;
+            border-bottom: 1px solid #dee2e6;
+            padding: 15px 20px;
+            border-radius: 8px 8px 0 0;
+        }
+        .search-container {
+            background: rgba(255,255,255,0.9);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .accordion-button:not(.collapsed) {
+            background: #e7f3ff;
+            color: #0353a4;
+            font-weight: 500;
+        }
+        .accordion-button {
+            border-radius: 0;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+        .accordion-button:focus {
+            box-shadow: none;
+        }
+        .badge-note {
+            background: #e9ecef;
+            color: #495057;
+            font-weight: 500;
+        }
+        .badge-tip {
+            background: #d1ecf1;
+            color: #0c5460;
+            font-weight: 500;
+        }
+        .btn {
+            border-radius: 6px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .copy-button {
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 4px 8px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .copy-button:hover {
+            background: #5a6268;
+            transform: scale(1.05);
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Inter', sans-serif;
+            color: #212529;
+            font-weight: 600;
+        }
+        .card-body {
+            padding: 20px;
+        }
+        .table {
+            margin-bottom: 0;
+        }
+        .table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            border-top: none;
+        }
+        pre {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+        }
+        code {
+            background: #f1f3f4;
+            color: #d73a49;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+        .c-logo {
+            color: #0353a4;
+            font-weight: 700;
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+            .main-content {
+                margin-left: 0;
+            }
+        }
+    </style>
+    <script>
+        hljs.highlightAll();
+    </script>
+{% endblock %}
+
+{% block content %}
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar">
+        <div class="p-3">
+            <h5 class="text-center mb-3" style="font-size: 1.1rem; color: #fff; font-weight: 600;"><i class="fas fa-code"></i> <span class="c-logo">C Programming</span> Documentation</h5>
+
+            <!-- Search Box -->
+            <div class="search-container">
+                <input type="text" id="search-input" class="form-control" placeholder="Search documentation..." style="background: rgba(255,255,255,0.9); border: 1px solid #495057; color: #212529;">
+                <button class="btn btn-sm btn-outline-dark mt-2 w-100" onclick="clearSearch()">Clear Search</button>
+            </div>
+
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link" href="#module1"><i class="fas fa-info-circle"></i> Module 1: Introduction</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module2"><i class="fas fa-database"></i> Module 2: Data Types</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module3"><i class="fas fa-calculator"></i> Module 3: Operators</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module4"><i class="fas fa-sitemap"></i> Module 4: Control Structures</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module5"><i class="fas fa-cube"></i> Module 5: Functions</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module6"><i class="fas fa-list"></i> Module 6: Arrays & Strings</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module7"><i class="fas fa-arrow-right"></i> Module 7: Pointers</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module8"><i class="fas fa-object-group"></i> Module 8: Structures</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module9"><i class="fas fa-file-alt"></i> Module 9: File Handling</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module10"><i class="fas fa-memory"></i> Module 10: Memory Management</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div id="content">
+            <h1 class="mb-4" style="text-align: center;"><span class="c-logo">C Programming</span> Documentation</h1>
+            <p style="text-align: center; font-size: 1.1rem; color: #6c757d;">Comprehensive guide to C programming language</p>
+
+            <!-- Module 1: Introduction to C Programming -->
+            <div class="content-card" id="module1">
+                <div class="card-header">
+                    <i class="fas fa-info-circle"></i> Module 1: Introduction to C Programming
+                </div>
+                <div class="card-body">
+                    <h5>What is C Programming?</h5>
+                    <p>C is a general-purpose programming language created by Dennis Ritchie at Bell Laboratories in 1972. It is a structured, procedural language that has influenced many other programming languages and is still widely used today for system programming, embedded systems, and application development.</p>
+
+                    <h5>History of C</h5>
+                    <ul>
+                        <li><strong>1972:</strong> C was developed by Dennis Ritchie at Bell Labs</li>
+                        <li><strong>1978:</strong> Brian Kernighan and Dennis Ritchie published "The C Programming Language" (K&R C)</li>
+                        <li><strong>1989:</strong> ANSI C standard (X3.159-1989) was published</li>
+                        <li><strong>1999:</strong> ISO C standard (C99) was published</li>
+                        <li><strong>2011:</strong> ISO C standard (C11) was published</li>
+                        <li><strong>2018:</strong> ISO C standard (C18) was published</li>
+                    </ul>
+
+                    <h5>Features of C</h5>
+                    <ul>
+                        <li><i class="fas fa-bolt"></i> <strong>Fast and Efficient:</strong> C programs are known for their speed and efficiency</li>
+                        <li><i class="fas fa-microchip"></i> <strong>Close to Hardware:</strong> Provides low-level access to memory and system resources</li>
+                        <li><i class="fas fa-expand"></i> <strong>Portable:</strong> C code can be compiled on various platforms with minimal changes</li>
+                        <li><i class="fas fa-puzzle-piece"></i> <strong>Extensible:</strong> Rich set of libraries and functions</li>
+                        <li><i class="fas fa-cogs"></i> <strong>Structured:</strong> Supports structured programming concepts</li>
+                        <li><i class="fas fa-code"></i> <strong>Flexible:</strong> Can be used for both low-level and high-level programming</li>
+                    </ul>
+
+                    <h5>Applications of C</h5>
+                    <ul>
+                        <li><i class="fas fa-desktop"></i> Operating Systems (Unix, Linux, Windows)</li>
+                        <li><i class="fas fa-microchip"></i> Embedded Systems</li>
+                        <li><i class="fas fa-database"></i> Database Systems</li>
+                        <li><i class="fas fa-gamepad"></i> Game Development</li>
+                        <li><i class="fas fa-chart-line"></i> Scientific Computing</li>
+                        <li><i class="fas fa-network-wired"></i> Network Drivers</li>
+                        <li><i class="fas fa-robot"></i> Robotics</li>
+                    </ul>
+
+                    <h5>Setting Up C Development Environment</h5>
+                    <div class="accordion" id="setupAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#windowsSetup">
+                                    <i class="fab fa-windows"></i> Windows Setup
+                                </button>
+                            </h2>
+                            <div id="windowsSetup" class="accordion-collapse collapse show" data-bs-parent="#setupAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Install MinGW-w64 (Minimalist GNU for Windows)
+# Download from: https://www.mingw-w64.org/downloads/
+
+# Add MinGW-w64 bin directory to PATH
+# Example: C:\mingw64\bin
+
+# Verify installation
+gcc --version
+</code></pre>
+                                    <p>Alternatively, you can use an IDE like Code::Blocks, Dev-C++, or Visual Studio with C support.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#linuxSetup">
+                                    <i class="fab fa-linux"></i> Linux Setup
+                                </button>
+                            </h2>
+                            <div id="linuxSetup" class="accordion-collapse collapse" data-bs-parent="#setupAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Install GCC (GNU Compiler Collection)
+sudo apt-get update
+sudo apt-get install build-essential
+
+# Verify installation
+gcc --version
+
+# Install text editor (optional)
+sudo apt-get install vim
+sudo apt-get install code
+</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#macSetup">
+                                    <i class="fab fa-apple"></i> macOS Setup
+                                </button>
+                            </h2>
+                            <div id="macSetup" class="accordion-collapse collapse" data-bs-parent="#setupAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Install Xcode Command Line Tools
+xcode-select --install
+
+# Install Homebrew (package manager)
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+# Install GCC
+brew install gcc
+
+# Verify installation
+gcc --version
+</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h5>Your First C Program</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-c">
+#include &lt;stdio.h&gt;
+
+int main() {
+    printf("Hello, World!\n");
+    return 0;
+}
+</code></pre>
+                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Compile the program
+gcc hello.c -o hello
+
+# Run the program
+./hello
+</code></pre>
+                </div>
+            </div>
+
+            <!-- Module 2: Data Types and Variables -->
+            <div class="content-card" id="module2">
+                <div class="card-header">
+                    <i class="fas fa-database"></i> Module 2: Data Types and Variables
+                </div>
+                <div class="card-body">
+                    <h5>Data Types in C</h5>
+                    <p>C provides several built-in data types to store different kinds of data:</p>
+
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Data Type</th>
+                                    <th>Size (bytes)</th>
+                                    <th>Range</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>char</td>
+                                    <td>1</td>
+                                    <td>-128 to 127</td>
+                                    <td>Single character</td>
+                                </tr>
+                                <tr>
+                                    <td>unsigned char</td>
+                                    <td>1</td>
+                                    <td>0 to 255</td>
+                                    <td>Single character (positive only)</td>
+                                </tr>
+                                <tr>
+                                    <td>short</td>
+                                    <td>2</td>
+                                    <td>-32,768 to 32,767</td>
+                                    <td>Short integer</td>
+                                </tr>
+                                <tr>
+                                    <td>unsigned short</td>
+                                    <td>2</td>
+                                    <td>0 to 65,535</td>
+                                    <td>Short integer (positive only)</td>
+                                </tr>
+                                <tr>
+                                    <td>int</td>
+                                    <td>4</td>
+                                    <td>-2,147,483,648 to 2,147,483,647</td>
+                                    <td>Integer</td>
+                                </tr>
+                                <tr>
+                                    <td>unsigned int</td>
+                                    <td>4</td>
+                                    <td>0 to 4,294,967,295</td>
+                                    <td>Integer (positive only)</td>
+                                </tr>
+                                <tr>
+                                    <td>long</td>
+                                    <td>4 or 8</td>
+                                    <td>System dependent</td>
+                                    <td>Long integer</td>
+                                </tr>
+                                <tr>
+                                    <td>unsigned long</td>
+                                    <td>4 or 8</td>
+                                    <td>System dependent</td>
+                                    <td>Long integer (positive only)</td>
+                                </tr>
+                                <tr>
+                                    <td>float</td>
+                                    <td>4</td>
+                                    <td>±3.4e±38 (7 digits)</td>
+                                    <td>Single-precision floating point</td>
+                                </tr>
+                                <tr>
+                                    <td>double</td>
+                                    <td>8</td>
+                                    <td>±1.7e±308 (15 digits)</td>
+                                    <td>Double-precision floating point</td>
+                                </tr>
+                                <tr>
+                                    <td>long double</td>
+                                    <td>10 or more</td>
+                                    <td>System dependent</td>
+                                    <td>Extended-precision floating point</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h5>Variables in C</h5>
+                    <p>Variables are named storage locations in memory. Before using a variable, you must declare it with its type and optionally initialize it.</p>
+
+                    <pre><button class="copy-button">Copy</button><code class="language-c">
+#include &lt;stdio.h&gt;
+
+int main() {
+    // Variable declaration and initialization
+    int age = 25;
+    float salary = 50000.50;
+    char grade = 'A';
+    double pi = 3.14159265359;
+
+    // Multiple variable declaration
+    int x, y, z;
+    float a, b;
+
+    // Declaration with initialization
+    int count = 0;
+    float temperature = 98.6;
+    char initial = 'J';
+
+    printf("Age: %d\n", age);
+    printf("Salary: %.2f\n", salary);
+    printf("Grade: %c\n", grade);
+    printf("Pi: %.10f\n", pi);
+
+    return 0;
+}
+</code></pre>
+
+                    <h5>Constants</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-c">
+#include &lt;stdio.h&gt;
+
+#define PI 3.14159265359
+#define MAX_SIZE 100
+
+int main() {
+    const int MAX_AGE = 120;
+    const float GRAVITY = 9.8;
+
+    float radius = 5.0;
+    float area = PI * radius * radius;
+    
+    printf("Area of circle: %.2f\n", area);
+    printf("Maximum age: %d\n", MAX_AGE);
+    printf("Gravity constant: %.1f\n", GRAVITY);
+    
+    return 0;
+}
+</code></pre>
+                </div>
+            </div>
+
+            <!-- Module 3: Operators and Expressions -->
+            <div class="content-card" id="module3">
+                <div class="card-header">
+                    <i class="fas fa-calculator"></i> Module 3: Operators and Expressions
+                </div>
+                <div class="card-body">
+                    <h5>Operators in C</h5>
+                    <p>C provides a rich set of operators to manipulate variables and values.</p>
+
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Operator Type</th>
+                                    <th>Operators</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Arithmetic</td>
+                                    <td>+ - * / % ++ --</td>
+                                    <td>Mathematical operations</td>
+                                </tr>
+                                <tr>
+                                    <td>Relational</td>
+                                    <td>== != > < >= <=</td>
+                                    <td>Comparison operations</td>
+                                </tr>
+                                <tr>
+                                    <td>Logical</td>
+                                    <td>&& || !</td>
+                                    <td>Boolean operations</td>
+                                </tr>
+                                <tr>
+                                    <td>Assignment</td>
+                                    <td>= += -= *= /= %=</td>
+                                    <td>Assignment operations</td>
+                                </tr>
+                                <tr>
+                                    <td>Bitwise</td>
+                                    <td>& | ^ ~ << >></td>
+                                    <td>Bit-level operations</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <pre><button class="copy-button">Copy</button><code class="language-c">
+#include &lt;stdio.h&gt;
+
+int main() {
+    int a = 10, b = 3;
+    
+    // Arithmetic operators
+    printf("a + b = %d\n", a + b);
+    printf("a - b = %d\n", a - b);
+    printf("a * b = %d\n", a * b);
+    printf("a / b = %d\n", a / b);
+    printf("a %% b = %d\n", a % b);
+    
+    // Relational operators
+    printf("a == b: %d\n", a == b);
+    printf("a != b: %d\n", a != b);
+    printf("a > b: %d\n", a > b);
+    
+    // Logical operators
+    int x = 1, y = 0;
+    printf("x && y: %d\n", x && y);
+    printf("x || y: %d\n", x || y);
+    printf("!x: %d\n", !x);
+    
+    // Assignment operators
+    a += 5;
+    printf("a after += 5: %d\n", a);
+    
+    // Bitwise operators
+    unsigned int p = 60, q = 13;
+    printf("p & q: %u\n", p & q);
+    printf("p | q: %u\n", p | q);
+    
+    return 0;
+}
+</code></pre>
+                </div>
+            </div>
+
+            <!-- Module 4: Control Structures -->
+            <div class="content-card" id="module4">
+                <div class="card-header">
+                    <i class="fas fa-sitemap"></i> Module 4: Control Structures
+                </div>
+                <div class="card-body">
+                    <h5>Control Structures in C</h5>
+                    <p>Control structures determine the flow of execution in a program.</p>
+
+                    <h6>if-else Statements</h6>
+                    <pre><button class="copy-button">Copy</button><code class="language-c">
+#include &lt;stdio.h&gt;
+
+int main() {
+    int age = 18;
+    
+    // Simple if statement
+    if (age >= 18) {
+        printf("You are eligible to vote.\n");
+    }
+    
+    // if-else statement
+    if (age >= 18) {
+        printf("You are eligible to vote.\n");
+    } else {
+        printf("You are not eligible to vote.\n");
+    }
+    
+    // if-else if-else statement
+    int score = 85;
+    if (score >= 90) {
+        printf("Grade: A\n");
+    } else if (score >= 80) {
+        printf("Grade: B\n");
+    } else if (score >= 70) {
+        printf("Grade: C\n");
+    } else {
+        printf("Grade: F\n");
+    }
+    
+    return 0;
+}
+</code></pre>
+
+                    <h6>switch Statement</h6>
+                    <pre><button class="copy-button">Copy</button><code class="language-c">
+#include &lt;stdio.h&gt;
+
+int main() {
+    int day = 3;
+    
+    switch (day) {
+        case 1:
+            printf("Monday\n");
+            break;
+        case 2:
+            printf("Tuesday\n");
+            break;
+        case 3:
+            printf("Wednesday\n");
+            break;
+        case 4:
+            printf("Thursday\n");
+            break;
+        case 5:
+            printf("Friday\n");
+            break;
+        case 6:
+            printf("Saturday\n");
+            break;
+        case 7:
+            printf("Sunday\n");
+            break;
+        default:
+            printf("Invalid day\n");
+    }
+    
+    return 0;
+}
+</code></pre>
+
+                    <h6>Loops</h6>
+                    <pre><button class="copy-button">Copy</button><code class="language-c">
+#include &lt;stdio.h&gt;
+
+int main() {
+    // for loop
+    printf("For loop: ");
+    for (int i = 1; i <= 5; i++) {
+        printf("%d ", i);
+    }
+    printf("\n");
+    
+    // while loop
+    printf("While loop: ");
+    int j = 1;
+    while (j <= 5) {
+        printf("%d ", j);
+        j++;
+    }
+    printf("\n");
+    
+    // do-while loop
+    printf("Do-while loop: ");
+    int k = 1;
+    do {
+        printf("%d ", k);
+        k++;
+    } while (k <= 5);
+    printf("\n");
+    
+    // Loop control statements
+    printf("Loop with break and continue: ");
+    for (int i = 1; i <= 10; i++) {
+        if (i == 5) continue;
+        if (i == 8) break;
+        printf("%d ", i);
+    }
+    printf("\n");
+    
+    return 0;
+}
+</code></pre>
+                </div>
+            </div>
+
+            <!-- Module 5: Functions -->
+            <div class="content-card" id="module5">
+                <div class="card-header">
+                    <i class="fas fa-cube"></i> Module 5: Functions
+                </div>
+                <div class="card-body">
+                    <h5>Functions in C</h5>
+                    <p>Functions are blocks of code that perform specific tasks and help in code organization and reuse.</p>
+
+                    <pre><button class="copy-button">Copy</button><code class="language-c">
+#include &lt;stdio.h&gt;
+
+// Function declaration (prototype)
+int add(int a, int b);
+void greet();
+
+// Function definition
+int add(int a, int b) {
+    return a + b;
+}
+
+void greet() {
+    printf("Hello, World!\n");
+}
+
+// Function with no return value and parameters
+void printDetails(char name[], int age) {
+    printf("Name: %s\n", name);
+    printf("Age: %d\n", age);
+}
+
+// Recursive function
+int factorial(int n) {
+    if (n <= 1) return 1;
+    return n * factorial(n - 1);
+}
+
+int main() {
+    // Calling functions
+    greet();
+    
+    int sum = add(5, 3);
+    printf("Sum: %d\n", sum);
+    
+    printDetails("John", 25);
+    
+    int fact = factorial(5);
+    printf("Factorial of 5: %d\n", fact);
+    
+    return 0;
+}
+</code></pre>
+
+                    <h6>Function Parameters and Return Types</h6>
+                    <pre><button class="copy-button">Copy</button><code class="language-c">
+#include &lt;stdio.h&gt;
+
+// Different return types
+float calculateArea(float radius) {
+    return 3.14159 * radius * radius;
+}
+
+void swap(int *a, int *b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+int main() {
+    float radius = 5.0;
+    float area = calculateArea(radius);
+    printf("Area: %.2f\n", area);
+    
+    int x = 10, y = 20;
+    printf("Before swap: x=%d, y=%d\n", x, y);
+    swap(&x, &y);
+    printf("After swap: x=%d, y=%d\n", x, y);
+    
+    return 0;
+}
+</code></pre>
+                </div>
+            </div>
+
+            <!-- Module 6: Arrays and Strings -->
+            <div class="content-card" id="module6">
+                <div class="card-header">
+                    <i class="fas fa-list"></i> Module 6: Arrays and Strings
+                </div>
+                <div class="card-body">
+                    <h5>Arrays in C</h5>
+                    <p>Arrays are collections of elements of the same data type stored in contiguous memory locations.</p>
+
+                    <pre><button class="copy-button">Copy</button><code class="language-c">
+#include &lt;stdio.h&gt;
+
+int main() {
+    // One-dimensional array
+    int numbers[5] = {1, 2, 3, 4, 5};
+    
+    printf("Array elements: ");
+    for (int i = 0; i < 5; i++) {
+        printf("%d ", numbers[i]);
+    }
+    printf("\n");
+    
+    // Two-dimensional array
+    int matrix[2][3] = {
+        {1, 2, 3},
+        {4, 5, 6}
+    };
+    
+    printf("2D Array:\n");
+    for (int i = 0; i < 2; i++) {
+        for (int j = 0; j < 3; j++) {
+            printf("%d ", matrix[i][j]);
+        }
+        printf("\n");
+    }
+    
+    return 0;
+}
+</code></pre>
+
+                    <h5>Strings in C</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-c">
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+int main() {
+    // String declaration
+    char greeting[] = "Hello, World!";
+    char name[50];
+    
+    // String functions
+    printf("String: %s\n", greeting);
+    printf("Length: %zu\n", strlen(greeting));
+    
+    // String copy
+    strcpy(name, "John Doe");
+    printf("Name: %s\n", name);
+    
+    // String concatenation
+    strcat(name, " - Programmer");
+    printf("Full name: %s\n", name);
+    
+    // String comparison
+    char str1[] = "apple";
+    char str2[] = "banana";
+    
+    if (strcmp(str1, str2) < 0) {
+        printf("%s comes before %s\n", str1, str2);
+    } else {
+        printf("%s comes after %s\n", str1, str2);
+    }
+    
+    return 0;
+}
+</code></pre>
+                </div>
+            </div>
+
+            <!-- Module 7: Pointers -->
+            <div class="content-card" id="module7">
+                <div class="card-header">
+                    <i class="fas fa-arrow-right"></i> Module 7: Pointers
+                </div>
+                <div class="card-body">
+                    <h5>Pointers in C</h5>
+                    <p>Pointers are variables that store memory addresses of other variables.</p>
+
+                    <pre><button class="copy-button">Copy</button><code class="language-c">
+#include &lt;stdio.h&gt;
+
+int main() {
+    int num = 10;
+    int *ptr = &num;
+    
+    printf("Value of num: %d\n", num);
+    printf("Address of num: %p\n", &num);
+    printf("Value of ptr: %p\n", ptr);
+    printf("Value pointed by ptr: %d\n", *ptr);
+    
+    // Modifying value through pointer
+    *ptr = 20;
+    printf("New value of num: %d\n", num);
+    
+    // Pointer arithmetic
+    int arr[5] = {10, 20, 30, 40, 50};
+    int *arrPtr = arr;
+    
+    printf("Array elements using pointer: ");
+    for (int i = 0; i < 5; i++) {
+        printf("%d ", *(arrPtr + i));
+    }
+    printf("\n");
+    
+    return 0;
+}
+</code></pre>
+
+                    <h6>Pointers and Functions</h6>
+                    <pre><button class="copy-button">Copy</button><code class="language-c">
+#include &lt;stdio.h&gt;
+
+void swap(int *a, int *b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+void printArray(int *arr, int size) {
+    for (int i = 0; i < size; i++) {
+        printf("%d ", *(arr + i));
+    }
+    printf("\n");
+}
+
+int main() {
+    int x = 10, y = 20;
+    printf("Before swap: x=%d, y=%d\n", x, y);
+    swap(&x, &y);
+    printf("After swap: x=%d, y=%d\n", x, y);
+    
+    int numbers[] = {1, 2, 3, 4, 5};
+    printf("Array: ");
+    printArray(numbers, 5);
+    
+    return 0;
+}
+</code></pre>
+                </div>
+            </div>
+
+            <!-- Module 8: Structures and Unions -->
+            <div class="content-card" id="module8">
+                <div class="card-header">
+                    <i class="fas fa-object-group"></i> Module 8: Structures and Unions
+                </div>
+                <div class="card-body">
+                    <h5>Structures in C</h5>
+                    <p>Structures allow you to combine data items of different kinds.</p>
+
+                    <pre><button class="copy-button">Copy</button><code class="language-c">
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+// Structure definition
+struct Person {
+    char name[50];
+    int age;
+    float height;
+};
+
+// typedef with structure
+typedef struct {
+    char street[100];
+    char city[50];
+    int zip;
+} Address;
+
+int main() {
+    // Structure variable declaration and initialization
+    struct Person person1;
+    strcpy(person1.name, "John Doe");
+    person1.age = 25;
+    person1.height = 5.8;
+    
+    printf("Person: %s, %d years, %.1f feet\n", 
+           person1.name, person1.age, person1.height);
+    
+    // Structure pointer
+    struct Person *personPtr = &person1;
+    printf("Using pointer: %s\n", personPtr->name);
+    
+    // Array of structures
+    struct Person people[3] = {
+        {"Alice", 30, 5.6},
+        {"Bob", 35, 5.9},
+        {"Charlie", 28, 5.7}
+    };
+    
+    printf("\nPeople array:\n");
+    for (int i = 0; i < 3; i++) {
+        printf("%s, %d years\n", people[i].name, people[i].age);
+    }
+    
+    return 0;
+}
+</code></pre>
+
+                    <h5>Unions in C</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-c">
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+union Data {
+    int i;
+    float f;
+    char str[20];
+};
+
+int main() {
+    union Data data;
+    
+    data.i = 10;
+    printf("data.i: %d\n", data.i);
+    
+    data.f = 3.14;
+    printf("data.f: %.2f\n", data.f);
+    
+    strcpy(data.str, "Hello");
+    printf("data.str: %s\n", data.str);
+    
+    printf("Size of union: %zu bytes\n", sizeof(union Data));
+    
+    return 0;
+}
+</code></pre>
+                </div>
+            </div>
+
+            <!-- Module 9: File Handling -->
+            <div class="content-card" id="module9">
+                <div class="card-header">
+                    <i class="fas fa-file-alt"></i> Module 9: File Handling
+                </div>
+                <div class="card-body">
+                    <h5>File Handling in C</h5>
+                    <p>C provides functions for reading from and writing to files.</p>
+
+                    <pre><button class="copy-button">Copy</button><code class="language-c">
+#include &lt;stdio.h&gt;
+
+int main() {
+    FILE *file;
+    char buffer[100];
+    
+    // Writing to a file
+    file = fopen("example.txt", "w");
+    if (file == NULL) {
+        printf("Error opening file for writing!\n");
+        return 1;
+    }
+    
+    fprintf(file, "Hello, File Handling!\n");
+    fprintf(file, "This is a test file.\n");
+    fclose(file);
+    
+    // Reading from a file
+    file = fopen("example.txt", "r");
+    if (file == NULL) {
+        printf("Error opening file for reading!\n");
+        return 1;
+    }
+    
+    printf("File contents:\n");
+    while (fgets(buffer, sizeof(buffer), file) != NULL) {
+        printf("%s", buffer);
+    }
+    fclose(file);
+    
+    return 0;
+}
+</code></pre>
+
+                    <h6>Binary File Operations</h6>
+                    <pre><button class="copy-button">Copy</button><code class="language-c">
+#include &lt;stdio.h&gt;
+
+struct Student {
+    int id;
+    char name[50];
+    float marks;
+};
+
+int main() {
+    struct Student students[3] = {
+        {1, "Alice", 85.5},
+        {2, "Bob", 92.0},
+        {3, "Charlie", 78.5}
+    };
+    
+    FILE *file;
+    
+    // Write binary data
+    file = fopen("students.dat", "wb");
+    if (file != NULL) {
+        fwrite(students, sizeof(struct Student), 3, file);
+        fclose(file);
+    }
+    
+    // Read binary data
+    struct Student readStudents[3];
+    file = fopen("students.dat", "rb");
+    if (file != NULL) {
+        fread(readStudents, sizeof(struct Student), 3, file);
+        fclose(file);
+        
+        printf("Student data:\n");
+        for (int i = 0; i < 3; i++) {
+            printf("ID: %d, Name: %s, Marks: %.1f\n",
+                   readStudents[i].id, readStudents[i].name, readStudents[i].marks);
+        }
+    }
+    
+    return 0;
+}
+</code></pre>
+                </div>
+            </div>
+
+            <!-- Module 10: Memory Management -->
+            <div class="content-card" id="module10">
+                <div class="card-header">
+                    <i class="fas fa-memory"></i> Module 10: Memory Management
+                </div>
+                <div class="card-body">
+                    <h5>Dynamic Memory Allocation</h5>
+                    <p>C provides functions for dynamic memory allocation and deallocation.</p>
+
+                    <pre><button class="copy-button">Copy</button><code class="language-c">
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+int main() {
+    int *ptr;
+    int n;
+    
+    printf("Enter number of elements: ");
+    scanf("%d", &n);
+    
+    // Memory allocation using malloc
+    ptr = (int*)malloc(n * sizeof(int));
+    
+    if (ptr == NULL) {
+        printf("Memory allocation failed!\n");
+        return 1;
+    }
+    
+    // Store values in allocated memory
+    for (int i = 0; i < n; i++) {
+        ptr[i] = i + 1;
+    }
+    
+    // Print the values
+    printf("Array elements: ");
+    for (int i = 0; i < n; i++) {
+        printf("%d ", ptr[i]);
+    }
+    printf("\n");
+    
+    // Free allocated memory
+    free(ptr);
+    
+    // Using calloc (initializes to zero)
+    int *ptr2 = (int*)calloc(5, sizeof(int));
+    printf("Calloc initialized array: ");
+    for (int i = 0; i < 5; i++) {
+        printf("%d ", ptr2[i]);
+    }
+    printf("\n");
+    
+    // Using realloc
+    ptr2 = (int*)realloc(ptr2, 10 * sizeof(int));
+    for (int i = 5; i < 10; i++) {
+        ptr2[i] = i + 1;
+    }
+    
+    printf("After realloc: ");
+    for (int i = 0; i < 10; i++) {
+        printf("%d ", ptr2[i]);
+    }
+    printf("\n");
+    
+    free(ptr2);
+    
+    return 0;
+}
+</code></pre>
+
+                    <h6>Memory Management Best Practices</h6>
+                    <pre><button class="copy-button">Copy</button><code class="language-c">
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+void safeMemoryAllocation() {
+    int *ptr = NULL;
+    
+    // Always check if allocation was successful
+    ptr = (int*)malloc(5 * sizeof(int));
+    if (ptr == NULL) {
+        printf("Memory allocation failed!\n");
+        return;
+    }
+    
+    // Use the allocated memory
+    for (int i = 0; i < 5; i++) {
+        ptr[i] = (i + 1) * 10;
+    }
+    
+    // Print values
+    for (int i = 0; i < 5; i++) {
+        printf("%d ", ptr[i]);
+    }
+    printf("\n");
+    
+    // Free memory and set pointer to NULL
+    free(ptr);
+    ptr = NULL;
+}
+
+int main() {
+    safeMemoryAllocation();
+    return 0;
+}
+</code></pre>
+
+                    <div class="alert alert-warning mt-3">
+                        <strong>Important:</strong> Always free dynamically allocated memory to prevent memory leaks.
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-5 text-center">
+                <a href="/practice" class="btn btn-primary btn-lg">Take Practice Test</a>
+            </div>
+
+            <div id="animation-container-docs" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1;"></div>
+        </div>
+    </div>
+
+    <script>
+        // Smooth scrolling for sidebar navigation
+        document.querySelectorAll('.sidebar .nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }
+                // Update active state
+                document.querySelectorAll('.sidebar .nav-link').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Search functionality
+        document.getElementById('search-input').addEventListener('input', function() {
+            const query = this.value.toLowerCase();
+            const content = document.getElementById('content');
+            const elements = content.querySelectorAll('h2, h3, h4, h5, h6, p, pre, .card');
+            
+            elements.forEach(element => {
+                const text = element.textContent.toLowerCase();
+                if (query === '' || text.includes(query)) {
+                    element.style.display = '';
+                } else {
+                    element.style.display = 'none';
+                }
+            });
+        });
+
+        // Clear search function
+        function clearSearch() {
+            document.getElementById('search-input').value = '';
+            const content = document.getElementById('content');
+            const elements = content.querySelectorAll('h2, h3, h4, h5, h6, p, pre, .card');
+            elements.forEach(element => {
+                element.style.display = '';
+            });
+        }
+
+        // Copy to clipboard functionality
+        const copyButtons = document.querySelectorAll('.copy-button');
+        copyButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const code = this.parentNode.querySelector('code').textContent;
+                navigator.clipboard.writeText(code);
+                this.textContent = 'Copied!';
+                setTimeout(() => {
+                    this.textContent = 'Copy';
+                }, 2000);
+            });
+        });
+
+        // Highlight active section in sidebar based on scroll position
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('[id]');
+            const navLinks = document.querySelectorAll('.sidebar .nav-link');
+
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+{% endblock %}

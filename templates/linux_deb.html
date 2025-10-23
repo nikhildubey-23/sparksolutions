@@ -1,0 +1,1920 @@
+{% extends 'base.html' %}
+
+{% block title %}Linux Documentation - SN VERSE{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/github.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.3/purify.min.js"></script>
+    <style>
+        body {
+            background: #f8f9fa;
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #212529;
+        }
+        .sidebar {
+            position: fixed;
+            top: 70px;
+            left: 0;
+            width: 280px;
+            height: calc(100vh - 70px);
+            background: #343a40;
+            border-right: 1px solid #495057;
+            overflow-y: auto;
+            z-index: 1000;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+        }
+        .sidebar .nav-link {
+            color: #adb5bd;
+            padding: 12px 20px;
+            border-radius: 0;
+            margin: 0;
+            transition: all 0.2s ease;
+            font-weight: 500;
+            border-left: 3px solid transparent;
+        }
+        .sidebar .nav-link:hover {
+            background: #495057;
+            color: #fff;
+            text-decoration: none;
+            border-left-color: #007bff;
+        }
+        .sidebar .nav-link.active {
+            background: #007bff;
+            color: #fff;
+            border-left-color: #007bff;
+        }
+        .main-content {
+            margin-left: 280px;
+            padding: 30px;
+            max-width: 1200px;
+        }
+
+        .content-card {
+            margin-bottom: 30px;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            background: #fff;
+        }
+        .content-card .card-header {
+            background: darkorange;
+            color: black;
+            font-weight: 600;
+            font-size: 1.1rem;
+            border-bottom: 1px solid #dee2e6;
+            padding: 15px 20px;
+            border-radius: 8px 8px 0 0;
+        }
+        .search-container {
+            background: rgba(255,255,255,0.9);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .accordion-button:not(.collapsed) {
+            background: #f8f9fa;
+            color: #495057;
+            font-weight: 500;
+        }
+        .accordion-button {
+            border-radius: 0;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+        .accordion-button:focus {
+            box-shadow: none;
+        }
+        .badge-note {
+            background: #e9ecef;
+            color: #495057;
+            font-weight: 500;
+        }
+        .badge-tip {
+            background: #d1ecf1;
+            color: #0c5460;
+            font-weight: 500;
+        }
+        .btn {
+            border-radius: 6px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .copy-button {
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 4px 8px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .copy-button:hover {
+            background: #5a6268;
+            transform: scale(1.05);
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Inter', sans-serif;
+            color: #212529;
+            font-weight: 600;
+        }
+        .card-body {
+            padding: 20px;
+        }
+        .table {
+            margin-bottom: 0;
+        }
+        .table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            border-top: none;
+        }
+        pre {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+        }
+        code {
+            background: #f1f3f4;
+            color: #d73a49;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+            .main-content {
+                margin-left: 0;
+            }
+        }
+    </style>
+    <script>
+        hljs.highlightAll();
+    </script>
+{% endblock %}
+
+{% block content %}
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar">
+        <div class="p-3">
+            <h5 class="text-center mb-3" style="font-size: 1.1rem; color: #fff; font-weight: 600;"><i class="fab fa-linux"></i> <span style="color:darkorange">Linux</span> Documentation</h5>
+
+            <!-- Search Box -->
+            <div class="search-container">
+                <input type="text" id="search-input" class="form-control" placeholder="Search documentation..." style="background: rgba(255,255,255,0.9); border: 1px solid #495057; color: #212529;">
+                <button class="btn btn-sm btn-outline-dark mt-2 w-100" onclick="clearSearch()">Clear Search</button>
+            </div>
+
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link" href="#module1"><i class="fas fa-info-circle"></i> Module 1: Introduction</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module2"><i class="fas fa-folder"></i> Module 2: File System</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module3"><i class="fas fa-users"></i> Module 3: User Management</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module4"><i class="fas fa-box"></i> Module 4: Package Management</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module5"><i class="fas fa-cogs"></i> Module 5: Process Management</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module6"><i class="fas fa-chart-line"></i> Module 6: Monitoring</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module7"><i class="fas fa-network-wired"></i> Module 7: Networking</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module8"><i class="fas fa-terminal"></i> Module 8: Shell Scripting</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module9"><i class="fas fa-shield-alt"></i> Module 9: Security</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module10"><i class="fas fa-server"></i> Module 10: Server Admin</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div id="content">
+            <h1 class="mb-4" style="text-align: center;"><span style='color:darkorange'>Linux</span> Documentation</h1>
+            <p style="text-align: center; font-size: 1.1rem; color: #6c757d;">Comprehensive guide to Linux system administration</p>
+
+            <!-- Module 1: Introduction to Linux -->
+            <div class="content-card" id="module1">
+                <div class="card-header">
+                    <i class="fas fa-info-circle"></i> Module 1: Introduction to Linux
+                </div>
+                <div class="card-body">
+                    <h5>What is Linux?</h5>
+                    <p>Linux is a free, open-source operating system kernel that serves as the core for many Unix-like operating systems. It was created by Linus Torvalds in 1991 and has since become one of the most prominent examples of free and open-source software collaboration.</p>
+
+                    <h5>Linux Distributions</h5>
+                    <p>A Linux distribution (often abbreviated as distro) is an operating system made from a Linux kernel combined with package management software and other utilities. Popular distributions include:</p>
+                    <ul>
+                        <li><i class="fab fa-ubuntu"></i> <strong>Ubuntu:</strong> User-friendly distribution based on Debian</li>
+                        <li><i class="fab fa-fedora"></i> <strong>Fedora:</strong> Community-supported distribution sponsored by Red Hat</li>
+                        <li><i class="fab fa-redhat"></i> <strong>Red Hat Enterprise Linux (RHEL):</strong> Commercial distribution for enterprise use</li>
+                        <li><i class="fab fa-debian"></i> <strong>Debian:</strong> One of the oldest distributions, known for stability</li>
+                        <li><i class="fab fa-archlinux"></i> <strong>Arch Linux:</strong> Lightweight and flexible distribution</li>
+                        <li><i class="fab fa-centos"></i> <strong>CentOS:</strong> Community-supported distribution compatible with RHEL</li>
+                    </ul>
+
+                    <h5>Linux Architecture</h5>
+                    <p>Linux follows a layered architecture:</p>
+                    <ul>
+                        <li><strong>Hardware:</strong> Physical components like CPU, memory, disk</li>
+                        <li><strong>Kernel:</strong> Core component that manages hardware resources</li>
+                        <li><strong>Shell:</strong> Interface between user and kernel (e.g., Bash)</li>
+                        <li><strong>Utilities/Applications:</strong> Software that runs on top of the system</li>
+                    </ul>
+
+                    <h5>Linux vs. Other Operating Systems</h5>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Feature</th>
+                                    <th>Linux</th>
+                                    <th>Windows</th>
+                                    <th>macOS</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Source Code</td>
+                                    <td>Open Source</td>
+                                    <td>Proprietary</td>
+                                    <td>Proprietary (with open components)</td>
+                                </tr>
+                                <tr>
+                                    <td>Cost</td>
+                                    <td>Free</td>
+                                    <td>Paid</td>
+                                    <td>Paid (with hardware)</td>
+                                </tr>
+                                <tr>
+                                    <td>Customization</td>
+                                    <td>High</td>
+                                    <td>Limited</td>
+                                    <td>Limited</td>
+                                </tr>
+                                <tr>
+                                    <td>Security</td>
+                                    <td>Strong</td>
+                                    <td>Moderate</td>
+                                    <td>Strong</td>
+                                </tr>
+                                <tr>
+                                    <td>Software Availability</td>
+                                    <td>Extensive (especially for servers)</td>
+                                    <td>Extensive (especially for desktop)</td>
+                                    <td>Moderate</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h5>Why Use Linux?</h5>
+                    <ul>
+                        <li><i class="fas fa-lock"></i> <strong>Security:</strong> Robust security model and fewer vulnerabilities</li>
+                        <li><i class="fas fa-dollar-sign"></i> <strong>Cost:</strong> Free to use and distribute</li>
+                        <li><i class="fas fa-cogs"></i> <strong>Flexibility:</strong> Highly customizable and configurable</li>
+                        <li><i class="fas fa-users"></i> <strong>Community:</strong> Large, active community for support</li>
+                        <li><i class="fas fa-server"></i> <strong>Server Performance:</strong> Excellent for server applications</li>
+                        <li><i class="fas fa-code"></i> <strong>Development:</strong> Preferred platform for many developers</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Module 2: File System and Navigation -->
+            <div class="content-card" id="module2">
+                <div class="card-header">
+                    <i class="fas fa-folder"></i> Module 2: File System and Navigation
+                </div>
+                <div class="card-body">
+                    <h5>Linux File System Hierarchy</h5>
+                    <p>Linux follows a hierarchical file system structure with the root directory (/) at the top:</p>
+                    <ul>
+                        <li><strong>/</strong> - Root directory</li>
+                        <li><strong>/bin</strong> - Essential command binaries</li>
+                        <li><strong>/sbin</strong> - System binaries (usually for root)</li>
+                        <li><strong>/etc</strong> - System configuration files</li>
+                        <li><strong>/dev</strong> - Device files</li>
+                        <li><strong>/proc</strong> - Process information</li>
+                        <li><strong>/var</strong> - Variable data (logs, spool directories)</li>
+                        <li><strong>/tmp</strong> - Temporary files</li>
+                        <li><strong>/usr</strong> - User programs and data</li>
+                        <li><strong>/home</strong> - User home directories</li>
+                        <li><strong>/boot</strong> - Boot loader files</li>
+                        <li><strong>/lib</strong> - Essential shared libraries</li>
+                        <li><strong>/opt</strong> - Optional application software</li>
+                        <li><strong>/mnt</strong> - Temporary mount point</li>
+                        <li><strong>/media</strong> - Removable media mount point</li>
+                    </ul>
+
+                    <div class="accordion" id="navigationAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#basicCommands">
+                                    <i class="fas fa-terminal"></i> Basic Navigation Commands
+                                </button>
+                            </h2>
+                            <div id="basicCommands" class="accordion-collapse collapse show" data-bs-parent="#navigationAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Print working directory
+pwd
+
+# List directory contents
+ls
+ls -la          # Long format with hidden files
+ls -lh          # Human-readable sizes
+
+# Change directory
+cd /path/to/directory
+cd ..           # Move up one directory
+cd ~            # Move to home directory
+cd -            # Move to previous directory
+
+# Create directory
+mkdir new_directory
+mkdir -p path/to/new/directory    # Create parent directories as needed
+
+# Remove directory
+rmdir empty_directory    # Only works for empty directories
+rm -r directory          # Remove directory and contents
+
+# Copy files and directories
+cp source destination
+cp -r source_dir destination_dir    # Copy directory recursively
+
+# Move/rename files and directories
+mv old_name new_name
+mv file /path/to/destination
+
+# Remove files
+rm file
+rm -r directory     # Remove directory and contents
+rm -f file          # Force removal without prompts
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#fileOperations">
+                                    <i class="fas fa-file"></i> File Operations
+                                </button>
+                            </h2>
+                            <div id="fileOperations" class="accordion-collapse collapse" data-bs-parent="#navigationAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# View file contents
+cat filename
+less filename        # View file with pagination
+head filename        # View first 10 lines
+tail filename        # View last 10 lines
+tail -f filename     # Follow file as it grows
+
+# Create empty file
+touch filename
+
+# View file type
+file filename
+
+# Find files
+find /path -name filename
+find /path -type f -name "*.txt"    # Find all .txt files
+
+# Search within files
+grep "pattern" filename
+grep -r "pattern" /path/to/directory    # Recursive search
+
+# Count lines, words, characters
+wc filename
+
+# Sort file contents
+sort filename
+
+# Remove duplicate lines
+uniq filename
+
+# Compare files
+diff file1 file2
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#permissions">
+                                    <i class="fas fa-lock"></i> File Permissions
+                                </button>
+                            </h2>
+                            <div id="permissions" class="accordion-collapse collapse" data-bs-parent="#navigationAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# View file permissions
+ls -l filename
+
+# Change file permissions
+chmod permissions filename
+
+# Symbolic notation
+chmod u+x filename        # Add execute permission for user
+chmod g-w filename        # Remove write permission for group
+chmod o=r filename        # Set read-only for others
+chmod a+r filename        # Add read permission for all
+
+# Octal notation
+chmod 755 filename        # rwxr-xr-x
+chmod 644 filename        # rw-r--r--
+chmod 600 filename        # rw-------
+
+# Change file ownership
+chown user:group filename
+chown user filename       # Change only owner
+chown :group filename     # Change only group
+
+# Change group ownership
+chgrp group filename
+</code><button class="copy-button">Copy</button></pre>
+                                    <p><span class="badge badge-tip">Tip</span> Permission numbers: 4=read, 2=write, 1=execute. Add them up for combinations (e.g., 7=4+2+1=rwx).</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#links">
+                                    <i class="fas fa-link"></i> Links
+                                </button>
+                            </h2>
+                            <div id="links" class="accordion-collapse collapse" data-bs-parent="#navigationAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Create hard link
+ln source_file link_name
+
+# Create symbolic link
+ln -s source_file link_name
+
+# View link information
+ls -l link_name
+
+# Find broken symbolic links
+find /path -type l -exec test ! -e {} \; -print
+</code><button class="copy-button">Copy</button></pre>
+                                    <p><span class="badge badge-note">Note</span> Hard links point to the same inode on disk, while symbolic links point to the path of another file.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module 3: User Management and Permissions -->
+            <div class="content-card" id="module3">
+                <div class="card-header">
+                    <i class="fas fa-users"></i> Module 3: User Management and Permissions
+                </div>
+                <div class="card-body">
+                    <h5>Linux User Types</h5>
+                    <ul>
+                        <li><strong>Root User:</strong> Superuser with complete system control (UID 0)</li>
+                        <li><strong>System Users:</strong> Users created by the system for running services</li>
+                        <li><strong>Regular Users:</strong> Normal users who log in and use the system</li>
+                    </ul>
+
+                    <h5>User and Group Management</h5>
+                    <div class="accordion" id="userAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#userCommands">
+                                    <i class="fas fa-user-plus"></i> User Management Commands
+                                </button>
+                            </h2>
+                            <div id="userCommands" class="accordion-collapse collapse show" data-bs-parent="#userAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Create new user
+useradd username
+useradd -m -s /bin/bash username    # Create with home directory and bash shell
+
+# Set user password
+passwd username
+
+# Modify user account
+usermod -l newname oldname    # Change username
+usermod -d /new/home username  # Change home directory
+usermod -s /bin/sh username    # Change default shell
+
+# Delete user
+userdel username
+userdel -r username            # Delete user and home directory
+
+# List all users
+cat /etc/passwd
+
+# View user information
+id username
+finger username                # If finger is installed
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#groupCommands">
+                                    <i class="fas fa-users"></i> Group Management Commands
+                                </button>
+                            </h2>
+                            <div id="groupCommands" class="accordion-collapse collapse" data-bs-parent="#userAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Create new group
+groupadd groupname
+
+# Modify group
+groupmod -n newname oldname    # Change group name
+
+# Delete group
+groupdel groupname
+
+# Add user to group
+usermod -aG groupname username    # Add to additional group
+gpasswd -a username groupname     # Alternative method
+
+# Remove user from group
+gpasswd -d username groupname
+
+# List all groups
+cat /etc/group
+
+# View groups for a user
+groups username
+id username
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sudo">
+                                    <i class="fas fa-key"></i> Sudo Configuration
+                                </button>
+                            </h2>
+                            <div id="sudo" class="accordion-collapse collapse" data-bs-parent="#userAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Switch to root user
+su -
+
+# Execute command as root
+sudo command
+
+# Edit sudoers file (use visudo, not direct editing)
+visudo
+
+# Common sudoers entries
+username ALL=(ALL) ALL                    # Full sudo access
+%groupname ALL=(ALL) ALL                  # Full sudo access for group
+username ALL=(ALL) NOPASSWD: /usr/bin/apt  # No password for specific command
+
+# View sudo privileges
+sudo -l
+</code><button class="copy-button">Copy</button></pre>
+                                    <p><span class="badge badge-tip">Tip</span> Always use visudo to edit the sudoers file, as it validates syntax before saving.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#advancedPermissions">
+                                    <i class="fas fa-shield-alt"></i> Advanced Permissions
+                                </button>
+                            </h2>
+                            <div id="advancedPermissions" class="accordion-collapse collapse" data-bs-parent="#userAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Set special permissions
+chmod 4755 filename    # Set SUID (Set User ID)
+chmod 2755 filename    # Set SGID (Set Group ID)
+chmod 1755 directory   # Set sticky bit
+
+# View special permissions
+ls -l filename
+
+# Set default ACL (Access Control List)
+setfacl -m u:username:rw filename
+setfacl -m g:groupname:rw filename
+setfacl -m o::r filename
+
+# View ACLs
+getfacl filename
+
+# Remove ACL
+setfacl -b filename    # Remove all ACLs
+setfacl -x u:username filename    # Remove specific ACL
+</code><button class="copy-button">Copy</button></pre>
+                                    <p><span class="badge badge-note">Note</span> SUID allows a program to run with the permissions of its owner, SGID with its group, and sticky bit prevents users from deleting files they don't own in a shared directory.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module 4: Package Management (apt) -->
+            <div class="content-card" id="module4">
+                <div class="card-header">
+                    <i class="fas fa-box"></i> Module 4: Package Management (apt)
+                </div>
+                <div class="card-body">
+                    <h5>What is APT?</h5>
+                    <p>Advanced Package Tool (APT) is a package management system used by Debian-based distributions like Ubuntu. It simplifies the process of installing, updating, and removing software.</p>
+
+                    <h5>Package Sources</h5>
+                    <p>APT retrieves packages from repositories defined in /etc/apt/sources.list and files in /etc/apt/sources.list.d/.</p>
+
+                    <div class="accordion" id="aptAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#basicApt">
+                                    <i class="fas fa-download"></i> Basic APT Commands
+                                </button>
+                            </h2>
+                            <div id="basicApt" class="accordion-collapse collapse show" data-bs-parent="#aptAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Update package lists
+sudo apt update
+
+# Upgrade installed packages
+sudo apt upgrade
+
+# Full system upgrade (may remove packages)
+sudo apt full-upgrade
+
+# Install package
+sudo apt install package_name
+
+# Install multiple packages
+sudo apt install package1 package2 package3
+
+# Remove package
+sudo apt remove package_name
+
+# Remove package and configuration files
+sudo apt purge package_name
+
+# Remove unnecessary packages
+sudo apt autoremove
+
+# Clean downloaded package files
+sudo apt clean
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#packageInfo">
+                                    <i class="fas fa-info-circle"></i> Package Information
+                                </button>
+                            </h2>
+                            <div id="packageInfo" class="accordion-collapse collapse" data-bs-parent="#aptAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Search for packages
+apt search keyword
+
+# Show package details
+apt show package_name
+
+# List installed packages
+apt list --installed
+
+# List upgradable packages
+apt list --upgradable
+
+# Check which package provides a file
+apt-file search filename
+
+# Show files installed by a package
+dpkg -L package_name
+
+# Check if a package is installed
+dpkg -l | grep package_name
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#repositoryManagement">
+                                    <i class="fas fa-server"></i> Repository Management
+                                </button>
+                            </h2>
+                            <div id="repositoryManagement" class="accordion-collapse collapse" data-bs-parent="#aptAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Add repository
+sudo add-apt-repository "deb http://archive.ubuntu.com/ubuntu/ focal main"
+
+# Add PPA (Personal Package Archive)
+sudo add-apt-repository ppa:user/ppa-name
+
+# Remove repository
+sudo add-apt-repository --remove "deb http://archive.ubuntu.com/ubuntu/ focal main"
+
+# Add repository key
+wget -qO - https://example.com/archive.key | sudo apt-key add -
+
+# List repositories
+apt-cache policy
+
+# Edit sources file
+sudo nano /etc/apt/sources.list
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#troubleshooting">
+                                    <i class="fas fa-tools"></i> Troubleshooting
+                                </button>
+                            </h2>
+                            <div id="troubleshooting" class="accordion-collapse collapse" data-bs-parent="#aptAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Fix broken dependencies
+sudo apt install -f
+
+# Reconfigure packages
+sudo dpkg --configure -a
+
+# Clear package cache
+sudo apt-get clean
+sudo apt-get autoclean
+
+# Fix held packages
+sudo apt-mark hold package_name
+sudo apt-mark unhold package_name
+
+# Check for broken packages
+sudo apt-get check
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module 5: Process Management -->
+            <div class="content-card" id="module5">
+                <div class="card-header">
+                    <i class="fas fa-cogs"></i> Module 5: Process Management
+                </div>
+                <div class="card-body">
+                    <h5>Understanding Processes</h5>
+                    <p>A process is an instance of a running program. Each process has a unique Process ID (PID) and is associated with a user who owns it.</p>
+
+                    <div class="accordion" id="processAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#viewingProcesses">
+                                    <i class="fas fa-eye"></i> Viewing Processes
+                                </button>
+                            </h2>
+                            <div id="viewingProcesses" class="accordion-collapse collapse show" data-bs-parent="#processAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# List all processes
+ps aux
+
+# List processes in tree format
+pstree
+
+# List processes with resource usage
+top
+
+# Interactive process viewer
+htop    # More user-friendly alternative to top
+
+# Find process by name
+pgrep process_name
+
+# View process details
+ps -p PID
+
+# View process tree
+ps -ejH
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#controllingProcesses">
+                                    <i class="fas fa-play-circle"></i> Controlling Processes
+                                </button>
+                            </h2>
+                            <div id="controllingProcesses" class="accordion-collapse collapse" data-bs-parent="#processAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Run process in background
+command &
+
+# Bring background process to foreground
+fg
+
+# List background jobs
+jobs
+
+# Send job to background
+bg %job_number
+
+# Terminate process
+kill PID
+
+# Forcefully terminate process
+kill -9 PID
+
+# Kill process by name
+pkill process_name
+
+# Kill all processes owned by user
+pkill -u username
+
+# Suspend process
+kill -STOP PID
+
+# Resume suspended process
+kill -CONT PID
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#processPriority">
+                                    <i class="fas fa-sort-amount-up"></i> Process Priority
+                                </button>
+                            </h2>
+                            <div id="processPriority" class="accordion-collapse collapse" data-bs-parent="#processAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# View process priority
+ps -o pid,ni,comm
+
+# Change process priority (nice value)
+renice priority PID
+
+# Run command with specific priority
+nice -n priority command
+
+# View I/O priority
+ionice -p PID
+
+# Change I/O priority
+ionice -c class -n priority PID
+</code><button class="copy-button">Copy</button></pre>
+                                    <p><span class="badge badge-note">Note</span> Nice values range from -20 (highest priority) to 19 (lowest priority). Only root can set negative nice values.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#systemdServices">
+                                    <i class="fas fa-cogs"></i> Systemd Services
+                                </button>
+                            </h2>
+                            <div id="systemdServices" class="accordion-collapse collapse" data-bs-parent="#processAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# List all services
+systemctl list-units --type=service
+
+# Check service status
+systemctl status service_name
+
+# Start service
+sudo systemctl start service_name
+
+# Stop service
+sudo systemctl stop service_name
+
+# Restart service
+sudo systemctl restart service_name
+
+# Reload service configuration
+sudo systemctl reload service_name
+
+# Enable service to start at boot
+sudo systemctl enable service_name
+
+# Disable service from starting at boot
+sudo systemctl disable service_name
+
+# View service logs
+journalctl -u service_name
+
+# Follow service logs in real-time
+journalctl -u service_name -f
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module 6: System Monitoring and Logs -->
+            <div class="content-card" id="module6">
+                <div class="card-header">
+                    <i class="fas fa-chart-line"></i> Module 6: System Monitoring and Logs
+                </div>
+                <div class="card-body">
+                    <h5>System Monitoring</h5>
+                    <p>Monitoring your Linux system helps you understand resource usage, identify bottlenecks, and troubleshoot issues.</p>
+
+                    <div class="accordion" id="monitoringAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#resourceMonitoring">
+                                    <i class="fas fa-microchip"></i> Resource Monitoring
+                                </button>
+                            </h2>
+                            <div id="resourceMonitoring" class="accordion-collapse collapse show" data-bs-parent="#monitoringAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# View system resource usage
+top
+htop    # More user-friendly alternative
+
+# View memory usage
+free -h
+
+# View disk usage
+df -h
+
+# View directory sizes
+du -sh /path/to/directory
+
+# View CPU information
+lscpu
+
+# View memory information
+cat /proc/meminfo
+
+# View disk I/O statistics
+iotop
+
+# View network connections
+netstat -tuln
+ss -tuln    # Modern alternative to netstat
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#systemLogs">
+                                    <i class="fas fa-file-alt"></i> System Logs
+                                </button>
+                            </h2>
+                            <div id="systemLogs" class="accordion-collapse collapse" data-bs-parent="#monitoringAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# View system logs (systemd systems)
+journalctl
+
+# View logs for specific service
+journalctl -u service_name
+
+# View logs from specific time
+journalctl --since "2023-01-01" --until "2023-01-02"
+
+# Follow logs in real-time
+journalctl -f
+
+# View kernel messages
+dmesg
+
+# View authentication logs
+sudo cat /var/log/auth.log
+
+# View system logs (traditional systems)
+cat /var/log/syslog
+tail -f /var/log/syslog
+
+# View application logs
+tail -f /var/log/application.log
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#performanceAnalysis">
+                                    <i class="fas fa-tachometer-alt"></i> Performance Analysis
+                                </button>
+                            </h2>
+                            <div id="performanceAnalysis" class="accordion-collapse collapse" data-bs-parent="#monitoringAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# View system performance statistics
+vmstat 1
+
+# View I/O statistics
+iostat 1
+
+# View network statistics
+sar -n DEV 1
+
+# View process tree with resource usage
+pstree -p
+
+# View detailed process information
+ps -eo pid,ppid,cmd,%mem,%cpu --sort=-%mem
+
+# Find processes using high CPU
+ps aux --sort=-%cpu | head
+
+# Find processes using high memory
+ps aux --sort=-%mem | head
+
+# Monitor system activity
+atop
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#logRotation">
+                                    <i class="fas fa-sync-alt"></i> Log Rotation
+                                </button>
+                            </h2>
+                            <div id="logRotation" class="accordion-collapse collapse" data-bs-parent="#monitoringAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# View logrotate configuration
+cat /etc/logrotate.conf
+
+# View specific logrotate configuration
+cat /etc/logrotate.d/application
+
+# Force log rotation
+sudo logrotate -f /etc/logrotate.conf
+
+# Test logrotate configuration
+sudo logrotate -d /etc/logrotate.conf
+
+# View logrotate status
+cat /var/lib/logrotate/status
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module 7: Networking Basics -->
+            <div class="content-card" id="module7">
+                <div class="card-header">
+                    <i class="fas fa-network-wired"></i> Module 7: Networking Basics
+                </div>
+                <div class="card-body">
+                    <h5>Linux Networking</h5>
+                    <p>Linux provides powerful networking capabilities for both client and server applications. Understanding basic networking concepts is essential for system administration.</p>
+
+                    <div class="accordion" id="networkingAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#networkConfig">
+                                    <i class="fas fa-cog"></i> Network Configuration
+                                </button>
+                            </h2>
+                            <div id="networkConfig" class="accordion-collapse collapse show" data-bs-parent="#networkingAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# View IP addresses
+ip addr show
+ifconfig    # Legacy command
+
+# View network interfaces
+ip link show
+
+# View routing table
+ip route show
+route -n    # Legacy command
+
+# View network statistics
+netstat -i
+ip -s link
+
+# Configure IP address (temporary)
+sudo ip addr add 192.168.1.100/24 dev eth0
+
+# Configure IP address (persistent)
+sudo nano /etc/netplan/01-netcfg.yaml    # Ubuntu
+sudo nano /etc/network/interfaces        # Debian
+
+# Apply network configuration
+sudo netplan apply    # Ubuntu
+sudo systemctl restart networking    # Debian
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#networkTools">
+                                    <i class="fas fa-tools"></i> Network Tools
+                                </button>
+                            </h2>
+                            <div id="networkTools" class="accordion-collapse collapse" data-bs-parent="#networkingAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Test network connectivity
+ping hostname_or_ip
+
+# Trace route to host
+traceroute hostname_or_ip
+
+# DNS lookup
+nslookup hostname
+dig hostname    # More detailed
+
+# View network connections
+netstat -tuln
+ss -tuln    # Modern alternative
+
+# View active connections
+netstat -tupan
+ss -tupan    # Modern alternative
+
+# Transfer files over network
+scp file user@host:/path/to/destination
+rsync -avz source/ user@host:/path/to/destination
+
+# Secure shell
+ssh user@host
+
+# Download files from web
+wget url
+curl -O url
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#firewall">
+                                    <i class="fas fa-shield-alt"></i> Firewall Configuration
+                                </button>
+                            </h2>
+                            <div id="firewall" class="accordion-collapse collapse" data-bs-parent="#networkingAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# View firewall status (ufw)
+sudo ufw status
+
+# Enable firewall
+sudo ufw enable
+
+# Disable firewall
+sudo ufw disable
+
+# Allow incoming connections
+sudo ufw allow 22/tcp    # SSH
+sudo ufw allow 80/tcp    # HTTP
+sudo ufw allow 443/tcp   # HTTPS
+
+# Deny incoming connections
+sudo ufw deny 23/tcp    # Telnet
+
+# View firewall rules (iptables)
+sudo iptables -L
+
+# Add iptables rule
+sudo iptables -A INPUT -p tcp --dport 22 -j ACCEPT
+
+# Save iptables rules
+sudo iptables-save > /etc/iptables/rules.v4
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#troubleshooting">
+                                    <i class="fas fa-search"></i> Network Troubleshooting
+                                </button>
+                            </h2>
+                            <div id="troubleshooting" class="accordion-collapse collapse" data-bs-parent="#networkingAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Check if port is open
+telnet hostname port
+nc -zv hostname port    # Modern alternative
+
+# View network interface statistics
+cat /proc/net/dev
+
+# View ARP table
+ip neigh show
+arp -a    # Legacy command
+
+# View network sockets
+ss -tuln
+
+# Capture network traffic
+sudo tcpdump -i eth0
+
+# Monitor network bandwidth
+iftop
+nethogs    # Show bandwidth by process
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module 8: Shell Scripting -->
+            <div class="content-card" id="module8">
+                <div class="card-header">
+                    <i class="fas fa-terminal"></i> Module 8: Shell Scripting
+                </div>
+                <div class="card-body">
+                    <h5>Introduction to Shell Scripting</h5>
+                    <p>Shell scripting allows you to automate tasks by writing scripts that execute shell commands. Bash (Bourne Again Shell) is the most commonly used shell for scripting on Linux systems.</p>
+
+                    <div class="accordion" id="scriptingAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#scriptBasics">
+                                    <i class="fas fa-code"></i> Script Basics
+                                </button>
+                            </h2>
+                            <div id="scriptBasics" class="accordion-collapse collapse show" data-bs-parent="#scriptingAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+#!/bin/bash
+
+# This is a comment
+
+# Variables
+name="John"
+age=30
+
+# Print variables
+echo "Name: $name, Age: $age"
+
+# Command substitution
+current_date=$(date)
+echo "Current date: $current_date"
+
+# Arithmetic operations
+result=$((5 + 3))
+echo "5 + 3 = $result"
+
+# Conditional statement
+if [ $age -gt 18 ]; then
+    echo "$name is an adult"
+else
+    echo "$name is a minor"
+fi
+
+# Loop
+for i in {1..5}; do
+    echo "Count: $i"
+done
+
+# Make script executable
+chmod +x script.sh
+
+# Run script
+./script.sh
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#scriptParameters">
+                                    <i class="fas fa-list"></i> Parameters and Arguments
+                                </button>
+                            </h2>
+                            <div id="scriptParameters" class="accordion-collapse collapse" data-bs-parent="#scriptingAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+#!/bin/bash
+
+# Command line arguments
+echo "Script name: $0"
+echo "First argument: $1"
+echo "Second argument: $2"
+echo "All arguments: $@"
+echo "Number of arguments: $#"
+
+# Check if arguments provided
+if [ $# -eq 0 ]; then
+    echo "No arguments provided"
+    exit 1
+fi
+
+# Process all arguments
+for arg in "$@"; do
+    echo "Processing: $arg"
+done
+
+# Read user input
+echo "Enter your name:"
+read name
+echo "Hello, $name!"
+
+# Read with prompt
+read -p "Enter your age: " age
+echo "You are $age years old"
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#scriptFunctions">
+                                    <i class="fas fa-cogs"></i> Functions
+                                </button>
+                            </h2>
+                            <div id="scriptFunctions" class="accordion-collapse collapse" data-bs-parent="#scriptingAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+#!/bin/bash
+
+# Define function
+function greet() {
+    local name=$1
+    echo "Hello, $name!"
+}
+
+# Alternative function definition
+say_goodbye() {
+    local name=$1
+    echo "Goodbye, $name!"
+}
+
+# Call functions
+greet "John"
+say_goodbye "Jane"
+
+# Function with return value
+function add() {
+    local num1=$1
+    local num2=$2
+    local result=$((num1 + num2))
+    echo $result
+}
+
+# Use function return value
+sum=$(add 5 3)
+echo "5 + 3 = $sum"
+
+# Function with default parameters
+function greet_with_default() {
+    local name=${1:-"Guest"}
+    echo "Hello, $name!"
+}
+
+greet_with_default    # Uses default value
+greet_with_default "Alice"    # Uses provided value
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#scriptAdvanced">
+                                    <i class="fas fa-rocket"></i> Advanced Scripting
+                                </button>
+                            </h2>
+                            <div id="scriptAdvanced" class="accordion-collapse collapse" data-bs-parent="#scriptingAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+#!/bin/bash
+
+# Arrays
+fruits=("Apple" "Banana" "Orange")
+echo "First fruit: ${fruits[0]}"
+echo "All fruits: ${fruits[@]}"
+
+# Add to array
+fruits+=("Grape")
+
+# Loop through array
+for fruit in "${fruits[@]}"; do
+    echo "Fruit: $fruit"
+done
+
+# File operations
+if [ -f "myfile.txt" ]; then
+    echo "File exists"
+else
+    echo "File does not exist"
+fi
+
+# Read file line by line
+while IFS= read -r line; do
+    echo "Line: $line"
+done < myfile.txt
+
+# Error handling
+set -e    # Exit on error
+set -u    # Exit on undefined variable
+
+# Trap signals
+trap 'echo "Script interrupted"; exit 1' INT
+
+# Long-running task with progress bar
+for i in {1..100}; do
+    sleep 0.1
+    printf "\rProgress: [%-50s] %d%%" "$(printf '=%.0s' $(seq 1 $((i/2))))" "$i"
+done
+echo
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module 9: System Security -->
+            <div class="content-card" id="module9">
+                <div class="card-header">
+                    <i class="fas fa-shield-alt"></i> Module 9: System Security
+                </div>
+                <div class="card-body">
+                    <h5>Linux Security</h5>
+                    <p>Linux provides robust security features to protect your system from unauthorized access and threats. Understanding these features is essential for maintaining a secure system.</p>
+
+                    <div class="accordion" id="securityAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#userSecurity">
+                                    <i class="fas fa-user-shield"></i> User Security
+                                </button>
+                            </h2>
+                            <div id="userSecurity" class="accordion-collapse collapse show" data-bs-parent="#securityAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# View failed login attempts
+sudo grep "Failed password" /var/log/auth.log
+
+# View successful logins
+sudo grep "Accepted password" /var/log/auth.log
+
+# Lock user account
+sudo passwd -l username
+
+# Unlock user account
+sudo passwd -u username
+
+# Set password expiration
+sudo chage -M 90 username    # Password expires in 90 days
+sudo chage -E 2023-12-31 username    # Account expires on specific date
+
+# View password policy
+sudo cat /etc/pam.d/common-password
+
+# View user's last login
+last username
+lastlog
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#systemHardening">
+                                    <i class="fas fa-lock"></i> System Hardening
+                                </button>
+                            </h2>
+                            <div id="systemHardening" class="accordion-collapse collapse" data-bs-parent="#securityAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Update system packages
+sudo apt update && sudo apt upgrade
+
+# Remove unnecessary packages
+sudo apt autoremove
+
+# Disable unused services
+sudo systemctl disable service_name
+
+# View open ports
+sudo netstat -tuln
+sudo ss -tuln
+
+# Check for listening services
+sudo systemctl list-units --type=service --state=running
+
+# Secure SSH
+sudo nano /etc/ssh/sshd_config
+
+# Recommended SSH settings:
+# PermitRootLogin no
+# PasswordAuthentication no
+# PubkeyAuthentication yes
+# Port 2222    # Change default port
+
+# Restart SSH after changes
+sudo systemctl restart sshd
+
+# Enable automatic security updates
+sudo apt install unattended-upgrades
+sudo dpkg-reconfigure unattended-upgrades
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#intrusionDetection">
+                                    <i class="fas fa-exclamation-triangle"></i> Intrusion Detection
+                                </button>
+                            </h2>
+                            <div id="intrusionDetection" class="accordion-collapse collapse" data-bs-parent="#securityAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Install intrusion detection system
+sudo apt install fail2ban
+
+# Configure fail2ban
+sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
+sudo nano /etc/fail2ban/jail.local
+
+# Enable fail2ban
+sudo systemctl enable fail2ban
+sudo systemctl start fail2ban
+
+# Check fail2ban status
+sudo fail2ban-client status
+
+# View banned IPs
+sudo fail2ban-client status sshd
+
+# Install rootkit detector
+sudo apt install rkhunter chkrootkit
+
+# Run rootkit scan
+sudo rkhunter --check
+sudo chkrootkit
+
+# View system audit logs
+sudo ausearch -m AVC -ts recent
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#fileSecurity">
+                                    <i class="fas fa-file-shield"></i> File Security
+                                </button>
+                            </h2>
+                            <div id="fileSecurity" class="accordion-collapse collapse" data-bs-parent="#securityAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Check file permissions
+ls -la filename
+
+# Find files with world-writable permissions
+find / -type f -perm -002 -ls 2>/dev/null
+
+# Find files with SUID bit set
+find / -type f -perm -4000 -ls 2>/dev/null
+
+# Find files with SGID bit set
+find / -type f -perm -2000 -ls 2>/dev/null
+
+# Calculate file checksum
+md5sum filename
+sha256sum filename
+
+# Verify file integrity
+md5sum -c checksums.md5
+
+# Encrypt file with GPG
+gpg -c filename
+
+# Decrypt file with GPG
+gpg filename.gpg
+
+# Create encrypted archive
+tar -czf - directory/ | gpg -c > archive.tar.gz.gpg
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module 10: Server Administration -->
+            <div class="content-card" id="module10">
+                <div class="card-header">
+                    <i class="fas fa-server"></i> Module 10: Server Administration
+                </div>
+                <div class="card-body">
+                    <h5>Linux Server Administration</h5>
+                    <p>Server administration involves managing and maintaining Linux servers to ensure they run efficiently and securely. This includes tasks like service management, backup, performance tuning, and troubleshooting.</p>
+
+                    <div class="accordion" id="serverAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#serviceManagement">
+                                    <i class="fas fa-cogs"></i> Service Management
+                                </button>
+                            </h2>
+                            <div id="serviceManagement" class="accordion-collapse collapse show" data-bs-parent="#serverAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# List all services
+systemctl list-units --type=service
+
+# Check service status
+systemctl status service_name
+
+# Start service
+sudo systemctl start service_name
+
+# Stop service
+sudo systemctl stop service_name
+
+# Restart service
+sudo systemctl restart service_name
+
+# Enable service to start at boot
+sudo systemctl enable service_name
+
+# Disable service from starting at boot
+sudo systemctl disable service_name
+
+# View service logs
+journalctl -u service_name
+
+# Follow service logs in real-time
+journalctl -u service_name -f
+
+# Check which services failed to start
+systemctl --failed
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#backupRestore">
+                                    <i class="fas fa-save"></i> Backup and Restore
+                                </button>
+                            </h2>
+                            <div id="backupRestore" class="accordion-collapse collapse" data-bs-parent="#serverAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Create backup with tar
+tar -czf backup-$(date +%Y%m%d).tar.gz /path/to/backup
+
+# Create backup with exclusion
+tar -czf backup-$(date +%Y%m%d).tar.gz --exclude=/path/to/exclude /path/to/backup
+
+# Extract backup
+tar -xzf backup-20230101.tar.gz
+
+# Create backup with rsync
+rsync -avz /source/ /destination/
+
+# Create incremental backup with rsync
+rsync -avz --delete /source/ /destination/
+
+# Schedule backup with cron
+crontab -e
+
+# Add to crontab for daily backup at 2 AM
+0 2 * * * /path/to/backup-script.sh
+
+# Backup MySQL database
+mysqldump -u username -p database_name > backup.sql
+
+# Restore MySQL database
+mysql -u username -p database_name < backup.sql
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#performanceTuning">
+                                    <i class="fas fa-tachometer-alt"></i> Performance Tuning
+                                </button>
+                            </h2>
+                            <div id="performanceTuning" class="accordion-collapse collapse" data-bs-parent="#serverAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# View system resource usage
+top
+htop
+
+# View memory usage
+free -h
+
+# View disk I/O
+iotop
+
+# View network connections
+netstat -tuln
+
+# Optimize system parameters
+sudo nano /etc/sysctl.conf
+
+# Add to sysctl.conf for performance tuning:
+# vm.swappiness=10
+# net.core.rmem_max=16777216
+# net.core.wmem_max=16777216
+# net.ipv4.tcp_rmem=4096 87380 16777216
+# net.ipv4.tcp_wmem=4096 65536 16777216
+
+# Apply sysctl changes
+sudo sysctl -p
+
+# Monitor system performance
+sar -u 1 10    # CPU usage every second for 10 seconds
+sar -r 1 10    # Memory usage every second for 10 seconds
+sar -n DEV 1 10    # Network usage every second for 10 seconds
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#troubleshooting">
+                                    <i class="fas fa-tools"></i> Troubleshooting
+                                </button>
+                            </h2>
+                            <div id="troubleshooting" class="accordion-collapse collapse" data-bs-parent="#serverAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# View system logs
+journalctl -f
+
+# View kernel messages
+dmesg
+
+# Check disk space
+df -h
+
+# Check disk usage
+du -sh /path/to/directory
+
+# Find large files
+find / -type f -size +100M 2>/dev/null
+
+# Check for zombie processes
+ps aux | grep Z
+
+# Check for high CPU usage
+ps aux --sort=-%cpu | head
+
+# Check for high memory usage
+ps aux --sort=-%mem | head
+
+# Check network connectivity
+ping hostname
+
+# Check port availability
+telnet hostname port
+nc -zv hostname port
+
+# Check service status
+systemctl status service_name
+
+# Restart service if needed
+sudo systemctl restart service_name
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-5 text-center">
+                <a href="/practice" class="btn btn-primary btn-lg">Take Practice Test</a>
+            </div>
+        </div>
+    </div>
+    <div id="animation-container-docs" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1;">
+    </div>
+    </section>
+
+    <script>
+        // Smooth scrolling for sidebar navigation
+        document.querySelectorAll('.sidebar .nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }
+                // Update active state
+                document.querySelectorAll('.sidebar .nav-link').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Search functionality
+        document.getElementById('search-input').addEventListener('input', function() {
+            const query = this.value.toLowerCase();
+            const content = document.getElementById('content');
+            const elements = content.querySelectorAll('h2, h3, h4, h5, p, pre, .card');
+
+            elements.forEach(element => {
+                const text = element.textContent.toLowerCase();
+                if (query === '' || text.includes(query)) {
+                    element.style.display = '';
+                } else {
+                    element.style.display = 'none';
+                }
+            });
+        });
+
+        // Clear search function
+        function clearSearch() {
+            document.getElementById('search-input').value = '';
+            const content = document.getElementById('content');
+            const elements = content.querySelectorAll('h2, h3, h4, h5, p, pre, .card');
+            elements.forEach(element => {
+                element.style.display = '';
+            });
+        }
+
+        // Copy to clipboard functionality
+        const copyButtons = document.querySelectorAll('.copy-button');
+        copyButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const code = this.parentNode.querySelector('code').textContent;
+                navigator.clipboard.writeText(code);
+                this.textContent = 'Copied!';
+                setTimeout(() => {
+                    this.textContent = 'Copy';
+                }, 2000);
+            });
+        });
+
+        // Highlight active section in sidebar based on scroll position
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('[id]');
+            const navLinks = document.querySelectorAll('.sidebar .nav-link');
+
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+{% endblock %}

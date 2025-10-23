@@ -1,13 +1,16 @@
-# TODO List for Adding Course Modules
+# TODO: Move Search Box to Sidebar
 
-- [x] Add module routes in app.py for all 9 courses
-- [x] Create python_module.html template
-- [x] Create data_analysis_module.html template
-- [x] Create html_css_js_react_module.html template
-- [x] Create javascript_dsa_module.html template
-- [x] Create nodejs_module.html template
-- [x] Create flask_module.html template
-- [x] Create django_module.html template
-- [x] Create nextjs_module.html template
-- [x] Create video_editing_module.html template
-- [x] Update button links in courses.html to point to new module routes
+## Tasks
+- [x] Move the search-container div from main-content to sidebar
+- [x] Position it after the Docker Documentation header in sidebar
+- [x] Remove the Table of Contents from main content
+- [x] Update search-container CSS for sidebar placement
+- [x] Verify search functionality still works
+- [x] Check page layout for any issues
+
+# TODO: Fix Navbar to Stay Fixed on Scroll
+
+## Tasks
+- [x] Add CSS to make navbar position: fixed
+- [x] Add padding-top to main-content to prevent overlap
+- [x] Test navbar stays fixed when scrolling

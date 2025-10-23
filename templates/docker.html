@@ -1,0 +1,1907 @@
+{% extends 'base.html' %}
+
+{% block title %}Docker Documentation - SN VERSE{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/github.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.3/purify.min.js"></script>
+    <style>
+        body {
+            background: #f8f9fa;
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #212529;
+        }
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1030;
+            background: white !important;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .sidebar {
+            position: fixed;
+            top: 70px;
+            left: 0;
+            width: 280px;
+            height: calc(100vh - 70px);
+            background: #343a40;
+            border-right: 1px solid #495057;
+            overflow-y: auto;
+            z-index: 1000;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+        }
+        .sidebar .nav-link {
+            color: #adb5bd;
+            padding: 12px 20px;
+            border-radius: 0;
+            margin: 0;
+            transition: all 0.2s ease;
+            font-weight: 500;
+            border-left: 3px solid transparent;
+        }
+        .sidebar .nav-link:hover {
+            background: #495057;
+            color: #fff;
+            text-decoration: none;
+            border-left-color: #007bff;
+        }
+        .sidebar .nav-link.active {
+            background: #007bff;
+            color: #fff;
+            border-left-color: #007bff;
+        }
+        .main-content {
+            margin-left: 280px;
+            padding: 30px;
+            padding-top: 100px;
+            max-width: 1200px;
+        }
+
+        .content-card {
+            margin-bottom: 30px;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            background: #fff;
+        }
+        .content-card .card-header {
+            background: crimson;
+            color: white;
+            font-weight: 600;
+            font-size: 1.1rem;
+            border-bottom: 1px solid #dee2e6;
+            padding: 15px 20px;
+            border-radius: 8px 8px 0 0;
+        }
+        .search-container {
+            background: rgba(255,255,255,0.9);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .accordion-button:not(.collapsed) {
+            background: #f8f9fa;
+            color: #495057;
+            font-weight: 500;
+        }
+        .accordion-button {
+            border-radius: 0;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+        .accordion-button:focus {
+            box-shadow: none;
+        }
+        .badge-note {
+            background: #e9ecef;
+            color: #495057;
+            font-weight: 500;
+        }
+        .badge-tip {
+            background: #d1ecf1;
+            color: #0c5460;
+            font-weight: 500;
+        }
+        .btn {
+            border-radius: 6px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .copy-button {
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 4px 8px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .copy-button:hover {
+            background: #5a6268;
+            transform: scale(1.05);
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Inter', sans-serif;
+            color: #212529;
+            font-weight: 600;
+        }
+        .card-body {
+            padding: 20px;
+        }
+        .table {
+            margin-bottom: 0;
+        }
+        .table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            border-top: none;
+        }
+        pre {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+        }
+        code {
+            background: #f1f3f4;
+            color: #d73a49;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+            .main-content {
+                margin-left: 0;
+            }
+        }
+    </style>
+    <script>
+        hljs.highlightAll();
+    </script>
+{% endblock %}
+
+{% block content %}
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar">
+        <div class="p-3">
+            <h5 class="text-center mb-3" style="font-size: 1.1rem; color: #fff; font-weight: 600;"><i class="fab fa-docker"></i> <span style="color:crimson">Docker</span> Documentation</h5>
+
+            <!-- Search Box -->
+            <div class="search-container">
+                <input type="text" id="search-input" class="form-control" placeholder="Search documentation..." style="background: rgba(255,255,255,0.9); border: 1px solid #495057; color: #212529;">
+                <button class="btn btn-sm btn-outline-dark mt-2 w-100" onclick="clearSearch()">Clear Search</button>
+            </div>
+
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link" href="#module1"><i class="fas fa-info-circle"></i> Module 1: Introduction</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module2"><i class="fas fa-download"></i> Module 2: Installation</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module3"><i class="fas fa-box"></i> Module 3: Images & Containers</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module4"><i class="fas fa-hammer"></i> Module 4: Dockerfile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module5"><i class="fas fa-cogs"></i> Module 5: Docker Compose</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module6"><i class="fas fa-network-wired"></i> Module 6: Networking & Volumes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module7"><i class="fas fa-server"></i> Module 7: Docker Registry</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module8"><i class="fas fa-shield-alt"></i> Module 8: Best Practices</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module9"><i class="fas fa-layer-group"></i> Module 9: Multi-stage Builds</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module10"><i class="fas fa-rocket"></i> Module 10: Real-world App</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+
+
+        <div id="content">
+            <h1 class="mb-4" style="text-align: center;"><span style="color:crimson">Docker</span> Documentation</h1>
+            <p style="text-align: center; font-size: 1.1rem; color: #6c757d;">Comprehensive guide to Docker containerization technology</p>
+
+            <!-- Module 1: Introduction to Containerization -->
+            <div class="content-card" id="module1">
+                <div class="card-header">
+                    <i class="fas fa-info-circle"></i> Module 1: Introduction to Containerization
+                </div>
+                <div class="card-body">
+                    <h5>What is Containerization?</h5>
+                    <p>Containerization is a lightweight alternative to full machine virtualization that involves encapsulating an application in a container with its own operating environment. This provides many of the benefits of virtual machines while being more portable and resource-efficient.</p>
+
+                    <h5>What is Docker?</h5>
+                    <p>Docker is an open-source platform that automates the deployment, scaling, and management of applications inside lightweight, portable containers. It was first released in 2013 and has since become the industry standard for containerization.</p>
+
+                    <h5>Key Benefits of Docker</h5>
+                    <ul>
+                        <li><i class="fas fa-rocket"></i> <strong>Portability:</strong> Containers run consistently across different environments</li>
+                        <li><i class="fas fa-cubes"></i> <strong>Isolation:</strong> Applications run in isolated environments</li>
+                        <li><i class="fas fa-sync-alt"></i> <strong>Efficiency:</strong> Containers share the host OS kernel, using fewer resources</li>
+                        <li><i class="fas fa-code"></i> <strong>Consistency:</strong> Eliminates "works on my machine" problems</li>
+                        <li><i class="fas fa-cloud"></i> <strong>Scalability:</strong> Easy to scale applications horizontally</li>
+                        <li><i class="fas fa-tools"></i> <strong>DevOps:</strong> Streamlines development and deployment workflows</li>
+                    </ul>
+
+                    <h5>Containers vs. Virtual Machines</h5>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Feature</th>
+                                    <th>Containers</th>
+                                    <th>Virtual Machines</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Size</td>
+                                    <td>Small (MBs)</td>
+                                    <td>Large (GBs)</td>
+                                </tr>
+                                <tr>
+                                    <td>Startup Time</td>
+                                    <td>Fast (seconds)</td>
+                                    <td>Slow (minutes)</td>
+                                </tr>
+                                <tr>
+                                    <td>Resource Usage</td>
+                                    <td>Low</td>
+                                    <td>High</td>
+                                </tr>
+                                <tr>
+                                    <td>OS</td>
+                                    <td>Shares host kernel</td>
+                                    <td>Full OS per VM</td>
+                                </tr>
+                                <tr>
+                                    <td>Isolation</td>
+                                    <td>Process-level</td>
+                                    <td>Hardware-level</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h5>Use Cases for Docker</h5>
+                    <ul>
+                        <li><i class="fas fa-cubes"></i> Microservices Architecture</li>
+                        <li><i class="fas fa-sync-alt"></i> Continuous Integration and Deployment</li>
+                        <li><i class="fas fa-code"></i> Development Environment Standardization</li>
+                        <li><i class="fas fa-cloud"></i> Cloud Migration</li>
+                        <li><i class="fas fa-shield-alt"></i> Application Isolation</li>
+                        <li><i class="fas fa-tools"></i> DevOps Practices</li>
+                        <li><i class="fas fa-globe"></i> Multi-Cloud and Hybrid Cloud Strategies</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Module 2: Docker Installation and Setup -->
+            <div class="content-card" id="module2">
+                <div class="card-header">
+                    <i class="fas fa-download" style="animation: bounce 1s infinite;"></i> 📥 Module 2: Get Your Docker Superpower!
+                </div>
+                <div class="card-body">
+                    <h5>🦸‍♂️ Ready to Become a Docker Hero?</h5>
+                    <p>Time to get your magic Docker tools! Go to the official Docker website and download the special software for your computer. It's like getting a superhero costume that lets you create magic boxes! <a href="https://www.docker.com/products/docker-desktop" target="_blank" class="btn btn-sm btn-outline-secondary">🐳 Click here to get Docker!</a></p>
+
+                    <div class="accordion" id="installationAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#linuxInstall">
+                                    <i class="fab fa-linux" style="animation: spin 2s linear infinite;"></i> 🐧 Linux Heroes
+                                </button>
+                            </h2>
+                            <div id="linuxInstall" class="accordion-collapse collapse show" data-bs-parent="#installationAccordion">
+                                <div class="accordion-body">
+                                    <p>Linux wizards, use your magic package manager to install Docker:</p>
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# For Ubuntu/Debian wizards
+sudo apt-get update
+sudo apt-get install docker-ce docker-ce-cli containerd.io
+
+# For CentOS/RHEL wizards
+sudo yum install docker-ce docker-ce-cli containerd.io
+
+# Start your Docker magic!
+sudo systemctl start docker
+sudo systemctl enable docker
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#macInstall">
+                                    <i class="fab fa-apple" style="animation: bounce 1s infinite;"></i> 🍎 Apple Mac Magicians
+                                </button>
+                            </h2>
+                            <div id="macInstall" class="accordion-collapse collapse" data-bs-parent="#installationAccordion">
+                                <div class="accordion-body">
+                                    <p>Mac wizards, download Docker Desktop from the website and follow the easy wizard. It comes with all the tools you need!</p>
+                                    <p><span class="badge badge-note">🧙‍♂️ Magic Note</span> Docker Desktop needs macOS 10.14 or newer to work its magic.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#windowsInstall">
+                                    <i class="fab fa-windows" style="animation: pulse 2s infinite;"></i> 🪟 Windows Wizards
+                                </button>
+                            </h2>
+                            <div id="windowsInstall" class="accordion-collapse collapse" data-bs-parent="#installationAccordion">
+                                <div class="accordion-body">
+                                    <p>Windows wizards, get Docker Desktop from the website. Make sure your computer has the special Hyper-V and Containers powers turned on!</p>
+                                    <p><span class="badge badge-note">🧙‍♂️ Magic Note</span> You need Windows 10 64-bit: Pro, Enterprise, or Education to use Docker Desktop.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#verification">
+                                    <i class="fas fa-check-circle" style="animation: pulse 2s infinite;"></i> ✅ Test Your Magic Powers!
+                                </button>
+                            </h2>
+                            <div id="verification" class="accordion-collapse collapse" data-bs-parent="#installationAccordion">
+                                <div class="accordion-body">
+                                    <p>After installing, open your magic terminal and type these spells to check if Docker is ready:</p>
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+docker --version
+docker info
+</code><button class="copy-button">Copy</button></pre>
+                                    <p><span class="badge badge-tip">💡 Wizard Tip</span> On Linux, add yourself to the docker group so you don't need to say "sudo" every time:</p>
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+sudo usermod -aG docker $USER
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module 3: Docker Images and Containers -->
+            <div class="content-card" id="module3">
+                <div class="card-header">
+                    <i class="fas fa-box" style="animation: shake 1s infinite;"></i> 📦 Module 3: Pictures & Magic Ships
+                </div>
+                <div class="card-body">
+                    <h5>🖼️ What are Magic Pictures (Docker Images)?</h5>
+                    <p>Magic pictures are like frozen snapshots of your apps! They're special blueprints that hold everything your app needs - all the tools, libraries, and magic ingredients. Once you have a picture, you can create as many ships as you want! 🏗️✨</p>
+
+                    <h5>🚢 What are Magic Ships (Docker Containers)?</h5>
+                    <p>Magic ships are the actual running versions of your pictures! Each ship is like a little boat that carries your app around. Ships are super safe - they can't see or bother other ships, but they can chat through special channels. 🛳️🔒</p>
+                    
+                    <div class="accordion" id="imagesContainersAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#firstContainer">
+                                    <i class="fas fa-play" style="animation: bounce 1s infinite;"></i> 🎬 Launch Your First Magic Ship!
+                                </button>
+                            </h2>
+                            <div id="firstContainer" class="accordion-collapse collapse show" data-bs-parent="#imagesContainersAccordion">
+                                <div class="accordion-body">
+                                    <p>The easiest way to start your Docker adventure is to launch a hello-world ship! It's like saying hello to the magic world:</p>
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+docker run hello-world
+</code><button class="copy-button">Copy</button></pre>
+                                    <p><span class="badge badge-note">🧙‍♂️ Magic Note</span> This spell downloads the hello-world picture and creates a ship from it. The ship says "Hello!" and then sails away.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#basicCommands">
+                                    <i class="fas fa-terminal" style="animation: pulse 2s infinite;"></i> 🧙‍♂️ Magic Spells for Ship Control!
+                                </button>
+                            </h2>
+                            <div id="basicCommands" class="accordion-collapse collapse" data-bs-parent="#imagesContainersAccordion">
+                                <div class="accordion-body">
+                                    <p>Now that you know about magic pictures and ships, let's learn the secret spells to control them! These are like magic words that tell Docker what to do:</p>
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# See which ships are sailing right now
+docker ps
+
+# See all ships (even the ones that stopped sailing)
+docker ps -a
+
+# See all the magic pictures you have
+docker images
+
+# Download a magic picture from the big library
+docker pull nginx:latest
+
+# Launch a ship and let it sail on its own (detached mode)
+docker run -d --name my-nginx -p 8080:80 nginx:latest
+
+# Tell a ship to stop sailing
+docker stop my-nginx
+
+# Wake up a sleeping ship and make it sail again
+docker start my-nginx
+
+# Send a ship back to the magic realm
+docker rm my-nginx
+
+# Delete a magic picture you don't need anymore
+docker rmi nginx:latest
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#containerOperations">
+                                    <i class="fas fa-cube" style="animation: spin 3s linear infinite;"></i> 🚢 Advanced Ship Adventures!
+                                </button>
+                            </h2>
+                            <div id="containerOperations" class="accordion-collapse collapse" data-bs-parent="#imagesContainersAccordion">
+                                <div class="accordion-body">
+                                    <p>Ready for more exciting ship adventures? Let's learn advanced spells to explore and control your magic ships!</p>
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Launch a ship with a magic portal (interactive shell)
+docker run -it --name my-ubuntu ubuntu:latest /bin/bash
+
+# Send a magic message to a sailing ship
+docker exec -it my-ubuntu /bin/bash
+
+# Read the ship's adventure diary (logs)
+docker logs my-nginx
+
+# Follow the ship's diary as it writes (real-time logs)
+docker logs -f my-nginx
+
+# Get all the secret details about a ship
+docker inspect my-nginx
+
+# Send treasures between your world and the ship
+docker cp ./local-file.txt my-nginx:/path/in/container/
+docker cp my-nginx:/path/in/container/remote-file.txt ./
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#imageManagement">
+                                    <i class="fas fa-image" style="animation: bounce 1s infinite;"></i> 🖼️ Magic Picture Library Management!
+                                </button>
+                            </h2>
+                            <div id="imageManagement" class="accordion-collapse collapse" data-bs-parent="#imagesContainersAccordion">
+                                <div class="accordion-body">
+                                    <p>Time to organize your magic picture collection! Learn spells to find, tag, and clean up your picture library:</p>
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Search for pictures in the grand library
+docker search nginx
+
+# Download a picture with a special version tag
+docker pull nginx:1.21-alpine
+
+# Give your picture a fancy name tag
+docker tag nginx:latest my-nginx:1.0
+
+# Clean up old pictures you don't use anymore
+docker image prune
+
+# Super clean - remove ALL unused pictures
+docker image prune -a
+
+# See the story of how a picture was made
+docker history nginx:latest
+
+# Get all the secret details about a picture
+docker inspect nginx:latest
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module 4: Dockerfile and Image Building -->
+            <div class="content-card" id="module4">
+                <div class="card-header">
+                    <i class="fas fa-hammer" style="animation: bounce 1s infinite;"></i> 🔨 Module 4: Recipe Files for Building Magic Pictures!
+                </div>
+                <div class="card-body">
+                    <h5>📜 What is a Recipe File (Dockerfile)?</h5>
+                    <p>A Recipe File is like a magical cookbook that tells Docker exactly how to create your perfect magic picture! It contains all the secret ingredients and steps needed to build your app. With the docker build spell, you can create an automated magic process that follows your recipe perfectly every time! 🧙‍♂️✨</p>
+                    
+                    <div class="accordion" id="dockerfileAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#dockerfileBasics">
+                                    <i class="fas fa-file-code" style="animation: pulse 2s infinite;"></i> 📜 Your First Magic Recipe!
+                                </button>
+                            </h2>
+                            <div id="dockerfileBasics" class="accordion-collapse collapse show" data-bs-parent="#dockerfileAccordion">
+                                <div class="accordion-body">
+                                    <p>Let's create your first magic recipe! This is like writing instructions for baking a cake, but for your app:</p>
+                                    <pre><button class="copy-button">Copy</button><code class="language-dockerfile">
+# Magic Recipe File (Dockerfile)
+FROM ubuntu:20.04
+
+# Set magic environment
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Gather magical ingredients
+RUN apt-get update && apt-get install -y \
+    python3 \
+    python3-pip \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set your magic workshop
+WORKDIR /app
+
+# Bring in your spellbook (app files)
+COPY . /app
+
+# Mix in the special potions (dependencies)
+RUN pip3 install -r requirements.txt
+
+# Open the magic portal (port)
+EXPOSE 5000
+
+# The final incantation to start your app
+CMD ["python3", "app.py"]
+</code><button class="copy-button">Copy</button></pre>
+                                    <p>Now cast the build spell to create your magic picture:</p>
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+docker build -t my-app:1.0 .
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#dockerfileInstructions">
+                                    <i class="fas fa-list" style="animation: shake 1s infinite;"></i> 📚 Magic Recipe Spellbook!
+                                </button>
+                            </h2>
+                            <div id="dockerfileInstructions" class="accordion-collapse collapse" data-bs-parent="#dockerfileAccordion">
+                                <div class="accordion-body">
+                                    <p>Master these powerful spells to create amazing magic recipes! Each spell has a special purpose:</p>
+                                    <pre><button class="copy-button">Copy</button><code class="language-dockerfile">
+# FROM - Choose your magic foundation
+FROM ubuntu:20.04
+
+# LABEL - Add magical labels to your creation
+LABEL maintainer="your-email@example.com"
+LABEL version="1.0"
+LABEL description="This is a custom Ubuntu image"
+
+# RUN - Cast spells to install and prepare ingredients
+RUN apt-get update && apt-get install -y nginx
+
+# CMD - The default magic words to start your creation
+CMD ["nginx", "-g", "daemon off;"]
+
+# ENTRYPOINT - Make your creation act like a magical executable
+ENTRYPOINT ["docker-entrypoint.sh"]
+CMD ["nginx"]
+
+# COPY - Bring treasures from your world into the magic realm
+COPY ./index.html /var/www/html/
+
+# ADD - Like COPY but can fetch from distant lands and unpack treasures
+ADD https://example.com/file.tar.gz /tmp/
+RUN tar -xzf /tmp/file.tar.gz -C /tmp/
+
+# WORKDIR - Set your magical workshop location
+WORKDIR /app
+
+# ENV - Set magical environment variables
+ENV NODE_ENV=production
+ENV APP_VERSION=1.0
+
+# EXPOSE - Open magical portals (ports) for communication
+EXPOSE 8080
+
+# VOLUME - Create magical treasure chests for data
+VOLUME ["/data"]
+
+# USER - Choose which magical being runs your creation
+USER node
+
+# ARG - Define magical variables you can change during creation
+ARG VERSION=latest
+RUN echo "Building version ${VERSION}"
+
+# HEALTHCHECK - Create a magical health monitor for your creation
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD curl -f http://localhost/ || exit 1
+
+# SHELL - Choose your magical shell for casting spells
+SHELL ["/bin/bash", "-c"]
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#buildContext">
+                                    <i class="fas fa-folder" style="animation: bounce 1s infinite;"></i> 🏰 Build Realm & Secret Exclusions!
+                                </button>
+                            </h2>
+                            <div id="buildContext" class="accordion-collapse collapse" data-bs-parent="#dockerfileAccordion">
+                                <div class="accordion-body">
+                                    <p>The Build Realm is like your magical workshop - it's the special area where Docker gathers all your ingredients and tools to create magic pictures. The build process can use any treasures from this realm!</p>
+                                    <p>To make your magic faster and your pictures lighter, use a .dockerignore spell to hide secret files and folders from the build realm:</p>
+                                    <pre><button class="copy-button">Copy</button><code class="language-dockerfile">
+# .dockerignore spell content (keeps secrets hidden):
+node_modules
+npm-debug.log
+.git
+.gitignore
+README.md
+.env
+Dockerfile
+.dockerignore
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#buildArgs">
+                                    <i class="fas fa-cog" style="animation: spin 2s linear infinite;"></i> ⚙️ Magic Variables & Secret Potions!
+                                </button>
+                            </h2>
+                            <div id="buildArgs" class="accordion-collapse collapse" data-bs-parent="#dockerfileAccordion">
+                                <div class="accordion-body">
+                                    <p>ARG and ENV are like magical ingredients that change how your recipes work:</p>
+                                    <pre><button class="copy-button">Copy</button><code class="language-dockerfile">
+# ARG - Magical variable that disappears after building (build-time only)
+ARG VERSION=latest
+ARG BUILD_DATE
+
+# ENV - Magical potion that stays with your creation forever (runtime)
+ENV APP_VERSION=${VERSION}
+ENV NODE_ENV=production
+
+# Using magical arguments when casting the build spell
+docker build --build-arg VERSION=1.2.3 --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') -t my-app .
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module 5: Docker Compose -->
+            <div class="content-card" id="module5">
+                <div class="card-header">
+                    <i class="fas fa-cogs" style="animation: shake 1s infinite;"></i> ⚙️ Module 5: Team Up with Compose!
+                </div>
+                <div class="card-body">
+                    <h5>🤝 What is Docker Compose?</h5>
+                    <p>Docker Compose is like a magical team captain that helps all your containers work together! It's a special tool that lets you write a simple recipe (in YAML) to tell all your containers how to connect, share secrets, and work as a team. With one magic command, you can start your entire app team at once! 🧙‍♂️✨</p>
+                    
+                    <div class="accordion" id="composeAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#composeBasics">
+                                    <i class="fas fa-file-alt" style="animation: pulse 2s infinite;"></i> 📜 Your First Team Recipe!
+                                </button>
+                            </h2>
+                            <div id="composeBasics" class="accordion-collapse collapse show" data-bs-parent="#composeAccordion">
+                                <div class="accordion-body">
+                                    <p>Let's create your first team recipe! This magical file tells all your containers how to work together:</p>
+                                    <pre><button class="copy-button">Copy</button><code class="language-yaml">
+# Team Recipe File (docker-compose.yml)
+version: '3.8'
+
+services:
+  # Your main web app hero
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/code
+    environment:
+      FLASK_ENV: development
+    depends_on:
+      - redis
+      - db
+
+  # Speedy memory helper
+  redis:
+    image: "redis:alpine"
+    ports:
+      - "6379:6379"
+
+  # Wise data keeper
+  db:
+    image: "postgres:13"
+    environment:
+      POSTGRES_DB: myapp
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+volumes:
+  postgres_data:
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#composeCommands">
+                                    <i class="fas fa-terminal" style="animation: shake 1s infinite;"></i> 🧙‍♂️ Team Captain Spells!
+                                </button>
+                            </h2>
+                            <div id="composeCommands" class="accordion-collapse collapse" data-bs-parent="#composeAccordion">
+                                <div class="accordion-body">
+                                    <p>Master these powerful spells to control your container team! Each spell helps manage your magical team:</p>
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Wake up your team and let them work quietly
+docker-compose up -d
+
+# Wake up your team and rebuild if needed
+docker-compose up --build
+
+# Tell your team to take a break
+docker-compose stop
+
+# Send your team home and clean up everything
+docker-compose down
+
+# Remove sleeping team members
+docker-compose rm
+
+# Read your team's adventure diary
+docker-compose logs
+
+# Follow one team member's diary in real-time
+docker-compose logs -f web
+
+# Send a message to a team member
+docker-compose exec web bash
+
+# Make more copies of a team member
+docker-compose up -d --scale web=3
+
+# See who's on your team
+docker-compose ps
+
+# Update your team's tools
+docker-compose pull
+
+# Train your team (rebuild)
+docker-compose build
+
+# Show your team's secret plan
+docker-compose config
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#composeAdvanced">
+                                    <i class="fas fa-cogs" style="animation: spin 3s linear infinite;"></i> 🧙‍♂️ Advanced Team Magic!
+                                </button>
+                            </h2>
+                            <div id="composeAdvanced" class="accordion-collapse collapse" data-bs-parent="#composeAccordion">
+                                <div class="accordion-body">
+                                    <p>Unlock the most powerful team magic! These advanced spells give your containers superpowers:</p>
+                                    <pre><button class="copy-button">Copy</button><code class="language-yaml">
+# Super Team Recipe with Magical Powers!
+version: '3.8'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    image: myapp:prod
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=production
+      - DATABASE_URL=postgresql://user:password@db:5432/myapp
+    env_file:
+      - .env
+    volumes:
+      - static_volume:/app/static
+    depends_on:
+      - db
+    restart: unless-stopped
+    deploy:
+      replicas: 3
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - app-network
+      - monitoring
+
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backups:/backups
+    restart: unless-stopped
+    networks:
+      - app-network
+
+volumes:
+  postgres_data:
+  static_volume:
+
+networks:
+  app-network:
+    driver: bridge
+  monitoring:
+    external: true
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#composeEnvironments">
+                                    <i class="fas fa-layer-group" style="animation: bounce 1s infinite;"></i> 🌍 Magical Worlds (Environments)!
+                                </button>
+                            </h2>
+                            <div id="composeEnvironments" class="accordion-collapse collapse" data-bs-parent="#composeAccordion">
+                                <div class="accordion-body">
+                                    <p>Travel between different magical worlds! Use different team recipes for development, testing, and production:</p>
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Visit different magical worlds with different recipes
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml up
+
+# Special powers for the production world
+# docker-compose.prod.yml
+version: '3.8'
+services:
+  web:
+    environment:
+      - FLASK_ENV=production
+    deploy:
+      replicas: 5
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module 6: Networking and Volumes -->
+            <div class="content-card" id="module6">
+                <div class="card-header">
+                    <i class="fas fa-network-wired" style="animation: pulse 2s infinite;"></i> 🌐 Module 6: Connect & Save Treasures!
+                </div>
+                <div class="card-body">
+                    <h5>🌐 Docker Networking Magic</h5>
+                    <p>Docker gives your containers magical communication powers! They can chat with each other and connect to the outside world through special enchanted networks. 🧙‍♂️✨</p>
+                    
+                    <div class="accordion" id="networkingAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#networkBasics">
+                                    <i class="fas fa-plug" style="animation: shake 1s infinite;"></i> 🔌 Network Magic Basics!
+                                </button>
+                            </h2>
+                            <div id="networkBasics" class="accordion-collapse collapse show" data-bs-parent="#networkingAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# See all the magical communication paths
+docker network ls
+
+# Look closely at a communication path
+docker network inspect bridge
+
+# Connect a ship to a communication path
+docker network connect bridge my-container
+
+# Disconnect a ship from a communication path
+docker network disconnect bridge my-container
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#customNetworks">
+                                    <i class="fas fa-project-diagram" style="animation: spin 2s linear infinite;"></i> 🌈 Custom Communication Paths!
+                                </button>
+                            </h2>
+                            <div id="customNetworks" class="accordion-collapse collapse" data-bs-parent="#networkingAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Create a special bridge path for your app
+docker network create my-app-network
+
+# Create a path with a custom magical address range
+docker network create --subnet=192.168.0.0/16 my-custom-network
+
+# Create a floating overlay path for swarm adventures
+docker network create --driver overlay my-overlay-network
+
+# Connect ships to your custom communication path
+docker run -d --name web1 --network my-app-network nginx
+docker run -d --name web2 --network my-app-network nginx
+
+# Test if ships can talk to each other
+docker exec -it web1 ping web2
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#portMapping">
+                                    <i class="fas fa-exchange-alt" style="animation: bounce 1s infinite;"></i> 🚪 Magical Doorways (Port Mapping)!
+                                </button>
+                            </h2>
+                            <div id="portMapping" class="accordion-collapse collapse" data-bs-parent="#networkingAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Open a specific magical doorway
+docker run -p 8080:80 nginx
+
+# Open all magical doorways automatically
+docker run -P nginx
+
+# Open a doorway to a specific magical address
+docker run -p 127.0.0.1:8080:80 nginx
+
+# Open multiple magical doorways
+docker run -p 8080:80 -p 8443:443 nginx
+
+# Open a special UDP magical doorway
+docker run -p 53:53/udp bind9
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h5>💎 Docker Treasure Chests (Volumes)</h5>
+                    <p>Docker gives your containers magical treasure chests to keep their precious data safe! Your data survives even when containers disappear. 🏴‍☠️✨</p>
+                    
+                    <div class="accordion" id="volumesAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#bindMounts">
+                                    <i class="fas fa-folder-open" style="animation: pulse 2s infinite;"></i> 📁 Magical Bridges (Bind Mounts)!
+                                </button>
+                            </h2>
+                            <div id="bindMounts" class="accordion-collapse collapse show" data-bs-parent="#volumesAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Build a bridge from your world to the container's world
+docker run -d -v /host/path:/container/path nginx
+
+# Bridge a single treasure from your world
+docker run -d -v /host/file.txt:/container/file.txt nginx
+
+# Build a read-only bridge (container can see but not change)
+docker run -d -v /host/path:/container/path:ro nginx
+
+# Using Team Magic (Docker Compose)
+version: '3.8'
+services:
+  web:
+    image: nginx
+    volumes:
+      - ./html:/usr/share/nginx/html
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#namedVolumes">
+                                    <i class="fas fa-database" style="animation: shake 1s infinite;"></i> 🏷️ Named Treasure Chests!
+                                </button>
+                            </h2>
+                            <div id="namedVolumes" class="accordion-collapse collapse" data-bs-parent="#volumesAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Create a named treasure chest
+docker volume create my-data-volume
+
+# Give a treasure chest to a ship
+docker run -d -v my-data-volume:/container/path nginx
+
+# See all your treasure chests
+docker volume ls
+
+# Look inside a treasure chest
+docker volume inspect my-data-volume
+
+# Throw away a treasure chest
+docker volume rm my-data-volume
+
+# Using Team Magic (Docker Compose)
+version: '3.8'
+services:
+  db:
+    image: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#backupRestore">
+                                    <i class="fas fa-save" style="animation: spin 3s linear infinite;"></i> 💾 Treasure Chest Backup Magic!
+                                </button>
+                            </h2>
+                            <div id="backupRestore" class="accordion-collapse collapse" data-bs-parent="#volumesAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Save treasures from a chest to a magical scroll
+docker run --rm -v my-data-volume:/data -v $(pwd):/backup \
+  alpine tar czf /backup/my-data-volume-backup.tar.gz -C /data .
+
+# Restore treasures from a magical scroll to a chest
+docker run --rm -v my-data-volume:/data -v $(pwd):/backup \
+  alpine tar xzf /backup/my-data-volume-backup.tar.gz -C /data
+
+# Backup a wise data keeper's treasures
+docker run --rm -v postgres_data:/data -v $(pwd):/backup \
+  alpine sh -c 'cd /data && tar czf /backup/postgres-backup.tar.gz .'
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module 7: Docker Registry and Images -->
+            <div class="content-card" id="module7">
+                <div class="card-header">
+                    <i class="fas fa-server"></i> Module 7: Docker Registry and Images
+                </div>
+                <div class="card-body">
+                    <h5>Docker Registries</h5>
+                    <p>Docker registries are storage systems for Docker images. They allow you to store and share images.</p>
+                    
+                    <div class="accordion" id="registryAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#dockerHub">
+                                    <i class="fab fa-docker"></i> Docker Hub
+                                </button>
+                            </h2>
+                            <div id="dockerHub" class="accordion-collapse collapse show" data-bs-parent="#registryAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Log in to Docker Hub
+docker login
+
+# Push an image to Docker Hub
+docker tag my-app:1.0 username/my-app:1.0
+docker push username/my-app:1.0
+
+# Pull an image from Docker Hub
+docker pull username/my-app:1.0
+
+# Search for images on Docker Hub
+docker search nginx
+
+# Log out from Docker Hub
+docker logout
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#privateRegistry">
+                                    <i class="fas fa-lock"></i> Private Registry
+                                </button>
+                            </h2>
+                            <div id="privateRegistry" class="accordion-collapse collapse" data-bs-parent="#registryAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Run a private registry container
+docker run -d -p 5000:5000 --name registry registry:2
+
+# Push an image to the private registry
+docker tag my-app:1.0 localhost:5000/my-app:1.0
+docker push localhost:5000/my-app:1.0
+
+# Pull an image from the private registry
+docker pull localhost:5000/my-app:1.0
+
+# Set up a secure registry with TLS
+# First, generate certificates
+mkdir -p certs
+openssl req -newkey rsa:4096 -nodes -sha256 -keyout certs/domain.key -x509 -days 365 -out certs/domain.crt
+
+# Run the registry with TLS
+docker run -d \
+  --restart=always \
+  --name registry \
+  -v "$(pwd)"/certs:/certs \
+  -e REGISTRY_HTTP_ADDR=0.0.0.0:443 \
+  -e REGISTRY_HTTP_TLS_CERTIFICATE=/certs/domain.crt \
+  -e REGISTRY_HTTP_TLS_KEY=/certs/domain.key \
+  -p 443:443 \
+  registry:2
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#cloudRegistries">
+                                    <i class="fas fa-cloud"></i> Cloud Registries
+                                </button>
+                            </h2>
+                            <div id="cloudRegistries" class="accordion-collapse collapse" data-bs-parent="#registryAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Log in to Amazon ECR
+aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 123456789012.dkr.ecr.us-west-2.amazonaws.com
+
+# Tag and push to ECR
+docker tag my-app:1.0 123456789012.dkr.ecr.us-west-2.amazonaws.com/my-app:1.0
+docker push 123456789012.dkr.ecr.us-west-2.amazonaws.com/my-app:1.0
+
+# Log in to Google Container Registry (GCR)
+gcloud auth configure-docker
+
+# Tag and push to GCR
+docker tag my-app:1.0 gcr.io/my-project/my-app:1.0
+docker push gcr.io/my-project/my-app:1.0
+
+# Log in to Azure Container Registry (ACR)
+az acr login --name myregistry
+
+# Tag and push to ACR
+docker tag my-app:1.0 myregistry.azurecr.io/my-app:1.0
+docker push myregistry.azurecr.io/my-app:1.0
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#imageTagging">
+                                    <i class="fas fa-tag"></i> Image Tagging Best Practices
+                                </button>
+                            </h2>
+                            <div id="imageTagging" class="accordion-collapse collapse" data-bs-parent="#registryAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Use semantic versioning
+docker tag my-app:1.0.0 username/my-app:1.0.0
+
+# Use descriptive tags
+docker tag my-app:latest username/my-app:latest
+docker tag my-app:stable username/my-app:stable
+docker tag my-app:dev username/my-app:dev
+
+# Use environment-specific tags
+docker tag my-app:1.0 username/my-app:1.0-prod
+docker tag my-app:1.0 username/my-app:1.0-staging
+docker tag my-app:1.0 username/my-app:1.0-dev
+
+# Use commit SHA for traceability
+docker tag my-app:$(git rev-parse --short HEAD) username/my-app:$(git rev-parse --short HEAD)
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module 8: Best Practices and Security -->
+            <div class="content-card" id="module8">
+                <div class="card-header">
+                    <i class="fas fa-shield-alt"></i> Module 8: Best Practices and Security
+                </div>
+                <div class="card-body">
+                    <h5>Docker Best Practices</h5>
+                    <p>Follow these best practices to create efficient, secure, and maintainable Docker containers.</p>
+                    
+                    <div class="accordion" id="bestPracticesAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#imageBestPractices">
+                                    <i class="fas fa-image"></i> Image Best Practices
+                                </button>
+                            </h2>
+                            <div id="imageBestPractices" class="accordion-collapse collapse show" data-bs-parent="#bestPracticesAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-dockerfile">
+# 1. Use minimal base images
+FROM alpine:3.14
+
+# 2. Use specific version tags
+FROM python:3.9.5-slim
+
+# 3. Minimize the number of layers
+RUN apt-get update && apt-get install -y \
+    package1 \
+    package2 \
+    && rm -rf /var/lib/apt/lists/*
+
+# 4. Use .dockerignore
+# .dockerignore file content:
+node_modules
+npm-debug.log
+.git
+.gitignore
+README.md
+.env
+
+# 5. Don't store secrets in images
+# Use environment variables or secrets management
+ENV DATABASE_URL=${DATABASE_URL}
+
+# 6. Use specific labels
+LABEL maintainer="your-email@example.com" \
+      version="1.0" \
+      description="This is a custom image"
+
+# 7. Leverage build cache
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+COPY . .
+
+# 8. Use CMD and ENTRYPOINT correctly
+ENTRYPOINT ["docker-entrypoint.sh"]
+CMD ["nginx"]
+
+# 9. Use EXPOSE for documentation
+EXPOSE 8080
+
+# 10. Use VOLUME for persistent data
+VOLUME ["/data"]
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#securityBestPractices">
+                                    <i class="fas fa-shield-alt"></i> Security Best Practices
+                                </button>
+                            </h2>
+                            <div id="securityBestPractices" class="accordion-collapse collapse" data-bs-parent="#bestPracticesAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-dockerfile">
+# 1. Use a minimal base image
+FROM alpine:3.14
+
+# 2. Use a non-root user
+RUN addgroup -g 1001 -S appgroup && \
+    adduser -u 1001 -S appuser -G appgroup
+USER appuser
+
+# 3. Use specific version tags
+FROM node:14.17.0-alpine3.14
+
+# 4. Remove unnecessary packages
+RUN apk add --no-cache nodejs npm && \
+    apk del --purge \
+    && rm -rf /var/cache/apk/*
+
+# 5. Use multi-stage builds to reduce attack surface
+FROM node:14-alpine AS builder
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --only=production
+
+FROM node:14-alpine AS runtime
+WORKDIR /app
+COPY --from=builder /app/node_modules ./node_modules
+COPY . .
+USER node
+CMD ["node", "server.js"]
+</code><button class="copy-button">Copy</button></pre>
+                                    
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Runtime security options
+docker run --read-only --tmpfs /tmp nginx
+docker run --cap-drop ALL --cap-add CHOWN nginx
+docker run -u 1000:1000 nginx
+docker run --memory=512m --cpus=0.5 nginx
+docker run --security-opt no-new-privileges nginx
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#securityScanning">
+                                    <i class="fas fa-search"></i> Security Scanning
+                                </button>
+                            </h2>
+                            <div id="securityScanning" class="accordion-collapse collapse" data-bs-parent="#bestPracticesAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Use Docker Scout to scan for vulnerabilities
+docker scout cves my-app:1.0
+
+# Use third-party tools like Trivy
+# Install Trivy
+apt-get install wget apt-transport-https gnupg lsb-release
+wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo apt-key add -
+echo "deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main" | sudo tee -a /etc/apt/sources.list.d/trivy.list
+sudo apt-get update
+sudo apt-get install trivy
+
+# Scan an image with Trivy
+trivy image my-app:1.0
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#secretsManagement">
+                                    <i class="fas fa-key"></i> Secrets Management
+                                </button>
+                            </h2>
+                            <div id="secretsManagement" class="accordion-collapse collapse" data-bs-parent="#bestPracticesAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Using Docker secrets in Swarm mode
+echo "my-secret-password" | docker secret create db_password -
+
+# Using secrets in a service
+docker service create --name db \
+  --secret db_password \
+  -e POSTGRES_PASSWORD_FILE=/run/secrets/db_password \
+  postgres
+
+# Using secrets in Docker Compose
+version: '3.8'
+services:
+  web:
+    image: my-app
+    secrets:
+      - db_password
+    environment:
+      - DB_PASSWORD_FILE=/run/secrets/db_password
+
+secrets:
+  db_password:
+    file: ./db_password.txt
+
+# Using environment files for secrets in development
+version: '3.8'
+services:
+  web:
+    image: my-app
+    env_file:
+      - .env
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module 9: Multi-stage Builds -->
+            <div class="content-card" id="module9">
+                <div class="card-header">
+                    <i class="fas fa-layer-group"></i> Module 9: Multi-stage Builds
+                </div>
+                <div class="card-body">
+                    <h5>What are Multi-stage Builds?</h5>
+                    <p>Multi-stage builds are a feature in Docker that allows you to use multiple FROM statements in a single Dockerfile. Each FROM instruction begins a new build stage, and you can selectively copy artifacts from one stage to another, leaving behind everything you don't need in the final image.</p>
+                    
+                    <h5>Benefits of Multi-stage Builds</h5>
+                    <ul>
+                        <li><i class="fas fa-compress"></i> <strong>Smaller Image Size:</strong> Only include necessary artifacts in the final image</li>
+                        <li><i class="fas fa-shield-alt"></i> <strong>Improved Security:</strong> Reduce attack surface by excluding build tools</li>
+                        <li><i class="fas fa-tachometer-alt"></i> <strong>Better Performance:</strong> Smaller images download and start faster</li>
+                        <li><i class="fas fa-code"></i> <strong>Simplified Workflow:</strong> One Dockerfile for both build and runtime</li>
+                    </ul>
+                    
+                    <div class="accordion" id="multistageAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#basicMultistage">
+                                    <i class="fas fa-layer-group"></i> Basic Multi-stage Build
+                                </button>
+                            </h2>
+                            <div id="basicMultistage" class="accordion-collapse collapse show" data-bs-parent="#multistageAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-dockerfile">
+# Basic multi-stage build example
+FROM node:14-alpine AS builder
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --only=production
+
+FROM node:14-alpine AS runtime
+WORKDIR /app
+COPY --from=builder /app/node_modules ./node_modules
+COPY . .
+EXPOSE 3000
+USER node
+CMD ["node", "server.js"]
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#goMultistage">
+                                    <i class="fas fa-layer-group"></i> Go Application Example
+                                </button>
+                            </h2>
+                            <div id="goMultistage" class="accordion-collapse collapse" data-bs-parent="#multistageAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-dockerfile">
+# Go application multi-stage build
+FROM golang:1.16-alpine AS builder
+WORKDIR /app
+COPY go.mod go.sum ./
+RUN go mod download
+COPY . .
+RUN CGO_ENABLED=0 GOOS=linux go build -o /app/server .
+
+FROM alpine:latest
+RUN apk --no-cache add ca-certificates
+WORKDIR /root/
+COPY --from=builder /app/server .
+EXPOSE 8080
+CMD ["./server"]
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#javaMultistage">
+                                    <i class="fas fa-layer-group"></i> Java Application Example
+                                </button>
+                            </h2>
+                            <div id="javaMultistage" class="accordion-collapse collapse" data-bs-parent="#multistageAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-dockerfile">
+# Java application multi-stage build
+FROM maven:3.8-openjdk-11 AS builder
+WORKDIR /app
+COPY pom.xml .
+RUN mvn dependency:go-offline
+COPY src ./src
+RUN mvn package -DskipTests
+
+FROM openjdk:11-jre-slim
+WORKDIR /app
+COPY --from=builder /app/target/my-app.jar .
+EXPOSE 8080
+CMD ["java", "-jar", "my-app.jar"]
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#advancedMultistage">
+                                    <i class="fas fa-layer-group"></i> Advanced Multi-stage Techniques
+                                </button>
+                            </h2>
+                            <div id="advancedMultistage" class="accordion-collapse collapse" data-bs-parent="#multistageAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-dockerfile">
+# Using multiple build stages for different purposes
+FROM node:14-alpine AS deps
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+
+FROM node:14-alpine AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+RUN npm run build
+
+FROM node:14-alpine AS runtime
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
+COPY --from=builder /app/dist ./dist
+EXPOSE 3000
+USER node
+CMD ["node", "dist/server.js"]
+
+# Using named stages
+FROM node:14-alpine AS base
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+
+FROM base AS development
+RUN npm ci
+COPY . .
+CMD ["npm", "run", "dev"]
+
+FROM base AS production
+COPY . .
+RUN npm run build
+CMD ["node", "dist/server.js"]
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module 10: Real-world Docker Application -->
+            <div class="content-card" id="module10">
+                <div class="card-header">
+                    <i class="fas fa-rocket"></i> Module 10: Real-world Docker Application
+                </div>
+                <div class="card-body">
+                    <h5>Building a Complete Application with Docker</h5>
+                    <p>In this module, we'll build a complete web application using Docker, incorporating all the concepts we've learned.</p>
+                    
+                    <div class="accordion" id="realworldAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#projectStructure">
+                                    <i class="fas fa-folder-tree"></i> Project Structure
+                                </button>
+                            </h2>
+                            <div id="projectStructure" class="accordion-collapse collapse show" data-bs-parent="#realworldAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Project structure
+my-app/
+├── backend/
+│   ├── Dockerfile
+│   ├── requirements.txt
+│   └── app.py
+├── frontend/
+│   ├── Dockerfile
+│   ├── package.json
+│   └── src/
+├── nginx/
+│   ├── Dockerfile
+│   └── nginx.conf
+├── docker-compose.yml
+├── docker-compose.prod.yml
+└── .dockerignore
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#backendDockerfile">
+                                    <i class="fas fa-server"></i> Backend Dockerfile
+                                </button>
+                            </h2>
+                            <div id="backendDockerfile" class="accordion-collapse collapse" data-bs-parent="#realworldAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-dockerfile">
+# backend/Dockerfile
+FROM python:3.9-slim AS builder
+
+WORKDIR /app
+COPY requirements.txt .
+RUN pip wheel --no-cache-dir --no-deps --wheel-dir /app/wheels -r requirements.txt
+
+FROM python:3.9-slim AS runtime
+
+WORKDIR /app
+COPY --from=builder /app/wheels /wheels
+RUN pip install --no-cache /wheels/*
+
+COPY . .
+
+EXPOSE 5000
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "app:app"]
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#frontendDockerfile">
+                                    <i class="fas fa-desktop"></i> Frontend Dockerfile
+                                </button>
+                            </h2>
+                            <div id="frontendDockerfile" class="accordion-collapse collapse" data-bs-parent="#realworldAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-dockerfile">
+# frontend/Dockerfile
+FROM node:14-alpine AS builder
+
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+
+COPY . .
+RUN npm run build
+
+FROM nginx:alpine AS runtime
+
+COPY --from=builder /app/dist /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/nginx.conf
+
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#composeFile">
+                                    <i class="fas fa-cogs"></i> Docker Compose Configuration
+                                </button>
+                            </h2>
+                            <div id="composeFile" class="accordion-collapse collapse" data-bs-parent="#realworldAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-yaml">
+# docker-compose.yml
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    environment:
+      - DATABASE_URL=postgresql://user:password@db:5432/myapp
+      - REDIS_URL=redis://redis:6379/0
+    depends_on:
+      - db
+      - redis
+    networks:
+      - app-network
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: myapp
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  redis:
+    image: redis:alpine
+    networks:
+      - app-network
+
+volumes:
+  postgres_data:
+
+networks:
+  app-network:
+    driver: bridge
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#productionCompose">
+                                    <i class="fas fa-cogs"></i> Production Configuration
+                                </button>
+                            </h2>
+                            <div id="productionCompose" class="accordion-collapse collapse" data-bs-parent="#realworldAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-yaml">
+# docker-compose.prod.yml
+version: '3.8'
+
+services:
+  backend:
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+    deploy:
+      replicas: 3
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  frontend:
+    restart: unless-stopped
+    deploy:
+      replicas: 2
+
+  db:
+    restart: unless-stopped
+    volumes:
+      - ./backups:/backups
+
+  redis:
+    restart: unless-stopped
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#deployment">
+                                    <i class="fas fa-rocket"></i> Deployment
+                                </button>
+                            </h2>
+                            <div id="deployment" class="accordion-collapse collapse" data-bs-parent="#realworldAccordion">
+                                <div class="accordion-body">
+                                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Development deployment
+docker-compose up -d
+
+# Production deployment
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+
+# Scale services
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d --scale backend=5
+
+# Update services
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml pull
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+
+# View logs
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml logs -f backend
+</code><button class="copy-button">Copy</button></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div id="animation-container-docs" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1;">
+    </div>
+    </section>
+
+    <script>
+        // Smooth scrolling for sidebar navigation
+        document.querySelectorAll('.sidebar .nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }
+                // Update active state
+                document.querySelectorAll('.sidebar .nav-link').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Search functionality
+        document.getElementById('search-input').addEventListener('input', function() {
+            const query = this.value.toLowerCase();
+            const content = document.getElementById('content');
+            const elements = content.querySelectorAll('h2, h3, h4, h5, p, pre, .card');
+
+            elements.forEach(element => {
+                const text = element.textContent.toLowerCase();
+                if (query === '' || text.includes(query)) {
+                    element.style.display = '';
+                } else {
+                    element.style.display = 'none';
+                }
+            });
+        });
+
+        // Clear search function
+        function clearSearch() {
+            document.getElementById('search-input').value = '';
+            const content = document.getElementById('content');
+            const elements = content.querySelectorAll('h2, h3, h4, h5, p, pre, .card');
+            elements.forEach(element => {
+                element.style.display = '';
+            });
+        }
+
+        // Copy to clipboard functionality
+        const copyButtons = document.querySelectorAll('.copy-button');
+        copyButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const code = this.parentNode.querySelector('code').textContent;
+                navigator.clipboard.writeText(code);
+                this.textContent = 'Copied!';
+                setTimeout(() => {
+                    this.textContent = 'Copy';
+                }, 2000);
+            });
+        });
+
+        // Highlight active section in sidebar based on scroll position
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('[id]');
+            const navLinks = document.querySelectorAll('.sidebar .nav-link');
+
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+{% endblock %}
