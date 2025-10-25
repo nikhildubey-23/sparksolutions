@@ -717,8 +717,15 @@
 
         function enhanceCodeBlock(block) {
             const pre = block.parentNode;
-            const code = block.textContent;
-            const lines = code.split('\n');
+            let code = block.textContent;
+
+            // Clean up the code - remove extra spaces and ensure proper line breaks
+            code = code.replace(/\s+/g, ' ').trim();
+
+            // Try to format the code properly by detecting common patterns
+            code = formatCode(code);
+
+            const lines = code.split('\n').filter(line => line.trim() !== '');
 
             // Detect language from class or use default
             const language = block.className.match(/language-(\w+)/)?.[1] || 'text';
@@ -762,6 +769,54 @@
 
             // Apply syntax highlighting
             hljs.highlightElement(codeText.querySelector('code'));
+        }
+
+        function formatCode(code) {
+            // Handle C/C++/Java style code
+            if (code.includes('#include') || code.includes('int main') || code.includes('public static void main')) {
+                // Split by semicolons and braces, but preserve structure
+                let formatted = code
+                    .replace(/;/g, ';\n')
+                    .replace(/{/g, '{\n')
+                    .replace(/}/g, '\n}\n')
+                    .replace(/\n\s*\n/g, '\n')
+                    .split('\n')
+                    .map(line => line.trim())
+                    .filter(line => line.length > 0)
+                    .join('\n');
+
+                // Add proper indentation
+                let indentLevel = 0;
+                formatted = formatted.split('\n').map(line => {
+                    if (line.includes('}')) indentLevel = Math.max(0, indentLevel - 1);
+                    const indented = '    '.repeat(indentLevel) + line;
+                    if (line.includes('{')) indentLevel++;
+                    return indented;
+                }).join('\n');
+
+                return formatted;
+            }
+
+            // Handle Python code
+            if (code.includes('def ') || code.includes('import ') || code.includes('print(')) {
+                return code
+                    .replace(/;/g, '\n')
+                    .split('\n')
+                    .map(line => line.trim())
+                    .filter(line => line.length > 0)
+                    .join('\n');
+            }
+
+            // For other languages, try to split by common separators
+            return code
+                .replace(/;/g, ';\n')
+                .replace(/{/g, '{\n')
+                .replace(/}/g, '\n}\n')
+                .replace(/\n\s*\n/g, '\n')
+                .split('\n')
+                .map(line => line.trim())
+                .filter(line => line.length > 0)
+                .join('\n');
         }
 
         function formatMessage(content) {
