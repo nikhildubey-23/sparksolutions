@@ -14,6 +14,7 @@ load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = os.getenv("FLASK_SECRET_KEY", "supersecretkey")
+app.config['GROQ_API_KEY'] = os.getenv('GROQ_API_KEY')
 CORS(app)
 
 # Email setup
@@ -401,6 +402,10 @@ def contact():
         return redirect(url_for('contact'))
 
     return render_template('contact.html', form=form)
+
+@app.route('/aibot')
+def aibot():
+    return render_template('aibot.html')
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
