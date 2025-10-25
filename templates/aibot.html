@@ -718,12 +718,12 @@
             // Create header
             const header = document.createElement('div');
             header.className = 'code-header';
-            header.innerHTML = `
-                <span><i class="fas fa-code"></i> ${language.toUpperCase()}</span>
-                <button class="copy-button" onclick="copyToClipboard('${code.replace(/'/g, "\\'").replace(/\n/g, '\\n').replace(/\r/g, '')}', this)">
-                    <i class="fas fa-copy"></i> Copy
-                </button>
-            `;
+            const copyButton = document.createElement('button');
+            copyButton.className = 'copy-button';
+            copyButton.innerHTML = '<i class="fas fa-copy"></i> Copy';
+            copyButton.onclick = () => copyToClipboard(code, copyButton);
+            header.innerHTML = `<span><i class="fas fa-code"></i> ${language.toUpperCase()}</span>`;
+            header.appendChild(copyButton);
 
             // Create content with line numbers
             const content = document.createElement('div');
