@@ -114,7 +114,7 @@
         }
 
         .message.ai {
-            background: linear-gradient(135deg, #00d4ff 0%, #090979 100%);
+            
             margin-right: 100px;
             border-bottom-left-radius: 5px;
         }
@@ -389,6 +389,7 @@
     <div class="chat-container">
         <div class="language-selector">
             <select id="language-select">
+                <option value="auto" selected>Auto</option>
                 <option value="python">Python</option>
                 <option value="javascript">JavaScript</option>
                 <option value="java">Java</option>
@@ -574,7 +575,9 @@
             try {
                 // Prepare the payload for Groq API
                 const selectedLanguage = languageSelect.value;
-                const systemPrompt = `You are an expert coding assistant specializing in ${selectedLanguage}. Provide clear, accurate, and helpful responses. When writing code, use proper syntax highlighting and explain your solutions. Be concise but thorough.`;
+                const systemPrompt = selectedLanguage === 'auto'
+                    ? `You are an expert coding assistant with knowledge across multiple programming languages. Provide clear, accurate, and helpful responses. When writing code, use proper syntax highlighting and explain your solutions. Be concise but thorough.`
+                    : `You are an expert coding assistant specializing in ${selectedLanguage}. Provide clear, accurate, and helpful responses. When writing code, use proper syntax highlighting and explain your solutions. Be concise but thorough.`;
 
                 const payload = {
                     model: 'llama-3.1-8b-instant',
