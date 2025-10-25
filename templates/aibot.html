@@ -136,33 +136,88 @@
 
         .message pre {
             background: rgba(0, 0, 0, 0.3);
-            padding: 15px;
+            padding: 0;
             border-radius: 10px;
             overflow-x: auto;
             margin: 10px 0;
             border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
         }
 
-        .message code {
-            font-family: 'Fira Code', monospace;
+        .code-container {
+            position: relative;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .code-header {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85em;
+            color: #b0b0b0;
+        }
+
+        .code-content {
+            display: flex;
+            font-family: 'Fira Code', 'Monaco', 'Consolas', monospace;
             font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        .line-numbers {
+            background: rgba(0, 0, 0, 0.4);
+            color: #888;
+            padding: 15px 10px 15px 15px;
+            text-align: right;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            user-select: none;
+            min-width: 40px;
+        }
+
+        .code-text {
+            padding: 15px;
+            flex: 1;
+            white-space: pre;
+            overflow-x: auto;
+            color: #e0e0e0;
+        }
+
+        .code-text code {
+            background: transparent;
+            padding: 0;
+            border-radius: 0;
+            font-family: inherit;
+            font-size: inherit;
+            color: inherit;
         }
 
         .copy-button {
             background: rgba(255, 255, 255, 0.2);
             border: none;
             color: white;
-            padding: 5px 10px;
+            padding: 6px 12px;
             border-radius: 5px;
             cursor: pointer;
             font-size: 0.8em;
             margin-left: 10px;
             transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
         }
 
         .copy-button:hover {
             background: rgba(255, 255, 255, 0.3);
             transform: scale(1.05);
+        }
+
+        .copy-button i {
+            font-size: 0.9em;
         }
 
         .input-container {
@@ -642,17 +697,59 @@
             chatMessages.appendChild(messageDiv);
             chatMessages.scrollTop = chatMessages.scrollHeight;
 
-            // Highlight code blocks
+            // Enhance code blocks with IDE-like features
             messageDiv.querySelectorAll('pre code').forEach((block) => {
-                hljs.highlightElement(block);
-
-                // Add copy button
-                const copyButton = document.createElement('button');
-                copyButton.className = 'copy-button';
-                copyButton.textContent = 'Copy';
-                copyButton.onclick = () => copyToClipboard(block.textContent, copyButton);
-                block.parentNode.insertBefore(copyButton, block.nextSibling);
+                enhanceCodeBlock(block);
             });
+        }
+
+        function enhanceCodeBlock(block) {
+            const pre = block.parentNode;
+            const code = block.textContent;
+            const lines = code.split('\n');
+
+            // Detect language from class or use default
+            const language = block.className.match(/language-(\w+)/)?.[1] || 'text';
+
+            // Create enhanced code container
+            const container = document.createElement('div');
+            container.className = 'code-container';
+
+            // Create header
+            const header = document.createElement('div');
+            header.className = 'code-header';
+            header.innerHTML = `
+                <span><i class="fas fa-code"></i> ${language.toUpperCase()}</span>
+                <button class="copy-button" onclick="copyToClipboard('${code.replace(/'/g, "\\'").replace(/\n/g, '\\n').replace(/\r/g, '')}', this)">
+                    <i class="fas fa-copy"></i> Copy
+                </button>
+            `;
+
+            // Create content with line numbers
+            const content = document.createElement('div');
+            content.className = 'code-content';
+
+            // Line numbers
+            const lineNumbers = document.createElement('div');
+            lineNumbers.className = 'line-numbers';
+            lineNumbers.innerHTML = lines.map((_, i) => `<div>${i + 1}</div>`).join('');
+
+            // Code text
+            const codeText = document.createElement('div');
+            codeText.className = 'code-text';
+            codeText.innerHTML = `<code class="language-${language}">${escapeHtml(code)}</code>`;
+
+            content.appendChild(lineNumbers);
+            content.appendChild(codeText);
+
+            container.appendChild(header);
+            container.appendChild(content);
+
+            // Replace original pre with enhanced container
+            pre.parentNode.replaceChild(container, pre);
+
+            // Apply syntax highlighting
+            hljs.highlightElement(codeText.querySelector('code'));
         }
 
         function formatMessage(content) {
