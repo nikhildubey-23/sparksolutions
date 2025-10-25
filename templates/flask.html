@@ -4,8 +4,147 @@
 
 {% block head %}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/github-dark.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.3/purify.min.js"></script>
+    <style>
+        body {
+            background: #f8f9fa;
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #212529;
+        }
+        
+        .docs-page {
+            padding-top: 80px;
+        }
+        .sidebar {
+            position: fixed;
+            top: 70px;
+            left: 0;
+            width: 280px;
+            height: calc(100vh - 70px);
+            background: #343a40;
+            border-right: 1px solid #495057;
+            overflow-y: auto;
+            z-index: 1000;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+        }
+        .sidebar .nav-link {
+            color: #adb5bd;
+            padding: 12px 20px;
+            border-radius: 0;
+            margin: 0;
+            transition: all 0.2s ease;
+            font-weight: 500;
+            border-left: 3px solid transparent;
+        }
+        .sidebar .nav-link:hover {
+            background: #495057;
+            color: #fff;
+            text-decoration: none;
+            border-left-color: #3776ab;
+        }
+        .sidebar .nav-link.active {
+            background: #3776ab;
+            color: #fff;
+            border-left-color: #3776ab;
+        }
+        .main-content {
+            margin-left: 240px;
+            padding: 30px;
+            max-width: 1074px;
+        }
+        .search-container {
+            background: rgba(255,255,255,0.9);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .module-card {
+            margin-bottom: 30px;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            background: #fff;
+            overflow: hidden;
+        }
+        .module-header {
+            background: #3776ab;
+            color: white;
+            font-weight: 600;
+            font-size: 1.1rem;
+            padding: 15px 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .module-header:hover {
+            background: #2c5f8d;
+        }
+        .module-header i {
+            transition: transform 0.3s ease;
+        }
+        .module-header.collapsed i {
+            transform: rotate(-90deg);
+        }
+        .module-content {
+            padding: 20px;
+            display: block;
+        }
+        .module-content.collapsed {
+            display: none;
+        }
+        .copy-button {
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 4px 8px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .copy-button:hover {
+            background: #5a6268;
+            transform: scale(1.05);
+        }
+        .table {
+            margin-bottom: 0;
+        }
+        .table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            border-top: none;
+        }
+        pre {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+        }
+        code {
+            background: #f1f3f4;
+            color: #d73a49;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+        .flask-logo {
+            color: #000000;
+            font-weight: 700;
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+            .main-content {
+                margin-left: 0;
+            }
+        }
+    </style>
     <script>
         hljs.highlightAll();
     </script>
@@ -14,35 +153,108 @@
 {% block content %}
     <!-- Flask Docs Page -->
     <section class="docs-page py-5">
-        <div class="container-fluid">
+        <div class="container">
             <div class="row">
-                <!-- Documentation Content -->
-                <div class="col-md-12">
-                    <!-- Search Box -->
-                    <div class="search-container mb-4">
-                        <input type="text" id="search-input" class="form-control" placeholder="Search documentation...">
+                <!-- Sidebar Navigation -->
+                <nav class="sidebar">
+                    <div class="p-3">
+                        <h5 class="text-center mb-3" style="font-size: 1.1rem; color: #fff; font-weight: 600;"><i class="fas fa-flask"></i> <span class="flask-logo">Flask</span> Documentation</h5>
+
+                        <!-- Search Box -->
+                        <div class="search-container">
+                            <input type="text" id="search-input" class="form-control" placeholder="Search documentation..." style="background: rgba(255,255,255,0.9); border: 1px solid #495057; color: #212529;">
+                            <button class="btn btn-sm btn-outline-dark mt-2 w-100" onclick="clearSearch()">Clear Search</button>
+                        </div>
+
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#introduction"><i class="fas fa-info-circle"></i> Introduction to Flask</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#setup"><i class="fas fa-cog"></i> Setup and Installation</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#basic-app"><i class="fas fa-rocket"></i> Basic Flask Application</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#routing"><i class="fas fa-route"></i> Routing</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#templates"><i class="fas fa-file-code"></i> Templates and Jinja2</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#static-files"><i class="fas fa-folder"></i> Static Files</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#forms"><i class="fas fa-edit"></i> Forms and WTForms</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#database"><i class="fas fa-database"></i> Database Integration</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#authentication"><i class="fas fa-user-shield"></i> Authentication and Authorization</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#api"><i class="fas fa-plug"></i> Building REST APIs</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#testing"><i class="fas fa-vial"></i> Testing Flask Applications</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#deployment"><i class="fas fa-server"></i> Deployment</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#best-practices"><i class="fas fa-star"></i> Flask Best Practices</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#extensions"><i class="fas fa-puzzle-piece"></i> Popular Flask Extensions</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#real-world-examples"><i class="fas fa-globe"></i> Real-World Examples</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#conclusion"><i class="fas fa-flag-checkered"></i> Conclusion</a>
+                            </li>
+                        </ul>
                     </div>
+                </nav>
+
+                <!-- Main Content -->
+                <div class="main-content">
                     <div id="content">
-                        <h2 class="mb-4">Flask Documentation</h2>
+                        <h2 class="mb-4"><span class="flask-logo">Flask</span> Documentation</h2>
                         <p>Welcome to the comprehensive Flask documentation. Here, you'll find detailed guides and tutorials for building web applications with Flask.</p>
 
-                        <h3 id="introduction" class="mt-5">Introduction to Flask</h3>
-                        <p>Flask is a lightweight WSGI web application framework. It is designed to make getting started quick and easy, with the ability to scale up to complex applications.</p>
-                        <p>Key features of Flask:</p>
-                        <ul>
-                            <li><strong>Lightweight</strong> - Minimal core with extensions available</li>
-                            <li><strong>Werkzeug</strong> - WSGI utility library for Python</li>
-                            <li><strong>Jinja2</strong> - Template engine for Python</li>
-                            <li><strong>Flexible</strong> - No database or form validation layers included</li>
-                            <li><strong>Extensible</strong> - Rich ecosystem of extensions</li>
-                            <li><strong>RESTful</strong> - Built-in support for REST request dispatching</li>
-                        </ul>
+                        <!-- Introduction to Flask -->
+                        <div class="module-card" id="introduction">
+                            <div class="module-header" onclick="toggleModule('introduction-content')">
+                                <span><i class="fas fa-info-circle"></i> Introduction to Flask</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="module-content" id="introduction-content">
+                                <p>Flask is a lightweight WSGI web application framework. It is designed to make getting started quick and easy, with the ability to scale up to complex applications.</p>
+                                <p>Key features of Flask:</p>
+                                <ul>
+                                    <li><strong>Lightweight</strong> - Minimal core with extensions available</li>
+                                    <li><strong>Werkzeug</strong> - WSGI utility library for Python</li>
+                                    <li><strong>Jinja2</strong> - Template engine for Python</li>
+                                    <li><strong>Flexible</strong> - No database or form validation layers included</li>
+                                    <li><strong>Extensible</strong> - Rich ecosystem of extensions</li>
+                                    <li><strong>RESTful</strong> - Built-in support for REST request dispatching</li>
+                                </ul>
+                            </div>
+                        </div>
 
-                        <h3 id="setup" class="mt-5">Setup and Installation</h3>
-
-                        <h4>Virtual Environment</h4>
-                        <p>Always use a virtual environment for Flask projects:</p>
-                        <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
+                        <!-- Setup and Installation -->
+                        <div class="module-card" id="setup">
+                            <div class="module-header" onclick="toggleModule('setup-content')">
+                                <span><i class="fas fa-cog"></i> Setup and Installation</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="module-content" id="setup-content">
+                                <h4>Virtual Environment</h4>
+                                <p>Always use a virtual environment for Flask projects:</p>
+                                <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
 # Create virtual environment
 python -m venv venv
 
@@ -54,28 +266,35 @@ source venv/bin/activate
 
 # Deactivate
 deactivate
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
 
-                        <h4>Install Flask</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
+                                <h4>Install Flask</h4>
+                                <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
 # Install Flask
 pip install Flask
 
 # Install additional useful packages
 pip install Flask-SQLAlchemy Flask-Migrate Flask-WTF Flask-Login Flask-Mail python-dotenv
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
 
-                        <h4>Verify Installation</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+                                <h4>Verify Installation</h4>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
 # test_flask.py
 import flask
 print(flask.__version__)
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
+                            </div>
+                        </div>
 
-                        <h3 id="basic-app" class="mt-5">Basic Flask Application</h3>
-
-                        <h4>Minimal Flask App</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+                        <!-- Basic Flask Application -->
+                        <div class="module-card" id="basic-app">
+                            <div class="module-header" onclick="toggleModule('basic-app-content')">
+                                <span><i class="fas fa-rocket"></i> Basic Flask Application</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="module-content" id="basic-app-content">
+                                <h4>Minimal Flask App</h4>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
 # app.py
 from flask import Flask
 
@@ -87,10 +306,10 @@ def hello_world():
 
 if __name__ == '__main__':
     app.run(debug=True)
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
 
-                        <h4>Running the Application</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
+                                <h4>Running the Application</h4>
+                                <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
 # Run the development server
 python app.py
 
@@ -99,10 +318,10 @@ flask run
 
 # With custom host and port
 flask run --host=0.0.0.0 --port=5000
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
 
-                        <h4>Application Factory Pattern</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+                                <h4>Application Factory Pattern</h4>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
 # __init__.py
 from flask import Flask
 
@@ -125,12 +344,19 @@ app = create_app()
 
 if __name__ == '__main__':
     app.run(debug=True)
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
+                            </div>
+                        </div>
 
-                        <h3 id="routing" class="mt-5">Routing</h3>
-
-                        <h4>Basic Routes</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+                        <!-- Routing -->
+                        <div class="module-card" id="routing">
+                            <div class="module-header" onclick="toggleModule('routing-content')">
+                                <span><i class="fas fa-route"></i> Routing</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="module-content" id="routing-content">
+                                <h4>Basic Routes</h4>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
 from flask import Flask
 
 app = Flask(__name__)
@@ -154,10 +380,10 @@ def show_post(post_id):
 @app.route('/path/<path:subpath>')
 def show_subpath(subpath):
     return f'Subpath: {subpath}'
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
 
-                        <h4>HTTP Methods</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+                                <h4>HTTP Methods</h4>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
 from flask import request
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -181,10 +407,10 @@ def show_login_form():
             <input type="submit" value="Login">
         </form>
     '''
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
 
-                        <h4>URL Building</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+                                <h4>URL Building</h4>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
 from flask import url_for
 
 @app.route('/profile')
@@ -206,10 +432,10 @@ def user_profile(username):
 @app.route('/user/<username>/edit')
 def edit_user(username):
     return f'Edit User: {username}'
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
 
-                        <h4>Blueprints</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+                                <h4>Blueprints</h4>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
 # auth.py
 from flask import Blueprint, render_template
 
@@ -232,12 +458,19 @@ app.register_blueprint(auth_bp)
 
 # Or with URL prefix
 app.register_blueprint(auth_bp, url_prefix='/auth')
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
+                            </div>
+                        </div>
 
-                        <h3 id="templates" class="mt-5">Templates and Jinja2</h3>
-
-                        <h4>Basic Templates</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-html">{% raw %}
+                        <!-- Templates and Jinja2 -->
+                        <div class="module-card" id="templates">
+                            <div class="module-header" onclick="toggleModule('templates-content')">
+                                <span><i class="fas fa-file-code"></i> Templates and Jinja2</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="module-content" id="templates-content">
+                                <h4>Basic Templates</h4>
+                                <pre><button class="copy-button">Copy</button><code class="language-html">{% raw %}
 <!-- templates/base.html -->
 <!DOCTYPE html>
 <html lang="en">
@@ -265,9 +498,9 @@ app.register_blueprint(auth_bp, url_prefix='/auth')
     </footer>
 </body>
 </html>
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
 
-                        <pre><button class="copy-button">Copy</button><code class="language-html">{% raw %}
+                                <pre><button class="copy-button">Copy</button><code class="language-html">{% raw %}
 <!-- templates/index.html -->
 {% extends "base.html" %}
 
@@ -289,10 +522,10 @@ app.register_blueprint(auth_bp, url_prefix='/auth')
     {% endfor %}
 </ul>
 {% endblock %}
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
 
-                        <h4>Template Inheritance</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+                                <h4>Template Inheritance</h4>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
 from flask import render_template
 
 @app.route('/')
@@ -304,10 +537,10 @@ def index():
         {'name': 'Product 3', 'price': 5.99}
     ]
     return render_template('index.html', user=user, items=items)
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
 
-                        <h4>Jinja2 Filters</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-html">{% raw %}
+                                <h4>Jinja2 Filters</h4>
+                                <pre><button class="copy-button">Copy</button><code class="language-html">{% raw %}
 <!-- Using filters in templates -->
 <p>{{ text|capitalize }}</p>
 <p>{{ text|upper }}</p>
@@ -323,10 +556,10 @@ def index():
 <!-- Custom filters -->
 <p>{{ price|currency }}</p>
 <p>{{ date|timesince }}</p>
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
 
-                        <h4>Custom Filters</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+                                <h4>Custom Filters</h4>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
 # app.py
 from flask import Flask
 
@@ -348,12 +581,19 @@ def format_date(value, format='%Y-%m-%d'):
     return value.strftime(format)
 
 app.jinja_env.filters['format_date'] = format_date
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
+                            </div>
+                        </div>
 
-                        <h3 id="static-files" class="mt-5">Static Files</h3>
-
-                        <h4>Static File Structure</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
+                        <!-- Static Files -->
+                        <div class="module-card" id="static-files">
+                            <div class="module-header" onclick="toggleModule('static-files-content')">
+                                <span><i class="fas fa-folder"></i> Static Files</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="module-content" id="static-files-content">
+                                <h4>Static File Structure</h4>
+                                <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
 myapp/
 ├── static/
 │   ├── css/
@@ -367,23 +607,29 @@ myapp/
 │   │   └── banner.jpg
 │   └── fonts/
 └── templates/
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
 
-                        <h4>Accessing Static Files</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-html">{% raw %}
-<!-- In templates -->
-<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-<script src="{{ url_for('static', filename='js/app.js') }}"></script>
-<img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo">
+                                <h4>Accessing Static Files</h4>
+                                <pre><button class="copy-button">Copy</button><code class="language-html">{% raw %}
+&lt;link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"&gt;
+&lt;script src="{{ url_for('static', filename='js/app.js') }}"&gt;&lt;/script&gt;
+&lt;img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo"&gt;
 
-<!-- With versioning for cache busting -->
-<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css', v='1.0.0') }}">
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+&lt;!-- With versioning for cache busting --&gt;
+&lt;link rel="stylesheet" href="{{ url_for('static', filename='css/style.css', v='1.0.0') }}"&gt;
+{% endraw %}</code></pre>
+                            </div>
+                        </div>
 
-                        <h3 id="forms" class="mt-5">Forms and WTForms</h3>
-
-                        <h4>Basic Forms</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+                        <!-- Forms and WTForms -->
+                        <div class="module-card" id="forms">
+                            <div class="module-header" onclick="toggleModule('forms-content')">
+                                <span><i class="fas fa-edit"></i> Forms and WTForms</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="module-content" id="forms-content">
+                                <h4>Basic Forms</h4>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
 from flask import Flask, render_template, request, redirect, url_for, flash
 
 app = Flask(__name__)
@@ -401,9 +647,9 @@ def contact():
         return redirect(url_for('contact'))
     
     return render_template('contact.html')
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
 
-                        <pre><button class="copy-button">Copy</button><code class="language-html">{% raw %}
+                                <pre><button class="copy-button">Copy</button><code class="language-html">{% raw %}
 <!-- templates/contact.html -->
 {% extends "base.html" %}
 
@@ -437,10 +683,10 @@ def contact():
     <button type="submit" class="btn btn-primary">Send Message</button>
 </form>
 {% endblock %}
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
 
-                        <h4>WTForms Integration</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+                                <h4>WTForms Integration</h4>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
 # forms.py
 from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, SubmitField
@@ -473,9 +719,9 @@ def contact():
         return redirect(url_for('contact'))
     
     return render_template('contact.html', form=form)
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
 
-                        <pre><button class="copy-button">Copy</button><code class="language-html">{% raw %}
+                                <pre><button class="copy-button">Copy</button><code class="language-html">{% raw %}
 <!-- templates/contact.html -->
 {% extends "base.html" %}
 
@@ -532,12 +778,19 @@ def contact():
     {{ form.submit(class="btn btn-primary") }}
 </form>
 {% endblock %}
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
+                            </div>
+                        </div>
 
-                        <h3 id="database" class="mt-5">Database Integration</h3>
-
-                        <h4>Flask-SQLAlchemy Setup</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+                        <!-- Database Integration -->
+                        <div class="module-card" id="database">
+                            <div class="module-header" onclick="toggleModule('database-content')">
+                                <span><i class="fas fa-database"></i> Database Integration</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="module-content" id="database-content">
+                                <h4>Flask-SQLAlchemy Setup</h4>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
 # models.py
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
@@ -577,10 +830,10 @@ db.init_app(app)
 # Create tables
 with app.app_context():
     db.create_all()
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
 
-                        <h4>CRUD Operations</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+                                <h4>CRUD Operations</h4>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
 from flask import render_template, request, redirect, url_for, flash
 from models import db, User
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -641,12 +894,19 @@ def delete_user(user_id):
     db.session.commit()
     flash('User deleted successfully!', 'success')
     return redirect(url_for('list_users'))
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
+                            </div>
+                        </div>
 
-                        <h3 id="authentication" class="mt-5">Authentication and Authorization</h3>
-
-                        <h4>Flask-Login Setup</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+                        <!-- Authentication and Authorization -->
+                        <div class="module-card" id="authentication">
+                            <div class="module-header" onclick="toggleModule('authentication-content')">
+                                <span><i class="fas fa-user-shield"></i> Authentication and Authorization</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="module-content" id="authentication-content">
+                                <h4>Flask-Login Setup</h4>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
 # auth.py
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 
@@ -703,10 +963,10 @@ def logout():
 @login_required
 def dashboard():
     return render_template('dashboard.html', user=current_user)
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
 
-                        <h4>Role-Based Authorization</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+                                <h4>Role-Based Authorization</h4>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
 # models.py
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -737,12 +997,19 @@ def admin_required(f):
 @admin_required
 def admin_panel():
     return render_template('admin.html')
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
+                            </div>
+                        </div>
 
-                        <h3 id="api" class="mt-5">Building REST APIs</h3>
-
-                        <h4>Basic API Structure</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+                        <!-- Building REST APIs -->
+                        <div class="module-card" id="api">
+                            <div class="module-header" onclick="toggleModule('api-content')">
+                                <span><i class="fas fa-plug"></i> Building REST APIs</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="module-content" id="api-content">
+                                <h4>Basic API Structure</h4>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
 from flask import Flask, jsonify, request
 from models import db, User, Post
 
@@ -820,10 +1087,10 @@ def delete_user(user_id):
     db.session.commit()
     
     return jsonify({'message': 'User deleted successfully'})
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
 
-                        <h4>API Versioning</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+                                <h4>API Versioning</h4>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
 # api/v1/users.py
 from flask import Blueprint
 
@@ -861,17 +1128,24 @@ from api.v2.users import v2_bp
 
 app.register_blueprint(v1_bp)
 app.register_blueprint(v2_bp)
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
+                            </div>
+                        </div>
 
-                        <h3 id="testing" class="mt-5">Testing Flask Applications</h3>
-
-                        <h4>Unit Testing with pytest</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
+                        <!-- Testing Flask Applications -->
+                        <div class="module-card" id="testing">
+                            <div class="module-header" onclick="toggleModule('testing-content')">
+                                <span><i class="fas fa-vial"></i> Testing Flask Applications</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="module-content" id="testing-content">
+                                <h4>Unit Testing with pytest</h4>
+                                <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
 # Install testing dependencies
 pip install pytest pytest-flask
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
 
-                        <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
 # test_app.py
 import pytest
 from app import create_app
@@ -905,10 +1179,10 @@ def test_register(client):
         'password': 'password123'
     })
     assert response.status_code == 302  # Redirect
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
 
-                        <h4>Integration Testing</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+                                <h4>Integration Testing</h4>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
 # test_api.py
 import json
 import pytest
@@ -944,12 +1218,19 @@ def test_create_user(client):
     data = json.loads(response.data)
     assert data['username'] == 'testuser'
     assert data['email'] == 'test@example.com'
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
+                            </div>
+                        </div>
 
-                        <h3 id="deployment" class="mt-5">Deployment</h3>
-
-                        <h4>Production Configuration</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+                        <!-- Deployment -->
+                        <div class="module-card" id="deployment">
+                            <div class="module-header" onclick="toggleModule('deployment-content')">
+                                <span><i class="fas fa-server"></i> Deployment</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="module-content" id="deployment-content">
+                                <h4>Production Configuration</h4>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
 # config.py
 import os
 
@@ -978,10 +1259,10 @@ config = {
     'production': ProductionConfig,
     'testing': TestingConfig
 }
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
 
-                        <h4>Gunicorn Deployment</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
+                                <h4>Gunicorn Deployment</h4>
+                                <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
 # Install Gunicorn
 pip install gunicorn
 
@@ -1001,10 +1282,10 @@ keepalive = 2
 max_requests = 1000
 max_requests_jitter = 100
 preload_app = True
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
 
-                        <h4>Docker Deployment</h4>
-                        <pre><button class="copy-button">Copy</button><code class="dockerfile">{% raw %}
+                                <h4>Docker Deployment</h4>
+                                <pre><button class="copy-button">Copy</button><code class="language-dockerfile">{% raw %}
 # Dockerfile
 FROM python:3.9-slim
 
@@ -1027,9 +1308,9 @@ EXPOSE 5000
 
 # Run the application
 CMD ["gunicorn", "-b", "0.0.0.0:5000", "app:app"]
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
 
-                        <pre><button class="copy-button">Copy</button><code class="language-yaml">{% raw %}
+                                <pre><button class="copy-button">Copy</button><code class="language-yaml">{% raw %}
 # docker-compose.yml
 version: '3.8'
 
@@ -1055,12 +1336,19 @@ services:
 
 volumes:
   postgres_data:
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
+                            </div>
+                        </div>
 
-                        <h3 id="best-practices" class="mt-5">Flask Best Practices</h3>
-
-                        <h4>Project Structure</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
+                        <!-- Flask Best Practices -->
+                        <div class="module-card" id="best-practices">
+                            <div class="module-header" onclick="toggleModule('best-practices-content')">
+                                <span><i class="fas fa-star"></i> Flask Best Practices</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="module-content" id="best-practices-content">
+                                <h4>Project Structure</h4>
+                                <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
 myflaskapp/
 ├── app/
 │   ├── __init__.py
@@ -1089,10 +1377,10 @@ myflaskapp/
 ├── requirements.txt
 ├── run.py
 └── README.md
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
 
-                        <h4>Configuration Management</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+                                <h4>Configuration Management</h4>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
 # Use environment variables for configuration
 import os
 from dotenv import load_dotenv
@@ -1115,10 +1403,10 @@ MAIL_SERVER=smtp.gmail.com
 MAIL_PORT=587
 MAIL_USERNAME=your-email@gmail.com
 MAIL_PASSWORD=your-app-password
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
 
-                        <h4>Error Handling</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+                                <h4>Error Handling</h4>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
 # errors.py
 from flask import render_template
 
@@ -1146,10 +1434,10 @@ def internal_error(error):
 @app.errorhandler(403)
 def forbidden(error):
     return render_template('errors/403.html'), 403
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
 
-                        <h4>Security Best Practices</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+                                <h4>Security Best Practices</h4>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
 # Security considerations
 from flask import Flask
 from flask_talisman import Talisman
@@ -1181,12 +1469,19 @@ if app.config.get('ENV') == 'production':
         SESSION_COOKIE_SAMESITE='Lax',
         PERMANENT_SESSION_LIFETIME=3600
     )
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
+                            </div>
+                        </div>
 
-                        <h3 id="extensions" class="mt-5">Popular Flask Extensions</h3>
-
-                        <h4>Flask-SQLAlchemy</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+                        <!-- Popular Flask Extensions -->
+                        <div class="module-card" id="extensions">
+                            <div class="module-header" onclick="toggleModule('extensions-content')">
+                                <span><i class="fas fa-puzzle-piece"></i> Popular Flask Extensions</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="module-content" id="extensions-content">
+                                <h4>Flask-SQLAlchemy</h4>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
 # Database models and relationships
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -1204,10 +1499,10 @@ class Post(db.Model):
 from flask_migrate import Migrate
 
 migrate = Migrate(app, db)
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
 
-                        <h4>Flask-Mail</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+                                <h4>Flask-Mail</h4>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
 from flask_mail import Mail, Message
 
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
@@ -1228,10 +1523,10 @@ def send_email():
     )
     mail.send(msg)
     return 'Email sent!'
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
 
-                        <h4>Flask-RESTful</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+                                <h4>Flask-RESTful</h4>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
 from flask_restful import Api, Resource
 from flask import jsonify
 
@@ -1252,12 +1547,19 @@ class UserResource(Resource):
         return jsonify({'id': user.id}), 201
 
 api.add_resource(UserResource, '/api/users')
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
+                            </div>
+                        </div>
 
-                        <h3 id="real-world-examples" class="mt-5">Real-World Examples</h4>
-
-                        <h4>File Upload Service</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+                        <!-- Real-World Examples -->
+                        <div class="module-card" id="real-world-examples">
+                            <div class="module-header" onclick="toggleModule('real-world-examples-content')">
+                                <span><i class="fas fa-globe"></i> Real-World Examples</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="module-content" id="real-world-examples-content">
+                                <h4>File Upload Service</h4>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
 import os
 from flask import Flask, request, redirect, url_for, flash
 from werkzeug.utils import secure_filename
@@ -1296,10 +1598,10 @@ def upload_file():
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
 
-                        <h4>WebSocket Support</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+                                <h4>WebSocket Support</h4>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
 # Install Flask-SocketIO
 pip install flask-socketio
 
@@ -1325,9 +1627,9 @@ def handle_disconnect():
 
 if __name__ == '__main__':
     socketio.run(app, debug=True)
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
 
-                        <pre><button class="copy-button">Copy</button><code class="language-html">{% raw %}
+                                <pre><button class="copy-button">Copy</button><code class="language-html">{% raw %}
 <!-- templates/index.html -->
 <!DOCTYPE html>
 <html>
@@ -1355,21 +1657,31 @@ if __name__ == '__main__':
     </script>
 </body>
 </html>
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
+                            </div>
+                        </div>
 
-                        <h3 id="conclusion" class="mt-5">Conclusion</h3>
-                        <p>This comprehensive Flask documentation covers essential concepts from basics to advanced topics. Flask provides a solid foundation for building web applications quickly and efficiently.</p>
-                        <p>Key takeaways:</p>
-                        <ul>
-                            <li>Flask is lightweight and extensible</li>
-                            <li>Use blueprints for organizing large applications</li>
-                            <li>Always use virtual environments for dependency management</li>
-                            <li>Implement proper authentication and authorization</li>
-                            <li>Write tests to ensure application reliability</li>
-                            <li>Follow security best practices in production</li>
-                            <li>Use appropriate extensions for common tasks</li>
-                        </ul>
-                        <p>Continue learning by building real-world applications, exploring the Flask ecosystem, and staying engaged with the community. Happy coding with Flask!</p>
+                        <!-- Conclusion -->
+                        <div class="module-card" id="conclusion">
+                            <div class="module-header" onclick="toggleModule('conclusion-content')">
+                                <span><i class="fas fa-flag-checkered"></i> Conclusion</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="module-content" id="conclusion-content">
+                                <p>This comprehensive Flask documentation covers essential concepts from basics to advanced topics. Flask provides a solid foundation for building web applications quickly and efficiently.</p>
+                                <p>Key takeaways:</p>
+                                <ul>
+                                    <li>Flask is lightweight and extensible</li>
+                                    <li>Use blueprints for organizing large applications</li>
+                                    <li>Always use virtual environments for dependency management</li>
+                                    <li>Implement proper authentication and authorization</li>
+                                    <li>Write tests to ensure application reliability</li>
+                                    <li>Follow security best practices in production</li>
+                                    <li>Use appropriate extensions for common tasks</li>
+                                </ul>
+                                <p>Continue learning by building real-world applications, exploring the Flask ecosystem, and staying engaged with the community. Happy coding with Flask!</p>
+                            </div>
+                        </div>
 
                         <div class="mt-5 text-center">
                             <a href="/practice" class="btn btn-primary btn-lg">Take Practice Test</a>
@@ -1378,15 +1690,60 @@ if __name__ == '__main__':
                 </div>
             </div>
         </div>
-        <div id="animation-container-docs" style="position: fixed; <div id="animation-container-docs" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1;">
+        <div id="animation-container-docs" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1;">
         </div>
     </section>
 
     <script>
+        // Toggle module content
+        function toggleModule(contentId) {
+            const content = document.getElementById(contentId);
+            const header = content.previousElementSibling;
+            
+            if (content.classList.contains('collapsed')) {
+                content.classList.remove('collapsed');
+                header.classList.remove('collapsed');
+            } else {
+                content.classList.add('collapsed');
+                header.classList.add('collapsed');
+            }
+        }
+
+        // Smooth scrolling for sidebar navigation
+        document.querySelectorAll('.sidebar .nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }
+                // Update active state
+                document.querySelectorAll('.sidebar .nav-link').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Search functionality for sidebar
         document.getElementById('search-input').addEventListener('input', function() {
             const query = this.value.toLowerCase();
+            const navLinks = document.querySelectorAll('.sidebar .nav-link');
+            
+            navLinks.forEach(link => {
+                const text = link.textContent.toLowerCase();
+                if (query === '' || text.includes(query)) {
+                    link.style.display = '';
+                } else {
+                    link.style.display = 'none';
+                }
+            });
+        });
+
+        // Search functionality for main content
+        document.getElementById('search-input-main').addEventListener('input', function() {
+            const query = this.value.toLowerCase();
             const content = document.getElementById('content');
-            const elements = content.querySelectorAll('h2, h3, h4, p, pre');
+            const elements = content.querySelectorAll('h2, h3, h4, h5, h6, p, pre, .module-card');
 
             elements.forEach(element => {
                 const text = element.textContent.toLowerCase();
@@ -1397,8 +1754,17 @@ if __name__ == '__main__':
                 }
             });
         });
-    </script>
-    <script>
+
+        // Clear search function
+        function clearSearch() {
+            document.getElementById('search-input').value = '';
+            const navLinks = document.querySelectorAll('.sidebar .nav-link');
+            navLinks.forEach(link => {
+                link.style.display = '';
+            });
+        }
+
+        // Copy to clipboard functionality
         const copyButtons = document.querySelectorAll('.copy-button');
         copyButtons.forEach(button => {
             button.addEventListener('click', function() {
@@ -1408,6 +1774,27 @@ if __name__ == '__main__':
                 setTimeout(() => {
                     this.textContent = 'Copy';
                 }, 2000);
+            });
+        });
+
+        // Highlight active section in sidebar based on scroll position
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('[id]');
+            const navLinks = document.querySelectorAll('.sidebar .nav-link');
+
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
             });
         });
     </script>

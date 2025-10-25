@@ -4,8 +4,146 @@
 
 {% block head %}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/github-dark.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.3/purify.min.js"></script>
+    <style>
+        body {
+            background: #f8f9fa;
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #212529;
+        }
+        .docs-page {
+            padding-top: 80px;
+        }
+        .sidebar {
+            position: fixed;
+            top: 70px;
+            left: 0;
+            width: 280px;
+            height: calc(100vh - 70px);
+            background: #343a40;
+            border-right: 1px solid #495057;
+            overflow-y: auto;
+            z-index: 1000;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+        }
+        .sidebar .nav-link {
+            color: #adb5bd;
+            padding: 12px 20px;
+            border-radius: 0;
+            margin: 0;
+            transition: all 0.2s ease;
+            font-weight: 500;
+            border-left: 3px solid transparent;
+        }
+        .sidebar .nav-link:hover {
+            background: #495057;
+            color: #fff;
+            text-decoration: none;
+            border-left-color: #092e20;
+        }
+        .sidebar .nav-link.active {
+            background: #092e20;
+            color: #fff;
+            border-left-color: #092e20;
+        }
+        .main-content {
+            margin-left: 240px;
+            padding: 30px;
+            max-width: 1074px;
+        }
+        .search-container {
+            background: rgba(255,255,255,0.9);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .module-card {
+            margin-bottom: 30px;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            background: #fff;
+            overflow: hidden;
+        }
+        .module-header {
+            background: #092e20;
+            color: white;
+            font-weight: 600;
+            font-size: 1.1rem;
+            padding: 15px 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .module-header:hover {
+            background: #072418;
+        }
+        .module-header i {
+            transition: transform 0.3s ease;
+        }
+        .module-header.collapsed i {
+            transform: rotate(-90deg);
+        }
+        .module-content {
+            padding: 20px;
+            display: block;
+        }
+        .module-content.collapsed {
+            display: none;
+        }
+        .copy-button {
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 4px 8px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .copy-button:hover {
+            background: #5a6268;
+            transform: scale(1.05);
+        }
+        .table {
+            margin-bottom: 0;
+        }
+        .table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            border-top: none;
+        }
+        pre {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+        }
+        code {
+            background: #f1f3f4;
+            color: #d73a49;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+        .django-logo {
+            color: #092e20;
+            font-weight: 700;
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+            .main-content {
+                margin-left: 0;
+            }
+        }
+    </style>
     <script>
         hljs.highlightAll();
     </script>
@@ -16,34 +154,83 @@
     <section class="docs-page py-5">
         <div class="container-fluid">
             <div class="row">
-                <!-- Documentation Content -->
-                <div class="col-md-12">
-                    <!-- Search Box -->
-                    <div class="search-container mb-4">
-                        <input type="text" id="search-input" class="form-control" placeholder="Search documentation...">
+                <!-- Sidebar Navigation -->
+                <nav class="sidebar">
+                    <div class="p-3">
+                        <h5 class="text-center mb-3" style="font-size: 1.1rem; color: #fff; font-weight: 600;"><i class="fas fa-cube"></i> <span class="django-logo">Django</span> Documentation</h5>
+
+                        <!-- Search Box -->
+                        <div class="search-container">
+                            <input type="text" id="search-input" class="form-control" placeholder="Search documentation..." style="background: rgba(255,255,255,0.9); border: 1px solid #495057; color: #212529;">
+                            <button class="btn btn-sm btn-outline-dark mt-2 w-100" onclick="clearSearch()">Clear Search</button>
+                        </div>
+
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#module1"><i class="fas fa-download"></i> Module 1: Django Installation and Project Setup</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#module2"><i class="fas fa-database"></i> Module 2: Models and Database Design</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#module3"><i class="fas fa-cogs"></i> Module 3: Admin Interface</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#module4"><i class="fas fa-eye"></i> Module 4: Views and URL Configuration</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#module5"><i class="fas fa-file-code"></i> Module 5: Templates and Static Files</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#module6"><i class="fas fa-edit"></i> Module 6: Forms and Validation</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#module7"><i class="fas fa-user-shield"></i> Module 7: User Authentication and Authorization</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#module8"><i class="fas fa-plug"></i> Module 8: REST APIs with Django REST Framework</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#module9"><i class="fas fa-bug"></i> Module 9: Testing and Debugging</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#module10"><i class="fas fa-server"></i> Module 10: Deployment and Scaling</a>
+                            </li>
+                        </ul>
                     </div>
+                </nav>
+
+                <!-- Main Content -->
+                <div class="main-content">
+                    <!-- Search Box -->
+                    
                     <div id="content">
-                        <h2 class="mb-4">Django Documentation</h2>
+                        <h2 class="mb-4"><span class="django-logo">Django</span> Documentation</h2>
                         <p>Welcome to the comprehensive Django documentation. Here, you'll find detailed guides and tutorials for building web applications with Django.</p>
 
-                        <h3 id="introduction" class="mt-5">Introduction to Django</h3>
-                        <p>Django is a high-level Python web framework that encourages rapid development and clean, pragmatic design. It follows the Model-View-Template (MVT) architectural pattern and includes many built-in features for common web development tasks.</p>
-                        <p>Key features of Django:</p>
-                        <ul>
-                            <li><strong>Batteries Included</strong> - Authentication, admin interface, forms, ORM, and more</li>
-                            <li><strong>MTV Architecture</strong> - Clear separation of concerns</li>
-                            <li><strong>ORM</strong> - Powerful Object-Relational Mapping</li>
-                            <li><strong>Admin Interface</strong> - Automatic admin panel generation</li>
-                            <li><strong>Security</strong> - Built-in protection against common vulnerabilities</li>
-                            <li><strong>Scalability</strong> - Designed to handle high-traffic sites</li>
-                            <li><strong>Community</strong> - Large ecosystem of packages and apps</li>
-                        </ul>
+                        <!-- Module 1: Django Installation and Project Setup -->
+                        <div class="module-card" id="module1">
+                            <div class="module-header" onclick="toggleModule('module1-content')">
+                                <span><i class="fas fa-download"></i> Module 1: Django Installation and Project Setup</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="module-content" id="module1-content">
+                                <h5>Introduction to Django</h5>
+                                <p>Django is a high-level Python web framework that encourages rapid development and clean, pragmatic design. It follows the Model-View-Template (MVT) architectural pattern and includes many built-in features for common web development tasks.</p>
+                                <p>Key features of Django:</p>
+                                <ul>
+                                    <li><strong>Batteries Included</strong> - Authentication, admin interface, forms, ORM, and more</li>
+                                    <li><strong>MTV Architecture</strong> - Clear separation of concerns</li>
+                                    <li><strong>ORM</strong> - Powerful Object-Relational Mapping</li>
+                                    <li><strong>Admin Interface</strong> - Automatic admin panel generation</li>
+                                    <li><strong>Security</strong> - Built-in protection against common vulnerabilities</li>
+                                    <li><strong>Scalability</strong> - Designed to handle high-traffic sites</li>
+                                    <li><strong>Community</strong> - Large ecosystem of packages and apps</li>
+                                </ul>
 
-                        <h3 id="setup" class="mt-5">Setup and Installation</h3>
-
-                        <h4>Virtual Environment</h4>
-                        <p>Always use a virtual environment for Django projects:</p>
-                        <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
+                                <h5>Virtual Environment</h5>
+                                <p>Always use a virtual environment for Django projects:</p>
+                                <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
 # Create virtual environment
 python -m venv venv
 
@@ -55,20 +242,20 @@ source venv/bin/activate
 
 # Deactivate
 deactivate
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
 
-                        <h4>Install Django</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
+                                <h5>Install Django</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
 # Install Django
 pip install Django
 
 # Install additional useful packages
 pip install djangorestframework django-cors python-decouple django-environ
 pip install pillow celery redis psycopg2-binary
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
 
-                        <h4>Create Django Project</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
+                                <h5>Create Django Project</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
 # Create new Django project
 django-admin startproject myproject
 
@@ -84,20 +271,18 @@ python manage.py createsuperuser
 
 # Run development server
 python manage.py runserver
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
 
-                        <h4>Verify Installation</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+                                <h5>Verify Installation</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
 # test_django.py
 import django
 print(django.get_version())
 print(django.VERSION)
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
 
-                        <h3 id="project-structure" class="mt-5">Django Project Structure</h3>
-
-                        <h4>Standard Django Structure</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
+                                <h5>Django Project Structure</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
 myproject/
 ├── manage.py
 ├── myproject/
@@ -123,10 +308,10 @@ myproject/
 │   ├── js/
 │   └── images/
 └── requirements.txt
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
 
-                        <h4>Settings Configuration</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+                                <h5>Settings Configuration</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
 # myproject/settings.py
 import os
 from pathlib import Path
@@ -226,7 +411,2450 @@ if os.environ.get('DJANGO_ENV') == 'production':
     CSRF_COOKIE_SECURE = True
     SECURE_BROWSER_XSS_FILTER = True
     X_FRAME_OPTIONS = 'DENY'
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- Module 2: Models and Database Design -->
+                        <div class="module-card" id="module2">
+                            <div class="module-header" onclick="toggleModule('module2-content')">
+                                <span><i class="fas fa-database"></i> Module 2: Models and Database Design</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="module-content" id="module2-content">
+                                <h5>Creating Models</h5>
+                                <p>Models are the single, definitive source of information about your data. They contain the essential fields and behaviors of the data you're storing.</p>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+# myapp/models.py
+from django.db import models
+from django.contrib.auth.models import User
+
+class Category(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        verbose_name_plural = "Categories"
+        ordering = ['name']
+    
+    def __str__(self):
+        return self.name
+
+class Post(models.Model):
+    STATUS_CHOICES = (
+        ('draft', 'Draft'),
+        ('published', 'Published'),
+    )
+    
+    title = models.CharField(max_length=200)
+    slug = models.SlugField(max_length=200, unique=True)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='blog_posts')
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='draft')
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
+    
+    class Meta:
+        ordering = ['-created_at']
+    
+    def __str__(self):
+        return self.title
+    
+    def get_absolute_url(self):
+        from django.urls import reverse
+        return reverse('post_detail', args=[self.slug])
+
+class Comment(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
+    name = models.CharField(max_length=80)
+    email = models.EmailField()
+    body = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    active = models.BooleanField(default=True)
+    
+    class Meta:
+        ordering = ['created_at']
+    
+    def __str__(self):
+        return f'Comment by {self.name} on {self.post}'
+{% endraw %}</code></pre>
+
+                                <h5>Model Field Types</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+# Common field types
+class Product(models.Model):
+    # String fields
+    name = models.CharField(max_length=100)
+    description = models.TextField()
+    slug = models.SlugField()
+    
+    # Numeric fields
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    stock = models.PositiveIntegerField()
+    rating = models.FloatField()
+    
+    # Date and time fields
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateField(auto_now=True)
+    
+    # Boolean fields
+    available = models.BooleanField(default=True)
+    featured = models.BooleanField()
+    
+    # File fields
+    image = models.ImageField(upload_to='products/')
+    document = models.FileField(upload_to='documents/')
+    
+    # Relationship fields
+    category = models.ForeignKey('Category', on_delete=models.CASCADE)
+    tags = models.ManyToManyField('Tag')
+    
+    # Choice fields
+    SIZE_CHOICES = (
+        ('S', 'Small'),
+        ('M', 'Medium'),
+        ('L', 'Large'),
+    )
+    size = models.CharField(max_length=1, choices=SIZE_CHOICES)
+{% endraw %}</code></pre>
+
+                                <h5>Model Relationships</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+# myapp/models.py
+from django.db import models
+
+class Author(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField(unique=True)
+    
+    def __str__(self):
+        return self.name
+
+class Publisher(models.Model):
+    name = models.CharField(max_length=100)
+    address = models.CharField(max_length=200)
+    
+    def __str__(self):
+        return self.name
+
+class Book(models.Model):
+    title = models.CharField(max_length=200)
+    publication_date = models.DateField()
+    
+    # Many-to-One relationship
+    publisher = models.ForeignKey(Publisher, on_delete=models.CASCADE)
+    
+    # Many-to-Many relationship
+    authors = models.ManyToManyField(Author)
+    
+    def __str__(self):
+        return self.title
+
+# Through model for Many-to-Many with extra fields
+class Student(models.Model):
+    name = models.CharField(max_length=100)
+    
+    def __str__(self):
+        return self.name
+
+class Course(models.Model):
+    name = models.CharField(max_length=100)
+    students = models.ManyToManyField(Student, through='Enrollment')
+    
+    def __str__(self):
+        return self.name
+
+class Enrollment(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    date_enrolled = models.DateField()
+    grade = models.CharField(max_length=2, blank=True)
+    
+    class Meta:
+        unique_together = ('student', 'course')
+{% endraw %}</code></pre>
+
+                                <h5>Database Migrations</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
+# Create migrations for new models
+python manage.py makemigrations
+
+# Create migrations for a specific app
+python manage.py makemigrations myapp
+
+# Create migrations with a custom name
+python manage.py makemigrations myapp --name add_book_model
+
+# Apply migrations
+python manage.py migrate
+
+# Apply migrations for a specific app
+python manage.py migrate myapp
+
+# Show migration status
+python manage.py showmigrations
+
+# Unapply migrations (rollback)
+python manage.py migrate myapp 0001
+
+# Create empty migration for custom data migrations
+python manage.py makemigrations --empty myapp
+{% endraw %}</code></pre>
+
+                                <h5>Querying the Database</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+# Basic queries
+from myapp.models import Post, Category
+
+# Get all objects
+all_posts = Post.objects.all()
+
+# Get a single object
+post = Post.objects.get(pk=1)
+post = Post.objects.get(slug='my-first-post')
+
+# Filter objects
+published_posts = Post.objects.filter(status='published')
+recent_posts = Post.objects.filter(created_at__gte='2023-01-01')
+
+# Complex queries
+from django.db.models import Q
+posts = Post.objects.filter(
+    Q(title__icontains='django') | Q(content__icontains='django')
+)
+
+# Ordering
+posts = Post.objects.order_by('-created_at')
+posts = Post.objects.order_by('title', '-created_at')
+
+# Limiting results
+latest_posts = Post.objects.order_by('-created_at')[:5]
+
+# Related objects
+category = Category.objects.get(name='Python')
+posts_in_category = category.post_set.all()
+
+# Many-to-Many relationships
+post = Post.objects.get(pk=1)
+authors = post.authors.all()
+
+# Aggregation
+from django.db.models import Count, Avg, Max, Min
+category_counts = Category.objects.annotate(post_count=Count('post'))
+avg_price = Product.objects.aggregate(avg_price=Avg('price'))
+
+# Custom methods in models
+class Post(models.Model):
+    # ... fields ...
+    
+    def get_comment_count(self):
+        return self.comments.count()
+    
+    def is_recent(self):
+        from django.utils import timezone
+        return self.created_at >= timezone.now() - datetime.timedelta(days=7)
+{% endraw %}</code></pre>
+
+                                <h5>Custom Managers</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+# myapp/models.py
+from django.db import models
+
+class PublishedManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(status='published')
+
+class Post(models.Model):
+    # ... fields ...
+    
+    objects = models.Manager()  # Default manager
+    published = PublishedManager()  # Custom manager
+    
+    # Usage:
+    # Post.objects.all()  # All posts
+    # Post.published.all()  # Only published posts
+{% endraw %}</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- Module 3: Admin Interface -->
+                        <div class="module-card" id="module3">
+                            <div class="module-header" onclick="toggleModule('module3-content')">
+                                <span><i class="fas fa-cogs"></i> Module 3: Admin Interface</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="module-content" id="module3-content">
+                                <h5>Registering Models with Admin</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+# myapp/admin.py
+from django.contrib import admin
+from .models import Post, Category, Comment
+
+# Basic registration
+admin.site.register(Post)
+admin.site.register(Category)
+admin.site.register(Comment)
+
+# Custom admin class
+@admin.register(Post)
+class PostAdmin(admin.ModelAdmin):
+    list_display = ('title', 'author', 'status', 'created_at')
+    list_filter = ('status', 'created_at', 'author')
+    search_fields = ('title', 'content')
+    prepopulated_fields = {'slug': ('title',)}
+    raw_id_fields = ('author',)
+    date_hierarchy = 'created_at'
+    ordering = ('status', '-created_at')
+    
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ('name', 'description')
+    search_fields = ('name',)
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ('name', 'post', 'created_at', 'active')
+    list_filter = ('active', 'created_at')
+    search_fields = ('name', 'email', 'body')
+    actions = ['approve_comments']
+    
+    def approve_comments(self, request, queryset):
+        queryset.update(active=True)
+    approve_comments.short_description = "Mark selected comments as active"
+{% endraw %}</code></pre>
+
+                                <h5>Customizing Admin Layout</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+# myapp/admin.py
+from django.contrib import admin
+from .models import Post, Category, Comment
+
+class CommentInline(admin.TabularInline):
+    model = Comment
+    extra = 0
+
+@admin.register(Post)
+class PostAdmin(admin.ModelAdmin):
+    list_display = ('title', 'author', 'status', 'created_at')
+    list_filter = ('status', 'created_at', 'author')
+    search_fields = ('title', 'content')
+    prepopulated_fields = {'slug': ('title',)}
+    raw_id_fields = ('author',)
+    date_hierarchy = 'created_at'
+    ordering = ('status', '-created_at')
+    inlines = [CommentInline]
+    
+    fieldsets = (
+        (None, {
+            'fields': ('title', 'slug', 'author', 'category')
+        }),
+        ('Content', {
+            'fields': ('content',),
+            'classes': ('collapse',)
+        }),
+        ('Publishing', {
+            'fields': ('status',),
+        }),
+    )
+    
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        return qs.filter(author=request.user)
+{% endraw %}</code></pre>
+
+                                <h5>Admin Actions</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+# myapp/admin.py
+from django.contrib import admin
+from .models import Post
+
+@admin.register(Post)
+class PostAdmin(admin.ModelAdmin):
+    # ... other settings ...
+    
+    actions = ['make_published', 'make_draft']
+    
+    def make_published(self, request, queryset):
+        updated = queryset.update(status='published')
+        self.message_user(request, f'{updated} posts were successfully marked as published.')
+    make_published.short_description = "Mark selected posts as published"
+    
+    def make_draft(self, request, queryset):
+        updated = queryset.update(status='draft')
+        self.message_user(request, f'{updated} posts were successfully marked as draft.')
+    make_draft.short_description = "Mark selected posts as draft"
+{% endraw %}</code></pre>
+
+                                <h5>Custom Admin Site</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+# myapp/admin.py
+from django.contrib.admin import AdminSite
+from .models import Post
+
+class MyAdminSite(AdminSite):
+    site_header = 'My Administration'
+    site_title = 'My Admin Portal'
+    index_title = 'Welcome to My Admin Portal'
+    
+    def get_urls(self):
+        from django.urls import path
+        urls = super().get_urls()
+        custom_urls = [
+            path('my-view/', self.admin_view(my_view), name='my_view'),
+        ]
+        return custom_urls + urls
+    
+    def my_view(self, request):
+        # Custom admin view logic
+        pass
+
+admin_site = MyAdminSite(name='myadmin')
+admin_site.register(Post)
+{% endraw %}</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- Module 4: Views and URL Configuration -->
+                        <div class="module-card" id="module4">
+                            <div class="module-header" onclick="toggleModule('module4-content')">
+                                <span><i class="fas fa-eye"></i> Module 4: Views and URL Configuration</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="module-content" id="module4-content">
+                                <h5>Function-Based Views</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+# myapp/views.py
+from django.shortcuts import render, get_object_or_404, redirect
+from django.http import HttpResponse, Http404
+from django.views.generic import ListView, DetailView
+from .models import Post, Category
+from .forms import PostForm
+
+def post_list(request):
+    posts = Post.objects.filter(status='published')
+    return render(request, 'myapp/post/list.html', {'posts': posts})
+
+def post_detail(request, year, month, day, post):
+    post = get_object_or_404(
+        Post,
+        slug=post,
+        status='published',
+        created_at__year=year,
+        created_at__month=month,
+        created_at__day=day
+    )
+    return render(request, 'myapp/post/detail.html', {'post': post})
+
+def post_create(request):
+    if request.method == 'POST':
+        form = PostForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.save()
+            return redirect('myapp:post_detail', slug=post.slug)
+    else:
+        form = PostForm()
+    return render(request, 'myapp/post/create.html', {'form': form})
+
+def post_edit(request, slug):
+    post = get_object_or_404(Post, slug=slug)
+    if request.method == 'POST':
+        form = PostForm(request.POST, instance=post)
+        if form.is_valid():
+            form.save()
+            return redirect('myapp:post_detail', slug=post.slug)
+    else:
+        form = PostForm(instance=post)
+    return render(request, 'myapp/post/edit.html', {'form': form, 'post': post})
+{% endraw %}</code></pre>
+
+                                <h5>Class-Based Views</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+# myapp/views.py
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin
+from .models import Post
+from .forms import PostForm
+
+class PostListView(ListView):
+    model = Post
+    template_name = 'myapp/post/list.html'
+    context_object_name = 'posts'
+    paginate_by = 3
+    queryset = Post.objects.filter(status='published')
+
+class PostDetailView(DetailView):
+    model = Post
+    template_name = 'myapp/post/detail.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['comments'] = self.object.comments.filter(active=True)
+        return context
+
+class PostCreateView(LoginRequiredMixin, CreateView):
+    model = Post
+    form_class = PostForm
+    template_name = 'myapp/post/create.html'
+    
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+class PostUpdateView(LoginRequiredMixin, UpdateView):
+    model = Post
+    form_class = PostForm
+    template_name = 'myapp/post/edit.html'
+    
+    def dispatch(self, request, *args, **kwargs):
+        obj = self.get_object()
+        if obj.author != request.user:
+            return HttpResponseForbidden("You don't have permission to edit this post.")
+        return super().dispatch(request, *args, **kwargs)
+
+class PostDeleteView(LoginRequiredMixin, DeleteView):
+    model = Post
+    template_name = 'myapp/post/delete.html'
+    success_url = reverse_lazy('myapp:post_list')
+    
+    def dispatch(self, request, *args, **kwargs):
+        obj = self.get_object()
+        if obj.author != request.user:
+            return HttpResponseForbidden("You don't have permission to delete this post.")
+        return super().dispatch(request, *args, **kwargs)
+{% endraw %}</code></pre>
+
+                                <h5>URL Configuration</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+# myproject/urls.py
+from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', include('myapp.urls')),
+]
+
+# myapp/urls.py
+from django.urls import path
+from . import views
+
+app_name = 'myapp'
+
+urlpatterns = [
+    # Function-based views
+    path('', views.post_list, name='post_list'),
+    path('post/<slug:slug>/', views.post_detail, name='post_detail'),
+    path('post/create/', views.post_create, name='post_create'),
+    path('post/<slug:slug>/edit/', views.post_edit, name='post_edit'),
+    
+    # Class-based views
+    # path('', views.PostListView.as_view(), name='post_list'),
+    # path('post/<slug:slug>/', views.PostDetailView.as_view(), name='post_detail'),
+    # path('post/create/', views.PostCreateView.as_view(), name='post_create'),
+    # path('post/<slug:slug>/edit/', views.PostUpdateView.as_view(), name='post_edit'),
+    
+    # URL patterns with date-based routing
+    path(
+        'post/<int:year>/<int:month>/<int:day>/<slug:slug>/',
+        views.post_detail,
+        name='post_detail_date'
+    ),
+]
+{% endraw %}</code></pre>
+
+                                <h5>Advanced URL Patterns</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+# myapp/urls.py
+from django.urls import path, re_path
+from . import views
+
+app_name = 'myapp'
+
+urlpatterns = [
+    # Regular expression patterns
+    re_path(r'^post/(?P<year>\d{4})/(?P<month>\d{2})/(?P<day>\d{2})/(?P<slug>[-\w]+)/$',
+           views.post_detail,
+           name='post_detail_date'),
+    
+    # Including additional URLconf files
+    path('api/', include('myapp.api.urls')),
+    
+    # Named URLs
+    path('about/', views.about_view, name='about'),
+    
+    # URL with optional parameters
+    path('category/<slug:slug>/', views.category_view, name='category'),
+    path('category/', views.category_view, name='category_all'),
+    
+    # Redirects
+    path('old-url/', views.redirect_view, name='old_url'),
+]
+{% endraw %}</code></pre>
+
+                                <h5>URL Reverse and Named URLs</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+# In views.py
+from django.urls import reverse
+from django.http import HttpResponseRedirect
+
+def some_view(request):
+    # Using reverse with named URL
+    return HttpResponseRedirect(reverse('myapp:post_list'))
+
+def post_edit(request, slug):
+    # Using reverse with parameters
+    return HttpResponseRedirect(reverse('myapp:post_detail', args=[slug]))
+
+# In templates
+<!-- templates/myapp/example.html -->
+<a href="{% url 'myapp:post_list' %}">All Posts</a>
+<a href="{% url 'myapp:post_detail' post.slug %}">{{ post.title }}</a>
+<a href="{% url 'myapp:post_detail_date' post.created_at.year post.created_at.month post.created_at.day post.slug %}">
+    {{ post.title }}
+</a>
+{% endraw %}</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- Module 5: Templates and Static Files -->
+                        <div class="module-card" id="module5">
+                            <div class="module-header" onclick="toggleModule('module5-content')">
+                                <span><i class="fas fa-file-code"></i> Module 5: Templates and Static Files</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="module-content" id="module5-content">
+                                <h5>Template Structure</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
+myproject/
+├── templates/
+│   ├── base.html
+│   ├── 404.html
+│   ├── 500.html
+│   └── registration/
+│       ├── login.html
+│       └── signup.html
+├── myapp/
+│   ├── templates/
+│   │   └── myapp/
+│   │       ├── base.html
+│   │       ├── post/
+│   │       │   ├── list.html
+│   │       │   ├── detail.html
+│   │       │   ├── create.html
+│   │       │   └── edit.html
+│   │       └── category/
+│   │           └── list.html
+└── static/
+    ├── css/
+    │   ├── style.css
+    │   └── bootstrap.min.css
+    ├── js/
+    │   ├── app.js
+    │   └── jquery.min.js
+    └── images/
+        ├── logo.png
+        └── banner.jpg
+{% endraw %}</code></pre>
+
+                                <h5>Template Inheritance</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-html">{% raw %}
+<!-- templates/base.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}My Django Site{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <a class="navbar-brand" href="{% url 'myapp:post_list' %}">My Blog</a>
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'myapp:post_list' %}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'myapp:about' %}">About</a>
+                    </li>
+                    {% if user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'admin:index' %}">Admin</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'login' %}">Login</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </nav>
+    </header>
+    
+    <main class="container">
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        
+        {% block content %}{% endblock %}
+    </main>
+    
+    <footer>
+        <div class="container">
+            <p>&copy; {% now "Y" %} My Django Site</p>
+        </div>
+    </footer>
+    
+    <script src="{% static 'js/app.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
+{% endraw %}</code></pre>
+
+                                <h5>Template Context and Variables</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-html">{% raw %}
+<!-- templates/myapp/post/detail.html -->
+{% extends "base.html" %}
+
+{% block title %}{{ post.title }} - My Blog{% endblock %}
+
+{% block content %}
+<div class="post-detail">
+    <h1>{{ post.title }}</h1>
+    
+    <div class="post-meta">
+        By {{ post.author }} on {{ post.created_at|date:"F j, Y" }}
+        {% if post.category %}
+            in <a href="{% url 'myapp:category' post.category.slug %}">{{ post.category.name }}</a>
+        {% endif %}
+    </div>
+    
+    <div class="post-content">
+        {{ post.content|linebreaks }}
+    </div>
+    
+    {% if post.tags.all %}
+        <div class="post-tags">
+            <h3>Tags</h3>
+            {% for tag in post.tags.all %}
+                <a href="{% url 'myapp:tag' tag.slug %}" class="tag">{{ tag.name }}</a>
+            {% endfor %}
+        </div>
+    {% endif %}
+    
+    <div class="post-comments">
+        <h3>Comments</h3>
+        {% for comment in post.comments.all %}
+            <div class="comment">
+                <h4>{{ comment.name }} on {{ comment.created_at|date:"F j, Y, P" }}</h4>
+                <p>{{ comment.body|linebreaks }}</p>
+            </div>
+        {% empty %}
+            <p>No comments yet.</p>
+        {% endfor %}
+        
+        <h3>Add a comment</h3>
+        <form method="post" action="{% url 'myapp:add_comment' post.id %}">
+            {% csrf_token %}
+            {{ comment_form.as_p }}
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+{% endraw %}</code></pre>
+
+                                <h5>Template Filters and Tags</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-html">{% raw %}
+<!-- Using built-in filters -->
+<p>{{ post.content|truncatewords:30 }}</p>
+<p>{{ post.created_at|date:"F j, Y" }}</p>
+<p>{{ post.title|lower }}</p>
+<p>{{ post.content|linebreaks }}</p>
+<p>{{ post.content|safe }}</p>
+
+<!-- Using built-in tags -->
+{% if user.is_authenticated %}
+    <p>Welcome, {{ user.username }}!</p>
+{% endif %}
+
+{% for post in posts %}
+    <h2>{{ post.title }}</h2>
+{% empty %}
+    <p>No posts found.</p>
+{% endfor %}
+
+{% load static %}
+<img src="{% static 'images/logo.png' %}" alt="Logo">
+
+{% load custom_tags %}
+{% get_latest_posts 5 as latest_posts %}
+{% for post in latest_posts %}
+    <h3>{{ post.title }}</h3>
+{% endfor %}
+{% endraw %}</code></pre>
+
+                                <h5>Custom Template Tags and Filters</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+# myapp/templatetags/custom_tags.py
+from django import template
+from ..models import Post
+
+register = template.Library()
+
+@register.simple_tag
+def get_latest_posts(count=5):
+    return Post.objects.filter(status='published').order_by('-created_at')[:count]
+
+@register.inclusion_tag('myapp/tags/latest_posts.html')
+def show_latest_posts(count=5):
+    latest_posts = Post.objects.filter(status='published').order_by('-created_at')[:count]
+    return {'latest_posts': latest_posts}
+
+@register.filter
+def truncate_chars(value, arg):
+    """
+    Truncates a string after a certain number of characters.
+    """
+    try:
+        length = int(arg)
+    except ValueError:
+        return value
+    
+    if len(value) > length:
+        return value[:length] + '...'
+    return value
+{% endraw %}</code></pre>
+
+                                <pre><button class="copy-button">Copy</button><code class="language-html">{% raw %}
+<!-- templates/myapp/tags/latest_posts.html -->
+<div class="latest-posts">
+    <h3>Latest Posts</h3>
+    {% for post in latest_posts %}
+        <div class="post">
+            <h4><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h4>
+            <p>{{ post.content|truncatechars:100 }}</p>
+        </div>
+    {% endfor %}
+</div>
+{% endraw %}</code></pre>
+
+                                <h5>Static Files</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-html">{% raw %}
+<!-- Loading static files -->
+{% load static %}
+
+<!-- CSS files -->
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+
+<!-- JavaScript files -->
+<script src="{% static 'js/app.js' %}"></script>
+<script src="{% static 'js/jquery.min.js' %}"></script>
+
+<!-- Images -->
+<img src="{% static 'images/logo.png' %}" alt="Logo">
+<img src="{% static 'images/banner.jpg' %}" alt="Banner">
+
+<!-- With versioning for cache busting -->
+<link rel="stylesheet" href="{% static 'css/style.css' %}?v=1.0.0">
+
+<!-- Using static in CSS -->
+<style>
+    .header {
+        background-image: url("{% static 'images/header-bg.jpg' %}");
+    }
+</style>
+{% endraw %}</code></pre>
+
+                                <h5>Media Files</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-html">{% raw %}
+<!-- Displaying media files -->
+{% if post.image %}
+    <img src="{{ post.image.url }}" alt="{{ post.title }}">
+{% endif %}
+
+{% if user.profile.avatar %}
+    <img src="{{ user.profile.avatar.url }}" alt="{{ user.username }}'s avatar">
+{% endif %}
+
+<!-- In forms -->
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit</button>
+</form>
+{% endraw %}</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- Module 6: Forms and Validation -->
+                        <div class="module-card" id="module6">
+                            <div class="module-header" onclick="toggleModule('module6-content')">
+                                <span><i class="fas fa-edit"></i> Module 6: Forms and Validation</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="module-content" id="module6-content">
+                                <h5>Creating Forms</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+# myapp/forms.py
+from django import forms
+from .models import Post, Comment
+
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ('title', 'slug', 'content', 'status', 'category')
+        widgets = {
+            'title': forms.TextInput(attrs={'class': 'form-control'}),
+            'slug': forms.TextInput(attrs={'class': 'form-control'}),
+            'content': forms.Textarea(attrs={'class': 'form-control', 'rows': 10}),
+            'status': forms.Select(attrs={'class': 'form-control'}),
+            'category': forms.Select(attrs={'class': 'form-control'}),
+        }
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['title'].label = "Post Title"
+        self.fields['content'].label = "Content"
+        self.fields['slug'].required = False
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ('name', 'email', 'body')
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'body': forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
+        }
+
+class ContactForm(forms.Form):
+    name = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    email = forms.EmailField(widget=forms.EmailInput(attrs={'class': 'form-control'}))
+    subject = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    message = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 5}))
+    
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        # Custom validation logic
+        if 'example.com' in email:
+            raise forms.ValidationError("Please use a real email address.")
+        return email
+{% endraw %}</code></pre>
+
+                                <h5>Form Fields and Widgets</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+# myapp/forms.py
+from django import forms
+
+class AdvancedForm(forms.Form):
+    # Basic fields
+    text_input = forms.CharField()
+    password_input = forms.CharField(widget=forms.PasswordInput)
+    number_input = forms.IntegerField()
+    email_input = forms.EmailField()
+    url_input = forms.URLField()
+    
+    # Choice fields
+    choice_field = forms.ChoiceField(choices=[
+        ('option1', 'Option 1'),
+        ('option2', 'Option 2'),
+        ('option3', 'Option 3'),
+    ])
+    
+    # Multiple choice
+    multiple_choice = forms.MultipleChoiceField(choices=[
+        ('option1', 'Option 1'),
+        ('option2', 'Option 2'),
+        ('option3', 'Option 3'),
+    ], widget=forms.CheckboxSelectMultiple)
+    
+    # Date and time fields
+    date_field = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
+    datetime_field = forms.DateTimeField(widget=forms.DateTimeInput(attrs={'type': 'datetime-local'}))
+    
+    # File fields
+    file_field = forms.FileField()
+    image_field = forms.ImageField()
+    
+    # Boolean field
+    agree_terms = forms.BooleanField(required=True)
+    
+    # Custom widget attributes
+    custom_field = forms.CharField(
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Enter your text here',
+            'data-toggle': 'tooltip',
+            'title': 'This is a tooltip',
+        })
+    )
+{% endraw %}</code></pre>
+
+                                <h5>Form Validation</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+# myapp/forms.py
+from django import forms
+from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
+
+class RegistrationForm(forms.Form):
+    username = forms.CharField(max_length=150)
+    email = forms.EmailField()
+    password = forms.CharField(widget=forms.PasswordInput)
+    confirm_password = forms.CharField(widget=forms.PasswordInput)
+    
+    def clean_username(self):
+        username = self.cleaned_data.get('username')
+        # Check if username already exists
+        if User.objects.filter(username=username).exists():
+            raise ValidationError(_("Username already exists."))
+        return username
+    
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        # Check if email already exists
+        if User.objects.filter(email=email).exists():
+            raise ValidationError(_("Email already exists."))
+        return email
+    
+    def clean(self):
+        cleaned_data = super().clean()
+        password = cleaned_data.get('password')
+        confirm_password = cleaned_data.get('confirm_password')
+        
+        if password and confirm_password and password != confirm_password:
+            raise ValidationError(_("Passwords don't match."))
+        
+        return cleaned_data
+
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ('title', 'content', 'status')
+    
+    def clean_title(self):
+        title = self.cleaned_data.get('title')
+        # Custom validation
+        if len(title) < 5:
+            raise ValidationError(_("Title must be at least 5 characters long."))
+        return title
+    
+    def clean_content(self):
+        content = self.cleaned_data.get('content')
+        # Check for forbidden words
+        forbidden_words = ['spam', 'advertisement']
+        for word in forbidden_words:
+            if word in content.lower():
+                raise ValidationError(_("Content contains forbidden words."))
+        return content
+{% endraw %}</code></pre>
+
+                                <h5>Working with Forms in Views</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+# myapp/views.py
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from .forms import PostForm, ContactForm
+
+def post_create(request):
+    if request.method == 'POST':
+        form = PostForm(request.POST)
+        if form.is_valid():
+            # Form is valid, process the data
+            post = form.save(commit=False)
+            post.author = request.user
+            post.save()
+            messages.success(request, 'Post created successfully!')
+            return redirect('myapp:post_detail', slug=post.slug)
+    else:
+        form = PostForm()
+    
+    return render(request, 'myapp/post/create.html', {'form': form})
+
+def contact_view(request):
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            # Process the form data
+            name = form.cleaned_data['name']
+            email = form.cleaned_data['email']
+            subject = form.cleaned_data['subject']
+            message = form.cleaned_data['message']
+            
+            # Send email or save to database
+            # ...
+            
+            messages.success(request, 'Your message has been sent!')
+            return redirect('myapp:contact_success')
+    else:
+        form = ContactForm()
+    
+    return render(request, 'myapp/contact.html', {'form': form})
+{% endraw %}</code></pre>
+
+                                <h5>Rendering Forms in Templates</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-html">{% raw %}
+<!-- templates/myapp/post/create.html -->
+{% extends "base.html" %}
+
+{% block title %}Create Post - My Blog{% endblock %}
+
+{% block content %}
+<h1>Create Post</h1>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    
+    {% if form.non_field_errors %}
+        <div class="alert alert-danger">
+            {% for error in form.non_field_errors %}
+                {{ error }}
+            {% endfor %}
+        </div>
+    {% endif %}
+    
+    <!-- Manual field rendering -->
+    <div class="form-group">
+        <label for="{{ form.title.id_for_label }}">{{ form.title.label }}</label>
+        {{ form.title }}
+        {% if form.title.errors %}
+            <div class="text-danger">
+                {% for error in form.title.errors %}
+                    {{ error }}
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+    
+    <div class="form-group">
+        <label for="{{ form.content.id_for_label }}">{{ form.content.label }}</label>
+        {{ form.content }}
+        {% if form.content.errors %}
+            <div class="text-danger">
+                {% for error in form.content.errors %}
+                    {{ error }}
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+    
+    <!-- Using form.as_p -->
+    {{ form.as_p }}
+    
+    <!-- Using form.as_table -->
+    <table>
+        {{ form.as_table }}
+    </table>
+    
+    <!-- Using form.as_ul -->
+    <ul>
+        {{ form.as_ul }}
+    </ul>
+    
+    <!-- Using formset -->
+    <button type="submit" class="btn btn-primary">Create Post</button>
+</form>
+{% endblock %}
+{% endraw %}</code></pre>
+
+                                <h5>Model Formsets</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+# myapp/views.py
+from django.shortcuts import render, redirect
+from django.forms import modelformset_factory
+from .models import Image
+
+def image_gallery(request):
+    ImageFormSet = modelformset_factory(
+        Image, 
+        fields=('image', 'caption'),
+        extra=3
+    )
+    
+    if request.method == 'POST':
+        formset = ImageFormSet(request.POST, request.FILES)
+        if formset.is_valid():
+            instances = formset.save(commit=False)
+            for instance in instances:
+                instance.gallery = request.user.gallery
+                instance.save()
+            return redirect('myapp:gallery_detail')
+    else:
+        formset = ImageFormSet(queryset=Image.objects.none())
+    
+    return render(request, 'myapp/gallery/upload.html', {'formset': formset})
+{% endraw %}</code></pre>
+
+                                <pre><button class="copy-button">Copy</button><code class="language-html">{% raw %}
+<!-- templates/myapp/gallery/upload.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Upload Images</h1>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ formset.management_form }}
+    
+    {% for form in formset %}
+        <div class="form-row">
+            {{ form.id }}
+            <div class="form-group col-md-6">
+                {{ form.image.label_tag }}
+                {{ form.image }}
+            </div>
+            <div class="form-group col-md-6">
+                {{ form.caption.label_tag }}
+                {{ form.caption }}
+            </div>
+        </div>
+    {% endfor %}
+    
+    <button type="submit" class="btn btn-primary">Upload Images</button>
+</form>
+{% endblock %}
+{% endraw %}</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- Module 7: User Authentication and Authorization -->
+                        <div class="module-card" id="module7">
+                            <div class="module-header" onclick="toggleModule('module7-content')">
+                                <span><i class="fas fa-user-shield"></i> Module 7: User Authentication and Authorization</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="module-content" id="module7-content">
+                                <h5>User Authentication Setup</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+# settings.py
+INSTALLED_APPS = [
+    # ...
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    # ...
+]
+
+# Authentication backends
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+# Login URLs
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'profile'
+LOGOUT_REDIRECT_URL = 'home'
+
+# Password validation
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
+]
+{% endraw %}</code></pre>
+
+                                <h5>User Registration</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+# myapp/forms.py
+from django import forms
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
+
+class CustomUserCreationForm(UserCreationForm):
+    email = forms.EmailField(required=True)
+    first_name = forms.CharField(max_length=30)
+    last_name = forms.CharField(max_length=30)
+    
+    class Meta:
+        model = User
+        fields = ("username", "first_name", "last_name", "email", "password1", "password2")
+    
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.email = self.cleaned_data["email"]
+        user.first_name = self.cleaned_data["first_name"]
+        user.last_name = self.cleaned_data["last_name"]
+        if commit:
+            user.save()
+        return user
+
+# myapp/views.py
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from .forms import CustomUserCreationForm
+
+def register(request):
+    if request.method == 'POST':
+        form = CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            messages.success(request, f'Account created for {username}!')
+            return redirect('login')
+    else:
+        form = CustomUserCreationForm()
+    return render(request, 'registration/register.html', {'form': form})
+{% endraw %}</code></pre>
+
+                                <h5>Login and Logout Views</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+# myapp/urls.py
+from django.urls import path
+from django.contrib.auth import views as auth_views
+
+urlpatterns = [
+    # ...
+    path('login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path('password_change/', auth_views.PasswordChangeView.as_view(template_name='registration/password_change.html'), name='password_change'),
+    path('password_change/done/', auth_views.PasswordChangeDoneView.as_view(template_name='registration/password_change_done.html'), name='password_change_done'),
+    path('password_reset/', auth_views.PasswordResetView.as_view(template_name='registration/password_reset.html'), name='password_reset'),
+    path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(template_name='registration/password_reset_done.html'), name='password_reset_done'),
+    path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name='registration/password_reset_confirm.html'), name='password_reset_confirm'),
+    path('reset/done/', auth_views.PasswordResetCompleteView.as_view(template_name='registration/password_reset_complete.html'), name='password_reset_complete'),
+]
+
+# myapp/views.py
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login, logout
+
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('profile')
+        else:
+            messages.error(request, 'Invalid username or password.')
+    
+    return render(request, 'registration/login.html')
+
+def logout_view(request):
+    logout(request)
+    return redirect('home')
+
+@login_required
+def profile_view(request):
+    return render(request, 'registration/profile.html')
+{% endraw %}</code></pre>
+
+                                <h5>User Profiles</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+# myapp/models.py
+from django.db import models
+from django.contrib.auth.models import User
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    bio = models.TextField(max_length=500, blank=True)
+    location = models.CharField(max_length=30, blank=True)
+    birth_date = models.DateField(null=True, blank=True)
+    avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
+    
+    def __str__(self):
+        return f'{self.user.username} Profile'
+
+# myapp/signals.py
+from django.db.models.signals import post_save
+from django.contrib.auth.models import User
+from django.dispatch import receiver
+from .models import Profile
+
+@receiver(post_save, sender=User)
+def create_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+
+@receiver(post_save, sender=User)
+def save_profile(sender, instance, **kwargs):
+    instance.profile.save()
+
+# myapp/apps.py
+from django.apps import AppConfig
+
+class MyAppConfig(AppConfig):
+    default_auto_field = 'django.db.models.BigAutoField'
+    name = 'myapp'
+    
+    def ready(self):
+        import myapp.signals
+{% endraw %}</code></pre>
+
+                                <h5>Custom Authentication Backend</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+# myapp/authentication.py
+from django.contrib.auth.backends import BaseBackend
+from django.contrib.auth.models import User
+
+class EmailBackend(BaseBackend):
+    def authenticate(self, request, username=None, password=None, **kwargs):
+        try:
+            user = User.objects.get(email=username)
+            if user.check_password(password):
+                return user
+        except User.DoesNotExist:
+            return None
+    
+    def get_user(self, user_id):
+        try:
+            return User.objects.get(pk=user_id)
+        except User.DoesNotExist:
+            return None
+
+# settings.py
+AUTHENTICATION_BACKENDS = [
+    'myapp.authentication.EmailBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
+{% endraw %}</code></pre>
+
+                                <h5>Permissions and Authorization</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+# myapp/models.py
+from django.db import models
+from django.contrib.auth.models import User
+
+class Post(models.Model):
+    title = models.CharField(max_length=200)
+    content = models.TextField()
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    
+    class Meta:
+        permissions = [
+            ("can_publish_post", "Can publish post"),
+            ("can_edit_any_post", "Can edit any post"),
+        ]
+
+# myapp/views.py
+from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.views.generic import UpdateView
+
+@login_required
+def my_view(request):
+    # Only logged-in users can access this view
+    return render(request, 'myapp/my_template.html')
+
+@permission_required('myapp.can_publish_post')
+def publish_post(request, post_id):
+    # Only users with the 'can_publish_post' permission can access this view
+    pass
+
+class PostUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+    model = Post
+    fields = ['title', 'content']
+    template_name = 'myapp/post_edit.html'
+    permission_required = 'myapp.can_edit_any_post'
+    
+    def get_success_url(self):
+        return reverse('myapp:post_detail', kwargs={'pk': self.object.pk})
+{% endraw %}</code></pre>
+
+                                <h5>Groups and Permissions</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+# myapp/views.py
+from django.contrib.auth.models import Group, Permission
+from django.contrib.contenttypes.models import ContentType
+from .models import Post
+
+def create_groups(request):
+    # Create groups
+    editors_group, created = Group.objects.get_or_create(name='Editors')
+    publishers_group, created = Group.objects.get_or_create(name='Publishers')
+    
+    # Get permissions
+    post_content_type = ContentType.objects.get_for_model(Post)
+    can_publish = Permission.objects.get(
+        codename='can_publish_post',
+        content_type=post_content_type
+    )
+    can_edit = Permission.objects.get(
+        codename='change_post',
+        content_type=post_content_type
+    )
+    
+    # Assign permissions to groups
+    editors_group.permissions.add(can_edit)
+    publishers_group.permissions.add(can_publish, can_edit)
+    
+    return HttpResponse("Groups created successfully")
+
+# In a view or management command
+def assign_user_to_group(user):
+    editors_group = Group.objects.get(name='Editors')
+    user.groups.add(editors_group)
+    user.save()
+{% endraw %}</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- Module 8: REST APIs with Django REST Framework -->
+                        <div class="module-card" id="module8">
+                            <div class="module-header" onclick="toggleModule('module8-content')">
+                                <span><i class="fas fa-plug"></i> Module 8: REST APIs with Django REST Framework</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="module-content" id="module8-content">
+                                <h5>Django REST Framework Setup</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+# settings.py
+INSTALLED_APPS = [
+    # ...
+    'rest_framework',
+    'myapp',
+]
+
+# REST Framework configuration
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ],
+}
+{% endraw %}</code></pre>
+
+                                <h5>Serializers</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+# myapp/serializers.py
+from rest_framework import serializers
+from .models import Post, Category, Comment
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ['id', 'name', 'description']
+
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = ['id', 'name', 'email', 'body', 'created_at']
+        read_only_fields = ['created_at']
+
+class PostSerializer(serializers.ModelSerializer):
+    author = serializers.ReadOnlyField(source='author.username')
+    category_name = serializers.ReadOnlyField(source='category.name')
+    comments = CommentSerializer(many=True, read_only=True)
+    
+    class Meta:
+        model = Post
+        fields = ['id', 'title', 'slug', 'content', 'author', 'category', 
+                  'category_name', 'status', 'created_at', 'updated_at', 'comments']
+        read_only_fields = ['author', 'created_at', 'updated_at']
+
+class PostDetailSerializer(PostSerializer):
+    # More detailed serializer for individual post view
+    comments = CommentSerializer(many=True, read_only=True)
+    
+    class Meta(PostSerializer.Meta):
+        fields = PostSerializer.Meta.fields
+
+class PostCreateSerializer(serializers.ModelSerializer):
+    # Serializer for creating posts
+    class Meta:
+        model = Post
+        fields = ['title', 'slug', 'content', 'status', 'category']
+    
+    def create(self, validated_data):
+        # Set the author to the current user
+        validated_data['author'] = self.context['request'].user
+        return super().create(validated_data)
+{% endraw %}</code></pre>
+
+                                <h5>API Views</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+# myapp/views.py
+from rest_framework import viewsets, permissions, status
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from .models import Post, Category
+from .serializers import PostSerializer, CategorySerializer, PostDetailSerializer
+
+class PostViewSet(viewsets.ModelViewSet):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    
+    def get_serializer_class(self):
+        if self.action == 'retrieve':
+            return PostDetailSerializer
+        return self.serializer_class
+    
+    def get_queryset(self):
+        queryset = Post.objects.all()
+        status_filter = self.request.query_params.get('status', None)
+        if status_filter is not None:
+            queryset = queryset.filter(status=status_filter)
+        return queryset
+    
+    @action(detail=True, methods=['post'])
+    def publish(self, request, pk=None):
+        post = self.get_object()
+        post.status = 'published'
+        post.save()
+        serializer = self.get_serializer(post)
+        return Response(serializer.data)
+    
+    @action(detail=False)
+    def published(self, request):
+        published_posts = Post.objects.filter(status='published')
+        page = self.paginate_queryset(published_posts)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        serializer = self.get_serializer(published_posts, many=True)
+        return Response(serializer.data)
+
+class CategoryViewSet(viewsets.ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+class PostLikeAPIView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def post(self, request, pk):
+        post = Post.objects.get(pk=pk)
+        # Like logic here
+        return Response({"message": "Post liked successfully"}, status=status.HTTP_200_OK)
+{% endraw %}</code></pre>
+
+                                <h5>URL Configuration for APIs</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+# myapp/urls.py
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from . import views
+
+router = DefaultRouter()
+router.register(r'posts', views.PostViewSet)
+router.register(r'categories', views.CategoryViewSet)
+
+urlpatterns = [
+    path('api/', include(router.urls)),
+    path('api/posts/<int:pk>/like/', views.PostLikeAPIView.as_view(), name='post-like'),
+]
+{% endraw %}</code></pre>
+
+                                <h5>Authentication for APIs</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+# myapp/views.py
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.authtoken.models import Token
+from rest_framework.response import Response
+
+class CustomAuthToken(ObtainAuthToken):
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data,
+                                           context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        token, created = Token.objects.get_or_create(user=user)
+        return Response({
+            'token': token.key,
+            'user_id': user.pk,
+            'email': user.email
+        })
+
+# myapp/urls.py
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    # ...
+    path('api/auth/login/', views.CustomAuthToken.as_view(), name='api_token_auth'),
+]
+{% endraw %}</code></pre>
+
+                                <h5>Custom Permissions</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+# myapp/permissions.py
+from rest_framework import permissions
+
+class IsAuthorOrReadOnly(permissions.BasePermission):
+    """
+    Custom permission to only allow authors of an object to edit it.
+    """
+    
+    def has_object_permission(self, request, view, obj):
+        # Read permissions are allowed to any request,
+        # so we'll always allow GET, HEAD or OPTIONS requests.
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        
+        # Write permissions are only allowed to the author of the post.
+        return obj.author == request.user
+
+# myapp/views.py
+from .permissions import IsAuthorOrReadOnly
+
+class PostViewSet(viewsets.ModelViewSet):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsAuthorOrReadOnly]
+{% endraw %}</code></pre>
+
+                                <h5>API Versioning</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+# myapp/urls.py
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from . import v1_views, v2_views
+
+router_v1 = DefaultRouter()
+router_v1.register(r'posts', v1_views.PostViewSet)
+
+router_v2 = DefaultRouter()
+router_v2.register(r'posts', v2_views.PostViewSet)
+
+urlpatterns = [
+    path('api/v1/', include(router_v1.urls)),
+    path('api/v2/', include(router_v2.urls)),
+]
+
+# settings.py
+REST_FRAMEWORK = {
+    'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.URLPathVersioning',
+    'DEFAULT_VERSION': 'v1',
+    'ALLOWED_VERSIONS': ['v1', 'v2'],
+    'VERSION_PARAM': 'version',
+}
+{% endraw %}</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- Module 9: Testing and Debugging -->
+                        <div class="module-card" id="module9">
+                            <div class="module-header" onclick="toggleModule('module9-content')">
+                                <span><i class="fas fa-bug"></i> Module 9: Testing and Debugging</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="module-content" id="module9-content">
+                                <h5>Writing Tests</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+# myapp/tests.py
+from django.test import TestCase, Client
+from django.contrib.auth.models import User
+from django.urls import reverse
+from .models import Post, Category
+
+class PostModelTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        # Set up non-modified objects used by all test methods
+        user = User.objects.create_user(username='testuser', password='testpass')
+        category = Category.objects.create(name='Test Category')
+        Post.objects.create(
+            title='Test Post',
+            slug='test-post',
+            content='This is a test post.',
+            author=user,
+            category=category,
+            status='published'
+        )
+    
+    def test_title_content(self):
+        post = Post.objects.get(id=1)
+        expected_object_name = f'{post.title}'
+        self.assertEqual(expected_object_name, 'Test Post')
+    
+    def test_post_get_absolute_url(self):
+        post = Post.objects.get(id=1)
+        self.assertEqual(post.get_absolute_url(), '/post/test-post/')
+
+class PostViewTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.user = User.objects.create_user(username='testuser', password='testpass')
+        self.category = Category.objects.create(name='Test Category')
+        self.post = Post.objects.create(
+            title='Test Post',
+            slug='test-post',
+            content='This is a test post.',
+            author=self.user,
+            category=self.category,
+            status='published'
+        )
+    
+    def test_post_list_view(self):
+        response = self.client.get(reverse('myapp:post_list'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Test Post')
+        self.assertTemplateUsed(response, 'myapp/post/list.html')
+    
+    def test_post_detail_view(self):
+        response = self.client.get(reverse('myapp:post_detail', kwargs={'slug': 'test-post'}))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Test Post')
+        self.assertTemplateUsed(response, 'myapp/post/detail.html')
+    
+    def test_post_create_view(self):
+        self.client.login(username='testuser', password='testpass')
+        response = self.client.get(reverse('myapp:post_create'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'myapp/post/create.html')
+        
+        response = self.client.post(reverse('myapp:post_create'), {
+            'title': 'New Test Post',
+            'slug': 'new-test-post',
+            'content': 'This is a new test post.',
+            'status': 'published',
+            'category': self.category.id
+        })
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(Post.objects.filter(slug='new-test-post').exists())
+{% endraw %}</code></pre>
+
+                                <h5>Testing APIs</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+# myapp/tests.py
+from django.test import TestCase
+from django.contrib.auth.models import User
+from rest_framework.test import APIClient
+from rest_framework import status
+from .models import Post
+
+class PostAPITestCase(TestCase):
+    def setUp(self):
+        self.client = APIClient()
+        self.user = User.objects.create_user(username='testuser', password='testpass')
+        self.post = Post.objects.create(
+            title='Test Post',
+            slug='test-post',
+            content='This is a test post.',
+            author=self.user,
+            status='published'
+        )
+    
+    def test_get_posts(self):
+        response = self.client.get('/api/posts/')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 1)
+        self.assertEqual(response.data[0]['title'], 'Test Post')
+    
+    def test_create_post_unauthorized(self):
+        response = self.client.post('/api/posts/', {
+            'title': 'New Post',
+            'content': 'This is a new post.',
+            'status': 'published'
+        })
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+    
+    def test_create_post_authorized(self):
+        self.client.force_authenticate(user=self.user)
+        response = self.client.post('/api/posts/', {
+            'title': 'New Post',
+            'content': 'This is a new post.',
+            'status': 'published'
+        })
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertTrue(Post.objects.filter(title='New Post').exists())
+    
+    def test_update_post(self):
+        self.client.force_authenticate(user=self.user)
+        response = self.client.put(f'/api/posts/{self.post.id}/', {
+            'title': 'Updated Post',
+            'content': 'This is an updated post.',
+            'status': 'published'
+        })
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.post.refresh_from_db()
+        self.assertEqual(self.post.title, 'Updated Post')
+    
+    def test_delete_post(self):
+        self.client.force_authenticate(user=self.user)
+        response = self.client.delete(f'/api/posts/{self.post.id}/')
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertFalse(Post.objects.filter(id=self.post.id).exists())
+{% endraw %}</code></pre>
+
+                                <h5>Test Fixtures</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-json">{% raw %}
+# myapp/fixtures/test_data.json
+[
+    {
+        "model": "auth.user",
+        "pk": 1,
+        "fields": {
+            "username": "testuser",
+            "email": "test@example.com",
+            "password": "pbkdf2_sha256$260000$..."
+        }
+    },
+    {
+        "model": "myapp.category",
+        "pk": 1,
+        "fields": {
+            "name": "Test Category",
+            "description": "A test category"
+        }
+    },
+    {
+        "model": "myapp.post",
+        "pk": 1,
+        "fields": {
+            "title": "Test Post",
+            "slug": "test-post",
+            "content": "This is a test post.",
+            "author": 1,
+            "category": 1,
+            "status": "published",
+            "created_at": "2023-01-01T00:00:00Z"
+        }
+    }
+]
+{% endraw %}</code></pre>
+
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+# myapp/tests.py
+from django.test import TestCase
+
+class PostTestCase(TestCase):
+    fixtures = ['test_data.json']
+    
+    def test_post_count(self):
+        self.assertEqual(Post.objects.count(), 1)
+    
+    def test_post_title(self):
+        post = Post.objects.get(pk=1)
+        self.assertEqual(post.title, 'Test Post')
+{% endraw %}</code></pre>
+
+                                <h5>Debugging Tools</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+# Using Django Debug Toolbar
+# settings.py
+if DEBUG:
+    INSTALLED_APPS += [
+        'debug_toolbar',
+    ]
+    MIDDLEWARE += [
+        'debug_toolbar.middleware.DebugToolbarMiddleware',
+    ]
+    INTERNAL_IPS = [
+        '127.0.0.1',
+    ]
+
+# myproject/urls.py
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns += [
+        path('__debug__/', include(debug_toolbar.urls)),
+    ]
+
+# Using Django Extensions
+# settings.py
+INSTALLED_APPS += [
+    'django_extensions',
+]
+
+# Commands
+python manage.py shell_plus
+python manage.py runserver_plus
+python manage.py print_user_for_session <session_key>
+python manage.py describe_form <app.model.field>
+python manage.py dumpscript <app> > script.py
+
+# Using pdb for debugging
+def my_view(request):
+    import pdb; pdb.set_trace()
+    # Code execution will stop here and you can debug
+    post = get_object_or_404(Post, pk=id)
+    return render(request, 'template.html', {'post': post})
+{% endraw %}</code></pre>
+
+                                <h5>Logging Configuration</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+# settings.py
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': BASE_DIR / 'logs/django.log',
+            'formatter': 'verbose',
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file', 'console'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+        'myapp': {
+            'handlers': ['file', 'console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
+
+# Using logging in views
+import logging
+
+logger = logging.getLogger(__name__)
+
+def my_view(request):
+    logger.debug('Debug message')
+    logger.info('Info message')
+    logger.warning('Warning message')
+    logger.error('Error message')
+    logger.critical('Critical message')
+    
+    try:
+        # Some code that might raise an exception
+        result = 1 / 0
+    except Exception as e:
+        logger.exception(f'An error occurred: {e}')
+    
+    return render(request, 'template.html')
+{% endraw %}</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- Module 10: Deployment and Scaling -->
+                        <div class="module-card" id="module10">
+                            <div class="module-header" onclick="toggleModule('module10-content')">
+                                <span><i class="fas fa-server"></i> Module 10: Deployment and Scaling</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="module-content" id="module10-content">
+                                <h5>Production Settings</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+# settings/production.py
+from .base import *
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = False
+
+ALLOWED_HOSTS = ['yourdomain.com', 'www.yourdomain.com']
+
+# Security settings
+SECURE_SSL_REDIRECT = True
+SECURE_HSTS_SECONDS = 31536000
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_BROWSER_XSS_FILTER = True
+X_FRAME_OPTIONS = 'DENY'
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# Database
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('DB_NAME'),
+        'USER': os.environ.get('DB_USER'),
+        'PASSWORD': os.environ.get('DB_PASSWORD'),
+        'HOST': os.environ.get('DB_HOST', 'localhost'),
+        'PORT': os.environ.get('DB_PORT', '5432'),
+    }
+}
+
+# Static files
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+MEDIA_ROOT = BASE_DIR / 'mediafiles'
+
+# Email
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = os.environ.get('EMAIL_HOST')
+EMAIL_PORT = os.environ.get('EMAIL_PORT', 587)
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL')
+
+# Cache
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+        'LOCATION': os.environ.get('REDIS_URL', 'redis://127.0.0.1:6379/1'),
+    }
+}
+
+# Logging
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': BASE_DIR / 'logs/django.log',
+            'formatter': 'verbose',
+        },
+    },
+    'root': {
+        'handlers': ['file'],
+        'level': 'INFO',
+    },
+}
+{% endraw %}</code></pre>
+
+                                <h5>Environment Variables</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+# .env file (never commit to version control)
+SECRET_KEY=your-secret-key-here
+DEBUG=False
+ALLOWED_HOSTS=yourdomain.com,www.yourdomain.com
+
+# Database
+DB_NAME=mydatabase
+DB_USER=myuser
+DB_PASSWORD=mypassword
+DB_HOST=localhost
+DB_PORT=5432
+
+# Email
+EMAIL_HOST=smtp.gmail.com
+EMAIL_PORT=587
+EMAIL_HOST_USER=your-email@gmail.com
+EMAIL_HOST_PASSWORD=your-app-password
+DEFAULT_FROM_EMAIL=your-email@gmail.com
+
+# Redis
+REDIS_URL=redis://127.0.0.1:6379/1
+
+# settings/base.py
+import os
+from pathlib import Path
+from dotenv import load_dotenv
+
+load_dotenv()
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+SECRET_KEY = os.environ.get('SECRET_KEY')
+DEBUG = os.environ.get('DEBUG', 'False').lower() in ('true', '1', 't')
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',')
+{% endraw %}</code></pre>
+
+                                <h5>Gunicorn Deployment</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
+# Install Gunicorn
+pip install gunicorn
+
+# Run with Gunicorn
+gunicorn myproject.wsgi:application
+
+# With specific settings
+gunicorn myproject.wsgi:application --env DJANGO_SETTINGS_MODULE=myproject.settings.production
+
+# With workers
+gunicorn myproject.wsgi:application --workers 3 --bind 0.0.0.0:8000
+
+# gunicorn.conf.py
+bind = "0.0.0.0:8000"
+workers = 3
+worker_class = "sync"
+worker_connections = 1000
+timeout = 30
+keepalive = 2
+max_requests = 1000
+max_requests_jitter = 100
+preload_app = True
+user = "www-data"
+group = "www-data"
+tmp_upload_dir = None
+errorlog = "/var/log/gunicorn/error.log"
+accesslog = "/var/log/gunicorn/access.log"
+loglevel = "info"
+{% endraw %}</code></pre>
+
+                                <h5>Systemd Service</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-ini">{% raw %}
+# /etc/systemd/system/gunicorn.service
+[Unit]
+Description=gunicorn daemon for myproject
+After=network.target
+
+[Service]
+User=www-data
+Group=www-data
+WorkingDirectory=/path/to/myproject
+ExecStart=/path/to/venv/bin/gunicorn --config gunicorn.conf.py myproject.wsgi:application
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+{% endraw %}</code></pre>
+
+                                <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
+# Enable and start the service
+sudo systemctl enable gunicorn
+sudo systemctl start gunicorn
+sudo systemctl status gunicorn
+sudo journalctl -u gunicorn
+{% endraw %}</code></pre>
+
+                                <h5>Nginx Configuration</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-nginx">{% raw %}
+# /etc/nginx/sites-available/myproject
+server {
+    listen 80;
+    server_name yourdomain.com www.yourdomain.com;
+    return 301 https://$server_name$request_uri;
+}
+
+server {
+    listen 443 ssl http2;
+    server_name yourdomain.com www.yourdomain.com;
+
+    ssl_certificate /path/to/ssl/cert.pem;
+    ssl_certificate_key /path/to/ssl/private.key;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers ECDHE-RSA-AES256-GCM-SHA512:DHE-RSA-AES256-GCM-SHA512:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384;
+    ssl_prefer_server_ciphers off;
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location /static/ {
+        root /path/to/myproject;
+    }
+    
+    location /media/ {
+        root /path/to/myproject;
+    }
+
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/run/gunicorn.sock;
+    }
+}
+{% endraw %}</code></pre>
+
+                                <h5>Docker Deployment</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-dockerfile">{% raw %}
+# Dockerfile
+FROM python:3.9-slim
+
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+# Set work directory
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        postgresql-client \
+        build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Python dependencies
+COPY requirements.txt /app/
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy project
+COPY . /app/
+
+# Collect static files
+RUN python manage.py collectstatic --noinput
+
+# Expose port
+EXPOSE 8000
+
+# Run the application
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "myproject.wsgi:application"]
+{% endraw %}</code></pre>
+
+                                <pre><button class="copy-button">Copy</button><code class="language-yaml">{% raw %}
+# docker-compose.yml
+version: '3.8'
+
+services:
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: mydatabase
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:6-alpine
+    ports:
+      - "6379:6379"
+
+  web:
+    build: .
+    command: gunicorn --bind 0.0.0.0:8000 myproject.wsgi:application
+    volumes:
+      - .:/app
+      - static_volume:/app/staticfiles
+      - media_volume:/app/mediafiles
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - redis
+    environment:
+      - DEBUG=False
+      - DB_HOST=db
+      - DB_NAME=mydatabase
+      - DB_USER=myuser
+      - DB_PASSWORD=mypassword
+      - REDIS_URL=redis://redis:6379/1
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - static_volume:/app/staticfiles
+      - media_volume:/app/mediafiles
+      - ./ssl:/etc/ssl/certs
+    depends_on:
+      - web
+
+volumes:
+  postgres_data:
+  static_volume:
+  media_volume:
+{% endraw %}</code></pre>
+
+                                <h5>Scaling with Celery</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-python">{% raw %}
+# myproject/celery.py
+import os
+from celery import Celery
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'myproject.settings.production')
+
+app = Celery('myproject')
+app.config_from_object('django.conf:settings', namespace='CELERY')
+app.autodiscover_tasks()
+
+# settings/production.py
+CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL', 'redis://localhost:6379/0')
+CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND', 'redis://localhost:6379/0')
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'UTC'
+
+# myapp/tasks.py
+from celery import shared_task
+from django.core.mail import send_mail
+from .models import Post
+
+@shared_task
+def send_new_post_email(post_id):
+    try:
+        post = Post.objects.get(id=post_id)
+        send_mail(
+            subject=f'New Post: {post.title}',
+            message=post.content,
+            from_email='noreply@example.com',
+            recipient_list=['user@example.com'],
+            fail_silently=False,
+        )
+        return f"Email sent for post {post.title}"
+    except Post.DoesNotExist:
+        return f"Post with id {post_id} does not exist"
+
+# myapp/views.py
+from .tasks import send_new_post_email
+
+def post_create(request):
+    # ... form processing ...
+    post = form.save()
+    send_new_post_email.delay(post.id)
+    return redirect('myapp:post_detail', slug=post.slug)
+{% endraw %}</code></pre>
+
+                                <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
+# Run Celery worker
+celery -A myproject worker -l info
+
+# Run Celery beat (scheduler)
+celery -A myproject beat -l info
+
+# Run Celery flower (monitoring)
+pip install flower
+celery -A myproject flower
+{% endraw %}</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="mt-5 text-center">
+                            <a href="/practice" class="btn btn-primary btn-lg">Take Practice Test</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -234,11 +2862,56 @@ if os.environ.get('DJANGO_ENV') == 'production':
     </section>
 
     <script>
+        // Toggle module content
+        function toggleModule(contentId) {
+            const content = document.getElementById(contentId);
+            const header = content.previousElementSibling;
+            
+            if (content.classList.contains('collapsed')) {
+                content.classList.remove('collapsed');
+                header.classList.remove('collapsed');
+            } else {
+                content.classList.add('collapsed');
+                header.classList.add('collapsed');
+            }
+        }
+
+        // Smooth scrolling for sidebar navigation
+        document.querySelectorAll('.sidebar .nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }
+                // Update active state
+                document.querySelectorAll('.sidebar .nav-link').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Search functionality for sidebar
         document.getElementById('search-input').addEventListener('input', function() {
             const query = this.value.toLowerCase();
-            const content = document.getElementById('content');
-            const elements = content.querySelectorAll('h2, h3, h4, p, li, pre, code');
+            const navLinks = document.querySelectorAll('.sidebar .nav-link');
             
+            navLinks.forEach(link => {
+                const text = link.textContent.toLowerCase();
+                if (query === '' || text.includes(query)) {
+                    link.style.display = '';
+                } else {
+                    link.style.display = 'none';
+                }
+            });
+        });
+
+        // Search functionality for main content
+        document.getElementById('search-input-main').addEventListener('input', function() {
+            const query = this.value.toLowerCase();
+            const content = document.getElementById('content');
+            const elements = content.querySelectorAll('h2, h3, h4, h5, h6, p, pre, .module-card');
+
             elements.forEach(element => {
                 const text = element.textContent.toLowerCase();
                 if (query === '' || text.includes(query)) {
@@ -248,7 +2921,17 @@ if os.environ.get('DJANGO_ENV') == 'production':
                 }
             });
         });
-        
+
+        // Clear search function
+        function clearSearch() {
+            document.getElementById('search-input').value = '';
+            const navLinks = document.querySelectorAll('.sidebar .nav-link');
+            navLinks.forEach(link => {
+                link.style.display = '';
+            });
+        }
+
+        // Copy to clipboard functionality
         const copyButtons = document.querySelectorAll('.copy-button');
         copyButtons.forEach(button => {
             button.addEventListener('click', function() {
@@ -258,6 +2941,27 @@ if os.environ.get('DJANGO_ENV') == 'production':
                 setTimeout(() => {
                     this.textContent = 'Copy';
                 }, 2000);
+            });
+        });
+
+        // Highlight active section in sidebar based on scroll position
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('[id]');
+            const navLinks = document.querySelectorAll('.sidebar .nav-link');
+
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
             });
         });
     </script>

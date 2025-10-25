@@ -1,51 +1,358 @@
 {% extends 'base.html' %}
 
-{% block title %}Node.js Docs - SN VERSE{% endblock %}
+{% block title %}Node.js Documentation - SN VERSE{% endblock %}
 
 {% block head %}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/github-dark.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/github.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/languages/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/languages/bash.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.3/purify.min.js"></script>
+    <style>
+        body {
+            background: #f8f9fa;
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #212529;
+        }
+        .sidebar {
+            position: fixed;
+            top: 70px;
+            left: 0;
+            width: 280px;
+            height: calc(100vh - 70px);
+            background: #343a40;
+            border-right: 1px solid #495057;
+            overflow-y: auto;
+            z-index: 1000;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+        }
+        .sidebar .nav-link {
+            color: #adb5bd;
+            padding: 12px 20px;
+            border-radius: 0;
+            margin: 0;
+            transition: all 0.2s ease;
+            font-weight: 500;
+            border-left: 3px solid transparent;
+        }
+        .sidebar .nav-link:hover {
+            background: #495057;
+            color: #fff;
+            text-decoration: none;
+            border-left-color: #61dafb;
+        }
+        .sidebar .nav-link.active {
+            background: #61dafb;
+            color: #212529;
+            border-left-color: #61dafb;
+        }
+        .main-content {
+            margin-left: 280px;
+            padding: 30px;
+            max-width: 1200px;
+        }
+
+        .content-card {
+            margin-bottom: 30px;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            background: #fff;
+        }
+        .content-card .card-header {
+            background: #61dafb;
+            color: #212529;
+            font-weight: 600;
+            font-size: 1.1rem;
+            border-bottom: 1px solid #dee2e6;
+            padding: 15px 20px;
+            border-radius: 8px 8px 0 0;
+        }
+        .search-container {
+            background: rgba(255,255,255,0.9);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .accordion-button:not(.collapsed) {
+            background: #e6f7ff;
+            color: #61dafb;
+            font-weight: 500;
+        }
+        .accordion-button {
+            border-radius: 0;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+        .accordion-button:focus {
+            box-shadow: none;
+        }
+        .badge-note {
+            background: #e9ecef;
+            color: #495057;
+            font-weight: 500;
+        }
+        .badge-tip {
+            background: #d1ecf1;
+            color: #0c5460;
+            font-weight: 500;
+        }
+        .btn {
+            border-radius: 6px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .copy-button {
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 4px 8px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .copy-button:hover {
+            background: #5a6268;
+            transform: scale(1.05);
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Inter', sans-serif;
+            color: #212529;
+            font-weight: 600;
+        }
+        .card-body {
+            padding: 20px;
+        }
+        .table {
+            margin-bottom: 0;
+        }
+        .table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            border-top: none;
+        }
+        pre {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+        }
+        code {
+            background: #f1f3f4;
+            color: #d73a49;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+        .node-logo {
+            color: #68a063;
+            font-weight: 700;
+        }
+        .data-type-section {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #61dafb;
+        }
+        .method-table {
+            width: 100%;
+            margin-top: 10px;
+            margin-bottom: 15px;
+        }
+        .method-table th {
+            background-color: #e9ecef;
+            text-align: left;
+            padding: 8px;
+        }
+        .method-table td {
+            padding: 8px;
+            border-bottom: 1px solid #dee2e6;
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+            .main-content {
+                margin-left: 0;
+            }
+        }
+    </style>
     <script>
         hljs.highlightAll();
     </script>
 {% endblock %}
 
 {% block content %}
-    <!-- Node.js Docs Page -->
-    <section class="docs-page py-5">
-        <div class="container-fluid">
-            <div class="row">
-                <!-- Documentation Content -->
-                <div class="col-md-12">
-                    <!-- Search Box -->
-                    <div class="search-container mb-4">
-                        <input type="text" id="search-input" class="form-control" placeholder="Search documentation...">
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar">
+        <div class="p-3">
+            <h5 class="text-center mb-3" style="font-size: 1.1rem; color: #fff; font-weight: 600;"><i class="fab fa-node-js"></i> <span class="node-logo">Node.js</span> Documentation</h5>
+
+            <!-- Search Box -->
+            <div class="search-container">
+                <input type="text" id="search-input" class="form-control" placeholder="Search documentation..." style="background: rgba(255,255,255,0.9); border: 1px solid #495057; color: #212529;">
+                <button class="btn btn-sm btn-outline-dark mt-2 w-100" onclick="clearSearch()">Clear Search</button>
+            </div>
+
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link" href="#module1"><i class="fas fa-info-circle"></i> Module 1: Introduction to Node.js</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module2"><i class="fas fa-cogs"></i> Module 2: Setup and Installation</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module3"><i class="fas fa-code"></i> Module 3: Core Concepts</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module4"><i class="fas fa-folder"></i> Module 4: File System Operations</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module5"><i class="fas fa-globe"></i> Module 5: HTTP Module and Web Servers</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module6"><i class="fas fa-rocket"></i> Module 6: Express.js Framework</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module7"><i class="fas fa-database"></i> Module 7: Database Integration</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module8"><i class="fas fa-shield-alt"></i> Module 8: Authentication and Security</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module9"><i class="fas fa-project-diagram"></i> Module 9: Building RESTful APIs</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module10"><i class="fas fa-exclamation-triangle"></i> Module 10: Error Handling</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module11"><i class="fas fa-vial"></i> Module 11: Testing Node.js Applications</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module12"><i class="fas fa-tachometer-alt"></i> Module 12: Performance Optimization</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module13"><i class="fas fa-stream"></i> Module 13: Streams and Buffers</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module14"><i class="fas fa-star"></i> Module 14: Node.js Best Practices</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module15"><i class="fas fa-lightbulb"></i> Module 15: Real-World Examples</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div id="content">
+            <h1 class="mb-4" style="text-align: center;"><span class="node-logo">Node.js</span> Documentation</h1>
+            <p style="text-align: center; font-size: 1.1rem; color: #6c757d;">Complete guide to Node.js from basics to advanced</p>
+
+            <!-- Module 1: Introduction to Node.js -->
+            <div class="content-card" id="module1">
+                <div class="card-header">
+                    <i class="fas fa-info-circle"></i> Module 1: Introduction to Node.js
+                </div>
+                <div class="card-body">
+                    <h5>What is Node.js?</h5>
+                    <p>Node.js is an open-source, cross-platform JavaScript runtime environment that executes JavaScript code outside a web browser. It allows developers to use JavaScript to write command line tools and for server-side scripting.</p>
+
+                    <h5>Key Features</h5>
+                    <ul>
+                        <li><strong>Asynchronous and Event-Driven</strong> - All APIs are asynchronous and non-blocking</li>
+                        <li><strong>Single-Threaded</strong> - Uses a single thread with event looping for scalability</li>
+                        <li><strong>High Performance</strong> - Built on Google Chrome's V8 JavaScript engine</li>
+                        <li><strong>NPM Ecosystem</strong> - Largest ecosystem of open-source libraries</li>
+                        <li><strong>Cross-Platform</strong> - Runs on Windows, macOS, and Linux</li>
+                    </ul>
+
+                    <h5>Why Node.js?</h5>
+                    <div class="data-type-section">
+                        <h6>Performance Benefits</h6>
+                        <p>Node.js's event-driven, non-blocking I/O model makes it lightweight and efficient, perfect for data-intensive real-time applications that run across distributed devices.</p>
+                        
+                        <h6>Full-Stack JavaScript</h6>
+                        <p>With Node.js, you can use JavaScript for both frontend and backend development, simplifying the development process and reducing context switching.</p>
+                        
+                        <h6>Rich Ecosystem</h6>
+                        <p>Node Package Manager (NPM) provides access to thousands of libraries, making development faster and more efficient.</p>
                     </div>
-                    <div id="content">
-                        <h2 class="mb-4">Node.js Documentation</h2>
-                        <p>Welcome to the comprehensive Node.js documentation. Here, you'll find detailed guides and tutorials for building server-side applications with Node.js.</p>
 
-                        <h3 id="introduction" class="mt-5">Introduction to Node.js</h3>
-                        <p>Node.js is an open-source, cross-platform JavaScript runtime environment that executes JavaScript code outside a web browser. It allows developers to use JavaScript to write command line tools and for server-side scripting.</p>
-                        <p>Key features of Node.js:</p>
-                        <ul>
-                            <li><strong>Asynchronous and Event-Driven</strong> - All APIs are asynchronous and non-blocking</li>
-                            <li><strong>Single-Threaded</strong> - Uses a single thread with event looping for scalability</li>
-                            <li><strong>High Performance</strong> - Built on Google Chrome's V8 JavaScript engine</li>
-                            <li><strong>NPM Ecosystem</strong> - Largest ecosystem of open-source libraries</li>
-                            <li><strong>Cross-Platform</strong> - Runs on Windows, macOS, and Linux</li>
-                        </ul>
+                    <h5>Node.js vs Other Backend Technologies</h5>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>Node.js</th>
+                                <th>Python (Django)</th>
+                                <th>Java (Spring)</th>
+                                <th>PHP (Laravel)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Performance</td>
+                                <td>Excellent</td>
+                                <td>Good</td>
+                                <td>Excellent</td>
+                                <td>Good</td>
+                            </tr>
+                            <tr>
+                                <td>Learning Curve</td>
+                                <td>Moderate</td>
+                                <td>Easy</td>
+                                <td>Steep</td>
+                                <td>Easy</td>
+                            </tr>
+                            <tr>
+                                <td>Scalability</td>
+                                <td>Excellent</td>
+                                <td>Good</td>
+                                <td>Excellent</td>
+                                <td>Good</td>
+                            </tr>
+                            <tr>
+                                <td>Ecosystem</td>
+                                <td>Excellent</td>
+                                <td>Good</td>
+                                <td>Good</td>
+                                <td>Good</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
-                        <h3 id="setup" class="mt-5">Setup and Installation</h3>
-                        <p>There are several ways to install Node.js on your system:</p>
+            <!-- Module 2: Setup and Installation -->
+            <div class="content-card" id="module2">
+                <div class="card-header">
+                    <i class="fas fa-cogs"></i> Module 2: Setup and Installation
+                </div>
+                <div class="card-body">
+                    <h5>Prerequisites</h5>
+                    <p>Before starting with Node.js, ensure you have:</p>
+                    <ul>
+                        <li>Basic knowledge of JavaScript</li>
+                        <li>Familiarity with command line/terminal</li>
+                        <li>Text editor or IDE (VS Code, WebStorm, etc.)</li>
+                    </ul>
 
-                        <h4>Official Installer</h4>
-                        <p>Download the installer from the official website: <a href="https://nodejs.org/" target="_blank">nodejs.org</a></p>
-
-                        <h4>Using Version Manager (Recommended)</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
-# Install NVM (Node Version Manager)
+                    <h5>Installation Methods</h5>
+                    
+                    <h6>Using Version Manager (Recommended)</h6>
+                    {% raw %}
+                    <pre><button class="copy-button">Copy</button><code class="language-bash"># Install NVM (Node Version Manager)
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
 
 # Reload your shell
@@ -61,27 +368,70 @@ nvm use 18.17.0
 nvm ls
 
 # Switch between versions
-nvm use 16.20.0
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+nvm use 16.20.0</code></pre>
+                    {% endraw %}
 
-                        <h4>Verify Installation</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
-# Check Node.js version
+                    <h6>Official Installer</h6>
+                    <p>Download the installer from the official website: <a href="https://nodejs.org/" target="_blank">nodejs.org</a></p>
+
+                    <h5>Verify Installation</h5>
+                    {% raw %}
+                    <pre><button class="copy-button">Copy</button><code class="language-bash"># Check Node.js version
 node --version
 
 # Check npm version
 npm --version
 
 # Check npx version
-npx --version
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+npx --version</code></pre>
+                    {% endraw %}
 
-                        <h3 id="core-concepts" class="mt-5">Core Concepts</h3>
+                    <h5>Setting Up Your Development Environment</h5>
+                    {% raw %}
+                    <pre><button class="copy-button">Copy</button><code class="language-bash"># Initialize a new Node.js project
+mkdir my-node-app
+cd my-node-app
+npm init -y
 
-                        <h4>Event Loop</h4>
-                        <p>The event loop is what allows Node.js to perform non-blocking I/O operations despite being single-threaded.</p>
-                        <pre><button class="copy-button">Copy</button><code class="language-javascript">{% raw %}
-// Example of event loop behavior
+# Install Express.js for web applications
+npm install express
+
+# Install nodemon for auto-restarting during development
+npm install --save-dev nodemon
+
+# Create a basic server
+echo "const express = require('express');
+const app = express();
+const port = process.env.PORT || 3000;
+
+app.get('/', (req, res) => {
+  res.send('Hello World!');
+});
+
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+});" > server.js
+
+# Add start script to package.json
+npm pkg set scripts.start "nodemon server.js"
+
+# Start the development server
+npm start</code></pre>
+                    {% endraw %}
+                </div>
+            </div>
+
+            <!-- Module 3: Core Concepts -->
+            <div class="content-card" id="module3">
+                <div class="card-header">
+                    <i class="fas fa-code"></i> Module 3: Core Concepts
+                </div>
+                <div class="card-body">
+                    <h5>Event Loop</h5>
+                    <p>The event loop is what allows Node.js to perform non-blocking I/O operations despite being single-threaded. It's the mechanism that takes callbacks (functions) and registers them to be executed at some later time.</p>
+                    
+                    {% raw %}
+                    <pre><button class="copy-button">Copy</button><code class="language-javascript">// Example of event loop behavior
 console.log('Start');
 
 setTimeout(() => {
@@ -108,13 +458,14 @@ console.log('End');
 // Promise 1
 // Promise 2
 // Timeout 1
-// Timeout 2
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+// Timeout 2</code></pre>
+                    {% endraw %}
 
-                        <h4>Modules</h4>
-                        <p>Node.js uses the CommonJS module system by default. Each file is treated as a separate module.</p>
-                        <pre><button class="copy-button">Copy</button><code class="language-javascript">{% raw %}
-// math.js - Exporting functions
+                    <h5>Modules</h5>
+                    <p>Node.js uses the CommonJS module system by default. Each file is treated as a separate module.</p>
+                    
+                    {% raw %}
+                    <pre><button class="copy-button">Copy</button><code class="language-javascript">// math.js - Exporting functions
 function add(a, b) {
     return a + b;
 }
@@ -140,30 +491,12 @@ const { add, subtract } = require('./math');
 
 console.log(add(5, 3));        // 8
 console.log(subtract(5, 3));   // 2
-console.log(math.multiply(5, 3)); // 15
+console.log(math.multiply(5, 3)); // 15</code></pre>
+                    {% endraw %}
 
-// ES Modules (package.json: "type": "module")
-// utils.mjs
-export const helper = () => {
-    return 'Helper function';
-};
-
-export default class Utility {
-    static log(message) {
-        console.log(message);
-    }
-};
-
-// app.mjs
-import Utility, { helper } from './utils.mjs';
-import fs from 'fs';
-
-Utility.log(helper());
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
-
-                        <h4>Global Objects</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-javascript">{% raw %}
-// Global objects available in Node.js
+                    <h5>Global Objects</h5>
+                    {% raw %}
+                    <pre><button class="copy-button">Copy</button><code class="language-javascript">// Global objects available in Node.js
 console.log(__filename);  // Current file path
 console.log(__dirname);    // Directory path of current file
 console.log(process.cwd()); // Current working directory
@@ -185,15 +518,99 @@ setInterval(() => {
 
 // Buffer (Node.js specific)
 const buf = Buffer.from('Hello World');
-console.log(buf.toString()); // Hello World
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+console.log(buf.toString()); // Hello World</code></pre>
+                    {% endraw %}
 
-                        <h3 id="file-system" class="mt-5">File System Operations</h3>
-                        <p>Node.js provides a built-in fs module for file system operations.</p>
+                    <h5>Callback Pattern</h5>
+                    <p>Callbacks are functions passed as arguments to other functions, which are then invoked inside the outer function to complete some kind of routine or action.</p>
+                    
+                    {% raw %}
+                    <pre><button class="copy-button">Copy</button><code class="language-javascript">// Synchronous callback
+function greet(name, callback) {
+    console.log(`Hello, ${name}!`);
+    callback();
+}
 
-                        <h4>Synchronous vs Asynchronous</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-javascript">{% raw %}
-const fs = require('fs');
+greet('Alice', () => {
+    console.log('Callback executed');
+});
+
+// Asynchronous callback
+function fetchData(callback) {
+    setTimeout(() => {
+        callback('Data fetched');
+    }, 1000);
+}
+
+fetchData((data) => {
+    console.log(data);
+});
+
+// Callback hell (nested callbacks)
+fs.readFile('file1.txt', 'utf8', (err, data1) => {
+    if (err) throw err;
+    fs.readFile('file2.txt', 'utf8', (err, data2) => {
+        if (err) throw err;
+        fs.readFile('file3.txt', 'utf8', (err, data3) => {
+            if (err) throw err;
+            console.log(data1, data2, data3);
+        });
+    });
+});</code></pre>
+                    {% endraw %}
+
+                    <h5>Promises and Async/Await</h5>
+                    <p>Promises provide a cleaner way to handle asynchronous operations, avoiding callback hell.</p>
+                    
+                    {% raw %}
+                    <pre><button class="copy-button">Copy</button><code class="language-javascript">// Creating a promise
+const myPromise = new Promise((resolve, reject) => {
+    setTimeout(() => {
+        resolve('Promise resolved');
+    }, 1000);
+});
+
+// Using promises
+myPromise
+    .then(result => console.log(result))
+    .catch(error => console.error(error));
+
+// Async/await syntax
+async function fetchData() {
+    try {
+        const data = await myPromise;
+        console.log(data);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+fetchData();
+
+// Promise.all for parallel operations
+const promise1 = Promise.resolve('One');
+const promise2 = Promise.resolve('Two');
+const promise3 = Promise.resolve('Three');
+
+Promise.all([promise1, promise2, promise3])
+    .then(results => console.log(results))
+    .catch(error => console.error(error));</code></pre>
+                    {% endraw %}
+                </div>
+            </div>
+
+            <!-- Module 4: File System Operations -->
+            <div class="content-card" id="module4">
+                <div class="card-header">
+                    <i class="fas fa-folder"></i> Module 4: File System Operations
+                </div>
+                <div class="card-body">
+                    <h5>File System Module</h5>
+                    <p>Node.js provides a built-in fs module for file system operations. It offers both synchronous and asynchronous methods.</p>
+                    
+                    <h5>Synchronous vs Asynchronous</h5>
+                    {% raw %}
+                    <pre><button class="copy-button">Copy</button><code class="language-javascript">const fs = require('fs');
 const path = require('path');
 
 // Asynchronous operations (recommended)
@@ -225,12 +642,12 @@ async function readFileAsync() {
     }
 }
 
-readFileAsync();
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+readFileAsync();</code></pre>
+                    {% endraw %}
 
-                        <h4>File Operations</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-javascript">{% raw %}
-const fs = require('fs');
+                    <h5>File Operations</h5>
+                    {% raw %}
+                    <pre><button class="copy-button">Copy</button><code class="language-javascript">const fs = require('fs');
 const path = require('path');
 
 // Create directory
@@ -249,56 +666,28 @@ fs.writeFile(filePath, content, 'utf8', (err) => {
     console.log('File written');
 });
 
-// Append to file
-fs.appendFile(filePath, '\nAppended content', 'utf8', (err) => {
-    if (err) throw err;
-    console.log('Content appended');
-});
-
 // Read file
 fs.readFile(filePath, 'utf8', (err, data) => {
     if (err) throw err;
     console.log('File content:', data);
 });
 
-// Check if file exists
-fs.access(filePath, fs.constants.F_OK, (err) => {
-    if (err) {
-        console.log('File does not exist');
-    } else {
-        console.log('File exists');
-    }
-});
-
-// Get file stats
-fs.stat(filePath, (err, stats) => {
+// Append to file
+fs.appendFile(filePath, '\nAppended content', 'utf8', (err) => {
     if (err) throw err;
-    console.log('File size:', stats.size);
-    console.log('Is file:', stats.isFile());
-    console.log('Is directory:', stats.isDirectory());
-    console.log('Created:', stats.birthtime);
-    console.log('Modified:', stats.mtime);
+    console.log('Content appended');
 });
 
 // Delete file
 fs.unlink(filePath, (err) => {
     if (err) throw err;
     console.log('File deleted');
-});
+});</code></pre>
+                    {% endraw %}
 
-// Remove directory
-fs.rmdir(dirPath, (err) => {
-    if (err) throw err;
-    console.log('Directory removed');
-});
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
-
-                        <h4>Working with Directories</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-javascript">{% raw %}
-const fs = require('fs');
-const path = require('path');
-
-// Read directory contents
+                    <h5>Working with Directories</h5>
+                    {% raw %}
+                    <pre><button class="copy-button">Copy</button><code class="language-javascript">// Read directory contents
 fs.readdir(__dirname, (err, files) => {
     if (err) throw err;
     console.log('Directory contents:', files);
@@ -322,15 +711,55 @@ createDirRecursive(path.join(__dirname, 'nested', 'directory'));
 fs.watch(__dirname, (eventType, filename) => {
     console.log(`Event type: ${eventType}`);
     console.log(`Filename: ${filename}`);
-});
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+});</code></pre>
+                    {% endraw %}
 
-                        <h3 id="http-module" class="mt-5">HTTP Module and Web Servers</h3>
-                        <p>Node.js has a built-in HTTP module to create HTTP servers and clients.</p>
+                    <h5>Path Operations</h5>
+                    {% raw %}
+                    <pre><button class="copy-button">Copy</button><code class="language-javascript">const path = require('path');
 
-                        <h4>Creating a Basic HTTP Server</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-javascript">{% raw %}
-const http = require('http');
+// Join path segments
+const fullPath = path.join(__dirname, 'files', 'data.txt');
+console.log(fullPath);
+
+// Get directory name
+const dir = path.dirname('/path/to/file.txt');
+console.log(dir); // /path/to
+
+// Get file extension
+const ext = path.extname('/path/to/file.txt');
+console.log(ext); // .txt
+
+// Get file name
+const filename = path.basename('/path/to/file.txt');
+console.log(filename); // file.txt
+
+// Parse path
+const parsedPath = path.parse('/path/to/file.txt');
+console.log(parsedPath);
+// {
+//   root: '/',
+//   dir: '/path/to',
+//   base: 'file.txt',
+//   ext: '.txt',
+//   name: 'file'
+// }</code></pre>
+                    {% endraw %}
+                </div>
+            </div>
+
+            <!-- Module 5: HTTP Module and Web Servers -->
+            <div class="content-card" id="module5">
+                <div class="card-header">
+                    <i class="fas fa-globe"></i> Module 5: HTTP Module and Web Servers
+                </div>
+                <div class="card-body">
+                    <h5>HTTP Module</h5>
+                    <p>Node.js has a built-in HTTP module to create HTTP servers and clients. It provides a low-level API for HTTP transactions.</p>
+                    
+                    <h5>Creating a Basic HTTP Server</h5>
+                    {% raw %}
+                    <pre><button class="copy-button">Copy</button><code class="language-javascript">const http = require('http');
 const url = require('url');
 
 // Create HTTP server
@@ -353,26 +782,6 @@ const server = http.createServer((req, res) => {
             { id: 1, name: 'John Doe', email: 'john@example.com' },
             { id: 2, name: 'Jane Smith', email: 'jane@example.com' }
         ]));
-    } else if (path === '/api/users' && method === 'POST') {
-        let body = '';
-        
-        req.on('data', chunk => {
-            body += chunk.toString();
-        });
-        
-        req.on('end', () => {
-            try {
-                const userData = JSON.parse(body);
-                res.writeHead(201);
-                res.end(JSON.stringify({ 
-                    message: 'User created', 
-                    user: userData 
-                }));
-            } catch (error) {
-                res.writeHead(400);
-                res.end(JSON.stringify({ error: 'Invalid JSON' }));
-            }
-        });
     } else {
         res.writeHead(404);
         res.end(JSON.stringify({ error: 'Route not found' }));
@@ -383,21 +792,12 @@ const server = http.createServer((req, res) => {
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
-});
+});</code></pre>
+                    {% endraw %}
 
-// Handle server errors
-server.on('error', (err) => {
-    if (err.code === 'EADDRINUSE') {
-        console.error(`Port ${PORT} is already in use`);
-    } else {
-        console.error('Server error:', err);
-    }
-});
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
-
-                        <h4>HTTP Client</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-javascript">{% raw %}
-const http = require('http');
+                    <h5>HTTP Client</h5>
+                    {% raw %}
+                    <pre><button class="copy-button">Copy</button><code class="language-javascript">const http = require('http');
 const https = require('https');
 
 // Making GET request
@@ -459,38 +859,129 @@ postReq.on('error', (err) => {
 });
 
 postReq.write(postData);
-postReq.end();
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+postReq.end();</code></pre>
+                    {% endraw %}
 
-                        <h3 id="express" class="mt-5">Express.js Framework</h3>
-                        <p>Express.js is a minimal and flexible Node.js web application framework that provides a robust set of features for web and mobile applications.</p>
+                    <h5>Request and Response Objects</h5>
+                    {% raw %}
+                    <pre><button class="copy-button">Copy</button><code class="language-javascript">const http = require('http');
 
-                        <h4>Setting up Express</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
-# Initialize npm project
+const server = http.createServer((req, res) => {
+    // Request object properties
+    console.log('Method:', req.method);
+    console.log('URL:', req.url);
+    console.log('Headers:', req.headers);
+    console.log('HTTP Version:', req.httpVersion);
+    
+    // Response methods
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'text/plain');
+    res.write('Hello World');
+    res.end();
+});
+
+server.listen(3000);</code></pre>
+                    {% endraw %}
+
+                    <h5>Handling Different HTTP Methods</h5>
+                    {% raw %}
+                    <pre><button class="copy-button">Copy</button><code class="language-javascript">const http = require('http');
+
+const server = http.createServer((req, res) => {
+    const { method, url } = req;
+    
+    if (method === 'GET' && url === '/') {
+        res.writeHead(200, { 'Content-Type': 'text/plain' });
+        res.end('GET request received');
+    } else if (method === 'POST' && url === '/') {
+        let body = '';
+        
+        req.on('data', chunk => {
+            body += chunk.toString();
+        });
+        
+        req.on('end', () => {
+            res.writeHead(200, { 'Content-Type': 'text/plain' });
+            res.end(`POST request received with body: ${body}`);
+        });
+    } else if (method === 'PUT' && url === '/') {
+        res.writeHead(200, { 'Content-Type': 'text/plain' });
+        res.end('PUT request received');
+    } else if (method === 'DELETE' && url === '/') {
+        res.writeHead(200, { 'Content-Type': 'text/plain' });
+        res.end('DELETE request received');
+    } else {
+        res.writeHead(404, { 'Content-Type': 'text/plain' });
+        res.end('404 Not Found');
+    }
+});
+
+server.listen(3000);</code></pre>
+                    {% endraw %}
+
+                    <h5>Handling Request Body</h5>
+                    {% raw %}
+                    <pre><button class="copy-button">Copy</button><code class="language-javascript">const http = require('http');
+
+const server = http.createServer((req, res) => {
+    if (req.method === 'POST' && req.url === '/api/data') {
+        let body = '';
+        
+        req.on('data', chunk => {
+            body += chunk.toString();
+        });
+        
+        req.on('end', () => {
+            try {
+                const data = JSON.parse(body);
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ 
+                    message: 'Data received', 
+                    data 
+                }));
+            } catch (error) {
+                res.writeHead(400, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ error: 'Invalid JSON' }));
+            }
+        });
+    } else {
+        res.writeHead(404, { 'Content-Type': 'text/plain' });
+        res.end('404 Not Found');
+    }
+});
+
+server.listen(3000);</code></pre>
+                    {% endraw %}
+                </div>
+            </div>
+
+            <!-- Module 6: Express.js Framework -->
+            <div class="content-card" id="module6">
+                <div class="card-header">
+                    <i class="fas fa-rocket"></i> Module 6: Express.js Framework
+                </div>
+                <div class="card-body">
+                    <h5>Introduction to Express.js</h5>
+                    <p>Express.js is a minimal and flexible Node.js web application framework that provides a robust set of features for web and mobile applications. It simplifies the process of building web servers and APIs.</p>
+                    
+                    <h5>Setting up Express</h5>
+                    {% raw %}
+                    <pre><button class="copy-button">Copy</button><code class="language-bash"># Initialize npm project
 npm init -y
 
 # Install Express
 npm install express
 
 # Install additional useful packages
-npm install cors helmet morgan dotenv
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+npm install cors helmet morgan dotenv</code></pre>
+                    {% endraw %}
 
-                        <h4>Basic Express Server</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-javascript">{% raw %}
-const express = require('express');
-const cors = require('cors');
-const helmet = require('helmet');
-const morgan = require('morgan');
-
-// Initialize Express app
+                    <h5>Basic Express Server</h5>
+                    {% raw %}
+                    <pre><button class="copy-button">Copy</button><code class="language-javascript">const express = require('express');
 const app = express();
 
 // Middleware
-app.use(helmet()); // Security headers
-app.use(cors());   // Enable CORS
-app.use(morgan('dev')); // Logging
 app.use(express.json()); // Parse JSON bodies
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
 
@@ -507,97 +998,18 @@ app.get('/api/users', (req, res) => {
     res.json(users);
 });
 
-app.get('/api/users/:id', (req, res) => {
-    const id = parseInt(req.params.id);
-    const users = [
-        { id: 1, name: 'John Doe', email: 'john@example.com' },
-        { id: 2, name: 'Jane Smith', email: 'jane@example.com' }
-    ];
-    const user = users.find(u => u.id === id);
-    
-    if (user) {
-        res.json(user);
-    } else {
-        res.status(404).json({ error: 'User not found' });
-    }
-});
-
-app.post('/api/users', (req, res) => {
-    const { name, email } = req.body;
-    
-    if (!name || !email) {
-        return res.status(400).json({ error: 'Name and email are required' });
-    }
-    
-    const newUser = {
-        id: Date.now(),
-        name,
-        email
-    };
-    
-    res.status(201).json(newUser);
-});
-
-// Error handling middleware
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).json({ error: 'Something went wrong!' });
-});
-
-// 404 handler
-app.use((req, res) => {
-    res.status(404).json({ error: 'Route not found' });
-});
-
 // Start server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Express server running on port ${PORT}`);
-});
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+});</code></pre>
+                    {% endraw %}
 
-                        <h4>Route Parameters and Query Strings</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-javascript">{% raw %}
-const express = require('express');
-const app = express();
-
-// Route parameters
-app.get('/users/:userId/posts/:postId', (req, res) => {
-    const { userId, postId } = req.params;
-    res.json({ userId, postId });
-});
-
-// Query parameters
-app.get('/search', (req, res) => {
-    const { q, page = 1, limit = 10 } = req.query;
-    res.json({ query: q, page: parseInt(page), limit: parseInt(limit) });
-});
-
-// Wildcard routes
-app.get('/files/*', (req, res) => {
-    const filePath = req.params[0];
-    res.json({ filePath });
-});
-
-// Multiple route handlers
-app.get('/api/data', 
-    (req, res, next) => {
-        console.log('First handler');
-        next();
-    },
-    (req, res) => {
-        console.log('Second handler');
-        res.json({ message: 'Data from multiple handlers' });
-    }
-);
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
-
-                        <h4>Middleware</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-javascript">{% raw %}
-const express = require('express');
-const app = express();
-
-// Application-level middleware
+                    <h5>Middleware</h5>
+                    <p>Middleware functions are functions that have access to the request object (req), the response object (res), and the next function in the application's request-response cycle.</p>
+                    
+                    {% raw %}
+                    <pre><button class="copy-button">Copy</button><code class="language-javascript">// Application-level middleware
 app.use((req, res, next) => {
     console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
     next();
@@ -621,67 +1033,67 @@ app.get('/protected', requireAuth, (req, res) => {
 // Error-handling middleware
 app.use((err, req, res, next) => {
     console.error(err.stack);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: 'Something went wrong!' });
+});</code></pre>
+                    {% endraw %}
+
+                    <h5>Routing</h5>
+                    {% raw %}
+                    <pre><button class="copy-button">Copy</button><code class="language-javascript">// Route parameters
+app.get('/users/:id', (req, res) => {
+    const { id } = req.params;
+    res.json({ userId: id });
 });
 
-// Custom middleware factory
-const validateBody = (requiredFields) => {
-    return (req, res, next) => {
-        const missingFields = requiredFields.filter(field => !req.body[field]);
-        
-        if (missingFields.length > 0) {
-            return res.status(400).json({ 
-                error: 'Missing required fields', 
-                fields: missingFields 
-            });
-        }
-        
-        next();
-    };
-};
+// Query parameters
+app.get('/search', (req, res) => {
+    const { q, page = 1, limit = 10 } = req.query;
+    res.json({ query: q, page: parseInt(page), limit: parseInt(limit) });
+});
 
-app.post('/api/users', 
-    validateBody(['name', 'email']), 
-    (req, res) => {
-        res.json({ message: 'User created', user: req.body });
-    }
-);
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
-
-                        <h4>Static Files</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-javascript">{% raw %}
+// Router module
 const express = require('express');
-const path = require('path');
-const app = express();
+const router = express.Router();
+
+router.get('/users', (req, res) => {
+    res.json([{ id: 1, name: 'John' }, { id: 2, name: 'Jane' }]);
+});
+
+app.use('/api', router);</code></pre>
+                    {% endraw %}
+
+                    <h5>Static Files</h5>
+                    {% raw %}
+                    <pre><button class="copy-button">Copy</button><code class="language-javascript">const path = require('path');
 
 // Serve static files from 'public' directory
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Serve static files with custom URL prefix
-app.use('/assets', express.static(path.join(__dirname, 'public')));
-
-// Virtual path prefix
-app.use('/static', express.static(path.join(__dirname, 'public'), {
-    maxAge: '1d', // Cache for 1 day
-    etag: true   // Enable ETag
-}));
-
 // Example: Access files
 // http://localhost:3000/styles.css
-// http://localhost:3000/assets/images/logo.png
-// http://localhost:3000/static/js/app.js
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+// http://localhost:3000/js/app.js
+// http://localhost:3000/images/logo.png</code></pre>
+                    {% endraw %}
+                </div>
+            </div>
 
-                        <h3 id="database" class="mt-5">Database Integration</h3>
-
-                        <h4>MongoDB with Mongoose</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
-# Install Mongoose
-npm install mongoose
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
-
-                        <pre><button class="copy-button">Copy</button><code class="language-javascript">{% raw %}
-const mongoose = require('mongoose');
+            <!-- Module 7: Database Integration -->
+            <div class="content-card" id="module7">
+                <div class="card-header">
+                    <i class="fas fa-database"></i> Module 7: Database Integration
+                </div>
+                <div class="card-body">
+                    <h5>Introduction to Database Integration</h5>
+                    <p>Node.js can integrate with various databases including SQL (MySQL, PostgreSQL) and NoSQL (MongoDB, Redis) databases. Here we'll cover examples with MongoDB and MySQL.</p>
+                    
+                    <h5>MongoDB with Mongoose</h5>
+                    {% raw %}
+                    <pre><button class="copy-button">Copy</button><code class="language-bash"># Install Mongoose
+npm install mongoose</code></pre>
+                    {% endraw %}
+                    
+                    {% raw %}
+                    <pre><button class="copy-button">Copy</button><code class="language-javascript">const mongoose = require('mongoose');
 
 // Connect to MongoDB
 mongoose.connect('mongodb://localhost:27017/myapp', {
@@ -711,46 +1123,6 @@ async function createUser(userData) {
     }
 }
 
-async function getAllUsers() {
-    try {
-        const users = await User.find();
-        return users;
-    } catch (error) {
-        throw error;
-    }
-}
-
-async function getUserById(id) {
-    try {
-        const user = await User.findById(id);
-        return user;
-    } catch (error) {
-        throw error;
-    }
-}
-
-async function updateUser(id, updateData) {
-    try {
-        const user = await User.findByIdAndUpdate(
-            id, 
-            updateData, 
-            { new: true, runValidators: true }
-        );
-        return user;
-    } catch (error) {
-        throw error;
-    }
-}
-
-async function deleteUser(id) {
-    try {
-        const user = await User.findByIdAndDelete(id);
-        return user;
-    } catch (error) {
-        throw error;
-    }
-}
-
 // Express routes with Mongoose
 const express = require('express');
 const router = express.Router();
@@ -764,26 +1136,17 @@ router.post('/users', async (req, res) => {
     }
 });
 
-router.get('/users', async (req, res) => {
-    try {
-        const users = await getAllUsers();
-        res.json(users);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
+module.exports = router;</code></pre>
+                    {% endraw %}
 
-module.exports = router;
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
-
-                        <h4>MySQL with Sequelize</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
-# Install Sequelize and MySQL driver
-npm install sequelize mysql2
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
-
-                        <pre><button class="copy-button">Copy</button><code class="language-javascript">{% raw %}
-const { Sequelize, DataTypes } = require('sequelize');
+                    <h5>MySQL with Sequelize</h5>
+                    {% raw %}
+                    <pre><button class="copy-button">Copy</button><code class="language-bash"># Install Sequelize and MySQL driver
+npm install sequelize mysql2</code></pre>
+                    {% endraw %}
+                    
+                    {% raw %}
+                    <pre><button class="copy-button">Copy</button><code class="language-javascript">const { Sequelize, DataTypes } = require('sequelize');
 
 // Initialize Sequelize
 const sequelize = new Sequelize('myapp', 'username', 'password', {
@@ -806,12 +1169,6 @@ const User = sequelize.define('User', {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true
-    },
-    age: {
-        type: DataTypes.INTEGER,
-        validate: {
-            min: 0
-        }
     }
 });
 
@@ -828,76 +1185,91 @@ async function createUser(userData) {
     } catch (error) {
         throw error;
     }
-}
+}</code></pre>
+                    {% endraw %}
 
-async function getAllUsers() {
-    try {
-        const users = await User.findAll();
-        return users;
-    } catch (error) {
-        throw error;
-    }
-}
+                    <h5>Redis for Caching</h5>
+                    {% raw %}
+                    <pre><button class="copy-button">Copy</button><code class="language-bash"># Install Redis client
+npm install redis</code></pre>
+                    {% endraw %}
+                    
+                    {% raw %}
+                    <pre><button class="copy-button">Copy</button><code class="language-javascript">const redis = require('redis');
 
-async function getUserById(id) {
-    try {
-        const user = await User.findByPk(id);
-        return user;
-    } catch (error) {
-        throw error;
-    }
-}
+// Create Redis client
+const client = redis.createClient({
+    host: process.env.REDIS_HOST || 'localhost',
+    port: process.env.REDIS_PORT || 6379
+});
 
-async function updateUser(id, updateData) {
-    try {
-        const user = await User.update(updateData, {
-            where: { id }
-        });
-        return user;
-    } catch (error) {
-        throw error;
-    }
-}
+client.on('error', (err) => {
+    console.error('Redis Client Error', err);
+});
 
-async function deleteUser(id) {
-    try {
-        const result = await User.destroy({
-            where: { id }
-        });
-        return result;
-    } catch (error) {
-        throw error;
-    }
-}
+client.on('connect', () => {
+    console.log('Connected to Redis');
+});
 
-// Query examples
-async function findUsersByAge(minAge) {
-    try {
-        const users = await User.findAll({
-            where: {
-                age: {
-                    [Sequelize.Op.gte]: minAge
-                }
-            },
-            order: [['age', 'ASC']]
-        });
-        return users;
-    } catch (error) {
-        throw error;
-    }
-}
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+// Set and get values
+client.set('key', 'value', (err, reply) => {
+    if (err) throw err;
+    console.log('Value set:', reply);
+});
 
-                        <h3 id="authentication" class="mt-5">Authentication and Security</h3>
+client.get('key', (err, reply) => {
+    if (err) throw err;
+    console.log('Value:', reply);
+});
 
-                        <h4>JWT Authentication</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
-# Install JWT and bcrypt
-npm install jsonwebtoken bcryptjs
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+// Cache middleware
+const cache = (duration = 300) => {
+    return async (req, res, next) => {
+        const key = req.originalUrl;
+        
+        try {
+            // Try to get data from cache
+            const cachedData = await client.get(key);
+            
+            if (cachedData) {
+                return res.json(JSON.parse(cachedData));
+            }
+            
+            // Override res.json to cache response
+            const originalJson = res.json;
+            res.json = function(data) {
+                // Cache the response
+                client.setex(key, duration, JSON.stringify(data));
+                return originalJson.call(this, data);
+            };
+            
+            next();
+        } catch (error) {
+            next();
+        }
+    };
+};</code></pre>
+                    {% endraw %}
+                </div>
+            </div>
 
-                        <pre><button class="copy-button">Copy</button><code class="language-javascript">{% raw %}
-const jwt = require('jsonwebtoken');
+            <!-- Module 8: Authentication and Security -->
+            <div class="content-card" id="module8">
+                <div class="card-header">
+                    <i class="fas fa-shield-alt"></i> Module 8: Authentication and Security
+                </div>
+                <div class="card-body">
+                    <h5>Authentication in Node.js</h5>
+                    <p>Authentication is the process of verifying the identity of a user or system. In Node.js applications, we commonly use JWT (JSON Web Tokens) for authentication.</p>
+                    
+                    <h5>JWT Authentication</h5>
+                    {% raw %}
+                    <pre><button class="copy-button">Copy</button><code class="language-bash"># Install JWT and bcrypt
+npm install jsonwebtoken bcryptjs</code></pre>
+                    {% endraw %}
+                    
+                    {% raw %}
+                    <pre><button class="copy-button">Copy</button><code class="language-javascript">const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
 // JWT Secret
@@ -940,154 +1312,67 @@ function authenticateToken(req, res, next) {
     } catch (error) {
         return res.status(403).json({ error: 'Invalid token' });
     }
-}
+}</code></pre>
+                    {% endraw %}
 
-// Express routes for authentication
-const express = require('express');
-const router = express.Router();
-
-// Register
-router.post('/register', async (req, res) => {
-    try {
-        const { name, email, password } = req.body;
-        
-        // Check if user already exists
-        const existingUser = await User.findOne({ where: { email } });
-        if (existingUser) {
-            return res.status(400).json({ error: 'User already exists' });
-        }
-        
-        // Hash password
-        const hashedPassword = await hashPassword(password);
-        
-        // Create user
-        const user = await User.create({
-            name,
-            email,
-            password: hashedPassword
-        });
-        
-        // Generate token
-        const token = generateToken({ id: user.id, email: user.email });
-        
-        res.status(201).json({
-            message: 'User created successfully',
-            token,
-            user: { id: user.id, name: user.name, email: user.email }
-        });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
-
-// Login
-router.post('/login', async (req, res) => {
-    try {
-        const { email, password } = req.body;
-        
-        // Find user
-        const user = await User.findOne({ where: { email } });
-        if (!user) {
-            return res.status(401).json({ error: 'Invalid credentials' });
-        }
-        
-        // Check password
-        const isValidPassword = await comparePassword(password, user.password);
-        if (!isValidPassword) {
-            return res.status(401).json({ error: 'Invalid credentials' });
-        }
-        
-        // Generate token
-        const token = generateToken({ id: user.id, email: user.email });
-        
-        res.json({
-            message: 'Login successful',
-            token,
-            user: { id: user.id, name: user.name, email: user.email }
-        });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
-
-// Protected route
-router.get('/profile', authenticateToken, async (req, res) => {
-    try {
-        const user = await User.findByPk(req.user.id);
-        if (!user) {
-            return res.status(404).json({ error: 'User not found' });
-        }
-        
-        res.json({
-            user: { id: user.id, name: user.name, email: user.email }
-        });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
-
-module.exports = router;
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
-
-                        <h4>Rate Limiting</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
-# Install express-rate-limit
-npm install express-rate-limit
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
-
-                        <pre><button class="copy-button">Copy</button><code class="language-javascript">{% raw %}
+                    <h5>Security Best Practices</h5>
+                    <ul>
+                        <li><strong>Use HTTPS</strong> - Always use HTTPS in production to encrypt data in transit</li>
+                        <li><strong>Validate Input</strong> - Always validate and sanitize user input to prevent injection attacks</li>
+                        <li><strong>Rate Limiting</strong> - Implement rate limiting to prevent brute force attacks</li>
+                        <li><strong>Security Headers</strong> - Use security headers like Helmet.js to set security-related HTTP headers</li>
+                        <li><strong>Environment Variables</strong> - Store sensitive data in environment variables, not in code</li>
+                    </ul>
+                    
+                    {% raw %}
+                    <pre><button class="copy-button">Copy</button><code class="language-javascript">const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 
-// General rate limiting
+// Security headers
+app.use(helmet());
+
+// Rate limiting
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100, // Limit each IP to 100 requests per windowMs
-    message: 'Too many requests from this IP, please try again later.',
-    standardHeaders: true,
-    legacyHeaders: false,
+    max: 100 // Limit each IP to 100 requests per windowMs
 });
 
 app.use(limiter);
 
-// Strict rate limiting for auth routes
-const authLimiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 5, // Limit each IP to 5 requests per windowMs
-    message: 'Too many authentication attempts, please try again later.',
-    standardHeaders: true,
-    legacyHeaders: false,
-});
+// Content Security Policy
+app.use(helmet.contentSecurityPolicy({
+    directives: {
+        defaultSrc: ["'self'"],
+        styleSrc: ["'self'", "'unsafe-inline'"],
+        scriptSrc: ["'self'"],
+        imgSrc: ["'self'", "data:", "https:"]
+    }
+}));</code></pre>
+                    {% endraw %}
+                </div>
+            </div>
 
-app.post('/api/login', authLimiter, (req, res) => {
-    // Login logic
-});
-
-// Create rate limiter for different endpoints
-const createRateLimiter = (windowMs, max, message) => {
-    return rateLimit({
-        windowMs,
-        max,
-        message,
-        standardHeaders: true,
-        legacyHeaders: false,
-    });
-};
-
-const apiLimiter = createRateLimiter(15 * 60 * 1000, 100, 'Too many API requests');
-const uploadLimiter = createRateLimiter(60 * 60 * 1000, 10, 'Too many upload requests');
-
-app.use('/api/', apiLimiter);
-app.use('/api/upload', uploadLimiter);
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
-
-                        <h3 id="rest-api" class="mt-5">Building RESTful APIs</h3>
-
-                        <h4>RESTful API Structure</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-javascript">{% raw %}
-const express = require('express');
-const router = express.Router();
-
-// RESTful routes for users resource
+            <!-- Module 9: Building RESTful APIs -->
+            <div class="content-card" id="module9">
+                <div class="card-header">
+                    <i class="fas fa-project-diagram"></i> Module 9: Building RESTful APIs
+                </div>
+                <div class="card-body">
+                    <h5>RESTful API Principles</h5>
+                    <p>REST (Representational State Transfer) is an architectural style for designing networked applications. It relies on a stateless, client-server protocol, cacheable communications, and a uniform interface.</p>
+                    
+                    <h5>HTTP Methods in REST</h5>
+                    <ul>
+                        <li><strong>GET</strong> - Retrieve data</li>
+                        <li><strong>POST</strong> - Create new data</li>
+                        <li><strong>PUT</strong> - Update existing data</li>
+                        <li><strong>PATCH</strong> - Partially update data</li>
+                        <li><strong>DELETE</strong> - Delete data</li>
+                    </ul>
+                    
+                    <h5>RESTful API Structure</h5>
+                    {% raw %}
+                    <pre><button class="copy-button">Copy</button><code class="language-javascript">// RESTful routes for users resource
 // GET /api/users - Get all users
 router.get('/users', async (req, res) => {
     try {
@@ -1193,28 +1478,6 @@ router.put('/users/:id', async (req, res) => {
     }
 });
 
-// PATCH /api/users/:id - Partially update user
-router.patch('/users/:id', async (req, res) => {
-    try {
-        const { id } = req.params;
-        const updates = req.body;
-        
-        const user = await User.findByPk(id);
-        if (!user) {
-            return res.status(404).json({ error: 'User not found' });
-        }
-        
-        await user.update(updates);
-        
-        res.json({
-            message: 'User updated successfully',
-            user
-        });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
-
 // DELETE /api/users/:id - Delete user
 router.delete('/users/:id', async (req, res) => {
     try {
@@ -1233,17 +1496,12 @@ router.delete('/users/:id', async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
-});
+});</code></pre>
+                    {% endraw %}
 
-module.exports = router;
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
-
-                        <h4>API Versioning</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-javascript">{% raw %}
-const express = require('express');
-const app = express();
-
-// Version 1 API
+                    <h5>API Versioning</h5>
+                    {% raw %}
+                    <pre><button class="copy-button">Copy</button><code class="language-javascript">// Version 1 API
 const v1Router = express.Router();
 v1Router.get('/users', (req, res) => {
     res.json({ version: 'v1', users: [] });
@@ -1257,43 +1515,76 @@ v2Router.get('/users', (req, res) => {
 
 // Mount versioned routes
 app.use('/api/v1', v1Router);
-app.use('/api/v2', v2Router);
+app.use('/api/v2', v2Router);</code></pre>
+                    {% endraw %}
+                </div>
+            </div>
 
-// Alternative: Header-based versioning
-app.use('/api/users', (req, res, next) => {
-    const version = req.headers['api-version'] || 'v1';
-    
-    if (version === 'v1') {
-        return v1UsersHandler(req, res);
-    } else if (version === 'v2') {
-        return v2UsersHandler(req, res);
+            <!-- Module 10: Error Handling -->
+            <div class="content-card" id="module10">
+                <div class="card-header">
+                    <i class="fas fa-exclamation-triangle"></i> Module 10: Error Handling
+                </div>
+                <div class="card-body">
+                    <h5>Error Handling in Node.js</h5>
+                    <p>Proper error handling is crucial for building robust Node.js applications. Node.js provides several mechanisms for handling errors, including try-catch blocks, error events, and error-first callbacks.</p>
+                    
+                    <h5>Synchronous Error Handling</h5>
+                    {% raw %}
+                    <pre><button class="copy-button">Copy</button><code class="language-javascript">try {
+    const result = someFunctionThatMightFail();
+    console.log(result);
+} catch (error) {
+    console.error('Error:', error.message);
+    // Handle error
+}
+
+// Throwing errors
+function validateUser(user) {
+    if (!user.name) {
+        throw new Error('Name is required');
     }
-    
-    next();
+    if (!user.email) {
+        throw new Error('Email is required');
+    }
+    return user;
+}</code></pre>
+                    {% endraw %}
+
+                    <h5>Asynchronous Error Handling</h5>
+                    {% raw %}
+                    <pre><button class="copy-button">Copy</button><code class="language-javascript">// Callback error handling
+fs.readFile('nonexistent-file.txt', 'utf8', (err, data) => {
+    if (err) {
+        console.error('Error reading file:', err);
+        return;
+    }
+    console.log('File content:', data);
 });
 
-// URL parameter versioning
-app.use('/api/:version/users', (req, res, next) => {
-    const { version } = req.params;
-    
-    if (version === 'v1') {
-        return v1UsersHandler(req, res);
-    } else if (version === 'v2') {
-        return v2UsersHandler(req, res);
+// Promise error handling
+Promise.resolve()
+    .then(result => {
+        throw new Error('Something went wrong');
+    })
+    .catch(error => {
+        console.error('Error:', error.message);
+    });
+
+// Async/await error handling
+async function readFileAsync() {
+    try {
+        const data = await fs.promises.readFile('file.txt', 'utf8');
+        console.log('File content:', data);
+    } catch (error) {
+        console.error('Error:', error.message);
     }
-    
-    res.status(400).json({ error: 'Invalid version' });
-});
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+}</code></pre>
+                    {% endraw %}
 
-                        <h3 id="error-handling" class="mt-5">Error Handling</h3>
-
-                        <h4>Centralized Error Handling</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-javascript">{% raw %}
-const express = require('express');
-const app = express();
-
-// Custom error classes
+                    <h5>Custom Error Classes</h5>
+                    {% raw %}
+                    <pre><button class="copy-button">Copy</button><code class="language-javascript">// Custom error classes
 class AppError extends Error {
     constructor(message, statusCode) {
         super(message);
@@ -1316,19 +1607,6 @@ class NotFoundError extends AppError {
     }
 }
 
-class UnauthorizedError extends AppError {
-    constructor(message = 'Unauthorized') {
-        super(message, 401);
-    }
-}
-
-// Async error wrapper
-const asyncHandler = (fn) => {
-    return (req, res, next) => {
-        Promise.resolve(fn(req, res, next)).catch(next);
-    };
-};
-
 // Error handling middleware
 const errorHandler = (err, req, res, next) => {
     let error = { ...err };
@@ -1337,106 +1615,61 @@ const errorHandler = (err, req, res, next) => {
     // Log error
     console.error(err);
 
-    // Mongoose bad ObjectId
-    if (err.name === 'CastError') {
-        const message = 'Resource not found';
-        error = new AppError(message, 404);
-    }
-
-    // Mongoose duplicate key
-    if (err.code === 11000) {
-        const message = 'Duplicate field value entered';
-        error = new AppError(message, 400);
-    }
-
-    // Mongoose validation error
-    if (err.name === 'ValidationError') {
-        const message = Object.values(err.errors).map(val => val.message);
-        error = new AppError(message, 400);
-    }
-
-    // JWT error
-    if (err.name === 'JsonWebTokenError') {
-        const message = 'Invalid token';
-        error = new UnauthorizedError(message);
-    }
-
-    // JWT expired error
-    if (err.name === 'TokenExpiredError') {
-        const message = 'Token expired';
-        error = new UnauthorizedError(message);
-    }
-
     res.status(error.statusCode || 500).json({
         success: false,
-        error: error.message || 'Server Error',
-        ...(process.env.NODE_ENV === 'development' && { stack: error.stack })
+        error: error.message || 'Server Error'
     });
-};
+};</code></pre>
+                    {% endraw %}
 
-// 404 handler
-const notFound = (req, res, next) => {
-    const error = new NotFoundError(`Not found - ${req.originalUrl}`);
-    next(error);
-};
+                    <h5>Global Error Handlers</h5>
+                    {% raw %}
+                    <pre><button class="copy-button">Copy</button><code class="language-javascript">// Uncaught exception handler
+process.on('uncaughtException', (err) => {
+    console.error('Uncaught Exception:', err);
+    process.exit(1);
+});
 
-// Usage in routes
-app.get('/users/:id', asyncHandler(async (req, res, next) => {
-    const user = await User.findById(req.params.id);
-    
-    if (!user) {
-        return next(new NotFoundError('User not found'));
-    }
-    
-    res.json(user);
-}));
+// Unhandled promise rejection handler
+process.on('unhandledRejection', (reason, promise) => {
+    console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+});</code></pre>
+                    {% endraw %}
+                </div>
+            </div>
 
-// Register error handlers
-app.use(notFound);
-app.use(errorHandler);
-
-// Example route with error handling
-app.post('/users', asyncHandler(async (req, res, next) => {
-    const { name, email } = req.body;
-    
-    if (!name || !email) {
-        return next(new ValidationError('Name and email are required'));
-    }
-    
-    try {
-        const user = await User.create({ name, email });
-        res.status(201).json(user);
-    } catch (error) {
-        next(error);
-    }
-}));
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
-
-                        <h3 id="testing" class="mt-5">Testing Node.js Applications</h3>
-
-                        <h4>Setting up Testing Environment</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
-# Install testing dependencies
+            <!-- Module 11: Testing Node.js Applications -->
+            <div class="content-card" id="module11">
+                <div class="card-header">
+                    <i class="fas fa-vial"></i> Module 11: Testing Node.js Applications
+                </div>
+                <div class="card-body">
+                    <h5>Testing in Node.js</h5>
+                    <p>Testing is essential for building reliable Node.js applications. Popular testing frameworks for Node.js include Jest, Mocha, and Supertest.</p>
+                    
+                    <h5>Setting up Testing Environment</h5>
+                    {% raw %}
+                    <pre><button class="copy-button">Copy</button><code class="language-bash"># Install testing dependencies
 npm install --save-dev jest supertest nodemon
 
 # Install additional testing libraries
-npm install --save-dev @types/jest eslint-plugin-jest
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
-
-                        <pre><button class="copy-button">Copy</button><code class="language-json">{% raw %}
-// package.json scripts
+npm install --save-dev @types/jest eslint-plugin-jest</code></pre>
+                    {% endraw %}
+                    
+                    {% raw %}
+                    <pre><button class="copy-button">Copy</button><code class="language-json">// package.json scripts
 {
   "scripts": {
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage"
   }
-}
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+}</code></pre>
+                    {% endraw %}
 
-                        <h4>Unit Testing</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-javascript">{% raw %}
-// userController.js
+                    <h5>Unit Testing</h5>
+                    {% raw %}
+                    <pre><button class="copy-button">Copy</button><code class="language-javascript">// userController.js
 const User = require('../models/User');
 const { ValidationError } = require('../utils/errors');
 
@@ -1488,28 +1721,13 @@ describe('User Controller', () => {
             
             await expect(createUser(userData)).rejects.toThrow(ValidationError);
         });
-
-        it('should throw ValidationError when email is missing', async () => {
-            const userData = { name: 'John Doe' };
-            
-            await expect(createUser(userData)).rejects.toThrow(ValidationError);
-        });
-
-        it('should throw ValidationError when user already exists', async () => {
-            const userData = { name: 'John Doe', email: 'john@example.com' };
-            const existingUser = { id: 1, ...userData };
-            
-            User.findOne.mockResolvedValue(existingUser);
-            
-            await expect(createUser(userData)).rejects.toThrow(ValidationError);
-        });
     });
-});
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+});</code></pre>
+                    {% endraw %}
 
-                        <h4>Integration Testing</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-javascript">{% raw %}
-// app.test.js
+                    <h5>Integration Testing</h5>
+                    {% raw %}
+                    <pre><button class="copy-button">Copy</button><code class="language-javascript">// app.test.js
 const request = require('supertest');
 const app = require('../app');
 const User = require('../models/User');
@@ -1517,11 +1735,6 @@ const User = require('../models/User');
 describe('User API', () => {
     beforeEach(async () => {
         await User.destroy({ where: {} });
-    });
-
-    afterAll(async () => {
-        // Close database connection
-        await User.sequelize.close();
     });
 
     describe('POST /api/users', () => {
@@ -1540,131 +1753,30 @@ describe('User API', () => {
             expect(response.body).toHaveProperty('message');
             expect(response.body).toHaveProperty('user');
             expect(response.body.user.name).toBe(userData.name);
-            expect(response.body.user.email).toBe(userData.email);
-        });
-
-        it('should return 400 for missing name', async () => {
-            const userData = {
-                email: 'john@example.com',
-                age: 30
-            };
-
-            const response = await request(app)
-                .post('/api/users')
-                .send(userData)
-                .expect(400);
-
-            expect(response.body).toHaveProperty('error');
-        });
-
-        it('should return 409 for duplicate email', async () => {
-            const userData = {
-                name: 'John Doe',
-                email: 'john@example.com',
-                age: 30
-            };
-
-            // Create first user
-            await request(app)
-                .post('/api/users')
-                .send(userData);
-
-            // Try to create second user with same email
-            const response = await request(app)
-                .post('/api/users')
-                .send(userData)
-                .expect(409);
-
-            expect(response.body).toHaveProperty('error');
         });
     });
+});</code></pre>
+                    {% endraw %}
+                </div>
+            </div>
 
-    describe('GET /api/users', () => {
-        beforeEach(async () => {
-            // Create test users
-            await User.bulkCreate([
-                { name: 'User 1', email: 'user1@example.com' },
-                { name: 'User 2', email: 'user2@example.com' },
-                { name: 'User 3', email: 'user3@example.com' }
-            ]);
-        });
-
-        it('should return all users', async () => {
-            const response = await request(app)
-                .get('/api/users')
-                .expect(200);
-
-            expect(response.body).toHaveProperty('users');
-            expect(Array.isArray(response.body.users)).toBe(true);
-            expect(response.body.users.length).toBe(3);
-        });
-
-        it('should support pagination', async () => {
-            const response = await request(app)
-                .get('/api/users?page=1&limit=2')
-                .expect(200);
-
-            expect(response.body.users.length).toBe(2);
-            expect(response.body.pagination).toHaveProperty('page');
-            expect(response.body.pagination).toHaveProperty('limit');
-            expect(response.body.pagination).toHaveProperty('total');
-        });
-    });
-
-    describe('GET /api/users/:id', () => {
-        let testUser;
-
-        beforeEach(async () => {
-            testUser = await User.create({
-                name: 'Test User',
-                email: 'test@example.com'
-            });
-        });
-
-        it('should return user by ID', async () => {
-            const response = await request(app)
-                .get(`/api/users/${testUser.id}`)
-                .expect(200);
-
-            expect(response.body.id).toBe(testUser.id);
-            expect(response.body.name).toBe(testUser.name);
-        });
-
-        it('should return 404 for non-existent user', async () => {
-            const response = await request(app)
-                .get('/api/users/99999')
-                .expect(404);
-
-            expect(response.body).toHaveProperty('error');
-        });
-    });
-});
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
-
-                        <h3 id="performance" class="mt-5">Performance Optimization</h3>
-
-                        <h4>Caching with Redis</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
-# Install Redis client
-npm install redis
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
-
-                        <pre><button class="copy-button">Copy</button><code class="language-javascript">{% raw %}
-const redis = require('redis');
+            <!-- Module 12: Performance Optimization -->
+            <div class="content-card" id="module12">
+                <div class="card-header">
+                    <i class="fas fa-tachometer-alt"></i> Module 12: Performance Optimization
+                </div>
+                <div class="card-body">
+                    <h5>Performance Optimization in Node.js</h5>
+                    <p>Optimizing Node.js applications is crucial for handling high traffic and ensuring scalability. Here are some key techniques:</p>
+                    
+                    <h5>Caching with Redis</h5>
+                    {% raw %}
+                    <pre><button class="copy-button">Copy</button><code class="language-javascript">const redis = require('redis');
 
 // Create Redis client
 const client = redis.createClient({
     host: process.env.REDIS_HOST || 'localhost',
-    port: process.env.REDIS_PORT || 6379,
-    password: process.env.REDIS_PASSWORD
-});
-
-client.on('error', (err) => {
-    console.error('Redis Client Error', err);
-});
-
-client.on('connect', () => {
-    console.log('Connected to Redis');
+    port: process.env.REDIS_PORT || 6379
 });
 
 // Cache middleware
@@ -1693,71 +1805,19 @@ const cache = (duration = 300) => {
             next();
         }
     };
-};
+};</code></pre>
+                    {% endraw %}
 
-// Usage in routes
-app.get('/api/users', cache(600), async (req, res) => {
-    try {
-        const users = await User.findAll();
-        res.json(users);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
-
-// Cache helper functions
-const cacheHelper = {
-    async get(key) {
-        try {
-            const data = await client.get(key);
-            return data ? JSON.parse(data) : null;
-        } catch (error) {
-            console.error('Cache get error:', error);
-            return null;
-        }
-    },
-
-    async set(key, data, duration = 300) {
-        try {
-            await client.setex(key, duration, JSON.stringify(data));
-        } catch (error) {
-            console.error('Cache set error:', error);
-        }
-    },
-
-    async del(key) {
-        try {
-            await client.del(key);
-        } catch (error) {
-            console.error('Cache delete error:', error);
-        }
-    },
-
-    async flush() {
-        try {
-            await client.flushall();
-        } catch (error) {
-            console.error('Cache flush error:', error);
-        }
-    }
-};
-
-module.exports = { cache, cacheHelper };
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
-
-                        <h4>Compression</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
-# Install compression middleware
-npm install compression
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
-
-                        <pre><button class="copy-button">Copy</button><code class="language-javascript">{% raw %}
-const compression = require('compression');
+                    <h5>Compression</h5>
+                    {% raw %}
+                    <pre><button class="copy-button">Copy</button><code class="language-bash"># Install compression middleware
+npm install compression</code></pre>
+                    {% endraw %}
+                    
+                    {% raw %}
+                    <pre><button class="copy-button">Copy</button><code class="language-javascript">const compression = require('compression');
 
 // Enable compression for all requests
-app.use(compression());
-
-// Custom compression options
 app.use(compression({
     filter: (req, res) => {
         if (req.headers['x-no-compression']) {
@@ -1769,27 +1829,13 @@ app.use(compression({
     threshold: 1024, // Only compress responses larger than 1KB
     windowBits: 15,
     memLevel: 8
-}));
+}));</code></pre>
+                    {% endraw %}
 
-// Conditional compression
-const shouldCompress = (req, res) => {
-    if (req.headers['x-no-compression']) {
-        return false;
-    }
-    return compression.filter(req, res);
-};
-
-app.use(compression({
-    filter: shouldCompress,
-    level: 6
-}));
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
-
-                        <h4>Cluster Mode</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-javascript">{% raw %}
-const cluster = require('cluster');
+                    <h5>Cluster Mode</h5>
+                    {% raw %}
+                    <pre><button class="copy-button">Copy</button><code class="language-javascript">const cluster = require('cluster');
 const os = require('os');
-const express = require('express');
 
 if (cluster.isMaster) {
     const numCPUs = os.cpus().length;
@@ -1816,99 +1862,31 @@ if (cluster.isMaster) {
     app.listen(PORT, () => {
         console.log(`Worker ${process.pid} started`);
     });
-}
+}</code></pre>
+                    {% endraw %}
+                </div>
+            </div>
 
-// Graceful shutdown
-process.on('SIGTERM', () => {
-    console.log('SIGTERM signal received: closing HTTP server');
-    server.close(() => {
-        console.log('HTTP server closed');
-    });
-});
+            <!-- Module 13: Streams and Buffers -->
+            <div class="content-card" id="module13">
+                <div class="card-header">
+                    <i class="fas fa-stream"></i> Module 13: Streams and Buffers
+                </div>
+                <div class="card-body">
+                    <h5>Streams in Node.js</h5>
+                    <p>Streams are objects that let you read data from a source or write data to a destination in a continuous fashion. In Node.js, streams are used for handling large files, network communications, and more.</p>
+                    
+                    <h5>Readable Streams</h5>
+                    {% raw %}
+                    <pre><button class="copy-button">Copy</button><code class="language-javascript">const fs = require('fs');
 
-process.on('SIGINT', () => {
-    console.log('SIGINT signal received: closing HTTP server');
-    server.close(() => {
-        console.log('HTTP server closed');
-    });
-});
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
-
-                        <h3 id="streams-buffers" class="mt-5">Streams and Buffers</h3>
-
-                        <h4>Working with Streams</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-javascript">{% raw %}
-const fs = require('fs');
-const { Transform } = require('stream');
-
-// Readable stream
+// Create readable stream
 const readableStream = fs.createReadStream('large-file.txt', {
     encoding: 'utf8',
     highWaterMark: 1024 // Buffer size
 });
 
-// Writable stream
-const writableStream = fs.createWriteStream('output.txt');
-
-// Pipe streams
-readableStream.pipe(writableStream);
-
-// Transform stream (uppercase)
-const uppercaseStream = new Transform({
-    transform(chunk, encoding, callback) {
-        this.push(chunk.toString().toUpperCase());
-        callback();
-    }
-});
-
-// Chain streams
-readableStream
-    .pipe(uppercaseStream)
-    .pipe(writableStream);
-
-// Custom readable stream
-const { Readable } = require('stream');
-
-class CounterStream extends Readable {
-    constructor(options) {
-        super(options);
-        this.max = 100;
-        this.index = 0;
-    }
-
-    _read() {
-        const i = this.index++;
-        
-        if (i > this.max) {
-            this.push(null);
-        } else {
-            const buf = Buffer.from(`${i}\n`, 'utf8');
-            this.push(buf);
-        }
-    }
-}
-
-const counterStream = new CounterStream();
-counterStream.pipe(process.stdout);
-
-// Custom writable stream
-const { Writable } = require('stream');
-
-class LoggerStream extends Writable {
-    constructor(options) {
-        super(options);
-    }
-
-    _write(chunk, encoding, callback) {
-        console.log(chunk.toString().trim());
-        callback();
-    }
-}
-
-const loggerStream = new LoggerStream();
-readableStream.pipe(loggerStream);
-
-// Stream events
+// Handle stream events
 readableStream.on('data', (chunk) => {
     console.log('Received chunk:', chunk.length);
 });
@@ -1919,123 +1897,95 @@ readableStream.on('end', () => {
 
 readableStream.on('error', (err) => {
     console.error('Stream error:', err);
+});</code></pre>
+                    {% endraw %}
+
+                    <h5>Writable Streams</h5>
+                    {% raw %}
+                    <pre><button class="copy-button">Copy</button><code class="language-javascript">const fs = require('fs');
+
+// Create writable stream
+const writableStream = fs.createWriteStream('output.txt');
+
+// Write to stream
+writableStream.write('Hello, World!');
+writableStream.end();</code></pre>
+                    {% endraw %}
+
+                    <h5>Transform Streams</h5>
+                    {% raw %}
+                    <pre><button class="copy-button">Copy</button><code class="language-javascript">const { Transform } = require('stream');
+
+// Uppercase transform stream
+const uppercaseStream = new Transform({
+    transform(chunk, encoding, callback) {
+        this.push(chunk.toString().toUpperCase());
+        callback();
+    }
 });
 
-writableStream.on('finish', () => {
-    console.log('Write completed');
-});
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+// Pipe streams
+fs.createReadStream('input.txt')
+    .pipe(uppercaseStream)
+    .pipe(fs.createWriteStream('output.txt'));</code></pre>
+                    {% endraw %}
 
-                        <h4>Buffer Operations</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-javascript">{% raw %}
-// Creating buffers
+                    <h5>Buffers</h5>
+                    <p>Buffers are fixed-size chunks of memory. They are used to handle binary data in Node.js.</p>
+                    
+                    {% raw %}
+                    <pre><button class="copy-button">Copy</button><code class="language-javascript">// Creating buffers
 const buf1 = Buffer.from('Hello World');
 const buf2 = Buffer.alloc(10);
 const buf3 = Buffer.allocUnsafe(10);
 
-// Buffer from array
-const buf4 = Buffer.from([0x48, 0x65, 0x6c, 0x6c, 0x6f]);
-
-// Writing to buffer
-buf2.write('Hello');
-console.log(buf2.toString()); // Hello
-
 // Buffer operations
 const buf = Buffer.from('Hello World');
-
-// Get buffer length
 console.log(buf.length); // 11
-
-// Convert to JSON
-console.log(buf.toJSON());
-
-// Slice buffer (creates a new buffer)
-const slice = buf.slice(0, 5);
-console.log(slice.toString()); // Hello
-
-// Copy buffer
-const targetBuffer = Buffer.alloc(10);
-buf.copy(targetBuffer, 0, 0, 5);
-console.log(targetBuffer.toString()); // Hello
-
-// Concatenate buffers
-const buf1 = Buffer.from('Hello ');
-const buf2 = Buffer.from('World');
-const buf3 = Buffer.concat([buf1, buf2]);
-console.log(buf3.toString()); // Hello World
+console.log(buf.toString()); // Hello World
 
 // Buffer comparison
 const bufA = Buffer.from('ABC');
 const bufB = Buffer.from('ABC');
-console.log(bufA.equals(bufB)); // true
+console.log(bufA.equals(bufB)); // true</code></pre>
+                    {% endraw %}
+                </div>
+            </div>
 
-// Buffer encoding/decoding
-const string = 'Hello World';
-const buffer = Buffer.from(string, 'utf8');
-const decodedString = buffer.toString('utf8');
-
-// Working with different encodings
-const utf8Buffer = Buffer.from('Hello', 'utf8');
-const base64Buffer = Buffer.from('Hello', 'base64');
-const hexBuffer = Buffer.from('Hello', 'hex');
-
-console.log(utf8Buffer.toString('utf8'));
-console.log(base64Buffer.toString('base64'));
-console.log(hexBuffer.toString('hex'));
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
-
-                        <h3 id="best-practices" class="mt-5">Node.js Best Practices</h3>
-
-                        <h4>Project Structure</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-javascript">{% raw %}
-// Recommended project structure
+            <!-- Module 14: Node.js Best Practices -->
+            <div class="content-card" id="module14">
+                <div class="card-header">
+                    <i class="fas fa-star"></i> Module 14: Node.js Best Practices
+                </div>
+                <div class="card-body">
+                    <h5>Project Structure</h5>
+                    <p>A well-organized project structure is essential for maintainability and scalability.</p>
+                    
+                    {% raw %}
+                    <pre><button class="copy-button">Copy</button><code class="language-javascript">// Recommended project structure
 my-node-app/
 ├── src/
 │   ├── controllers/     # Route handlers
-│   │   ├── authController.js
-│   │   ├── userController.js
-│   │   └── index.js
 │   ├── models/          # Database models
-│   │   ├── User.js
-│   │   ├── Post.js
-│   │   └── index.js
 │   ├── routes/          # Route definitions
-│   │   ├── auth.js
-│   │   ├── users.js
-│   │   └── index.js
 │   ├── middleware/      # Custom middleware
-│   │   ├── auth.js
-│   │   ├── validation.js
-│   │   └── index.js
 │   ├── services/        # Business logic
-│   │   ├── emailService.js
-│   │   ├── paymentService.js
-│   │   └── index.js
 │   ├── utils/           # Utility functions
-│   │   ├── logger.js
-│   │   ├── helpers.js
-│   │   └── index.js
-│   ├── config/          # Configuration files
-│   │   ├── database.js
-│   │   ├── redis.js
-│   │   └── index.js
+│   └── config/          # Configuration files
 │   └── app.js           # Express app setup
 ├── tests/               # Test files
-│   ├── unit/
-│   ├── integration/
-│   └── fixtures/
 ├── docs/                # Documentation
 ├── logs/                # Log files
 ├── .env                 # Environment variables
 ├── .gitignore
 ├── package.json
 ├── server.js            # Application entry point
-└── README.md
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+└── README.md</code></pre>
+                    {% endraw %}
 
-                        <h4>Environment Configuration</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-javascript">{% raw %}
-// config/index.js
+                    <h5>Environment Configuration</h5>
+                    {% raw %}
+                    <pre><button class="copy-button">Copy</button><code class="language-javascript">// config/index.js
 require('dotenv').config();
 
 const config = {
@@ -2044,21 +1994,7 @@ const config = {
         database: {
             host: process.env.DB_HOST || 'localhost',
             port: process.env.DB_PORT || 5432,
-            name: process.env.DB_NAME || 'myapp_dev',
-            username: process.env.DB_USER || 'postgres',
-            password: process.env.DB_PASSWORD || 'password'
-        },
-        redis: {
-            host: process.env.REDIS_HOST || 'localhost',
-            port: process.env.REDIS_PORT || 6379,
-            password: process.env.REDIS_PASSWORD
-        },
-        jwt: {
-            secret: process.env.JWT_SECRET || 'your-secret-key',
-            expiresIn: process.env.JWT_EXPIRES_IN || '24h'
-        },
-        cors: {
-            origin: process.env.CORS_ORIGIN || 'http://localhost:3000'
+            name: process.env.DB_NAME || 'myapp_dev'
         }
     },
     
@@ -2067,49 +2003,18 @@ const config = {
         database: {
             host: process.env.DB_HOST,
             port: process.env.DB_PORT || 5432,
-            name: process.env.DB_NAME,
-            username: process.env.DB_USER,
-            password: process.env.DB_PASSWORD
-        },
-        redis: {
-            host: process.env.REDIS_HOST,
-            port: process.env.REDIS_PORT || 6379,
-            password: process.env.REDIS_PASSWORD
-        },
-        jwt: {
-            secret: process.env.JWT_SECRET,
-            expiresIn: process.env.JWT_EXPIRES_IN || '1h'
-        },
-        cors: {
-            origin: process.env.CORS_ORIGIN || false
-        }
-    },
-    
-    test: {
-        port: process.env.PORT || 3001,
-        database: {
-            host: process.env.DB_HOST || 'localhost',
-            port: process.env.DB_PORT || 5432,
-            name: process.env.DB_NAME || 'myapp_test',
-            username: process.env.DB_USER || 'postgres',
-            password: process.env.DB_PASSWORD || 'password'
+            name: process.env.DB_NAME
         }
     }
 };
 
 const env = process.env.NODE_ENV || 'development';
-module.exports = config[env];
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+module.exports = config[env];</code></pre>
+                    {% endraw %}
 
-                        <h4>Logging</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
-# Install winston for logging
-npm install winston winston-daily-rotate-file
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
-
-                        <pre><button class="copy-button">Copy</button><code class="language-javascript">{% raw %}
-const winston = require('winston');
-const DailyRotateFile = require('winston-daily-rotate-file');
+                    <h5>Logging</h5>
+                    {% raw %}
+                    <pre><button class="copy-button">Copy</button><code class="language-javascript">const winston = require('winston');
 
 // Create logger
 const logger = winston.createLogger({
@@ -2121,27 +2026,15 @@ const logger = winston.createLogger({
     ),
     defaultMeta: { service: 'user-service' },
     transports: [
-        // Write all logs with level 'error' and below to error.log
-        new DailyRotateFile({
-            filename: 'logs/error-%DATE%.log',
-            datePattern: 'YYYY-MM-DD',
-            level: 'error'
+        new winston.transports.Console({
+            format: winston.format.simple()
         }),
-        
-        // Write all logs with level 'info' and below to combined.log
-        new DailyRotateFile({
-            filename: 'logs/combined-%DATE%.log',
-            datePattern: 'YYYY-MM-DD'
+        new winston.transports.File({
+            filename: 'logs/combined.log',
+            level: 'error'
         })
     ]
 });
-
-// If we're not in production, log to the console
-if (process.env.NODE_ENV !== 'production') {
-    logger.add(new winston.transports.Console({
-        format: winston.format.simple()
-    }));
-}
 
 // Custom logger methods
 logger.logRequest = (req, res, next) => {
@@ -2153,117 +2046,41 @@ logger.logRequest = (req, res, next) => {
             method: req.method,
             url: req.url,
             status: res.statusCode,
-            duration: `${duration}ms`,
-            ip: req.ip,
-            userAgent: req.get('User-Agent')
+            duration: `${duration}ms`
         });
     });
     
     next();
-};
+};</code></pre>
+                    {% endraw %}
 
-// Error logging
-logger.logError = (err, req) => {
-    logger.error('Application Error', {
-        message: err.message,
-        stack: err.stack,
-        url: req.url,
-        method: req.method,
-        ip: req.ip,
-        userAgent: req.get('User-Agent')
-    });
-};
+                    <h5>Security Best Practices</h5>
+                    <ul>
+                        <li>Use HTTPS in production</li>
+                        <li>Validate and sanitize all user input</li>
+                        <li>Implement rate limiting</li>
+                        <li>Use security headers like Helmet.js</li>
+                        <li>Store sensitive data in environment variables</li>
+                        <li>Keep dependencies updated</li>
+                    </ul>
+                </div>
+            </div>
 
-module.exports = logger;
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
-
-                        <h4>Security Best Practices</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-javascript">{% raw %}
-const helmet = require('helmet');
-const rateLimit = require('express-rate-limit');
-const mongoSanitize = require('express-mongo-sanitize');
-const xss = require('xss');
-
-// Security headers
-app.use(helmet());
-
-// Rate limiting
-const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100 // limit each IP to 100 requests per windowMs
-});
-
-app.use(limiter);
-
-// Data sanitization
-app.use(mongoSanitize());
-
-// XSS protection
-app.use((req, res, next) => {
-    if (req.body) {
-        Object.keys(req.body).forEach(key => {
-            if (typeof req.body[key] === 'string') {
-                req.body[key] = xss(req.body[key]);
-            }
-        });
-    }
-    next();
-});
-
-// Input validation
-const { body, validationResult } = require('express-validator');
-
-app.post('/api/users',
-    [
-        body('name').trim().isLength({ min: 2, max: 50 }).escape(),
-        body('email').isEmail().normalizeEmail(),
-        body('age').optional().isInt({ min: 0, max: 120 })
-    ],
-    (req, res) => {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
-        }
-        // Process request
-    }
-);
-
-// CORS configuration
-const corsOptions = {
-    origin: process.env.ALLOWED_ORIGINS?.split(',') || 'http://localhost:3000',
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true
-};
-
-app.use(cors(corsOptions));
-
-// Hide server information
-app.disable('x-powered-by');
-
-// Content Security Policy
-app.use(helmet.contentSecurityPolicy({
-    directives: {
-        defaultSrc: ["'self'"],
-        styleSrc: ["'self'", "'unsafe-inline'"],
-        scriptSrc: ["'self'"],
-        imgSrc: ["'self'", "data:", "https:"]
-    }
-}));
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
-
-                        <h3 id="real-world-examples" class="mt-5">Real-World Examples</h3>
-
-                        <h4>File Upload Service</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
-# Install multer for file uploads
-npm install multer
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
-
-                        <pre><button class="copy-button">Copy</button><code class="language-javascript">{% raw %}
-const multer = require('multer');
+            <!-- Module 15: Real-World Examples -->
+            <div class="content-card" id="module15">
+                <div class="card-header">
+                    <i class="fas fa-lightbulb"></i> Module 15: Real-World Examples
+                </div>
+                <div class="card-body">
+                    <h5>File Upload Service</h5>
+                    {% raw %}
+                    <pre><button class="copy-button">Copy</button><code class="language-bash"># Install multer for file uploads
+npm install multer</code></pre>
+                    {% endraw %}
+                    
+                    {% raw %}
+                    <pre><button class="copy-button">Copy</button><code class="language-javascript">const multer = require('multer');
 const path = require('path');
-const fs = require('fs');
 
 // Configure multer for file uploads
 const storage = multer.diskStorage({
@@ -2280,24 +2097,6 @@ const storage = multer.diskStorage({
     }
 });
 
-const upload = multer({
-    storage: storage,
-    limits: {
-        fileSize: 5 * 1024 * 1024 // 5MB limit
-    },
-    fileFilter: (req, file, cb) => {
-        const allowedTypes = /jpeg|jpg|png|gif|pdf|doc|docx/;
-        const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
-        const mimetype = allowedTypes.test(file.mimetype);
-        
-        if (mimetype && extname) {
-            return cb(null, true);
-        } else {
-            cb(new Error('Invalid file type'));
-        }
-    }
-});
-
 // Single file upload
 app.post('/upload', upload.single('file'), (req, res) => {
     if (!req.file) {
@@ -2310,73 +2109,27 @@ app.post('/upload', upload.single('file'), (req, res) => {
             filename: req.file.filename,
             originalname: req.file.originalname,
             size: req.file.size,
-            mimetype: req.file.mimetype,
-            path: req.file.path
+            mimetype: req.file.mimetype
         }
     });
-});
+});</code></pre>
+                    {% endraw %}
 
-// Multiple files upload
-app.post('/upload-multiple', upload.array('files', 5), (req, res) => {
-    if (!req.files || req.files.length === 0) {
-        return res.status(400).json({ error: 'No files uploaded' });
-    }
-    
-    const files = req.files.map(file => ({
-        filename: file.filename,
-        originalname: file.originalname,
-        size: file.size,
-        mimetype: file.mimetype,
-        path: file.path
-    }));
-    
-    res.json({
-        message: 'Files uploaded successfully',
-        files
-    });
-});
-
-// Download file
-app.get('/download/:filename', (req, res) => {
-    const filename = req.params.filename;
-    const filePath = path.join(__dirname, 'uploads', filename);
-    
-    if (!fs.existsSync(filePath)) {
-        return res.status(404).json({ error: 'File not found' });
-    }
-    
-    res.download(filePath, filename);
-});
-
-// Delete file
-app.delete('/file/:filename', (req, res) => {
-    const filename = req.params.filename;
-    const filePath = path.join(__dirname, 'uploads', filename);
-    
-    if (!fs.existsSync(filePath)) {
-        return res.status(404).json({ error: 'File not found' });
-    }
-    
-    fs.unlinkSync(filePath);
-    res.json({ message: 'File deleted successfully' });
-});
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
-
-                        <h4>Email Service</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
-# Install nodemailer
-npm install nodemailer
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
-
-                        <pre><button class="copy-button">Copy</button><code class="language-javascript">{% raw %}
-const nodemailer = require('nodemailer');
+                    <h5>Email Service</h5>
+                    {% raw %}
+                    <pre><button class="copy-button">Copy</button><code class="language-bash"># Install nodemailer
+npm install nodemailer</code></pre>
+                    {% endraw %}
+                    
+                    {% raw %}
+                    <pre><button class="copy-button">Copy</button><code class="language-javascript">const nodemailer = require('nodemailer');
 
 // Create transporter
 const createTransporter = () => {
     return nodemailer.createTransporter({
         host: process.env.SMTP_HOST,
         port: process.env.SMTP_PORT || 587,
-        secure: false, // true for 465, false for other ports
+        secure: false,
         auth: {
             user: process.env.SMTP_USER,
             pass: process.env.SMTP_PASS
@@ -2404,85 +2157,19 @@ const sendEmail = async (options) => {
         console.error('Error sending email:', error);
         throw error;
     }
-};
+};</code></pre>
+                    {% endraw %}
 
-// Email templates
-const emailTemplates = {
-    welcome: (name) => ({
-        subject: 'Welcome to Our Service',
-        html: `
-            <h1>Welcome, ${name}!</h1>
-            <p>Thank you for joining our service. We're excited to have you on board.</p>
-            <p>Best regards,<br>The Team</p>
-        `
-    }),
-    
-    passwordReset: (name, resetLink) => ({
-        subject: 'Password Reset Request',
-        html: `
-            <h1>Password Reset</h1>
-            <p>Hi ${name},</p>
-            <p>You requested a password reset. Click the link below to reset your password:</p>
-            <a href="${resetLink}">Reset Password</a>
-            <p>This link will expire in 1 hour.</p>
-            <p>If you didn't request this, please ignore this email.</p>
-        `
-    }),
-    
-    orderConfirmation: (order) => ({
-        subject: 'Order Confirmation',
-        html: `
-            <h1>Order Confirmation</h1>
-            <p>Thank you for your order!</p>
-            <p>Order ID: ${order.id}</p>
-            <p>Total: $${order.total}</p>
-            <p>We'll send you another email when your order ships.</p>
-        `
-    })
-};
-
-// Email service
-const emailService = {
-    async sendWelcomeEmail(userEmail, userName) {
-        const template = emailTemplates.welcome(userName);
-        return await sendEmail({
-            to: userEmail,
-            ...template
-        });
-    },
-    
-    async sendPasswordResetEmail(userEmail, userName, resetLink) {
-        const template = emailTemplates.passwordReset(userName, resetLink);
-        return await sendEmail({
-            to: userEmail,
-            ...template
-        });
-    },
-    
-    async sendOrderConfirmationEmail(userEmail, order) {
-        const template = emailTemplates.orderConfirmation(order);
-        return await sendEmail({
-            to: userEmail,
-            ...template
-        });
-    }
-};
-
-module.exports = { sendEmail, emailService };
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
-
-                        <h4>WebSocket Chat Server</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
-# Install socket.io
-npm install socket.io
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
-
-                        <pre><button class="copy-button">Copy</button><code class="language-javascript">{% raw %}
-const http = require('http');
+                    <h5>WebSocket Chat Server</h5>
+                    {% raw %}
+                    <pre><button class="copy-button">Copy</button><code class="language-bash"># Install socket.io
+npm install socket.io</code></pre>
+                    {% endraw %}
+                    
+                    {% raw %}
+                    <pre><button class="copy-button">Copy</button><code class="language-javascript">const http = require('http');
 const socketIo = require('socket.io');
-const express = require('express');
 
-const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
     cors: {
@@ -2513,11 +2200,6 @@ io.on('connection', (socket) => {
             name: userData.name,
             id: socket.id
         });
-        
-        // Send current users in room
-        const roomUsers = Array.from(users.values())
-            .filter(user => user.room === userData.room);
-        socket.emit('roomUsers', roomUsers);
     });
     
     // Handle chat messages
@@ -2537,18 +2219,6 @@ io.on('connection', (socket) => {
         }
     });
     
-    // Handle typing indicators
-    socket.on('typing', (isTyping) => {
-        const user = users.get(socket.id);
-        if (user) {
-            socket.to(user.room).emit('userTyping', {
-                userId: socket.id,
-                userName: user.name,
-                isTyping
-            });
-        }
-    });
-    
     // Handle disconnect
     socket.on('disconnect', () => {
         const user = users.get(socket.id);
@@ -2561,85 +2231,44 @@ io.on('connection', (socket) => {
                 id: socket.id
             });
         }
-        
-        console.log('User disconnected:', socket.id);
     });
-});
-
-// REST API for chat history
-const chatHistory = [];
-
-app.get('/api/chat/:room/history', (req, res) => {
-    const { room } = req.params;
-    const roomHistory = chatHistory.filter(msg => msg.room === room);
-    res.json(roomHistory);
-});
-
-// Save messages to history
-io.on('connection', (socket) => {
-    socket.on('chatMessage', (messageData) => {
-        const user = users.get(socket.id);
-        if (user) {
-            const message = {
-                id: Date.now(),
-                user: user.name,
-                userId: socket.id,
-                text: messageData.text,
-                room: user.room,
-                timestamp: new Date().toISOString()
-            };
-            
-            // Save to history
-            chatHistory.push(message);
-            
-            // Keep only last 1000 messages
-            if (chatHistory.length > 1000) {
-                chatHistory.splice(0, chatHistory.length - 1000);
-            }
-            
-            // Broadcast to room
-            io.to(user.room).emit('newMessage', message);
-        }
-    });
-});
-
-const PORT = process.env.PORT || 3001;
-server.listen(PORT, () => {
-    console.log(`Socket.IO server running on port ${PORT}`);
-});
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
-
-                        <h3 id="conclusion" class="mt-5">Conclusion</h3>
-                        <p>This comprehensive Node.js documentation covers essential concepts from basics to advanced topics. Node.js provides a powerful platform for building scalable, high-performance server-side applications.</p>
-                        <p>Key takeaways:</p>
-                        <ul>
-                            <li>Node.js uses an event-driven, non-blocking I/O model</li>
-                            <li>Express.js simplifies building web applications and APIs</li>
-                            <li>Proper error handling is crucial for robust applications</li>
-                            <li>Security should be considered from the beginning</li>
-                            <li>Performance optimization ensures scalability</li>
-                            <li>Testing ensures reliability and maintainability</li>
-                            <li>Following best practices leads to maintainable code</li>
-                        </ul>
-                        <p>Continue learning by building real-world applications, exploring the Node.js ecosystem, and staying engaged with the community. Happy coding!</p>
-
-                        <div class="mt-5 text-center">
-                            <a href="/practice" class="btn btn-primary btn-lg">Take Practice Test</a>
-                        </div>
-                    </div>
+});</code></pre>
+                    {% endraw %}
                 </div>
             </div>
+
+            <div class="mt-5 text-center">
+                <a href="/practice" class="btn btn-primary btn-lg">Take Practice Test</a>
+            </div>
+
+            <div id="animation-container-docs" style="position: <div class="mt-5 text-center">
+                <a href="/practice" class="btn btn-primary btn-lg">Take Practice Test</a>
+            </div>
         </div>
-        <div id="animation-container-docs" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1;">
-        </div>
-    </section>
+    </div>
 
     <script>
+        // Smooth scrolling for sidebar navigation
+        document.querySelectorAll('.sidebar .nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }
+                // Update active state
+                document.querySelectorAll('.sidebar .nav-link').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Search functionality
         document.getElementById('search-input').addEventListener('input', function() {
             const query = this.value.toLowerCase();
             const content = document.getElementById('content');
-            const elements = content.querySelectorAll('h2, h3, h4, p, pre');
-
+            const elements = content.querySelectorAll('h2, h3, h4, h5, h6, p, pre, .card');
+            
             elements.forEach(element => {
                 const text = element.textContent.toLowerCase();
                 if (query === '' || text.includes(query)) {
@@ -2649,8 +2278,18 @@ server.listen(PORT, () => {
                 }
             });
         });
-    </script>
-    <script>
+
+        // Clear search function
+        function clearSearch() {
+            document.getElementById('search-input').value = '';
+            const content = document.getElementById('content');
+            const elements = content.querySelectorAll('h2, h3, h4, h5, h6, p, pre, .card');
+            elements.forEach(element => {
+                element.style.display = '';
+            });
+        }
+
+        // Copy to clipboard functionality
         const copyButtons = document.querySelectorAll('.copy-button');
         copyButtons.forEach(button => {
             button.addEventListener('click', function() {
@@ -2660,6 +2299,36 @@ server.listen(PORT, () => {
                 setTimeout(() => {
                     this.textContent = 'Copy';
                 }, 2000);
+            });
+        });
+
+        // Highlight active section in sidebar based on scroll position
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('[id]');
+            const navLinks = document.querySelectorAll('.sidebar .nav-link');
+
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Initialize all elements to be visible on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const content = document.getElementById('content');
+            const elements = content.querySelectorAll('h2, h3, h4, h5, h6, p, pre, .card');
+            elements.forEach(element => {
+                element.style.display = '';
             });
         });
     </script>

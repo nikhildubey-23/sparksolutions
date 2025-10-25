@@ -1,42 +1,398 @@
 {% extends 'base.html' %}
 
-{% block title %}CSS Docs - SN VERSE{% endblock %}
+{% block title %}CSS Programming Documentation - SN VERSE{% endblock %}
 
 {% block head %}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/github-dark.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/languages/css.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.3/purify.min.js"></script>
+    <style>
+        body {
+            background: #f8f9fa;
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #212529;
+        }
+        .sidebar {
+            position: fixed;
+            top: 70px;
+            left: 0;
+            width: 280px;
+            height: calc(100vh - 70px);
+            background: #343a40;
+            border-right: 1px solid #495057;
+            overflow-y: auto;
+            z-index: 1000;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+        }
+        .sidebar .nav-link {
+            color: #adb5bd;
+            padding: 12px 20px;
+            border-radius: 0;
+            margin: 0;
+            transition: all 0.2s ease;
+            font-weight: 500;
+            border-left: 3px solid transparent;
+        }
+        .sidebar .nav-link:hover {
+            background: #495057;
+            color: #fff;
+            text-decoration: none;
+            border-left-color: #1572b6;
+        }
+        .sidebar .nav-link.active {
+            background: #1572b6;
+            color: #fff;
+            border-left-color: #1572b6;
+        }
+        .main-content {
+            margin-left: 280px;
+            padding: 30px;
+            max-width: 1200px;
+        }
+
+        .content-card {
+            margin-bottom: 30px;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            background: #fff;
+        }
+        .content-card .card-header {
+            background: #1572b6;
+            color: white;
+            font-weight: 600;
+            font-size: 1.1rem;
+            border-bottom: 1px solid #dee2e6;
+            padding: 15px 20px;
+            border-radius: 8px 8px 0 0;
+        }
+        .search-container {
+            background: rgba(255,255,255,0.9);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .accordion-button:not(.collapsed) {
+            background: #e6f3ff;
+            color: #1572b6;
+            font-weight: 500;
+        }
+        .accordion-button {
+            border-radius: 0;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+        .accordion-button:focus {
+            box-shadow: none;
+        }
+        .badge-note {
+            background: #e9ecef;
+            color: #495057;
+            font-weight: 500;
+        }
+        .badge-tip {
+            background: #d1ecf1;
+            color: #0c5460;
+            font-weight: 500;
+        }
+        .btn {
+            border-radius: 6px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .copy-button {
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 4px 8px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .copy-button:hover {
+            background: #5a6268;
+            transform: scale(1.05);
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Inter', sans-serif;
+            color: #212529;
+            font-weight: 600;
+        }
+        .card-body {
+            padding: 20px;
+        }
+        .table {
+            margin-bottom: 0;
+        }
+        .table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            border-top: none;
+        }
+        pre {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+        }
+        code {
+            background: #f1f3f4;
+            color: #d73a49;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+        .css-logo {
+            color: #1572b6;
+            font-weight: 700;
+        }
+        .data-type-section {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #1572b6;
+        }
+        .method-table {
+            width: 100%;
+            margin-top: 10px;
+            margin-bottom: 15px;
+        }
+        .method-table th {
+            background-color: #e9ecef;
+            text-align: left;
+            padding: 8px;
+        }
+        .method-table td {
+            padding: 8px;
+            border-bottom: 1px solid #dee2e6;
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+            .main-content {
+                margin-left: 0;
+            }
+        }
+        
+        /* Animation demo styles */
+        .animation-demo {
+            display: inline-block;
+            width: 100px;
+            height: 100px;
+            background-color: #1572b6;
+            margin: 10px;
+            border-radius: 5px;
+        }
+        
+        .transition-demo {
+            display: inline-block;
+            width: 100px;
+            height: 100px;
+            background-color: #28a745;
+            margin: 10px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .transition-demo:hover {
+            transform: scale(1.2);
+            background-color: #dc3545;
+            border-radius: 50%;
+        }
+        
+        .transform-demo {
+            display: inline-block;
+            width: 100px;
+            height: 100px;
+            background-color: #ffc107;
+            margin: 10px;
+            border-radius: 5px;
+            transition: transform 0.3s ease;
+        }
+        
+        .transform-demo:hover {
+            transform: rotate(45deg) scale(1.2);
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes slide {
+            0% { transform: translateX(0); }
+            50% { transform: translateX(100px); }
+            100% { transform: translateX(0); }
+        }
+        
+        @keyframes fade {
+            0% { opacity: 1; }
+            50% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
+        
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes colorChange {
+            0% { background-color: #1572b6; }
+            25% { background-color: #28a745; }
+            50% { background-color: #ffc107; }
+            75% { background-color: #dc3545; }
+            100% { background-color: #1572b6; }
+        }
+        
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        
+        .slide-animation {
+            animation: slide 3s infinite;
+        }
+        
+        .fade-animation {
+            animation: fade 2s infinite;
+        }
+        
+        .rotate-animation {
+            animation: rotate 3s linear infinite;
+        }
+        
+        .color-animation {
+            animation: colorChange 5s infinite;
+        }
+    </style>
     <script>
         hljs.highlightAll();
     </script>
 {% endblock %}
 
 {% block content %}
-    <!-- CSS Docs Page -->
-    <section class="docs-page py-5">
-        <div class="container-fluid">
-            <div class="row">
-                <!-- Documentation Content -->
-                <div class="col-md-12">
-                    <!-- Search Box -->
-                    <div class="search-container mb-4">
-                        <input type="text" id="search-input" class="form-control" placeholder="Search documentation...">
-                    </div>
-                    <div id="content">
-                        <h2 class="mb-4">CSS Documentation</h2>
-                        <p>Welcome to the CSS (Cascading Style Sheets) documentation. Here, you'll find comprehensive guides and tutorials for styling web pages.</p>
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar">
+        <div class="p-3">
+            <h5 class="text-center mb-3" style="font-size: 1.1rem; color: #fff; font-weight: 600;"><i class="fab fa-css3-alt"></i> <span class="css-logo">CSS Programming</span> Documentation</h5>
 
-                        <h3 id="css" class="mt-5">CSS Programming</h3>
-                        <p>This section provides a comprehensive guide to CSS (Cascading Style Sheets), the stylesheet language used to describe the presentation of HTML documents.</p>
+            <!-- Search Box -->
+            <div class="search-container">
+                <input type="text" id="search-input" class="form-control" placeholder="Search documentation..." style="background: rgba(255,255,255,0.9); border: 1px solid #495057; color: #212529;">
+                <button class="btn btn-sm btn-outline-dark mt-2 w-100" onclick="clearSearch()">Clear Search</button>
+            </div>
 
-                        <h4>What is CSS?</h4>
-                        <p>CSS (Cascading Style Sheets) is a stylesheet language used to describe the presentation of a document written in HTML or XML. CSS describes how elements should be rendered on screen, on paper, in speech, or on other media. CSS saves a lot of work as it can control the layout of multiple web pages all at once. External stylesheets are stored in CSS files.</p>
-                        <p>CSS is designed primarily to enable the separation of document content from document presentation, including aspects such as layout, colors, and fonts. This separation can improve content accessibility, provide more flexibility and control in the specification of presentation characteristics.</p>
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link" href="#module1"><i class="fas fa-info-circle"></i> Module 1: Introduction to CSS</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module2"><i class="fas fa-code"></i> Module 2: CSS Syntax and Selectors</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module3"><i class="fas fa-palette"></i> Module 3: Colors and Backgrounds</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module4"><i class="fas fa-font"></i> Module 4: Typography</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module5"><i class="fas fa-square"></i> Module 5: Box Model</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module6"><i class="fas fa-arrows-alt"></i> Module 6: Positioning and Layout</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module7"><i class="fas fa-th"></i> Module 7: Flexbox</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module8"><i class="fas fa-th-large"></i> Module 8: Grid Layout</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module9"><i class="fas fa-mobile-alt"></i> Module 9: Responsive Design</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module10"><i class="fas fa-project-diagram"></i> Module 10: Final Project</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module11"><i class="fas fa-magic"></i> Module 11: Animations and Effects</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
 
-                        <h4>Basic CSS Syntax</h4>
-                        <p>CSS syntax consists of a selector and a declaration block. The selector points to the HTML element you want to style. The declaration block contains one or more declarations separated by semicolons. Each declaration includes a CSS property name and a value, separated by a colon. Multiple CSS rules can be stacked together.</p>
-                        <p>CSS comments start with /* and end with */. Comments are used to explain your code and may help when you edit the source code at a later date.</p>
-                        <pre><button class="copy-button">Copy</button><code class="language-css">
+    <!-- Main Content -->
+    <div class="main-content">
+        <div id="content">
+            <h1 class="mb-4" style="text-align: center;"><span class="css-logo">CSS Programming</span> Documentation</h1>
+            <p style="text-align: center; font-size: 1.1rem; color: #6c757d;">Complete guide to CSS styling from basics to advanced</p>
+
+            <!-- Module 1: Introduction to CSS -->
+            <div class="content-card" id="module1">
+                <div class="card-header">
+                    <i class="fas fa-info-circle"></i> Module 1: Introduction to CSS
+                </div>
+                <div class="card-body">
+                    <h5>What is CSS?</h5>
+                    <p>CSS (Cascading Style Sheets) is a stylesheet language used to describe the presentation of a document written in HTML or XML. CSS describes how elements should be rendered on screen, on paper, in speech, or on other media. CSS saves a lot of work as it can control the layout of multiple web pages all at once. External stylesheets are stored in CSS files.</p>
+                    
+                    <p>CSS is designed primarily to enable the separation of document content from document presentation, including aspects such as layout, colors, and fonts. This separation can improve content accessibility, provide more flexibility and control in the specification of presentation characteristics.</p>
+
+                    <h5>History of CSS</h5>
+                    <p>CSS was first proposed by Håkon Wium Lie in 1994. CSS1 became a W3C recommendation in 1996, followed by CSS2 in 1998. CSS3, the latest version, is divided into several modules that are developed independently. CSS3 introduced features like rounded corners, shadows, gradients, transitions, animations, and flexible layouts.</p>
+
+                    <h5>Why Use CSS?</h5>
+                    <ul>
+                        <li><strong>Separation of Concerns:</strong> Separates content (HTML) from presentation (CSS)</li>
+                        <li><strong>Consistency:</strong> Apply the same styles to multiple pages</li>
+                        <li><strong>Maintainability:</strong> Update styles across the entire site by changing one file</li>
+                        <li><strong>Performance:</strong> Faster page loads with cached CSS files</li>
+                        <li><strong>Accessibility:</strong> Better support for assistive technologies</li>
+                        <li><strong>SEO Benefits:</strong> Cleaner HTML helps search engines index content</li>
+                    </ul>
+
+                    <h5>CSS Versions</h5>
+                    <p>CSS has evolved through several versions:</p>
+                    <ul>
+                        <li><strong>CSS1:</strong> Basic styling capabilities (1996)</li>
+                        <li><strong>CSS2:</strong> Added positioning, z-index, media types (1998)</li>
+                        <li><strong>CSS3:</strong> Modular approach with features like Flexbox, Grid, Transitions, Animations (2001-present)</li>
+                    </ul>
+
+                    <h5>How CSS Works</h5>
+                    <p>CSS works by associating style rules with HTML elements. A style rule consists of a selector that identifies which HTML elements to style, and a declaration block that contains one or more property-value pairs. When a browser loads an HTML document, it also loads any linked CSS files and applies the styles to the matching elements.</p>
+
+                    <h5>Inline, Internal, and External CSS</h5>
+                    <p>CSS can be applied to HTML in three ways:</p>
+                    <ul>
+                        <li><strong>Inline CSS:</strong> Using the style attribute directly on HTML elements</li>
+                        <li><strong>Internal CSS:</strong> Using a &lt;style&gt; element in the HTML head section</li>
+                        <li><strong>External CSS:</strong> Linking to an external .css file using the &lt;link&gt; element</li>
+                    </ul>
+                    <p>External CSS is the recommended approach for most websites as it separates content from presentation and allows for better maintainability.</p>
+                </div>
+            </div>
+
+            <!-- Module 2: CSS Syntax and Selectors -->
+            <div class="content-card" id="module2">
+                <div class="card-header">
+                    <i class="fas fa-code"></i> Module 2: CSS Syntax and Selectors
+                </div>
+                <div class="card-body">
+                    <h5>Basic CSS Syntax</h5>
+                    <p>CSS syntax consists of a selector and a declaration block. The selector points to the HTML element you want to style. The declaration block contains one or more declarations separated by semicolons. Each declaration includes a CSS property name and a value, separated by a colon. Multiple CSS rules can be stacked together.</p>
+                    <p>CSS comments start with /* and end with */. Comments are used to explain your code and may help when you edit the source code at a later date.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
 /* CSS Comment */
 selector {
     property: value;
@@ -48,12 +404,12 @@ p {
     color: blue;
     font-size: 16px;
 }
-</code><button class="copy-button">Copy</button></pre>
+</code></pre>
 
-                        <h4>CSS Selectors</h4>
-                        <p>Selectors are patterns used to select and style HTML elements. CSS selectors can find HTML elements based on their element name, id, class, attribute, and more. There are several types of selectors: element selectors, class selectors, ID selectors, universal selectors, group selectors, and combinators.</p>
-                        <p>Understanding selectors is fundamental to writing efficient CSS. More specific selectors override less specific ones due to the cascade.</p>
-                        <pre><button class="copy-button">Copy</button><code class="language-css">
+                    <h5>CSS Selectors</h5>
+                    <p>Selectors are patterns used to select and style HTML elements. CSS selectors can find HTML elements based on their element name, id, class, attribute, and more. There are several types of selectors: element selectors, class selectors, ID selectors, universal selectors, group selectors, and combinators.</p>
+                    <p>Understanding selectors is fundamental to writing efficient CSS. More specific selectors override less specific ones due to the cascade.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
 /* Element selector */
 h1 { color: blue; }
 
@@ -68,12 +424,12 @@ h1 { color: blue; }
 
 /* Group selector */
 h1, h2, h3 { font-family: Arial; }
-</code><button class="copy-button">Copy</button></pre>
+</code></pre>
 
-                        <h4>Class and ID Selectors</h4>
-                        <p>Class selectors select elements with a specific class attribute. To select elements with a specific class, write a period (.) character, followed by the class name. ID selectors select elements with a specific id attribute. To select an element with a specific id, write a hash (#) character, followed by the id.</p>
-                        <p>Class names can be used by multiple elements, while ID names must be unique within the page. IDs have higher specificity than classes.</p>
-                        <pre><button class="copy-button">Copy</button><code class="language-css">
+                    <h5>Class and ID Selectors</h5>
+                    <p>Class selectors select elements with a specific class attribute. To select elements with a specific class, write a period (.) character, followed by the class name. ID selectors select elements with a specific id attribute. To select an element with a specific id, write a hash (#) character, followed by the id.</p>
+                    <p>Class names can be used by multiple elements, while ID names must be unique within the page. IDs have higher specificity than classes.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
 /* Class selector */
 .container {
     width: 100%;
@@ -91,12 +447,12 @@ h1, h2, h3 { font-family: Arial; }
     background-color: #333;
     color: white;
 }
-</code><button class="copy-button">Copy</button></pre>
+</code></pre>
 
-                        <h4>Attribute Selectors</h4>
-                        <p>Attribute selectors select elements based on the presence or value of a given attribute. You can select elements with a specific attribute, with a specific attribute and value, with an attribute value containing a certain word, starting with a certain value, or ending with a certain value.</p>
-                        <p>Attribute selectors are powerful for styling form elements, links, and other elements with specific attributes.</p>
-                        <pre><button class="copy-button">Copy</button><code class="language-css">
+                    <h5>Attribute Selectors</h5>
+                    <p>Attribute selectors select elements based on the presence or value of a given attribute. You can select elements with a specific attribute, with a specific attribute and value, with an attribute value containing a certain word, starting with a certain value, or ending with a certain value.</p>
+                    <p>Attribute selectors are powerful for styling form elements, links, and other elements with specific attributes.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
 /* Element with attribute */
 input[type] {
     border: 1px solid #ccc;
@@ -121,12 +477,12 @@ a[href^="https"] {
 a[href$=".pdf"] {
     background: url(pdf-icon.png) no-repeat right;
 }
-</code><button class="copy-button">Copy</button></pre>
+</code></pre>
 
-                        <h4>Pseudo-classes</h4>
-                        <p>Pseudo-classes define special states of an element. They are used to add special effects to some selectors. Common pseudo-classes include :hover (when mouse over), :active (when clicked), :visited (for visited links), :first-child, :last-child, :nth-child(), and :focus.</p>
-                        <p>Pseudo-classes are preceded by a colon (:). They can be combined with other selectors for more specific targeting.</p>
-                        <pre><button class="copy-button">Copy</button><code class="language-css">
+                    <h5>Pseudo-classes</h5>
+                    <p>Pseudo-classes define special states of an element. They are used to add special effects to some selectors. Common pseudo-classes include :hover (when mouse over), :active (when clicked), :visited (for visited links), :first-child, :last-child, :nth-child(), and :focus.</p>
+                    <p>Pseudo-classes are preceded by a colon (:). They can be combined with other selectors for more specific targeting.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
 /* Link states */
 a:link { color: blue; }
 a:visited { color: purple; }
@@ -151,12 +507,12 @@ li:last-child {
 tr:nth-child(even) {
     background-color: #f2f2f2;
 }
-</code><button class="copy-button">Copy</button></pre>
+</code></pre>
 
-                        <h4>Pseudo-elements</h4>
-                        <p>Pseudo-elements are used to style specific parts of an element. They are preceded by double colons (::). Common pseudo-elements include ::before (insert content before), ::after (insert content after), ::first-line (style first line), and ::first-letter (style first letter).</p>
-                        <p>Pseudo-elements are often used with the content property to add decorative elements or text.</p>
-                        <pre><button class="copy-button">Copy</button><code class="language-css">
+                    <h5>Pseudo-elements</h5>
+                    <p>Pseudo-elements are used to style specific parts of an element. They are preceded by double colons (::). Common pseudo-elements include ::before (insert content before), ::after (insert content after), ::first-line (style first line), and ::first-letter (style first letter).</p>
+                    <p>Pseudo-elements are often used with the content property to add decorative elements or text.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
 /* Before and after */
 .quote::before {
     content: """;
@@ -183,195 +539,572 @@ p::first-line {
     font-weight: bold;
     color: #333;
 }
-</code><button class="copy-button">Copy</button></pre>
+</code></pre>
 
-                        <h4>The Box Model</h4>
-                        <p>The CSS box model is a box that wraps around every HTML element. It consists of: content (the actual content), padding (space around content), border (goes around padding and content), and margin (space outside the border). The box model allows us to add a border around elements, and to define space between elements.</p>
-                        <p>Understanding the box model is crucial for layout and spacing. The box-sizing property can change how the box model is calculated.</p>
-                        <pre><button class="copy-button">Copy</button><code class="language-css">
-.box {
-    width: 300px;
-    padding: 20px;
-    border: 5px solid #333;
-    margin: 10px;
+                    <h5>Combinators</h5>
+                    <p>Combinators explain the relationship between selectors. There are four different combinators in CSS:</p>
+                    <ul>
+                        <li><strong>Descendant selector (space):</strong> Selects all elements that are descendants of a specified element</li>
+                        <li><strong>Child selector (&gt;):</strong> Selects all elements that are direct children of a specified element</li>
+                        <li><strong>Adjacent sibling selector (+):</strong> Selects all elements that are the immediate siblings of a specified element</li>
+                        <li><strong>General sibling selector (~):</strong> Selects all elements that are siblings of a specified element</li>
+                    </ul>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Descendant selector */
+div p {
+    color: blue;
 }
 
-/* Include padding and border in width */
-.responsive-box {
-    box-sizing: border-box;
-    width: 100%;
-    padding: 15px;
-    border: 1px solid #ddd;
+/* Child selector */
+div > p {
+    color: green;
 }
-</code><button class="copy-button">Copy</button></pre>
 
-                        <h4>Margin and Padding</h4>
-                        <p>Margin clears an area around an element (outside the border). Margin is transparent. Padding clears an area around the content (inside the border). Both margin and padding can have top, right, bottom, and left values specified individually or using shorthand notation.</p>
-                        <p>Margin can have negative values, while padding cannot. Margin can cause margin collapse, where adjacent margins combine into a single margin.</p>
-                        <pre><button class="copy-button">Copy</button><code class="language-css">
-/* Individual margins */
-.element {
+/* Adjacent sibling selector */
+h1 + p {
+    font-size: 1.2em;
+}
+
+/* General sibling selector */
+h1 ~ p {
     margin-top: 10px;
-    margin-right: 20px;
-    margin-bottom: 10px;
-    margin-left: 20px;
 }
+</code></pre>
+                </div>
+            </div>
 
-/* Shorthand margin (top, right, bottom, left) */
-.element {
-    margin: 10px 20px 10px 20px;
-}
+            <!-- Module 3: Colors and Backgrounds -->
+            <div class="content-card" id="module3">
+                <div class="card-header">
+                    <i class="fas fa-palette"></i> Module 3: Colors and Backgrounds
+                </div>
+                <div class="card-body">
+                    <h5>Color Values</h5>
+                    <p>CSS color properties specify the color of text, borders, and other elements. Colors can be specified using color names, HEX values, RGB values, RGBA values (with transparency), HSL values, or HSLA values.</p>
+                    <p>Each color format has its advantages. HEX is widely used and compact. RGB provides more precise control. RGBA adds transparency. HSL is more intuitive for humans to understand and adjust.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Color names */
+.text-primary { color: blue; }
+.text-success { color: green; }
 
-/* Shorthand margin (top/bottom, left/right) */
-.element {
-    margin: 10px 20px;
-}
-
-/* Padding examples */
-.element {
-    padding: 15px; /* All sides */
-    padding: 10px 20px; /* Top/bottom, left/right */
-    padding: 5px 10px 15px 20px; /* Top, right, bottom, left */
-}
-</code><button class="copy-button">Copy</button></pre>
-
-                        <h4>Borders</h4>
-                        <p>The CSS border properties allow you to specify the style, width, and color of an element's border. Border properties include border-style, border-width, border-color, and the shorthand border property. You can also style individual borders with border-top, border-right, border-bottom, and border-left.</p>
-                        <p>Border styles include solid, dotted, dashed, double, groove, ridge, inset, and outset. Borders can be rounded using the border-radius property.</p>
-                        <pre><button class="copy-button">Copy</button><code class="language-css">
-/* Border shorthand */
-.button {
-    border: 2px solid #007bff;
-}
-
-/* Individual border properties */
-.card {
-    border-style: solid;
-    border-width: 1px;
-    border-color: #ddd;
-}
-
-/* Individual sides */
-.sidebar {
-    border-left: 3px solid #333;
-    border-top: 1px solid #eee;
-}
-
-/* Rounded corners */
-.avatar {
-    border-radius: 50%; /* Circle */
-}
-
-.box {
-    border-radius: 10px; /* Rounded corners */
-}
-</code><button class="copy-button">Copy</button></pre>
-
-                        <h4>Colors and Backgrounds</h4>
-                        <p>CSS color properties specify the color of text, borders, and other elements. Background properties allow you to control the background color of elements, set background images, control background repetition, and position background images.</p>
-                        <p>Colors can be specified using color names, HEX values, RGB values, RGBA values (with transparency), HSL values, or HSLA values.</p>
-                        <pre><button class="copy-button">Copy</button><code class="language-css">
-/* Text color */
+/* HEX values */
 .text-primary { color: #007bff; }
 .text-success { color: #28a745; }
 
+/* RGB values */
+.text-primary { color: rgb(0, 123, 255); }
+.text-success { color: rgb(40, 167, 69); }
+
+/* RGBA values (with transparency) */
+.text-primary { color: rgba(0, 123, 255, 0.8); }
+.text-success { color: rgba(40, 167, 69, 0.8); }
+
+/* HSL values */
+.text-primary { color: hsl(211, 100%, 50%); }
+.text-success { color: hsl(134, 59%, 41%); }
+
+/* HSLA values (with transparency) */
+.text-primary { color: hsla(211, 100%, 50%, 0.8); }
+.text-success { color: hsla(134, 59%, 41%, 0.8); }
+</code></pre>
+
+                    <h5>Background Color</h5>
+                    <p>The background-color property sets the background color of an element. This property affects the content area and padding, but not the margin. You can apply background colors to any HTML element.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
 /* Background color */
+body {
+    background-color: #f8f9fa;
+}
+
 .bg-light { background-color: #f8f9fa; }
 .bg-dark { background-color: #343a40; }
+.bg-primary { background-color: #007bff; }
+</code></pre>
 
+                    <h5>Background Image</h5>
+                    <p>The background-image property sets one or more background images for an element. By default, a background-image is placed at the top-left corner of an element, and repeated both vertically and horizontally.</p>
+                    <p>Background images should be optimized for web use. Consider using responsive images and providing fallback colors for when images fail to load.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
 /* Background image */
 .hero {
     background-image: url('hero-bg.jpg');
-    background-size: cover;
-    background-position: center;
+}
+
+/* Multiple background images */
+.layered-bg {
+    background-image: url('pattern.png'), url('texture.jpg');
+}
+</code></pre>
+
+                    <h5>Background Repeat</h5>
+                    <p>The background-repeat property sets if/how a background image will be repeated. Values include repeat (both directions), repeat-x (horizontal), repeat-y (vertical), and no-repeat (don't repeat).</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Background repeat */
+.no-repeat {
     background-repeat: no-repeat;
 }
 
-/* RGBA with transparency */
-.overlay {
+.repeat-x {
+    background-repeat: repeat-x;
+}
+
+.repeat-y {
+    background-repeat: repeat-y;
+}
+
+.repeat {
+    background-repeat: repeat;
+}
+</code></pre>
+
+                    <h5>Background Position</h5>
+                    <p>The background-position property sets the starting position of a background image. Values can be keywords (top, bottom, left, right, center), percentages, or length values. You can specify one value (horizontal) or two values (horizontal and vertical).</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Background position */
+.bg-position {
+    background-position: center center;
+}
+
+.bg-position-top-right {
+    background-position: top right;
+}
+
+.bg-position-percentage {
+    background-position: 50% 50%;
+}
+
+.bg-position-length {
+    background-position: 20px 30px;
+}
+</code></pre>
+
+                    <h5>Background Size</h5>
+                    <p>The background-size property specifies the size of the background images. Values include auto (default), cover (scales to cover entire container), contain (scales to fit within container), and specific dimensions.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Background size */
+.bg-cover {
+    background-size: cover;
+}
+
+.bg-contain {
+    background-size: contain;
+}
+
+.bg-specific {
+    background-size: 300px 200px;
+}
+
+.bg-width-only {
+    background-size: 100% auto;
+}
+</code></pre>
+
+                    <h5>Background Attachment</h5>
+                    <p>The background-attachment property sets whether a background image scrolls with the rest of the page or is fixed. Values include scroll (default) and fixed.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Background attachment */
+.bg-scroll {
+    background-attachment: scroll;
+}
+
+.bg-fixed {
+    background-attachment: fixed;
+}
+</code></pre>
+
+                    <h5>Background Shorthand</h5>
+                    <p>The background property is a shorthand property for setting all background properties. The order of values is: background-color, background-image, background-repeat, background-attachment, background-position, and background-size.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Background shorthand */
+.hero {
+    background: #f8f9fa url('hero-bg.jpg') no-repeat center center/cover;
+}
+
+/* Another example */
+.card {
+    background: #fff url('pattern.png') repeat-x top left;
+}
+</code></pre>
+
+                    <h5>Opacity and Transparency</h5>
+                    <p>The opacity property sets the opacity level for an element. Values range from 0.0 (fully transparent) to 1.0 (fully opaque). Opacity applies to the entire element, including its content.</p>
+                    <p>For transparency without affecting child elements, use RGBA or HSLA color values instead of opacity.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Opacity */
+.transparent {
+    opacity: 0.5;
+}
+
+/* RGBA for transparency without affecting children */
+.semi-transparent {
     background-color: rgba(0, 0, 0, 0.5);
 }
-</code><button class="copy-button">Copy</button></pre>
+</code></pre>
+                </div>
+            </div>
 
-                        <h4>Typography</h4>
-                        <p>CSS typography properties allow you to control the appearance of text. Key properties include font-family, font-size, font-weight, font-style, line-height, text-align, text-decoration, text-transform, and letter-spacing.</p>
-                        <p>Web fonts can be added using @font-face or by linking to Google Fonts or other font services. System font stacks provide fallbacks for better performance.</p>
-                        <pre><button class="copy-button">Copy</button><code class="language-css">
+            <!-- Module 4: Typography -->
+            <div class="content-card" id="module4">
+                <div class="card-header">
+                    <i class="fas fa-font"></i> Module 4: Typography
+                </div>
+                <div class="card-body">
+                    <h5>Font Family</h5>
+                    <p>The font-family property specifies the font for an element. You can specify multiple fonts as a "fallback" system, in case the first font is not available. It's recommended to end with a generic font family (serif, sans-serif, monospace, cursive, fantasy).</p>
+                    <p>Web fonts can be added using @font-face or by linking to Google Fonts or other font services. System font stacks provide fallbacks for better performance.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
 /* Font family */
 body {
     font-family: 'Helvetica Neue', Arial, sans-serif;
 }
 
-/* Font size and weight */
-h1 {
-    font-size: 2.5rem;
-    font-weight: 700;
+/* Serif font stack */
+.article {
+    font-family: Georgia, 'Times New Roman', serif;
 }
 
-/* Line height and spacing */
-p {
-    line-height: 1.6;
-    letter-spacing: 0.5px;
+/* Monospace font stack */
+.code {
+    font-family: 'Courier New', Courier, monospace;
 }
 
-/* Text alignment and decoration */
-.text-center {
-    text-align: center;
+/* Custom font with @font-face */
+@font-face {
+    font-family: 'MyCustomFont';
+    src: url('myfont.woff2') format('woff2'),
+         url('myfont.woff') format('woff');
+}
+</code></pre>
+
+                    <h5>Font Size</h5>
+                    <p>The font-size property sets the size of the text. Values can be specified in various units: pixels (px), ems (relative to parent font size), rems (relative to root font size), percentages (relative to parent font size), viewport units (vw, vh), or keywords (xx-small, x-small, small, medium, large, x-large, xx-large).</p>
+                    <p>Using relative units like rem is recommended for better accessibility and responsive design.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Font size with different units */
+.text-small { font-size: 14px; }
+.text-medium { font-size: 1rem; }
+.text-large { font-size: 1.2rem; }
+.text-responsive { font-size: 2vw; }
+
+/* Keywords */
+.text-x-small { font-size: x-small; }
+.text-small { font-size: small; }
+.text-medium { font-size: medium; }
+.text-large { font-size: large; }
+</code></pre>
+
+                    <h5>Font Weight</h5>
+                    <p>The font-weight property specifies the weight (or boldness) of the font. Values include normal (default), bold, bolder, lighter, and numeric values (100-900). Numeric values follow the OpenType specification, where 400 is normal and 700 is bold.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Font weight */
+.text-normal { font-weight: normal; }
+.text-bold { font-weight: bold; }
+.text-light { font-weight: 300; }
+.text-heavy { font-weight: 700; }
+.text-bolder { font-weight: bolder; }
+</code></pre>
+
+                    <h5>Font Style</h5>
+                    <p>The font-style property specifies the font style for text. Values include normal (default), italic, and oblique. Italic is typically a slanted version of the font, while oblique is simply a slanted version of the normal font.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Font style */
+.text-normal { font-style: normal; }
+.text-italic { font-style: italic; }
+.text-oblique { font-style: oblique; }
+</code></pre>
+
+                    <h5>Line Height</h5>
+                    <p>The line-height property specifies the height of a line box. It can be specified as a unitless number (multiplied by the element's font size), a length, a percentage, or the keyword normal. Unitless values are recommended for better scalability.</p>
+                    <p>Proper line height improves readability. A value between 1.4 and 1.6 is generally recommended for body text.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Line height */
+.text-readable { line-height: 1.5; }
+.text-tight { line-height: 1.2; }
+.text-loose { line-height: 1.8; }
+.text-px { line-height: 24px; }
+.text-percent { line-height: 150%; }
+</code></pre>
+
+                    <h5>Text Alignment</h5>
+                    <p>The text-align property specifies the horizontal alignment of text in an element. Values include left, right, center, justify, and inherit. Justify stretches the lines so that each line has equal width.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Text alignment */
+.text-left { text-align: left; }
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+.text-justify { text-align: justify; }
+</code></pre>
+
+                    <h5>Text Decoration</h5>
+                    <p>The text-decoration property specifies the decoration added to text. Values include none, underline, overline, line-through, and blink. You can combine multiple values.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Text decoration */
+.no-underline { text-decoration: none; }
+.underline { text-decoration: underline; }
+.line-through { text-decoration: line-through; }
+.underline-overline { text-decoration: underline overline; }
+</code></pre>
+
+                    <h5>Text Transform</h5>
+                    <p>The text-transform property controls the capitalization of text. Values include none (default), capitalize (first letter of each word), uppercase (all uppercase), and lowercase (all lowercase).</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Text transform */
+.text-capitalize { text-transform: capitalize; }
+.text-uppercase { text-transform: uppercase; }
+.text-lowercase { text-transform: lowercase; }
+</code></pre>
+
+                    <h5>Letter Spacing</h5>
+                    <p>The letter-spacing property increases or decreases the space between characters. Positive values add space, while negative values remove space.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Letter spacing */
+.text-spaced { letter-spacing: 2px; }
+.text-compressed { letter-spacing: -1px; }
+.text-normal { letter-spacing: normal; }
+</code></pre>
+
+                    <h5>Word Spacing</h5>
+                    <p>The word-spacing property increases or decreases the space between words. Positive values add space, while negative values remove space.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Word spacing */
+.text-spaced { word-spacing: 5px; }
+.text-compressed { word-spacing: -2px; }
+.text-normal { word-spacing: normal; }
+</code></pre>
+
+                    <h5>Text Shadow</h5>
+                    <p>The text-shadow property adds shadow to text. It can take up to four values: horizontal offset, vertical offset, blur radius, and color. You can add multiple shadows by separating them with commas.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Text shadow */
+.text-shadow {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
-.no-underline {
-    text-decoration: none;
+/* Multiple shadows */
+.multishadow {
+    text-shadow: 1px 1px 0 #fff, 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
-/* Text transformation */
-.uppercase {
-    text-transform: uppercase;
+/* Outline effect */
+.outline-text {
+    text-shadow: -1px -1px 0 #000, 1px 1px 0 #fff;
 }
-</code><button class="copy-button">Copy</button></pre>
+</code></pre>
 
-                        <h4>Display Property</h4>
-                        <p>The display property specifies the display behavior of an element. Common values include block, inline, inline-block, none, flex, grid, and inherit. Block elements take up the full width available and start on a new line. Inline elements only take up as much width as necessary.</p>
-                        <p>inline-block combines properties of both inline and block elements. flex and grid create flexible and grid layouts respectively.</p>
-                        <pre><button class="copy-button">Copy</button><code class="language-css">
-/* Block level */
-div {
-    display: block;
-}
-
-/* Inline */
-span {
-    display: inline;
-}
-
-/* Inline block */
-.button {
-    display: inline-block;
-    padding: 10px 20px;
+                    <h5>Web Fonts</h5>
+                    <p>The @font-face rule allows you to use custom fonts on your web pages. You need to specify the font family name and the source of the font files in different formats for cross-browser compatibility.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Custom font */
+@font-face {
+    font-family: 'MyCustomFont';
+    src: url('myfont.woff2') format('woff2'),
+         url('myfont.woff') format('woff'),
+         url('myfont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
 }
 
-/* Hide element */
-.hidden {
-    display: none;
+/* Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+body {
+    font-family: 'Roboto', sans-serif;
+}
+</code></pre>
+                </div>
+            </div>
+
+            <!-- Module 5: Box Model -->
+            <div class="content-card" id="module5">
+                <div class="card-header">
+                    <i class="fas fa-square"></i> Module 5: Box Model
+                </div>
+                <div class="card-body">
+                    <h5>Understanding the Box Model</h5>
+                    <p>The CSS box model is a box that wraps around every HTML element. It consists of: content (the actual content), padding (space around content), border (goes around padding and content), and margin (space outside the border). The box model allows us to add a border around elements, and to define space between elements.</p>
+                    <p>Understanding the box model is crucial for layout and spacing. The box-sizing property can change how the box model is calculated.</p>
+
+                    <h5>Content</h5>
+                    <p>The content area is where text, images, and other HTML elements appear. The width and height properties set the dimensions of the content area by default.</p>
+
+                    <h5>Padding</h5>
+                    <p>Padding clears an area around the content (inside the border). The padding is affected by the background color of the element. Padding can be set for all sides at once or individually for top, right, bottom, and left.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Padding shorthand */
+.box {
+    padding: 20px; /* All sides */
 }
 
-/* Flex container */
-.flex-container {
-    display: flex;
-    justify-content: space-between;
+/* Individual padding */
+.box {
+    padding-top: 10px;
+    padding-right: 15px;
+    padding-bottom: 10px;
+    padding-left: 15px;
 }
 
-/* Grid container */
-.grid-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 20px;
+/* Shorthand padding (top/bottom, left/right) */
+.box {
+    padding: 10px 15px;
 }
-</code><button class="copy-button">Copy</button></pre>
 
-                        <h4>Position Property</h4>
-                        <p>The position property specifies the type of positioning method used for an element. Values include static (default), relative, absolute, fixed, and sticky. Positioned elements can be offset using top, right, bottom, and left properties.</p>
-                        <p>Relative positioning moves element relative to its normal position. Absolute positioning moves element relative to its nearest positioned ancestor. Fixed positioning positions element relative to the viewport.</p>
-                        <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Shorthand padding (top, right, bottom, left) */
+.box {
+    padding: 10px 15px 20px 25px;
+}
+</code></pre>
+
+                    <h5>Border</h5>
+                    <p>The border goes around the padding and content. The border properties allow you to specify the style, width, and color of an element's border. You can style all borders at once or individually for each side.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Border shorthand */
+.box {
+    border: 2px solid #333;
+}
+
+/* Individual border properties */
+.box {
+    border-style: solid;
+    border-width: 2px;
+    border-color: #333;
+}
+
+/* Individual sides */
+.box {
+    border-top: 2px solid #333;
+    border-right: 2px solid #333;
+    border-bottom: 2px solid #333;
+    border-left: 2px solid #333;
+}
+
+/* Border radius for rounded corners */
+.rounded {
+    border-radius: 10px;
+}
+
+/* Individual border radius */
+.rounded-top {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+</code></pre>
+
+                    <h5>Margin</h5>
+                    <p>Margin clears an area around an element (outside the border). Margin is transparent. Margin can have negative values, which can cause elements to overlap. Like padding, margin can be set for all sides at once or individually.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Margin shorthand */
+.box {
+    margin: 20px; /* All sides */
+}
+
+/* Individual margin */
+.box {
+    margin-top: 10px;
+    margin-right: 15px;
+    margin-bottom: 10px;
+    margin-left: 15px;
+}
+
+/* Shorthand margin (top/bottom, left/right) */
+.box {
+    margin: 10px 15px;
+}
+
+/* Shorthand margin (top, right, bottom, left) */
+.box {
+    margin: 10px 15px 20px 25px;
+}
+
+/* Auto margin for centering */
+.centered {
+    margin: 0 auto;
+    width: 80%;
+}
+</code></pre>
+
+                    <h5>Box Sizing</h5>
+                    <p>The box-sizing property defines how the width and height of an element are calculated. The default value is content-box, where width and height only apply to the content area. The border-box value includes padding and border in the element's total width and height.</p>
+                    <p>Using border-box is often preferred for responsive design as it makes calculations more predictable.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Box sizing */
+.content-box {
+    box-sizing: content-box;
+    width: 300px;
+    padding: 20px;
+    border: 10px solid #333;
+    /* Total width = 300 + 20*2 + 10*2 = 360px */
+}
+
+.border-box {
+    box-sizing: border-box;
+    width: 300px;
+    padding: 20px;
+    border: 10px solid #333;
+    /* Total width = 300px */
+}
+
+/* Universal box-sizing for easier calculations */
+* {
+    box-sizing: border-box;
+}
+</code></pre>
+
+                    <h5>Outline</h5>
+                    <p>The outline property draws a line around an element, outside the border. Unlike border, outline does not take up space and does not affect the layout of the element. Outline is often used for focus states.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Outline */
+.focusable:focus {
+    outline: 2px solid #007bff;
+}
+
+/* Outline offset */
+.offset-outline {
+    outline: 2px solid #007bff;
+    outline-offset: 2px;
+}
+</code></pre>
+
+                    <h5>Box Shadow</h5>
+                    <p>The box-shadow property adds one or more shadows to an element. It can take up to six values: horizontal offset, vertical offset, blur radius, spread radius, color, and inset/outset. Multiple shadows can be added by separating them with commas.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Box shadow */
+.shadow {
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Multiple shadows */
+.multishadow {
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+/* Inset shadow (inner shadow) */
+.inset-shadow {
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+/* No shadow */
+.no-shadow {
+    box-shadow: none;
+}
+</code></pre>
+                </div>
+            </div>
+
+            <!-- Module 6: Positioning and Layout -->
+            <div class="content-card" id="module6">
+                <div class="card-header">
+                    <i class="fas fa-arrows-alt"></i> Module 6: Positioning and Layout
+                </div>
+                <div class="card-body">
+                    <h5>Position Property</h5>
+                    <p>The position property specifies the type of positioning method used for an element. Values include static (default), relative, absolute, fixed, and sticky. Positioned elements can be offset using top, right, bottom, and left properties.</p>
+                    <p>Relative positioning moves element relative to its normal position. Absolute positioning moves element relative to its nearest positioned ancestor. Fixed positioning positions element relative to the viewport.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Static positioning (default) */
+.static-element {
+    position: static;
+}
+
 /* Relative positioning */
 .relative-box {
     position: relative;
@@ -400,55 +1133,576 @@ span {
     position: sticky;
     top: 0;
 }
+</code></pre>
 
-/* Z-index for stacking order */
+                    <h5>Top, Right, Bottom, Left Properties</h5>
+                    <p>These properties specify the position of positioned elements. They work with position: relative, absolute, fixed, and sticky. Values can be specified in pixels, percentages, ems, or other length units.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Positioning properties */
+.positioned {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    bottom: 40px;
+    left: 50px;
+}
+
+/* Percentage positioning */
+.percentage-position {
+    position: absolute;
+    top: 10%;
+    left: 20%;
+}
+</code></pre>
+
+                    <h5>Z-Index</h5>
+                    <p>The z-index property specifies the stack order of positioned elements. Elements with a higher z-index appear in front of elements with a lower z-index. Z-index only works on positioned elements (position: relative, absolute, fixed, or sticky).</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Z-index */
 .layer-1 { z-index: 1; }
 .layer-2 { z-index: 2; }
 .layer-3 { z-index: 3; }
-</code><button class="copy-button">Copy</button></pre>
 
-                        <h4>Flexbox Layout</h4>
-                        <p>Flexbox is a one-dimensional layout method for arranging items in rows or columns. Items flex to fill additional space or shrink to fit into smaller spaces. The main concepts are flex container (parent) and flex items (children).</p>
-                        <p>Key properties include display: flex, flex-direction, justify-content, align-items, flex-wrap, align-content, and gap. Flex items can be controlled with flex-grow, flex-shrink, flex-basis, and align-self.</p>
-                        <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Negative z-index */
+.behind {
+    z-index: -1;
+}
+</code></pre>
+
+                    <h5>Overflow</h5>
+                    <p>The overflow property specifies what happens if content overflows an element's box. Values include visible (default), hidden, scroll, and auto. The overflow-x and overflow-y properties control overflow in specific directions.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Overflow */
+.overflow-visible {
+    overflow: visible;
+}
+
+.overflow-hidden {
+    overflow: hidden;
+}
+
+.overflow-scroll {
+    overflow: scroll;
+}
+
+.overflow-auto {
+    overflow: auto;
+}
+
+/* Direction-specific overflow */
+.overflow-x-hidden {
+    overflow-x: hidden;
+    overflow-y: visible;
+}
+</code></pre>
+
+                    <h5>Visibility</h5>
+                    <p>The visibility property specifies whether or not an element is visible. Values include visible (default) and hidden. Unlike display: none, hidden elements still take up space in the layout.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Visibility */
+.visible {
+    visibility: visible;
+}
+
+.hidden {
+    visibility: hidden;
+}
+
+/* Toggle visibility */
+.toggle-visibility:hover {
+    visibility: hidden;
+}
+</code></pre>
+
+                    <h5>Display Property</h5>
+                    <p>The display property specifies the display behavior of an element. Common values include block, inline, inline-block, none, flex, grid, and inherit. Block elements take up the full width available and start on a new line. Inline elements only take up as much width as necessary.</p>
+                    <p>inline-block combines properties of both inline and block elements. flex and grid create flexible and grid layouts respectively.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Display values */
+.block {
+    display: block;
+}
+
+.inline {
+    display: inline;
+}
+
+.inline-block {
+    display: inline-block;
+    padding: 10px 20px;
+}
+
+.none {
+    display: none;
+}
+
 /* Flex container */
 .flex-container {
     display: flex;
-    flex-direction: row; /* or column */
-    justify-content: center; /* flex-start, flex-end, space-between, space-around */
-    align-items: center; /* flex-start, flex-end, stretch */
-    flex-wrap: wrap; /* or nowrap */
-    gap: 20px;
 }
 
-/* Flex items */
-.flex-item {
-    flex: 1; /* flex-grow, flex-shrink, flex-basis */
-    flex-grow: 1;
-    flex-shrink: 1;
-    flex-basis: auto;
-}
-
-/* Individual flex item alignment */
-.special-item {
-    align-self: flex-end;
-}
-</code><button class="copy-button">Copy</button></pre>
-
-                        <h4>Grid Layout</h4>
-                        <p>CSS Grid Layout is a two-dimensional layout system for the web. It lets you layout content in rows and columns, and has many features that make building complex layouts straightforward. Grid consists of grid container and grid items.</p>
-                        <p>Key properties include display: grid, grid-template-columns, grid-template-rows, grid-gap, grid-template-areas, and justify-items/align-items. Grid items can be placed with grid-column and grid-row.</p>
-                        <pre><button class="copy-button">Copy</button><code class="language-css">
 /* Grid container */
 .grid-container {
     display: grid;
-    grid-template-columns: 1fr 2fr 1fr; /* Fractional units */
-    grid-template-rows: auto 1fr auto;
-    gap: 20px;
+}
+</code></pre>
+
+                    <h5>Float</h5>
+                    <p>The float property specifies whether an element should float to the left or right of its container, allowing text and inline elements to wrap around it. Values include left, right, none, and inherit.</p>
+                    <p>Floats were commonly used for layout before Flexbox and Grid, but are now primarily used for wrapping text around images.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Float */
+.float-left {
+    float: left;
+    margin-right: 15px;
+}
+
+.float-right {
+    float: right;
+    margin-left: 15px;
+}
+
+/* Clear float */
+.clearfix::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.clear-left {
+    clear: left;
+}
+
+.clear-right {
+    clear: right;
+}
+
+.clear-both {
+    clear: both;
+}
+</code></pre>
+
+                    <h5>Clear</h5>
+                    <p>The clear property specifies which sides of an element's box other floating elements are not allowed. Values include left, right, both, none, and inherit.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Clear */
+.clear-left {
+    clear: left;
+}
+
+.clear-right {
+    clear: right;
+}
+
+.clear-both {
+    clear: both;
+}
+</code></pre>
+
+                    <h5>Width and Height</h5>
+                    <p>The width and height properties set the width and height of an element. Values can be specified in pixels, percentages, ems, or other length units. Max-width and max-height set the maximum dimensions, while min-width and min-height set the minimum dimensions.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Width and height */
+.box {
+    width: 300px;
+    height: 200px;
+}
+
+/* Percentage dimensions */
+.responsive {
+    width: 100%;
+    height: auto;
+}
+
+/* Maximum dimensions */
+.max-size {
+    max-width: 100%;
+    max-height: 500px;
+}
+
+/* Minimum dimensions */
+.min-size {
+    min-width: 300px;
+    min-height: 200px;
+}
+</code></pre>
+                </div>
+            </div>
+
+            <!-- Module 7: Flexbox -->
+            <div class="content-card" id="module7">
+                <div class="card-header">
+                    <i class="fas fa-th"></i> Module 7: Flexbox
+                </div>
+                <div class="card-body">
+                    <h5>Introduction to Flexbox</h5>
+                    <p>Flexbox is a one-dimensional layout method for arranging items in rows or columns. Items flex to fill additional space or shrink to fit into smaller spaces. The main concepts are flex container (parent) and flex items (children).</p>
+                    <p>Flexbox provides powerful alignment capabilities and makes it easier to create responsive layouts without using floats or positioning.</p>
+
+                    <h5>Flex Container</h5>
+                    <p>To create a flex container, set the display property of an element to flex or inline-flex. This turns the direct children into flex items.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Flex container */
+.flex-container {
+    display: flex;
+}
+
+/* Inline flex container */
+.inline-flex-container {
+    display: inline-flex;
+}
+</code></pre>
+
+                    <h5>Flex Direction</h5>
+                    <p>The flex-direction property sets the direction of flex items in the flex container. Values include row (default, horizontal), row-reverse (horizontal, reversed), column (vertical), and column-reverse (vertical, reversed).</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Flex direction */
+.flex-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.flex-row-reverse {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.flex-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.flex-column-reverse {
+    display: flex;
+    flex-direction: column-reverse;
+}
+</code></pre>
+
+                    <h5>Flex Wrap</h5>
+                    <p>The flex-wrap property specifies whether flex items should wrap or not if there isn't enough space for them on one flex line. Values include nowrap (default, no wrapping), wrap (wrapping), and wrap-reverse (wrapping in reverse order).</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Flex wrap */
+.flex-nowrap {
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+.flex-wrap {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.flex-wrap-reverse {
+    display: flex;
+    flex-wrap: wrap-reverse;
+}
+</code></pre>
+
+                    <h5>Justify Content</h5>
+                    <p>The justify-content property aligns flex items along the main axis of the flex container. Values include flex-start (default), flex-end, center, space-between, space-around, and space-evenly.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Justify content */
+.flex-start {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.flex-end {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.flex-center {
+    display: flex;
+    justify-content: center;
+}
+
+.flex-between {
+    display: flex;
+    justify-content: space-between;
+}
+
+.flex-around {
+    display: flex;
+    justify-content: space-around;
+}
+
+.flex-evenly {
+    display: flex;
+    justify-content: space-evenly;
+}
+</code></pre>
+
+                    <h5>Align Items</h5>
+                    <p>The align-items property aligns flex items along the cross axis of the flex container. Values include stretch (default), flex-start, flex-end, center, and baseline.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Align items */
+.flex-stretch {
+    display: flex;
+    align-items: stretch;
+}
+
+.flex-start {
+    display: flex;
+    align-items: flex-start;
+}
+
+.flex-end {
+    display: flex;
+    align-items: flex-end;
+}
+
+.flex-center {
+    display: flex;
+    align-items: center;
+}
+
+.flex-baseline {
+    display: flex;
+    align-items: baseline;
+}
+</code></pre>
+
+                    <h5>Align Content</h5>
+                    <p>The align-content property aligns the flex container's lines when there is extra space in the cross axis. This is similar to align-items but applies to the entire flex container as a whole.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Align content */
+.flex-content-stretch {
+    display: flex;
+    align-content: stretch;
+    flex-wrap: wrap;
+}
+
+.flex-content-start {
+    display: flex;
+    align-content: flex-start;
+    flex-wrap: wrap;
+}
+
+.flex-content-end {
+    display: flex;
+    align-content: flex-end;
+    flex-wrap: wrap;
+}
+
+.flex-content-center {
+    display: flex;
+    align-content: center;
+    flex-wrap: wrap;
+}
+</code></pre>
+
+                    <h5>Gap</h5>
+                    <p>The gap property sets the size of the gap between rows and columns in flex and grid layouts. It's a shorthand for row-gap and column-gap. Gap is a more modern and convenient way to add spacing between flex items.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Gap */
+.flex-gap {
+    display: flex;
+    gap: 20px; /* Same as row-gap: 20px; column-gap: 20px; */
+}
+
+/* Different row and column gaps */
+.flex-different-gap {
+    display: flex;
+    row-gap: 10px;
+    column-gap: 20px;
+}
+</code></pre>
+
+                    <h5>Flex Grow</h5>
+                    <p>The flex-grow property specifies how much a flex item will grow relative to the rest of the flex items in the flex container. The default value is 0, meaning the item won't grow if there's extra space available.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Flex grow */
+.flex-item-1 {
+    flex-grow: 1;
+}
+
+.flex-item-2 {
+    flex-grow: 2;
+}
+
+/* Shorthand with flex-basis */
+.flex-item {
+    flex: 1 0 auto; /* flex-grow, flex-shrink, flex-basis */
+}
+</code></pre>
+
+                    <h5>Flex Shrink</h5>
+                    <p>The flex-shrink property specifies how much a flex item will shrink relative to the rest of the flex items in the flex container. The default value is 1, meaning the item can shrink if necessary.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Flex shrink */
+.no-shrink {
+    flex-shrink: 0;
+}
+
+.normal-shrink {
+    flex-shrink: 1;
+}
+
+/* Shorthand with flex-basis */
+.flex-item {
+    flex: 0 1 auto; /* flex-grow, flex-shrink, flex-basis */
+}
+</code></pre>
+
+                    <h5>Flex Basis</h5>
+                    <p>The flex-basis property specifies the initial size of a flex item before the remaining space is distributed. It can be a length (like 20px, 10em, etc.) or a keyword like auto.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Flex basis */
+.flex-item {
+    flex-basis: 200px;
+}
+
+.flex-item-auto {
+    flex-basis: auto;
+}
+
+/* Shorthand with flex-grow and flex-shrink */
+.flex-item {
+    flex: 1 1 200px; /* flex-grow, flex-shrink, flex-basis */
+}
+</code></pre>
+
+                    <h5>Align Self</h5>
+                    <p>The align-self property allows the default alignment (specified by align-items) to be overridden for individual flex items. Values include auto, flex-start, flex-end, center, baseline, and stretch.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Align self */
+.flex-item {
+    align-self: flex-end;
+}
+
+.flex-item-center {
+    align-self: center;
+}
+
+.flex-item-stretch {
+    align-self: stretch;
+}
+</code></pre>
+
+                    <h5>Order</h5>
+                    <p>The order property controls the order in which flex items appear in the flex container, regardless of their order in the HTML source. This is useful for responsive design when you want to reorder elements without changing the HTML.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Order */
+.flex-item-1 {
+    order: 2; /* Appears second */
+}
+
+.flex-item-2 {
+    order: 1; /* Appears first */
+}
+
+.flex-item-3 {
+    order: 3; /* Appears third */
+}
+</code></pre>
+                </div>
+            </div>
+
+            <!-- Module 8: Grid Layout -->
+            <div class="content-card" id="module8">
+                <div class="card-header">
+                    <i class="fas fa-th-large"></i> Module 8: Grid Layout
+                </div>
+                <div class="card-body">
+                    <h5>Introduction to CSS Grid</h5>
+                    <p>CSS Grid Layout is a two-dimensional layout system for the web. It lets you layout content in rows and columns, and has many features that make building complex layouts straightforward. Grid consists of grid container and grid items.</p>
+                    <p>Grid provides more control than Flexbox for two-dimensional layouts, making it ideal for overall page structure while Flexbox is better for one-dimensional content.</p>
+
+                    <h5>Grid Container</h5>
+                    <p>To create a grid container, set the display property of an element to grid or inline-grid. This turns the direct children into grid items.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Grid container */
+.grid-container {
+    display: grid;
+}
+
+/* Inline grid container */
+.inline-grid-container {
+    display: inline-grid;
+}
+</code></pre>
+
+                    <h5>Grid Template Columns</h5>
+                    <p>The grid-template-columns property defines the columns of the grid with a space-separated list of values. Values can be lengths, percentages, or the fr unit (fractional unit).</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Grid template columns */
+.grid-columns {
+    display: grid;
+    grid-template-columns: 100px 200px 100px;
+}
+
+/* Using fr units */
+.grid-fr {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+}
+
+/* Repeat function */
+.grid-repeat {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+/* Auto-fit and minmax */
+.grid-responsive {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+</code></pre>
+
+                    <h5>Grid Template Rows</h5>
+                    <p>The grid-template-rows property defines the rows of the grid with a space-separated list of values. Values can be lengths, percentages, or the fr unit.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Grid template rows */
+.grid-rows {
+    display: grid;
+    grid-template-rows: 100px 200px 100px;
+}
+
+/* Using fr units */
+.grid-rows-fr {
+    display: grid;
+    grid-template-rows: 1fr 2fr 1fr;
+}
+
+/* Auto rows */
+.grid-auto-rows {
+    display: grid;
+    grid-template-rows: 100px auto;
+}
+</code></pre>
+
+                    <h5>Gap</h5>
+                    <p>The gap property sets the size of the gap between rows and columns in grid layouts. It's a shorthand for row-gap and column-gap.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Gap */
+.grid-gap {
+    display: grid;
+    gap: 20px; /* Same as row-gap: 20px; column-gap: 20px; */
+}
+
+/* Different row and column gaps */
+.grid-different-gap {
+    display: grid;
+    row-gap: 10px;
+    column-gap: 20px;
+}
+</code></pre>
+
+                    <h5>Grid Areas</h5>
+                    <p>The grid-template-areas property specifies named grid areas, which can be used to position grid items. Each string in the list represents a row, and each word represents a cell.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Grid template areas */
+.grid-areas {
+    display: grid;
     grid-template-areas:
         "header header header"
         "sidebar main aside"
         "footer footer footer";
+    grid-template-columns: 200px 1fr 200px;
+    grid-template-rows: auto 1fr auto;
+    gap: 20px;
 }
 
 /* Grid items */
@@ -457,84 +1711,226 @@ span {
 .main { grid-area: main; }
 .aside { grid-area: aside; }
 .footer { grid-area: footer; }
+</code></pre>
 
-/* Alternative grid placement */
+                    <h5>Grid Column and Row</h5>
+                    <p>The grid-column and grid-row properties specify the size and location of a grid item. They are shorthand for grid-column-start, grid-column-end, grid-row-start, and grid-row-end.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Grid column and row */
 .item-1 {
     grid-column: 1 / 3; /* From column 1 to 3 */
     grid-row: 1; /* Row 1 */
 }
-</code><button class="copy-button">Copy</button></pre>
 
-                        <h4>Transitions</h4>
-                        <p>CSS transitions allow you to change property values smoothly over a given duration. Transitions are commonly used for hover effects, state changes, and animations. The transition property is a shorthand for transition-property, transition-duration, transition-timing-function, and transition-delay.</p>
-                        <p>Common timing functions include ease, linear, ease-in, ease-out, and ease-in-out. You can also create custom cubic-bezier curves.</p>
-                        <pre><button class="copy-button">Copy</button><code class="language-css">
-/* Transition shorthand */
-.button {
-    transition: all 0.3s ease;
+.item-2 {
+    grid-column: 2 / 4; /* From column 2 to 4 */
+    grid-row: 2 / 4; /* From row 2 to 4 */
 }
 
-/* Individual transition properties */
-.card {
-    transition-property: transform, box-shadow;
-    transition-duration: 0.3s;
-    transition-timing-function: ease-out;
-    transition-delay: 0.1s;
+/* Span multiple columns */
+.item-wide {
+    grid-column: span 2; /* Span 2 columns */
 }
 
-/* Hover effect with transition */
-.button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+/* Span multiple rows */
+.item-tall {
+    grid-row: span 2; /* Span 2 rows */
+}
+</code></pre>
+
+                    <h5>Justify Items</h5>
+                    <p>The justify-items property aligns grid items along the inline (row) axis within the grid container. Values include start, end, center, stretch, and space-around.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Justify items */
+.grid-start {
+    display: grid;
+    justify-items: start;
 }
 
-/* Multiple transitions */
-.element {
-    transition: background-color 0.3s, transform 0.5s ease-in-out;
-}
-</code><button class="copy-button">Copy</button></pre>
-
-                        <h4>Animations</h4>
-                        <p>CSS animations make it possible to animate transitions from one CSS style configuration to another. Animations consist of two components: keyframes that define the animation stages, and animation properties that apply the animation to elements.</p>
-                        <p>Key animation properties include animation-name, animation-duration, animation-timing-function, animation-delay, animation-iteration-count, animation-direction, and animation-fill-mode.</p>
-                        <pre><button class="copy-button">Copy</button><code class="language-css">
-/* Define keyframes */
-@keyframes slideIn {
-    from {
-        transform: translateX(-100%);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
+.grid-end {
+    display: grid;
+    justify-items: end;
 }
 
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-    100% { transform: scale(1); }
+.grid-center {
+    display: grid;
+    justify-items: center;
 }
 
-/* Apply animation */
-.animated-element {
-    animation-name: slideIn;
-    animation-duration: 0.5s;
-    animation-timing-function: ease-out;
-    animation-fill-mode: forwards;
+.grid-stretch {
+    display: grid;
+    justify-items: stretch;
+}
+</code></pre>
+
+                    <h5>Align Items</h5>
+                    <p>The align-items property aligns grid items along the block (column) axis within the grid container. Values include start, end, center, and stretch.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Align items */
+.grid-start {
+    display: grid;
+    align-items: start;
 }
 
-/* Animation shorthand */
-.pulse-element {
-    animation: pulse 2s infinite;
+.grid-end {
+    display: grid;
+    align-items: end;
 }
-</code><button class="copy-button">Copy</button></pre>
 
-                        <h4>Media Queries</h4>
-                        <p>Media queries allow you to apply CSS styles based on device characteristics like screen width, height, orientation, and resolution. They are essential for responsive design, ensuring your website looks good on all devices.</p>
-                        <p>Common breakpoints include mobile (320px-768px), tablet (768px-1024px), and desktop (1024px+). You can use min-width, max-width, orientation, and other features.</p>
-                        <pre><button class="copy-button">Copy</button><code class="language-css">
-/* Mobile first approach */
+.grid-center {
+    display: grid;
+    align-items: center;
+}
+
+.grid-stretch {
+    display: grid;
+    align-items: stretch;
+}
+</code></pre>
+
+                    <h5>Justify Content</h5>
+                    <p>The justify-content property aligns the grid itself within the grid container along the inline (row) axis. This is useful when the grid is smaller than its container.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Justify content */
+.grid-justify-center {
+    display: grid;
+    justify-content: center;
+}
+
+.grid-justify-end {
+    display: grid;
+    justify-content: end;
+}
+
+.grid-justify-space-between {
+    display: grid;
+    justify-content: space-between;
+}
+
+.grid-justify-space-around {
+    display: grid;
+    justify-content: space-around;
+}
+
+.grid-justify-space-evenly {
+    display: grid;
+    justify-content: space-evenly;
+}
+</code></pre>
+
+                    <h5>Align Content</h5>
+                    <p>The align-content property aligns the grid itself within the grid container along the block (column) axis. This is useful when the grid is smaller than its container.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Align content */
+.grid-align-center {
+    display: grid;
+    align-content: center;
+}
+
+.grid-align-end {
+    display: grid;
+    align-content: end;
+}
+
+.grid-align-stretch {
+    display: grid;
+    align-content: stretch;
+}
+</code></pre>
+
+                    <h5>Place Items</h5>
+                    <p>The place-items property is a shorthand for align-items and justify-items. It aligns grid items both horizontally and vertically.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Place items */
+.grid-center {
+    display: grid;
+    place-items: center; /* Same as align-items: center; justify-items: center; */
+}
+
+.grid-end {
+    display: grid;
+    place-items: end end; /* Same as align-items: end; justify-items: end; */
+}
+
+.grid-stretch {
+    display: grid;
+    place-items: stretch stretch; /* Same as align-items: stretch; justify-items: stretch; */
+}
+</code></pre>
+
+                    <h5>Grid Auto Flow</h5>
+                    <p>The grid-auto-flow property controls how auto-placed items are placed in the grid. It's a shorthand for grid-auto-flow-row, grid-auto-flow-column, grid-auto-flow-dense, grid-auto-flow-row-dense, and grid-auto-flow-column-dense.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Grid auto flow */
+.grid-row {
+    display: grid;
+    grid-auto-flow: row; /* Default */
+}
+
+.grid-column {
+    display: grid;
+    grid-auto-flow: column;
+}
+
+.grid-dense {
+    display: grid;
+    grid-auto-flow: dense;
+}
+</code></pre>
+
+                    <h5>Grid Auto Columns</h5>
+                    <p>The grid-auto-columns property specifies the size of the columns in an implicit grid. This is useful when you want columns to be automatically created based on content.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Grid auto columns */
+.grid-auto-columns {
+    display: grid;
+    grid-template-columns: 200px; /* First column is 200px */
+    grid-auto-columns: 1fr 1fr; /* Subsequent columns are equal fractions */
+}
+
+/* Using minmax */
+.grid-responsive {
+    display: grid;
+    grid-template-columns: 200px;
+    grid-auto-columns: minmax(100px, 1fr);
+}
+</code></pre>
+
+                    <h5>Grid Auto Rows</h5>
+                    <p>The grid-auto-rows property specifies the size of the rows in an implicit grid. This is useful when you want rows to be automatically created based on content.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Grid auto rows */
+.grid-auto-rows {
+    display: grid;
+    grid-template-rows: 100px; /* First row is 100px */
+    grid-auto-rows: 50px; /* Subsequent rows are 50px */
+}
+
+/* Using minmax */
+.grid-auto-rows {
+    display: grid;
+    grid-template-rows: 100px;
+    grid-auto-rows: minmax(50px, auto);
+}
+</code></pre>
+                </div>
+            </div>
+
+            <!-- Module 9: Responsive Design -->
+            <div class="content-card" id="module9">
+                <div class="card-header">
+                    <i class="fas fa-mobile-alt"></i> Module 9: Responsive Design
+                </div>
+                <div class="card-body">
+                    <h5>What is Responsive Design?</h5>
+                    <p>Responsive design is an approach to web design that makes web pages render well on a variety of devices and window or screen sizes. It uses flexible grids, flexible images, CSS media queries, and other techniques to create adaptive layouts.</p>
+                    <p>The goal is to provide an optimal viewing and interaction experience—easy reading and navigation with a minimum of resizing, panning, and scrolling—across a wide range of devices.</p>
+
+                    <h5>Mobile-First Design</h5>
+                    <p>Mobile-first design is an approach where you design for mobile devices first, then progressively enhance the experience for larger screens. This ensures your site works well on small screens and takes advantage of additional space on larger screens.</p>
+                    <p>Mobile-first design often uses min-width media queries rather than max-width, making the base styles mobile-friendly and adding enhancements for larger screens.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Mobile-first approach */
 .container {
     width: 100%;
     padding: 0 15px;
@@ -554,6 +1950,33 @@ span {
         max-width: 1200px;
     }
 }
+</code></pre>
+
+                    <h5>Media Queries</h5>
+                    <p>Media queries allow you to apply CSS styles based on device characteristics like screen width, height, orientation, and resolution. They are essential for responsive design, ensuring your website looks good on all devices.</p>
+                    <p>Common breakpoints include mobile (320px-768px), tablet (768px-1024px), and desktop (1024px+). You can use min-width, max-width, orientation, and other features.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Mobile styles (default) */
+.navigation {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Tablet styles */
+@media (min-width: 768px) {
+    .navigation {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+}
+
+/* Desktop styles */
+@media (min-width: 1024px) {
+    .navigation {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+}
 
 /* Orientation specific */
 @media (orientation: landscape) {
@@ -568,176 +1991,1215 @@ span {
         background-image: url('logo@2x.png');
     }
 }
-</code><button class="copy-button">Copy</button></pre>
+</code></pre>
 
-                        <h4>CSS Units</h4>
-                        <p>CSS has several different units for expressing length. Absolute units (px, pt, cm, mm, in) are fixed size. Relative units (em, rem, %, vw, vh, vmin, vmax) are relative to another length property.</p>
-                        <p>em is relative to the font-size of the element. rem is relative to the font-size of the root element. vw/vh are relative to viewport width/height. % is relative to the parent element.</p>
-                        <pre><button class="copy-button">Copy</button><code class="language-css">
-/* Absolute units */
-.pixel-value { width: 300px; }
-.point-value { font-size: 12pt; }
-
-/* Relative units */
-.em-value { font-size: 1.2em; } /* 1.2 times parent font size */
-.rem-value { font-size: 1.2rem; } /* 1.2 times root font size */
-.percent-value { width: 50%; } /* 50% of parent width */
-
-/* Viewport units */
-.full-width { width: 100vw; } /* 100% of viewport width */
-.full-height { height: 100vh; } /* 100% of viewport height */
-.responsive-font { font-size: 2vw; } /* 2% of viewport width */
-
-/* Responsive typography */
-html { font-size: 16px; }
-@media (min-width: 768px) {
-    html { font-size: 18px; }
-}
-</code><button class="copy-button">Copy</button></pre>
-
-                        <h4>CSS Specificity</h4>
-                        <p>Specificity is how browsers decide which CSS property values to apply when multiple rules match the same element. More specific selectors override less specific ones. Inline styles have highest specificity, followed by IDs, then classes, attributes, and pseudo-classes, then elements and pseudo-elements.</p>
-                        <p>The universal selector (*) and combinators (>, +, ~) have no specificity. The !important rule overrides all other declarations.</p>
-                        <pre><button class="copy-button">Copy</button><code class="language-css">
-/* Low specificity - element selector */
-p { color: blue; }
-
-/* Medium specificity - class selector */
-.text { color: green; }
-
-/* High specificity - ID selector */
-#intro { color: red; }
-
-/* Very high specificity - inline style */
-&lt;p style="color: purple;"&gt;Purple text&lt;/p&gt;
-
-/* Combining selectors increases specificity */
-div.container p.text { color: orange; }
-
-/* Using !important (use sparingly) */
-.important {
-    color: pink !important;
-}
-</code><button class="copy-button">Copy</button></pre>
-
-                        <h4>CSS Variables</h4>
-                        <p>CSS variables (custom properties) allow you to store values that can be reused throughout your document. They are defined with two dashes (--) and accessed using the var() function. Variables are useful for theming, maintaining consistency, and easy updates.</p>
-                        <p>Variables can be defined globally in the :root selector or locally within specific selectors. They can be overridden in media queries for responsive theming.</p>
-                        <pre><button class="copy-button">Copy</button><code class="language-css">
-/* Define global variables */
-:root {
-    --primary-color: #007bff;
-    --secondary-color: #6c757d;
-    --font-size-base: 16px;
-    --border-radius: 4px;
-}
-
-/* Use variables */
-.button {
-    background-color: var(--primary-color);
-    font-size: var(--font-size-base);
-    border-radius: var(--border-radius);
-}
-
-/* Override variables locally */
-.dark-theme {
-    --primary-color: #0056b3;
-    --secondary-color: #fff;
-}
-
-/* Responsive variables */
-@media (min-width: 768px) {
-    :root {
-        --font-size-base: 18px;
-    }
-}
-</code><button class="copy-button">Copy</button></pre>
-
-                        <h4>Responsive Design</h4>
-                        <p>Responsive design ensures your website looks good on all devices. Key techniques include flexible grids, flexible images, media queries, and mobile-first design. Use relative units, flexible containers, and breakpoints to create adaptive layouts.</p>
-                        <p>Modern CSS features like CSS Grid, Flexbox, and Container Queries make responsive design easier. Always test on various devices and screen sizes.</p>
-                        <pre><button class="copy-button">Copy</button><code class="language-css">
-/* Fluid typography */
-html {
-    font-size: clamp(16px, 2vw, 20px);
-}
-
-/* Responsive grid */
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-}
-
+                    <h5>Responsive Images</h5>
+                    <p>Responsive images adapt to different screen sizes and resolutions. Techniques include using max-width: 100%, using srcset and sizes attributes with the &lt;picture&gt; element, and using CSS background-image with media queries.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
 /* Responsive images */
 img {
     max-width: 100%;
     height: auto;
 }
 
-/* Mobile-first navigation */
-.nav {
+/* Responsive background images */
+.hero {
+    background-image: url('small.jpg');
+}
+
+@media (min-width: 768px) {
+    .hero {
+        background-image: url('medium.jpg');
+    }
+}
+
+@media (min-width: 1024px) {
+    .hero {
+        background-image: url('large.jpg');
+    }
+}
+</code></pre>
+
+                    <h5>Responsive Typography</h5>
+                    <p>Responsive typography adjusts font sizes based on screen size to ensure readability on all devices. Using relative units like rem or vw allows text to scale proportionally.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Responsive typography */
+html {
+    font-size: 16px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 18px;
+    }
+}
+
+@media (min-width: 1024px) {
+    html {
+        font-size: 20px;
+    }
+}
+
+/* Fluid typography */
+h1 {
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+}
+</code></pre>
+
+                    <h5>Responsive Layouts</h5>
+                    <p>Responsive layouts adapt to different screen sizes. Common approaches include using Flexbox or Grid with media queries, using percentage widths, and implementing navigation patterns like hamburger menus for mobile.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Responsive grid layout */
+.grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+
+@media (min-width: 768px) {
+    .grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (min-width: 1024px) {
+    .grid {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+
+/* Responsive flexbox layout */
+.flexbox {
     display: flex;
     flex-direction: column;
 }
 
 @media (min-width: 768px) {
-    .nav {
+    .flexbox {
         flex-direction: row;
-        justify-content: space-between;
     }
 }
-</code><button class="copy-button">Copy</button></pre>
+</code></pre>
 
-                        <h4>CSS Best Practices</h4>
-                        <p>Follow these best practices for maintainable and efficient CSS: Use semantic class names, organize CSS logically, avoid !important, use shorthand properties, optimize for performance, use CSS variables for consistency, write mobile-first CSS, comment your code, and use a CSS methodology like BEM or SMACSS.</p>
-                        <p>Minimize CSS file size, remove unused styles, and consider using CSS preprocessors like Sass or Less for larger projects.</p>
-                        <pre><button class="copy-button">Copy</button><code class="language-css">
-/* BEM naming convention */
-.card { /* Block */ }
-.card__title { /* Element */ }
-.card__image { /* Element */ }
-.card--featured { /* Modifier */ }
+                    <h5>Viewport Units</h5>
+                    <p>Viewport units are relative to the viewport size: vw (1% of viewport width), vh (1% of viewport height), vmin (smaller of vw and vh), and vmax (larger of vw and vh). They are useful for creating truly responsive designs.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Viewport units */
+.full-width {
+    width: 100vw;
+}
 
-/* Organize CSS sections */
-/* ====== Reset ====== */
-* { margin: 0; padding: 0; box-sizing: border-box; }
+.full-height {
+    height: 100vh;
+}
 
-/* ====== Variables ====== */
-:root { /* Custom properties */ }
+/* Responsive font size */
+.responsive-text {
+    font-size: 2vw;
+}
 
-/* ====== Base Styles ====== */
-body { /* Base styles */ }
+/* Square element */
+.square {
+    width: 50vmin;
+    height: 50vmin;
+}
+</code></pre>
 
-/* ====== Components ====== */
-.button { /* Component styles */ }
+                    <h5>Container Queries</h5>
+                    <p>Container Queries (a newer CSS feature) allow you to apply styles based on the size of a container rather than the viewport. This is useful for components that need to adapt based on their available space rather than the screen size.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Container queries */
+@container (min-width: 700px) {
+    .card {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+}
 
-/* ====== Layout ====== */
-.container { /* Layout styles */ }
+@container (min-width: 1024px) {
+    .card {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+</code></pre>
 
-/* ====== Utilities ====== */
-.text-center { text-align: center; }
-</code><button class="copy-button">Copy</button></pre>
+                    <h5>Responsive Images with srcset and sizes</h5>
+                    <p>The srcset and sizes attributes on &lt;img&gt; elements allow the browser to choose the most appropriate image based on screen size and resolution. This improves performance by serving smaller images to smaller devices.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-html">
+&lt;img src="image-small.jpg"
+     srcset="image-medium.jpg 768w, image-large.jpg 1024w"
+     sizes="(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 33vw"
+     alt="Responsive image"&gt;
+</code></pre>
 
-                        <p>This comprehensive guide covers essential CSS concepts and properties with detailed explanations. CSS is a powerful styling language that works alongside HTML to create visually appealing and responsive websites. Understanding CSS fundamentals is crucial for modern web development.</p>
+                    <h5>Modern CSS Features for Responsive Design</h5>
+                    <p>Modern CSS features like CSS Grid, Flexbox, Custom Properties, and Container Queries make responsive design easier and more maintainable. These features reduce the need for complex media queries and JavaScript solutions.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* CSS Custom Properties for responsive design */
+:root {
+    --mobile-padding: 15px;
+    --tablet-padding: 20px;
+    --desktop-padding: 30px;
+}
 
-                        <div class="mt-5 text-center">
-                            <a href="/practice" class="btn btn-primary btn-lg">Take Practice Test</a>
-                        </div>
-                    </div>
+.container {
+    padding: var(--mobile-padding);
+}
+
+@media (min-width: 768px) {
+    .container {
+        padding: var(--tablet-padding);
+    }
+}
+
+@media (min-width: 1024px) {
+    .container {
+        padding: var(--desktop-padding);
+    }
+}
+</code></pre>
                 </div>
             </div>
+
+            <!-- Module 10: Final Project -->
+            <div class="content-card" id="module10">
+                <div class="card-header">
+                    <i class="fas fa-project-diagram"></i> Module 10: Final Project
+                </div>
+                <div class="card-body">
+                    <h5>Project Overview</h5>
+                    <p>For the final project, you'll create a comprehensive responsive website that demonstrates all the CSS concepts learned throughout the course. This project will include responsive design, modern layout techniques, animations, and a polished user interface.</p>
+
+                    <h5>Project Structure</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-html">
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;Modern Website - CSS Project&lt;/title&gt;
+    &lt;meta name="description" content="A modern responsive website showcasing CSS techniques"&gt;
+    &lt;link rel="stylesheet" href="styles.css"&gt;
+    &lt;link rel="preconnect" href="https://fonts.googleapis.com"&gt;
+    &lt;link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;header class="header"&gt;
+        &lt;nav class="navbar"&gt;
+            &lt;div class="nav-container"&gt;
+                &lt;a href="#" class="logo"&gt;Modern Website&lt;/a&gt;
+                &lt;ul class="nav-menu"&gt;
+                    &lt;li&gt;&lt;a href="#"&gt;Home&lt;/a&gt;&lt;/li&gt;
+                    &lt;li&gt;&lt;a href="#about"&gt;About&lt;/a&gt;&lt;/li&gt;
+                    &lt;li&gt;&lt;a href="#services"&gt;Services&lt;/a&gt;&lt;/li&gt;
+                    &lt;li&gt;&lt;a href="#portfolio"&gt;Portfolio&lt;/a&gt;&lt;/li&gt;
+                    &lt;li&gt;&lt;a href="#contact"&gt;Contact&lt;/a&gt;&lt;/li&gt;
+                &lt;/ul&gt;
+                &lt;button class="menu-toggle" aria-label="Toggle navigation"&gt;
+                    &lt;span&gt;&lt;/span&gt;
+                    &lt;span&gt;&lt;/span&gt;
+                    &lt;span&gt;&lt;/span&gt;
+                &lt;/button&gt;
+            &lt;/div&gt;
+        &lt;/nav&gt;
+    &lt;/header&gt;
+
+    &lt;main&gt;
+        &lt;section id="hero" class="hero"&gt;
+            &lt;div class="hero-content"&gt;
+                &lt;h1&gt;Welcome to Our Modern Website&lt;/h1&gt;
+                &lt;p&gt;We create beautiful, responsive websites with modern CSS techniques&lt;/p&gt;
+                &lt;a href="#portfolio" class="btn btn-primary"&gt;View Our Work&lt;/a&gt;
+                &lt;a href="#contact" class="btn btn-outline"&gt;Contact Us&lt;/a&gt;
+            &lt;/div&gt;
+            &lt;div class="hero-image"&gt;
+                &lt;div class="hero-shape"&gt;&lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/section&gt;
+
+        &lt;section id="about" class="section"&gt;
+            &lt;div class="container"&gt;
+                &lt;h2&gt;About Us&lt;/h2&gt;
+                &lt;div class="about-content"&gt;
+                    &lt;div class="about-text"&gt;
+                        &lt;p&gt;We are a team of creative developers passionate about building modern, responsive websites. With expertise in HTML, CSS, and JavaScript, we create digital experiences that look great and work flawlessly across all devices.&lt;/p&gt;
+                        &lt;p&gt;Our approach combines clean code with beautiful design to deliver websites that not only look good but also provide excellent user experiences.&lt;/p&gt;
+                        &lt;a href="#team" class="btn"&gt;Meet Our Team&lt;/a&gt;
+                    &lt;/div&gt;
+                    &lt;div class="about-image"&gt;
+                        &lt;div class="about-shape"&gt;&lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/section&gt;
+
+        &lt;section id="services" class="section bg-light"&gt;
+            &lt;div class="container"&gt;
+                &lt;h2&gt;Our Services&lt;/h2&gt;
+                &lt;div class="services-grid"&gt;
+                    &lt;div class="service-card"&gt;
+                        &lt;div class="service-icon"&gt;
+                            &lt;i class="fas fa-code"&gt;&lt;/i&gt;
+                        &lt;/div&gt;
+                        &lt;h3&gt;Web Development&lt;/h3&gt;
+                        &lt;p&gt;Custom websites built with modern technologies and best practices.&lt;/p&gt;
+                    &lt;/div&gt;
+                    &lt;div class="service-card"&gt;
+                        &lt;div class="service-icon"&gt;
+                            &lt;i class="fas fa-mobile-alt"&gt;&lt;/i&gt;
+                        &lt;/div&gt;
+                        &lt;h3&gt;Responsive Design&lt;/h3&gt;
+                        &lt;p&gt;Websites that adapt seamlessly to different screen sizes and devices.&lt;/p&gt;
+                    &lt;/div&gt;
+                    &lt;div class="service-card"&gt;
+                        &lt;div class="service-icon"&gt;
+                            &lt;i class="fas fa-palette"&gt;&lt;/i&gt;
+                        &lt;/div&gt;
+                        &lt;h3&gt;UI/UX Design&lt;/h3&gt;
+                        &lt;p&gt;Beautiful interfaces that are intuitive and user-friendly.&lt;/p&gt;
+                    &lt;/div&gt;
+                    &lt;div class="service-card"&gt;
+                        &lt;div class="service-icon"&gt;
+                            &lt;i class="fas fa-rocket"&gt;&lt;/i&gt;
+                        &lt;/div&gt;
+                        &lt;h3&gt;Performance Optimization&lt;/h3&gt;
+                        &lt;p&gt;Fast-loading websites optimized for speed and SEO.&lt;/p&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/section&gt;
+
+        &lt;section id="portfolio" class="section"&gt;
+            &lt;div class="container"&gt;
+                &lt;h2&gt;Our Portfolio&lt;/h2&gt;
+                &lt;div class="filter-buttons"&gt;
+                    &lt;button class="filter-btn active" data-filter="all"&gt;All&lt;/button&gt;
+                    &lt;button class="filter-btn" data-filter="web"&gt;Web Design&lt;/button&gt;
+                    &lt;button class="filter-btn" data-filter="mobile"&gt;Mobile Apps&lt;/button&gt;
+                    &lt;button class="filter-btn" data-filter="ui"&gt;UI/UX&lt;/button&gt;
+                &lt;/div&gt;
+                &lt;div class="portfolio-grid"&gt;
+                    &lt;div class="portfolio-item" data-category="web"&gt;
+                        &lt;div class="portfolio-image"&gt;
+                            &lt;img src="images/project1.jpg" alt="Project 1" width="400" height="300"&gt;
+                        &lt;/div&gt;
+                        &lt;div class="portfolio-content"&gt;
+                            &lt;h3&gt;E-commerce Website&lt;/h3&gt;
+                            &lt;p&gt;A fully functional e-commerce website with shopping cart and payment integration.&lt;/p&gt;
+                            &lt;div class="portfolio-tags"&gt;
+                                &lt;span&gt;HTML&lt;/span&gt;
+                                &lt;span&gt;CSS&lt;/span&gt;
+                                &lt;span&gt;JavaScript&lt;/span&gt;
+                            &lt;/div&gt;
+                            &lt;div class="portfolio-links"&gt;
+                                &lt;a href="#"&gt;&lt;i class="fas fa-eye"&gt;&lt;/i&gt;&lt;/a&gt;
+                                &lt;a href="#"&gt;&lt;i class="fas fa-link"&gt;&lt;/i&gt;&lt;/a&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                    &lt;!-- More portfolio items --&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/section&gt;
+
+        &lt;section id="team" class="section bg-light"&gt;
+            &lt;div class="container"&gt;
+                &lt;h2&gt;Our Team&lt;/h2&gt;
+                &lt;div class="team-grid"&gt;
+                    &lt;div class="team-member"&gt;
+                        &lt;div class="team-image"&gt;
+                            &lt;img src="images/team1.jpg" alt="Team Member 1" width="300" height="300"&gt;
+                        &lt;/div&gt;
+                        &lt;div class="team-content"&gt;
+                            &lt;h3&gt;John Doe&lt;/h3&gt;
+                            &lt;p&gt;Frontend Developer&lt;/p&gt;
+                            &lt;div class="team-social"&gt;
+                                &lt;a href="#"&gt;&lt;i class="fab fa-linkedin"&gt;&lt;/i&gt;&lt;/a&gt;
+                                &lt;a href="#"&gt;&lt;i class="fab fa-github"&gt;&lt;/i&gt;&lt;/a&gt;
+                                &lt;a href="#"&gt;&lt;i class="fab fa-twitter"&gt;&lt;/i&gt;&lt;/a&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;!-- More team members --&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/section&gt;
+
+        &lt;section id="testimonials" class="section"&gt;
+            &lt;div class="container"&gt;
+                &lt;h2&gt;What Our Clients Say&lt;/h2&gt;
+                &lt;div class="testimonials-slider"&gt;
+                    &lt;div class="testimonial"&gt;
+                        &lt;div class="testimonial-content"&gt;
+                            &lt;p&gt;"Working with this team was a great experience. They delivered our project on time and exceeded our expectations."&lt;/p&gt;
+                        &lt;/div&gt;
+                        &lt;div class="testimonial-author"&gt;
+                            &lt;div class="author-image"&gt;
+                                &lt;img src="images/author1.jpg" alt="Author 1" width="60" height="60"&gt;
+                            &lt;/div&gt;
+                            &lt;div class="author-info"&gt;
+                                &lt;h4&gt;Jane Smith&lt;/h4&gt;
+                                &lt;p&gt;CEO, Tech Company&lt;/p&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                    &lt;!-- More testimonials --&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/section&gt;
+
+        &lt;section id="contact" class="section bg-light"&gt;
+            &lt;div class="container"&gt;
+                &lt;h2&gt;Contact Us&lt;/h2&gt;
+                &lt;div class="contact-content"&gt;
+                    &lt;div class="contact-info"&gt;
+                        &lt;h3&gt;Get In Touch&lt;/h3&gt;
+                        &lt;p&gt;We'd love to hear from you about your project. Send us a message and we'll respond as soon as possible.&lt;/p&gt;
+                        &lt;div class="contact-details"&gt;
+                            &lt;div class="contact-item"&gt;
+                                &lt;i class="fas fa-envelope"&gt;&lt;/i&gt;
+                                &lt;span&gt;info@example.com&lt;/span&gt;
+                            &lt;/div&gt;
+                            &lt;div class="contact-item"&gt;
+                                &lt;i class="fas fa-phone"&gt;&lt;/i&gt;
+                                &lt;span&gt;+1 (123) 456-7890&lt;/span&gt;
+                            &lt;/div&gt;
+                            &lt;div class="contact-item"&gt;
+                                &lt;i class="fas fa-map-marker-alt"&gt;&lt;/i&gt;
+                                &lt;span&gt;123 Main St, City, State 12345&lt;/span&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                        &lt;div class="social-links"&gt;
+                            &lt;a href="#"&gt;&lt;i class="fab fa-facebook-f"&gt;&lt;/i&gt;&lt;/a&gt;
+                            &lt;a href="#"&gt;&lt;i class="fab fa-twitter"&gt;&lt;/i&gt;&lt;/a&gt;
+                            &lt;a href="#"&gt;&lt;i class="fab fa-instagram"&gt;&lt;/i&gt;&lt;/a&gt;
+                            &lt;a href="#"&gt;&lt;i class="fab fa-linkedin"&gt;&lt;/i&gt;&lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                    &lt;div class="contact-form"&gt;
+                        &lt;form action="#" method="post"&gt;
+                            &lt;div class="form-group"&gt;
+                                &lt;label for="name"&gt;Name&lt;/label&gt;
+                                &lt;input type="text" id="name" name="name" required&gt;
+                            &lt;/div&gt;
+                            &lt;div class="form-group"&gt;
+                                &lt;label for="email"&gt;Email&lt;/label&gt;
+                                &lt;input type="email" id="email" name="email" required&gt;
+                            &lt;/div&gt;
+                            &lt;div class="form-group"&gt;
+                                &lt;label for="subject"&gt;Subject&lt;/label&gt;
+                                &lt;input type="text" id="subject" name="subject" required&gt;
+                            &lt;/div&gt;
+                            &lt;div class="form-group"&gt;
+                                &lt;label for="message"&gt;Message&lt;/label&gt;
+                                &lt;textarea id="message" name="message" rows="5" required&gt;&lt;/textarea&gt;
+                            &lt;/div&gt;
+                            &lt;button type="submit" class="btn"&gt;Send Message&lt;/button&gt;
+                        &lt;/form&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/section&gt;
+    &lt;/main&gt;
+
+    &lt;footer class="footer"&gt;
+        &lt;div class="container"&gt;
+            &lt;div class="footer-content"&gt;
+                &lt;div class="footer-logo"&gt;
+                    &lt;a href="#"&gt;Modern Website&lt;/a&gt;
+                &lt;/div&gt;
+                &lt;div class="footer-links"&gt;
+                    &lt;ul&gt;
+                        &lt;li&gt;&lt;a href="#"&gt;Privacy Policy&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href="#"&gt;Terms of Service&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href="#"&gt;Sitemap&lt;/a&gt;&lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/div&gt;
+                &lt;div class="footer-social"&gt;
+                    &lt;a href="#"&gt;&lt;i class="fab fa-facebook-f"&gt;&lt;/i&gt;&lt;/a&gt;
+                    &lt;a href="#"&gt;&lt;i class="fab fa-twitter"&gt;&lt;/i&gt;&lt;/a&gt;
+                    &lt;a href="#"&gt;&lt;i class="fab fa-instagram"&gt;&lt;/i&gt;&lt;/a&gt;
+                    &lt;a href="#"&gt;&lt;i class="fab fa-linkedin"&gt;&lt;/i&gt;&lt;/a&gt;
+                &lt;/div&gt;
+                &lt;div class="footer-copyright"&gt;
+                    &lt;p&gt;&amp;copy; 2023 Modern Website. All rights reserved.&lt;/p&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/footer&gt;
+
+    &lt;script src="script.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+                    <h5>CSS Structure</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* CSS Variables */
+:root {
+    --primary-color: #007bff;
+    --secondary-color: #6c757d;
+    --accent-color: #17a2b8;
+    --light-color: #f8f9fa;
+    --dark-color: #343a40;
+    --success-color: #28a745;
+    --info-color: #17a2b8;
+    --warning-color: #ffc107;
+    --danger-color: #dc3545;
+    --font-family-sans: 'Inter', sans-serif;
+    --font-family-serif: 'Georgia', serif;
+    --font-family-mono: 'Courier New', monospace;
+    --border-radius: 0.375rem;
+    --box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    --transition: all 0.3s ease;
+}
+
+/* Base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-family-sans);
+    line-height: 1.6;
+    color: var(--dark-color);
+    background-color: var(--light-color);
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+}
+
+p {
+    margin-bottom: 1rem;
+}
+
+/* Buttons */
+.btn {
+    display: inline-block;
+    font-weight: 500;
+    text-align: center;
+    vertical-align: middle;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+}
+
+.btn-primary:hover {
+    background-color: #0069d9;
+    border-color: #0069d9;
+}
+
+.btn-outline {
+    color: var(--primary-color);
+    background-color: transparent;
+    border: 1px solid var(--primary-color);
+}
+
+.btn-outline:hover {
+    color: #fff;
+    background-color: var(--primary-color);
+}
+
+/* Cards */
+.card {
+    background: #fff;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    overflow: hidden;
+    transition: var(--transition);
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 0;
+    background-color: rgba(0, 0, 0, 0.03);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+/* Forms */
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-control {
+    display: block;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    border: 1px solid #ced4da;
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+}
+
+.form-control:focus {
+    color: #495057;
+    background-color: #fff;
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Navigation */
+.navbar {
+    padding: 1rem 0;
+    background-color: var(--dark-color);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.navbar-brand {
+    font-weight: 700;
+    color: #fff;
+    text-decoration: none;
+}
+
+.navbar-nav .nav-link {
+    color: rgba(255, 255, 255, 0.8);
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #fff;
+}
+
+/* Hero Section */
+.hero {
+    padding: 6rem 0;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: #fff;
+    text-align: center;
+}
+
+.hero-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.hero h1 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+}
+
+/* Sections */
+.section {
+    padding: 5rem 0;
+}
+
+.section.bg-light {
+    background-color: var(--light-color);
+}
+
+/* Footer */
+.footer {
+    background-color: var(--dark-color);
+    color: #fff;
+    padding: 3rem 0;
+    text-align: center;
+}
+
+/* Responsive Design */
+@media (max-width: 767.98px) {
+    .navbar-nav {
+        display: none;
+    }
+    
+    .menu-toggle {
+        display: block;
+    }
+    
+    .nav-menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: var(--dark-color);
+        flex-direction: column;
+        padding: 1rem 0;
+        text-align: center;
+    }
+    
+    .nav-menu.active {
+        display: flex;
+    }
+    
+    .hero {
+        padding: 4rem 0;
+    }
+    
+    .hero h1 {
+        font-size: 2.5rem;
+    }
+}
+
+@media (min-width: 768px) {
+    .navbar-nav {
+        display: flex;
+    }
+    
+    .menu-toggle {
+        display: none;
+    }
+    
+    .nav-menu {
+        display: flex;
+        position: static;
+        background-color: transparent;
+        padding: 0;
+        text-align: left;
+    }
+    
+    .hero {
+        padding: 6rem 0;
+    }
+    
+    .hero h1 {
+        font-size: 3.5rem;
+    }
+}
+</code></pre>
+
+                    <h5>Project Features</h5>
+                    <ul>
+                        <li><strong>Responsive Design:</strong> Adapts to different screen sizes using media queries</li>
+                        <li><strong>Modern Layout:</strong> Uses CSS Grid and Flexbox for layout</li>
+                        <li><strong>Typography:</strong> Implements a clear visual hierarchy with proper spacing</li>
+                        <li><strong>Color Scheme:</strong> Uses a consistent color palette with CSS variables</li>
+                        <li><strong>Components:</strong> Reusable components like buttons, cards, and forms</li>
+                        <li><strong>Animations:</strong> Includes hover effects and transitions for interactivity</li>
+                        <li><strong>Navigation:</strong> Responsive navigation with hamburger menu for mobile</li>
+                        <li><strong>Forms:</strong> Styled form elements with proper validation states</li>
+                    </ul>
+
+                    <h5>Project Extensions</h5>
+                    <p>Once you've implemented the basic website, consider these extensions:</p>
+                    <ul>
+                        <li>Add a blog section with pagination</li>
+                        <li>Implement a dark mode toggle</li>
+                        <li>Add more advanced animations and micro-interactions</li>
+                        <li>Create a portfolio filter with JavaScript</li>
+                        <li>Add form validation with JavaScript</li>
+                        <li>Implement a loading skeleton screen</li>
+                        <li>Add smooth scrolling and scroll indicators</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Module 11: Animations and Effects -->
+            <div class="content-card" id="module11">
+                <div class="card-header">
+                    <i class="fas fa-magic"></i> Module 11: Animations and Effects
+                </div>
+                <div class="card-body">
+                    <h5>CSS Transitions</h5>
+                    <p>CSS transitions allow you to change property values smoothly over a given duration. They provide a way to control animation speed when changing CSS properties. Instead of having property changes take effect immediately, you can make the property changes take place over a period of time.</p>
+                    <p>Transitions are commonly used for hover effects, focus states, and other interactive elements to provide visual feedback to users.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Basic transition */
+.button {
+    background-color: #007bff;
+    transition: background-color 0.3s ease;
+}
+
+.button:hover {
+    background-color: #0056b3;
+}
+
+/* Multiple properties transition */
+.card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Transition shorthand */
+.link {
+    color: #007bff;
+    transition: all 0.2s ease-in-out;
+}
+
+.link:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+</code></pre>
+
+                    <h5>Transition Properties</h5>
+                    <p>The transition property is a shorthand for four transition properties:</p>
+                    <ul>
+                        <li><strong>transition-property:</strong> Specifies the name of the CSS property the transition effect is for</li>
+                        <li><strong>transition-duration:</strong> Specifies how many seconds or milliseconds a transition effect takes to complete</li>
+                        <li><strong>transition-timing-function:</strong> Specifies the speed curve of the transition effect</li>
+                        <li><strong>transition-delay:</strong> Specifies when the transition effect will start</li>
+                    </ul>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Individual transition properties */
+.button {
+    transition-property: background-color;
+    transition-duration: 0.3s;
+    transition-timing-function: ease;
+    transition-delay: 0s;
+}
+
+/* Timing functions */
+.ease { transition-timing-function: ease; }
+.ease-in { transition-timing-function: ease-in; }
+.ease-out { transition-timing-function: ease-out; }
+.ease-in-out { transition-timing-function: ease-in-out; }
+.linear { transition-timing-function: linear; }
+
+/* Custom cubic-bezier timing function */
+.custom-timing {
+    transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+</code></pre>
+
+                    <h5>CSS Animations</h5>
+                    <p>CSS animations make it possible to animate transitions from one CSS style configuration to another. They consist of two components: keyframes that define the stages and styles of the animation, and animation properties that assign the animation to a specific CSS element.</p>
+                    <p>Unlike transitions, animations don't require a triggering event like a hover or focus state. They can run automatically when the page loads or be controlled with JavaScript.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Define keyframes */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from { transform: translateX(-100%); }
+    to { transform: translateX(0); }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+/* Apply animation */
+.fade-in-element {
+    animation: fadeIn 1s ease-in-out;
+}
+
+.slide-in-element {
+    animation: slideIn 0.5s ease-out;
+}
+
+.pulse-element {
+    animation: pulse 2s infinite;
+}
+</code></pre>
+
+                    <h5>Animation Properties</h5>
+                    <p>The animation property is a shorthand for eight animation properties:</p>
+                    <ul>
+                        <li><strong>animation-name:</strong> Specifies the name of the @keyframes animation</li>
+                        <li><strong>animation-duration:</strong> Specifies how many seconds or milliseconds an animation takes to complete</li>
+                        <li><strong>animation-timing-function:</strong> Specifies the speed curve of the animation</li>
+                        <li><strong>animation-delay:</strong> Specifies a delay before the animation will start</li>
+                        <li><strong>animation-iteration-count:</strong> Specifies how many times an animation should be played</li>
+                        <li><strong>animation-direction:</strong> Specifies whether an animation should be played in reverse direction or alternate cycles</li>
+                        <li><strong>animation-fill-mode:</strong> Specifies what values are applied by the animation before and after it is executing</li>
+                        <li><strong>animation-play-state:</strong> Specifies whether the animation is running or paused</li>
+                    </ul>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Animation shorthand */
+.element {
+    animation: slideIn 0.5s ease-out 0s 1 normal forwards running;
+}
+
+/* Individual animation properties */
+.element {
+    animation-name: slideIn;
+    animation-duration: 0.5s;
+    animation-timing-function: ease-out;
+    animation-delay: 0s;
+    animation-iteration-count: 1;
+    animation-direction: normal;
+    animation-fill-mode: forwards;
+    animation-play-state: running;
+}
+
+/* Animation iteration count */
+.once { animation-iteration-count: 1; }
+.twice { animation-iteration-count: 2; }
+.infinite { animation-iteration-count: infinite; }
+
+/* Animation direction */
+.normal { animation-direction: normal; }
+.reverse { animation-direction: reverse; }
+.alternate { animation-direction: alternate; }
+.alternate-reverse { animation-direction: alternate-reverse; }
+
+/* Animation fill mode */
+.none { animation-fill-mode: none; }
+.forwards { animation-fill-mode: forwards; }
+.backwards { animation-fill-mode: backwards; }
+.both { animation-fill-mode: both; }
+</code></pre>
+
+                    <h5>CSS Transforms</h5>
+                    <p>CSS transforms allow you to modify the coordinate space of the CSS visual formatting model. Using transforms, you can move, rotate, scale, and skew elements. Transforms are often used with transitions and animations to create dynamic effects.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Transform functions */
+.translate { transform: translate(50px, 100px); }
+.translateX { transform: translateX(50px); }
+.translateY { transform: translateY(100px); }
+
+.scale { transform: scale(1.5); }
+.scaleX { transform: scaleX(1.5); }
+.scaleY { transform: scaleY(1.5); }
+
+.rotate { transform: rotate(45deg); }
+.rotateX { transform: rotateX(45deg); }
+.rotateY { transform: rotateY(45deg); }
+
+.skew { transform: skew(10deg, 20deg); }
+.skewX { transform: skewX(10deg); }
+.skewY { transform: skewY(20deg); }
+
+/* Multiple transforms */
+.combined {
+    transform: translate(50px, 100px) rotate(45deg) scale(1.5);
+}
+
+/* Transform origin */
+.origin-center { transform-origin: center; }
+.origin-top-left { transform-origin: top left; }
+.origin-bottom-right { transform-origin: bottom right; }
+</code></pre>
+
+                    <h5>3D Transforms</h5>
+                    <p>CSS also supports 3D transforms, which allow you to manipulate elements in three-dimensional space. 3D transforms require setting a perspective on a parent element to create the 3D effect.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* 3D transforms */
+.rotate3d { transform: rotate3d(1, 1, 1, 45deg); }
+.rotateX3d { transform: rotateX(45deg); }
+.rotateY3d { transform: rotateY(45deg); }
+.rotateZ3d { transform: rotateZ(45deg); }
+
+.translate3d { transform: translate3d(50px, 100px, 200px); }
+.translateZ { transform: translateZ(200px); }
+
+.scale3d { transform: scale3d(1.5, 1.2, 0.8); }
+.scaleZ { transform: scaleZ(0.8); }
+
+/* Perspective for 3D transforms */
+.container-3d {
+    perspective: 1000px;
+}
+
+/* Transform style for 3D */
+.preserve-3d {
+    transform-style: preserve-3d;
+}
+
+/* Backface visibility */
+.backface-visible { backface-visibility: visible; }
+.backface-hidden { backface-visibility: hidden; }
+</code></pre>
+
+                    <h5>Filter Effects</h5>
+                    <p>CSS filters allow you to apply graphical effects like blurring, sharpening, or color shifting to elements. Filters are commonly used for adjusting the rendering of images, backgrounds, and borders.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Filter functions */
+.blur { filter: blur(5px); }
+.brightness { filter: brightness(150%); }
+.contrast { filter: contrast(200%); }
+.grayscale { filter: grayscale(100%); }
+.hue-rotate { filter: hue-rotate(90deg); }
+.invert { filter: invert(100%); }
+.opacity { filter: opacity(50%); }
+.saturate { filter: saturate(200%); }
+.sepia { filter: sepia(100%); }
+
+/* Multiple filters */
+.combined-filters {
+    filter: contrast(200%) brightness(150%);
+}
+
+/* Drop shadow filter */
+.drop-shadow {
+    filter: drop-shadow(5px 5px 10px rgba(0, 0, 0, 0.5));
+}
+</code></pre>
+
+                    <h5>Backdrop Filter</h5>
+                    <p>The backdrop-filter property allows you to apply graphical effects to the area behind an element. This is commonly used for creating frosted glass effects.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Backdrop filter for frosted glass effect */
+.frosted-glass {
+    background-color: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px); /* For Safari */
+}
+
+/* Other backdrop filter effects */
+.backdrop-grayscale {
+    backdrop-filter: grayscale(100%);
+}
+
+.backdrop-brightness {
+    backdrop-filter: brightness(150%);
+}
+
+.backdrop-contrast {
+    backdrop-filter: contrast(200%);
+}
+</code></pre>
+
+                    <h5>Clip Path</h5>
+                    <p>The clip-path property creates a clipping region that defines what part of an element should be displayed. This allows you to create complex shapes and effects.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Basic clip paths */
+.circle { clip-path: circle(50%); }
+.ellipse { clip-path: ellipse(50% 40% at 50% 50%); }
+.polygon { clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); }
+
+/* Custom polygon */
+.triangle {
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+}
+
+.hexagon {
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}
+
+/* Using clip-path with animation */
+.animated-clip {
+    animation: morphShape 5s infinite alternate;
+}
+
+@keyframes morphShape {
+    0% { clip-path: circle(50% at 50% 50%); }
+    100% { clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); }
+}
+</code></pre>
+
+                    <h5>Other Common Properties</h5>
+                    <p>Here are some other useful CSS properties for creating effects:</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Cursor property */
+.pointer { cursor: pointer; }
+.not-allowed { cursor: not-allowed; }
+.help { cursor: help; }
+.crosshair { cursor: crosshair; }
+.move { cursor: move; }
+.text { cursor: text; }
+.wait { cursor: wait; }
+.grab { cursor: grab; }
+.grabbing { cursor: grabbing; }
+
+/* User select property */
+.select-none { user-select: none; }
+.select-text { user-select: text; }
+.select-all { user-select: all; }
+.select-auto { user-select: auto; }
+
+/* Pointer events property */
+.pointer-events-none { pointer-events: none; }
+.pointer-events-auto { pointer-events: auto; }
+
+/* Object fit property for images and videos */
+.object-fit-contain { object-fit: contain; }
+.object-fit-cover { object-fit: cover; }
+.object-fit-fill { object-fit: fill; }
+.object-fit-none { object-fit: none; }
+.object-fit-scale-down { object-fit: scale-down; }
+
+/* Will change property for performance optimization */
+.will-change-transform { will-change: transform; }
+.will-change-opacity { will-change: opacity; }
+.will-change-scroll-position { will-change: scroll-position; }
+
+/* Mix blend mode */
+.blend-multiply { mix-blend-mode: multiply; }
+.blend-screen { mix-blend-mode: screen; }
+.blend-overlay { mix-blend-mode: overlay; }
+.blend-darken { mix-blend-mode: darken; }
+.blend-lighten { mix-blend-mode: lighten; }
+.blend-color-dodge { mix-blend-mode: color-dodge; }
+.blend-color-burn { mix-blend-mode: color-burn; }
+.blend-hard-light { mix-blend-mode: hard-light; }
+.blend-soft-light { mix-blend-mode: soft-light; }
+.blend-difference { mix-blend-mode: difference; }
+.blend-exclusion { mix-blend-mode: exclusion; }
+.blend-hue { mix-blend-mode: hue; }
+.blend-saturation { mix-blend-mode: saturation; }
+.blend-color { mix-blend-mode: color; }
+.blend-luminosity { mix-blend-mode: luminosity; }
+
+/* Isolation property */
+.isolate { isolation: isolate; }
+
+/* Scroll snap type */
+.scroll-snap-x { scroll-snap-type: x mandatory; }
+.scroll-snap-y { scroll-snap-type: y mandatory; }
+.scroll-snap-both { scroll-snap-type: both mandatory; }
+
+/* Scroll snap align */
+.snap-start { scroll-snap-align: start; }
+.snap-center { scroll-snap-align: center; }
+.snap-end { scroll-snap-align: end; }
+</code></pre>
+
+                    <h5>Animation Performance Tips</h5>
+                    <p>When working with animations, it's important to consider performance:</p>
+                    <ul>
+                        <li><strong>Use transform and opacity:</strong> These properties are the most performant as they can be handled by the GPU</li>
+                        <li><strong>Avoid animating layout properties:</strong> Properties like width, height, margin, and padding trigger layout recalculation</li>
+                        <li><strong>Use will-change:</strong> Hint to the browser which properties will change to optimize rendering</li>
+                        <li><strong>Limit the number of animated elements:</strong> Too many simultaneous animations can impact performance</li>
+                        <li><strong>Use requestAnimationFrame:</strong> For JavaScript animations, use requestAnimationFrame for smoother performance</li>
+                    </ul>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Good performance animation */
+.performant-animation {
+    transform: translateX(100px);
+    opacity: 0.5;
+    will-change: transform, opacity;
+}
+
+/* Less performant animation */
+.less-performant {
+    width: 200px;
+    height: 200px;
+    margin-left: 100px;
+}
+</code></pre>
+
+                    <h5>Animation Examples</h5>
+                    <p>Here are some practical animation examples:</p>
+                    <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 20px;">
+                        <div class="animation-demo pulse-animation"></div>
+                        <div class="animation-demo slide-animation"></div>
+                        <div class="animation-demo fade-animation"></div>
+                        <div class="animation-demo rotate-animation"></div>
+                        <div class="animation-demo color-animation"></div>
+                    </div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 20px;">
+                        <div class="transition-demo">Hover me</div>
+                        <div class="transform-demo">Hover me</div>
+                    </div>
+                    <pre><button class="copy-button">Copy</button><code class="language-css">
+/* Loading spinner */
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    border-top-color: #007bff;
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Bouncing ball */
+.ball {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #007bff;
+    animation: bounce 1s ease-in-out infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-100px); }
+}
+
+/* Typing effect */
+.typing {
+    overflow: hidden;
+    border-right: 2px solid #007bff;
+    white-space: nowrap;
+    animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+}
+
+@keyframes typing {
+    from { width: 0; }
+    to { width: 100%; }
+}
+
+@keyframes blink-caret {
+    from, to { border-color: transparent; }
+    50% { border-color: #007bff; }
+}
+
+/* Shake effect */
+.shake {
+    animation: shake 0.5s;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
+    20%, 40%, 60%, 80% { transform: translateX(10px); }
+}
+</code></pre>
+                </div>
+            </div>
+
+            <div class="mt-5 text-center">
+                <a href="/practice" class="btn btn-primary btn-lg">Take Practice Test</a>
+            </div>
+
+            <div id="animation-container-docs" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1;"></div>
         </div>
-        <div id="animation-container-docs" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1;">
-        </div>
-    </section>
+    </div>
 
     <script>
+        // Smooth scrolling for sidebar navigation
+        document.querySelectorAll('.sidebar .nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }
+                // Update active state
+                document.querySelectorAll('.sidebar .nav-link').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Search functionality
         document.getElementById('search-input').addEventListener('input', function() {
             const query = this.value.toLowerCase();
             const content = document.getElementById('content');
-            const elements = content.querySelectorAll('h2, h3, h4, p, pre');
-
+            const elements = content.querySelectorAll('h2, h3, h4, h5, h6, p, pre, .card');
+            
             elements.forEach(element => {
                 const text = element.textContent.toLowerCase();
                 if (query === '' || text.includes(query)) {
@@ -747,8 +3209,18 @@ body { /* Base styles */ }
                 }
             });
         });
-    </script>
-    <script>
+
+        // Clear search function
+        function clearSearch() {
+            document.getElementById('search-input').value = '';
+            const content = document.getElementById('content');
+            const elements = content.querySelectorAll('h2, h3, h4, h5, h6, p, pre, .card');
+            elements.forEach(element => {
+                element.style.display = '';
+            });
+        }
+
+        // Copy to clipboard functionality
         const copyButtons = document.querySelectorAll('.copy-button');
         copyButtons.forEach(button => {
             button.addEventListener('click', function() {
@@ -758,6 +3230,27 @@ body { /* Base styles */ }
                 setTimeout(() => {
                     this.textContent = 'Copy';
                 }, 2000);
+            });
+        });
+
+        // Highlight active section in sidebar based on scroll position
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('[id]');
+            const navLinks = document.querySelectorAll('.sidebar .nav-link');
+
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
             });
         });
     </script>

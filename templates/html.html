@@ -1,42 +1,294 @@
 {% extends 'base.html' %}
 
-{% block title %}HTML Docs - SN VERSE{% endblock %}
+{% block title %}HTML Programming Documentation - SN VERSE{% endblock %}
 
 {% block head %}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/github-dark.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/languages/xml.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.3/purify.min.js"></script>
+    <style>
+        body {
+            background: #f8f9fa;
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #212529;
+        }
+        .sidebar {
+            position: fixed;
+            top: 70px;
+            left: 0;
+            width: 280px;
+            height: calc(100vh - 70px);
+            background: #343a40;
+            border-right: 1px solid #495057;
+            overflow-y: auto;
+            z-index: 1000;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+        }
+        .sidebar .nav-link {
+            color: #adb5bd;
+            padding: 12px 20px;
+            border-radius: 0;
+            margin: 0;
+            transition: all 0.2s ease;
+            font-weight: 500;
+            border-left: 3px solid transparent;
+        }
+        .sidebar .nav-link:hover {
+            background: #495057;
+            color: #fff;
+            text-decoration: none;
+            border-left-color: #e34c26;
+        }
+        .sidebar .nav-link.active {
+            background: #e34c26;
+            color: #fff;
+            border-left-color: #e34c26;
+        }
+        .main-content {
+            margin-left: 280px;
+            padding: 30px;
+            max-width: 1200px;
+        }
+
+        .content-card {
+            margin-bottom: 30px;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            background: #fff;
+        }
+        .content-card .card-header {
+            background: #e34c26;
+            color: white;
+            font-weight: 600;
+            font-size: 1.1rem;
+            border-bottom: 1px solid #dee2e6;
+            padding: 15px 20px;
+            border-radius: 8px 8px 0 0;
+        }
+        .search-container {
+            background: rgba(255,255,255,0.9);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .accordion-button:not(.collapsed) {
+            background: #ffeaea;
+            color: #e34c26;
+            font-weight: 500;
+        }
+        .accordion-button {
+            border-radius: 0;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+        .accordion-button:focus {
+            box-shadow: none;
+        }
+        .badge-note {
+            background: #e9ecef;
+            color: #495057;
+            font-weight: 500;
+        }
+        .badge-tip {
+            background: #d1ecf1;
+            color: #0c5460;
+            font-weight: 500;
+        }
+        .btn {
+            border-radius: 6px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .copy-button {
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 4px 8px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .copy-button:hover {
+            background: #5a6268;
+            transform: scale(1.05);
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Inter', sans-serif;
+            color: #212529;
+            font-weight: 600;
+        }
+        .card-body {
+            padding: 20px;
+        }
+        .table {
+            margin-bottom: 0;
+        }
+        .table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            border-top: none;
+        }
+        pre {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+        }
+        code {
+            background: #f1f3f4;
+            color: #d73a49;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+        .html-logo {
+            color: #e34c26;
+            font-weight: 700;
+        }
+        .data-type-section {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #e34c26;
+        }
+        .method-table {
+            width: 100%;
+            margin-top: 10px;
+            margin-bottom: 15px;
+        }
+        .method-table th {
+            background-color: #e9ecef;
+            text-align: left;
+            padding: 8px;
+        }
+        .method-table td {
+            padding: 8px;
+            border-bottom: 1px solid #dee2e6;
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+            .main-content {
+                margin-left: 0;
+            }
+        }
+    </style>
     <script>
         hljs.highlightAll();
     </script>
 {% endblock %}
 
 {% block content %}
-    <!-- HTML Docs Page -->
-    <section class="docs-page py-5">
-        <div class="container-fluid">
-            <div class="row">
-                <!-- Documentation Content -->
-                <div class="col-md-12">
-                    <!-- Search Box -->
-                    <div class="search-container mb-4">
-                        <input type="text" id="search-input" class="form-control" placeholder="Search documentation...">
-                    </div>
-                    <div id="content">
-                        <h2 class="mb-4">HTML Documentation</h2>
-                        <p>Welcome to the HTML programming documentation. Here, you'll find comprehensive guides and tutorials for HTML markup language.</p>
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar">
+        <div class="p-3">
+            <h5 class="text-center mb-3" style="font-size: 1.1rem; color: #fff; font-weight: 600;"><i class="fab fa-html5"></i> <span class="html-logo">HTML Programming</span> Documentation</h5>
 
-                        <h3 id="html" class="mt-5">HTML Programming</h3>
-                        <p>This section provides a comprehensive guide to HTML (HyperText Markup Language), the standard markup language for creating web pages.</p>
+            <!-- Search Box -->
+            <div class="search-container">
+                <input type="text" id="search-input" class="form-control" placeholder="Search documentation..." style="background: rgba(255,255,255,0.9); border: 1px solid #495057; color: #212529;">
+                <button class="btn btn-sm btn-outline-dark mt-2 w-100" onclick="clearSearch()">Clear Search</button>
+            </div>
 
-                        <h4>What is HTML?</h4>
-                        <p>HTML (HyperText Markup Language) is the standard markup language for creating web pages and web applications. It describes the structure of a web page semantically and originally included cues for the appearance of the document. HTML consists of a series of elements, which tell the browser how to display the content. Elements are represented by tags, which are enclosed in angle brackets like &lt;tagname&gt;. Most tags have an opening tag and a closing tag, with content in between.</p>
-                        <p>HTML is not a programming language; it's a markup language that defines the structure and layout of web pages. It works alongside CSS (Cascading Style Sheets) for styling and JavaScript for interactivity. HTML5 is the latest version, which introduced new semantic elements and APIs for modern web development.</p>
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link" href="#module1"><i class="fas fa-info-circle"></i> Module 1: Introduction to HTML</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module2"><i class="fas fa-code"></i> Module 2: Basic HTML Structure</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module3"><i class="fas fa-heading"></i> Module 3: Text Formatting</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module4"><i class="fas fa-link"></i> Module 4: Links and Navigation</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module5"><i class="fas fa-image"></i> Module 5: Images and Media</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module6"><i class="fas fa-list"></i> Module 6: Lists and Tables</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module7"><i class="fas fa-edit"></i> Module 7: Forms and Input</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module8"><i class="fas fa-object-group"></i> Module 8: Semantic HTML</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module9"><i class="fas fa-cogs"></i> Module 9: HTML5 Features</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module10"><i class="fas fa-project-diagram"></i> Module 10: Final Project</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
 
-                        <h4>Basic HTML Structure</h4>
-                        <p>Every HTML document should have a basic structure to ensure proper rendering and accessibility. The &lt;!DOCTYPE html&gt; declaration defines the document type and helps browsers render the page correctly. The &lt;html&gt; element is the root element of an HTML page, and the lang attribute specifies the language of the document. The &lt;head&gt; element contains meta-information about the document, such as the title, character encoding, and links to external resources. The &lt;body&gt; element contains the visible content of the web page.</p>
-                        <p>The meta charset tag ensures proper character encoding, while the viewport meta tag is crucial for responsive design on mobile devices.</p>
-                        <pre><button class="copy-button">Copy</button><code class="language-html">
+    <!-- Main Content -->
+    <div class="main-content">
+        <div id="content">
+            <h1 class="mb-4" style="text-align: center;"><span class="html-logo">HTML Programming</span> Documentation</h1>
+            <p style="text-align: center; font-size: 1.1rem; color: #6c757d;">Complete guide to HTML markup language from basics to advanced</p>
+
+            <!-- Module 1: Introduction to HTML -->
+            <div class="content-card" id="module1">
+                <div class="card-header">
+                    <i class="fas fa-info-circle"></i> Module 1: Introduction to HTML
+                </div>
+                <div class="card-body">
+                    <h5>What is HTML?</h5>
+                    <p>HTML (HyperText Markup Language) is the standard markup language for creating web pages and web applications. It describes the structure of a web page semantically and originally included cues for the appearance of the document. HTML consists of a series of elements, which tell the browser how to display the content. Elements are represented by tags, which are enclosed in angle brackets like &lt;tagname&gt;. Most tags have an opening tag and a closing tag, with content in between.</p>
+                    
+                    <p>HTML is not a programming language; it's a markup language that defines the structure and layout of web pages. It works alongside CSS (Cascading Style Sheets) for styling and JavaScript for interactivity. HTML5 is the latest version, which introduced new semantic elements and APIs for modern web development.</p>
+
+                    <h5>History of HTML</h5>
+                    <p>HTML was created by Tim Berners-Lee in 1991 while working at CERN. The first version was very simple with just a few tags. HTML 2.0 was released in 1995 as the first standard version. HTML 3.2 in 1997 added many new features including tables and applets. HTML 4.01 in 1999 became a widely adopted standard with improved CSS support. XHTML was introduced as a stricter XML-based version. Finally, HTML5, released in 2014, brought semantic elements, multimedia support, and APIs for modern web applications.</p>
+
+                    <h5>HTML vs XHTML vs HTML5</h5>
+                    <p>HTML is the current standard with flexible syntax rules. XHTML was a stricter XML-based version that required all tags to be properly closed and nested. HTML5 combines the flexibility of HTML with new semantic elements and APIs, making it the preferred choice for modern web development.</p>
+
+                    <h5>Key Features of HTML</h5>
+                    <ul>
+                        <li><strong>Platform Independent:</strong> Works on all operating systems and browsers</li>
+                        <li><strong>Easy to Learn:</strong> Simple syntax with human-readable tags</li>
+                        <li><strong>Free to Use:</strong> No licensing fees or software required</li>
+                        <li><strong>Extensible:</strong> Can be extended with new elements and attributes</li>
+                        <li><strong>Integrated with Web Technologies:</strong> Works seamlessly with CSS and JavaScript</li>
+                        <li><strong>SEO Friendly:</strong> Proper HTML structure helps with search engine optimization</li>
+                        <li><strong>Accessible:</strong> When used correctly, supports screen readers and assistive technologies</li>
+                    </ul>
+
+                    <h5>HTML Document Structure</h5>
+                    <p>Every HTML document follows a basic structure with a DOCTYPE declaration, html element, head section, and body section. This structure ensures proper rendering and compatibility across browsers.</p>
+
+                    <h5>Tools for HTML Development</h5>
+                    <p>You can write HTML in any text editor, but specialized code editors like Visual Studio Code, Sublime Text, or Atom provide features like syntax highlighting, auto-completion, and error checking. Web browsers like Chrome, Firefox, and Safari include developer tools for debugging and testing HTML code.</p>
+                </div>
+            </div>
+
+            <!-- Module 2: Basic HTML Structure -->
+            <div class="content-card" id="module2">
+                <div class="card-header">
+                    <i class="fas fa-code"></i> Module 2: Basic HTML Structure
+                </div>
+                <div class="card-body">
+                    <h5>Basic HTML Document</h5>
+                    <p>Every HTML document should have a basic structure to ensure proper rendering and accessibility. The &lt;!DOCTYPE html&gt; declaration defines the document type and helps browsers render the page correctly. The &lt;html&gt; element is the root element of an HTML page, and the lang attribute specifies the language of the document. The &lt;head&gt; element contains meta-information about the document, such as the title, character encoding, and links to external resources. The &lt;body&gt; element contains the visible content of the web page.</p>
+                    <p>The meta charset tag ensures proper character encoding, while the viewport meta tag is crucial for responsive design on mobile devices.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-html">
 &lt;!DOCTYPE html&gt;
 &lt;html lang="en"&gt;
 &lt;head&gt;
@@ -49,69 +301,335 @@
     &lt;p&gt;This is my first web page.&lt;/p&gt;
 &lt;/body&gt;
 &lt;/html&gt;
-</code><button class="copy-button">Copy</button></pre>
+</code></pre>
 
-                        <h4>Headings</h4>
-                        <p>HTML provides six levels of headings, from &lt;h1&gt; (most important) to &lt;h6&gt; (least important). Headings are used to structure the content hierarchy of a web page. Search engines use headings to understand the structure and importance of the content. The &lt;h1&gt; tag should be used for the main title of the page, while &lt;h2&gt; to &lt;h6&gt; are used for subsections. Proper use of headings improves accessibility for screen readers and helps with SEO.</p>
-                        <p>Headings should be used in a logical order without skipping levels. For example, don't jump from &lt;h1&gt; to &lt;h3&gt; without an &lt;h2&gt; in between.</p>
-                        <pre><button class="copy-button">Copy</button><code class="language-html">
+                    <h5>DOCTYPE Declaration</h5>
+                    <p>The &lt;!DOCTYPE html&gt; declaration is the very first line in an HTML document. It tells the browser which version of HTML the document is written in. For HTML5, the declaration is simply &lt;!DOCTYPE html&gt;. This declaration is not an HTML tag but an instruction to the browser about what document type to expect.</p>
+
+                    <h5>HTML Element</h5>
+                    <p>The &lt;html&gt; element is the root element of an HTML document. All other elements should be descendants of this element. The lang attribute is important for accessibility and search engines, as it specifies the language of the content.</p>
+
+                    <h5>Head Section</h5>
+                    <p>The &lt;head&gt; element contains meta-information about the HTML document that is not displayed on the page. This includes the title, character encoding, viewport settings, links to stylesheets, and scripts. The head section is crucial for SEO and proper page rendering.</p>
+
+                    <h5>Body Section</h5>
+                    <p>The &lt;body&gt; element contains all the visible content of the web page, including text, images, videos, tables, forms, and other elements. This is where users will see and interact with your content.</p>
+
+                    <h5>Comments</h5>
+                    <p>HTML comments are used to add notes or explanations in the code that are not displayed in the browser. They start with &lt;!-- and end with --&gt;. Comments are useful for documenting your code, explaining complex sections, or temporarily disabling code during debugging.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-html">
+&lt;!-- This is a comment --&gt;
+&lt;!-- 
+    Multi-line comment
+    Another line
+--&gt;
+</code></pre>
+
+                    <h5>HTML Attributes</h5>
+                    <p>Attributes provide additional information about HTML elements. They are always specified in the opening tag and consist of a name and value pair. Common attributes include class and id for styling and scripting, style for inline CSS, title for tooltips, and data-* for custom data.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-html">
+&lt;a href="https://example.com" target="_blank" title="Visit Example"&gt;Link&lt;/a&gt;
+&lt;img src="image.jpg" alt="Description" width="300" height="200"&gt;
+&lt;input type="text" name="username" placeholder="Enter username" required&gt;
+</code></pre>
+                </div>
+            </div>
+
+            <!-- Module 3: Text Formatting -->
+            <div class="content-card" id="module3">
+                <div class="card-header">
+                    <i class="fas fa-heading"></i> Module 3: Text Formatting
+                </div>
+                <div class="card-body">
+                    <h5>Headings</h5>
+                    <p>HTML provides six levels of headings, from &lt;h1&gt; (most important) to &lt;h6&gt; (least important). Headings are used to structure the content hierarchy of a web page. Search engines use headings to understand the structure and importance of the content. The &lt;h1&gt; tag should be used for the main title of the page, while &lt;h2&gt; to &lt;h6&gt; are used for subsections. Proper use of headings improves accessibility for screen readers and helps with SEO.</p>
+                    <p>Headings should be used in a logical order without skipping levels. For example, don't jump from &lt;h1&gt; to &lt;h3&gt; without an &lt;h2&gt; in between.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-html">
 &lt;h1&gt;Main Heading&lt;/h1&gt;
 &lt;h2&gt;Subheading&lt;/h2&gt;
 &lt;h3&gt;Sub-subheading&lt;/h3&gt;
 &lt;h4&gt;Level 4 Heading&lt;/h4&gt;
 &lt;h5&gt;Level 5 Heading&lt;/h5&gt;
 &lt;h6&gt;Level 6 Heading&lt;/h6&gt;
-</code><button class="copy-button">Copy</button></pre>
+</code></pre>
 
-                        <h4>Paragraphs</h4>
-                        <p>The &lt;p&gt; tag defines a paragraph of text. Browsers automatically add some margin before and after each paragraph. Paragraphs are block-level elements, meaning they take up the full width available and start on a new line. You can style paragraphs using CSS to change font, color, spacing, and alignment. Proper use of paragraphs improves readability and SEO.</p>
-                        <p>Don't use &lt;p&gt; tags for non-paragraph content like headings or lists. Empty &lt;p&gt; tags should be avoided as they can cause layout issues.</p>
-                        <pre><button class="copy-button">Copy</button><code class="language-html">
+                    <h5>Paragraphs</h5>
+                    <p>The &lt;p&gt; tag defines a paragraph of text. Browsers automatically add some margin before and after each paragraph. Paragraphs are block-level elements, meaning they take up the full width available and start on a new line. You can style paragraphs using CSS to change font, color, spacing, and alignment. Proper use of paragraphs improves readability and SEO.</p>
+                    <p>Don't use &lt;p&gt; tags for non-paragraph content like headings or lists. Empty &lt;p&gt; tags should be avoided as they can cause layout issues.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-html">
 &lt;p&gt;This is a paragraph of text.&lt;/p&gt;
 &lt;p&gt;This is another paragraph.&lt;/p&gt;
-</code><button class="copy-button">Copy</button></pre>
+</code></pre>
 
-                        <h4>Links</h4>
-                        <p>The &lt;a&gt; (anchor) tag creates hyperlinks to other web pages, files, locations within the same page, or email addresses. The href attribute specifies the destination of the link. Links can open in the same window/tab or a new one using the target="_blank" attribute. The title attribute provides additional information about the link when hovered. Links are essential for navigation and are a key factor in SEO.</p>
-                        <p>Always provide meaningful link text that describes the destination. Avoid generic text like "click here". Use relative URLs for internal links and absolute URLs for external sites.</p>
-                        <pre><button class="copy-button">Copy</button><code class="language-html">
+                    <h5>Text Formatting Elements</h5>
+                    <p>HTML provides several elements for formatting text within paragraphs. These include &lt;strong&gt; for important text (typically displayed as bold), &lt;em&gt; for emphasized text (typically displayed as italic), &lt;mark&gt; for highlighting text, &lt;small&gt; for smaller text, &lt;del&gt; for deleted text, and &lt;ins&gt; for inserted text.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-html">
+&lt;p&gt;This is &lt;strong&gt;important text&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;This is &lt;em&gt;emphasized text&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;This is &lt;mark&gt;highlighted text&lt;/mark&gt;.&lt;/p&gt;
+&lt;p&gt;This is &lt;small&gt;smaller text&lt;/small&gt;.&lt;/p&gt;
+&lt;p&gt;This is &lt;del&gt;deleted text&lt;/del&gt; and this is &lt;ins&gt;inserted text&lt;/ins&gt;.&lt;/p&gt;
+</code></pre>
+
+                    <h5>Line Breaks and Horizontal Rules</h5>
+                    <p>The &lt;br&gt; tag inserts a line break, and the &lt;hr&gt; tag creates a horizontal rule (line) to separate content. These elements are useful for formatting text and creating visual separation between sections.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-html">
+&lt;p&gt;First line&lt;br&gt;Second line&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;Text after horizontal rule&lt;/p&gt;
+</code></pre>
+
+                    <h5>Quotations</h5>
+                    <p>The &lt;blockquote&gt; tag is used for longer quotations that span multiple lines, while the &lt;q&gt; tag is for short inline quotations. The &lt;cite&gt; tag can be used to reference the source of a quotation.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-html">
+&lt;blockquote&gt;
+    &lt;p&gt;"The Web is more a social creation than a technical one. I designed it for a social effect — to help people work together — and not as a technical toy."&lt;/p&gt;
+    &lt;cite&gt;Tim Berners-Lee&lt;/cite&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;As Tim Berners-Lee said, &lt;q&gt;The Web is more a social creation than a technical one.&lt;/q&gt;&lt;/p&gt;
+</code></pre>
+
+                    <h5>Code and Preformatted Text</h5>
+                    <p>The &lt;code&gt; tag is used for inline code snippets, while the &lt;pre&gt; tag displays preformatted text that preserves spaces and line breaks. The &lt;kbd&gt; tag represents keyboard input, and the &lt;samp&gt; tag represents sample output from a program.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-html">
+&lt;p&gt;Use the &lt;code&gt;console.log()&lt;/code&gt; function to debug JavaScript.&lt;/p&gt;
+
+&lt;pre&gt;
+function greet(name) {
+    console.log("Hello, " + name);
+}
+&lt;/pre&gt;
+
+&lt;p&gt;Press &lt;kbd&gt;Ctrl&lt;/kbd&gt;+&lt;kbd&gt;C&lt;/kbd&gt; to copy.&lt;/p&gt;
+
+&lt;p&gt;The program outputs: &lt;samp&gt;Hello, World!&lt;/samp&gt;&lt;/p&gt;
+</code></pre>
+                </div>
+            </div>
+
+            <!-- Module 4: Links and Navigation -->
+            <div class="content-card" id="module4">
+                <div class="card-header">
+                    <i class="fas fa-link"></i> Module 4: Links and Navigation
+                </div>
+                <div class="card-body">
+                    <h5>Basic Links</h5>
+                    <p>The &lt;a&gt; (anchor) tag creates hyperlinks to other web pages, files, locations within the same page, or email addresses. The href attribute specifies the destination of the link. Links can open in the same window/tab or a new one using the target="_blank" attribute. The title attribute provides additional information about the link when hovered. Links are essential for navigation and are a key factor in SEO.</p>
+                    <p>Always provide meaningful link text that describes the destination. Avoid generic text like "click here". Use relative URLs for internal links and absolute URLs for external sites.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-html">
 &lt;a href="https://www.example.com"&gt;Visit Example&lt;/a&gt;
 &lt;a href="page.html"&gt;Go to Page&lt;/a&gt;
 &lt;a href="#section"&gt;Jump to Section&lt;/a&gt;
 &lt;a href="mailto:email@example.com"&gt;Send Email&lt;/a&gt;
-</code><button class="copy-button">Copy</button></pre>
+</code></pre>
 
-                        <h4>Images</h4>
-                        <p>The &lt;img&gt; tag embeds images in HTML documents. The src attribute specifies the path to the image file. The alt attribute provides alternative text for screen readers and displays if the image fails to load. Width and height attributes control the image dimensions and help prevent layout shifts during page loading. Images should be optimized for web use to improve page load times.</p>
-                        <p>Use appropriate image formats: JPEG for photos, PNG for graphics with transparency, SVG for vector graphics. Always include the alt attribute for accessibility and SEO benefits.</p>
-                        <pre><button class="copy-button">Copy</button><code class="language-html">
+                    <h5>Link Targets</h5>
+                    <p>The target attribute specifies where to open the linked document. The default value "_self" opens the link in the same frame, "_blank" opens in a new window or tab, "_parent" opens in the parent frame, and "_top" opens in the full body of the window.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-html">
+&lt;a href="https://www.example.com" target="_blank"&gt;Open in New Tab&lt;/a&gt;
+&lt;a href="https://www.example.com" target="_self"&gt;Open in Same Tab&lt;/a&gt;
+</code></pre>
+
+                    <h5>Anchor Links</h5>
+                    <p>Anchor links allow users to jump to specific sections within the same page. To create an anchor link, you need to add an id attribute to the element you want to link to, and then use that id in the href attribute of the link with a # prefix.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-html">
+&lt;h2 id="section1"&gt;Section 1&lt;/h2&gt;
+&lt;p&gt;Content of section 1...&lt;/p&gt;
+
+&lt;h2 id="section2"&gt;Section 2&lt;/h2&gt;
+&lt;p&gt;Content of section 2...&lt;/p&gt;
+
+&lt;a href="#section1"&gt;Go to Section 1&lt;/a&gt;
+&lt;a href="#section2"&gt;Go to Section 2&lt;/a&gt;
+</code></pre>
+
+                    <h5>Email Links</h5>
+                    <p>Email links open the user's default email client with a new message addressed to the specified email address. You can also pre-fill the subject and body of the email using URL parameters.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-html">
+&lt;a href="mailto:info@example.com"&gt;Send Email&lt;/a&gt;
+&lt;a href="mailto:info@example.com?subject=Inquiry&body=Hello,"&gt;Send Email with Subject&lt;/a&gt;
+</code></pre>
+
+                    <h5>Telephone Links</h5>
+                    <p>Telephone links allow users to call a phone number directly from the webpage on mobile devices. The link starts with "tel:" followed by the phone number.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-html">
+&lt;a href="tel:+1234567890"&gt;Call Us&lt;/a&gt;
+</code></pre>
+
+                    <h5>Download Links</h5>
+                    <p>The download attribute specifies that the target will be downloaded when a user clicks the hyperlink. You can also specify a value for the download attribute to suggest a filename for the downloaded file.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-html">
+&lt;a href="document.pdf" download&gt;Download PDF&lt;/a&gt;
+&lt;a href="document.pdf" download="my-document.pdf"&gt;Download PDF with Custom Name&lt;/a&gt;
+</code></pre>
+
+                    <h5>Navigation Menus</h5>
+                    <p>Navigation menus are typically created using unordered lists with anchor tags. CSS is used to style the menu and create dropdown effects. The &lt;nav&gt; element should be used to wrap navigation links for semantic meaning.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-html">
+&lt;nav&gt;
+    &lt;ul&gt;
+        &lt;li&gt;&lt;a href="/"&gt;Home&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href="/about"&gt;About&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href="/services"&gt;Services&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href="/contact"&gt;Contact&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/nav&gt;
+</code></pre>
+                </div>
+            </div>
+
+            <!-- Module 5: Images and Media -->
+            <div class="content-card" id="module5">
+                <div class="card-header">
+                    <i class="fas fa-image"></i> Module 5: Images and Media
+                </div>
+                <div class="card-body">
+                    <h5>Images</h5>
+                    <p>The &lt;img&gt; tag embeds images in HTML documents. The src attribute specifies the path to the image file. The alt attribute provides alternative text for screen readers and displays if the image fails to load. Width and height attributes control the image dimensions and help prevent layout shifts during page loading. Images should be optimized for web use to improve page load times.</p>
+                    <p>Use appropriate image formats: JPEG for photos, PNG for graphics with transparency, SVG for vector graphics. Always include the alt attribute for accessibility and SEO benefits.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-html">
 &lt;img src="image.jpg" alt="Description of image"&gt;
 &lt;img src="https://example.com/image.png" alt="Remote image" width="300" height="200"&gt;
-</code><button class="copy-button">Copy</button></pre>
+</code></pre>
 
-                        <h4>Lists</h4>
-                        <p>HTML supports two main types of lists: ordered (&lt;ol&gt;) and unordered (&lt;ul&gt;). Ordered lists use numbers or letters to sequence items, while unordered lists use bullets. Each list item is defined with the &lt;li&gt; tag. Lists can be nested within each other to create hierarchical structures. CSS can be used to customize the appearance of list markers.</p>
-                        <p>Use ordered lists when the sequence matters (like steps in a process), and unordered lists for items where order is not important. Proper list structure improves accessibility and readability.</p>
-                        <pre><button class="copy-button">Copy</button><code class="language-html">
-&lt;!-- Unordered list --&gt;
+                    <h5>Image Formats</h5>
+                    <p>Different image formats are suitable for different types of content:</p>
+                    <ul>
+                        <li><strong>JPEG:</strong> Best for photographs and images with many colors. Offers good compression but doesn't support transparency.</li>
+                        <li><strong>PNG:</strong> Best for images with transparency, logos, and graphics with sharp edges. Supports transparency but results in larger file sizes.</li>
+                        <li><strong>GIF:</strong> Best for simple animations and graphics with limited colors. Supports transparency and animation but limited to 256 colors.</li>
+                        <li><strong>SVG:</strong> Scalable Vector Graphics that can be scaled without losing quality. Best for logos, icons, and illustrations.</li>
+                        <li><strong>WebP:</strong> Modern format that provides better compression than JPEG and PNG. Not supported by all browsers.</li>
+                    </ul>
+
+                    <h5>Responsive Images</h5>
+                    <p>The &lt;picture&gt; element and srcset attribute allow you to provide different image sources based on screen size, resolution, or other conditions. This helps optimize page load times by serving appropriately sized images to different devices.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-html">
+&lt;picture&gt;
+    &lt;source media="(min-width: 768px)" srcset="large-image.jpg"&gt;
+    &lt;source media="(min-width: 480px)" srcset="medium-image.jpg"&gt;
+    &lt;img src="small-image.jpg" alt="Responsive image"&gt;
+&lt;/picture&gt;
+
+&lt;img src="image.jpg" 
+     srcset="image-small.jpg 480w, image-medium.jpg 768w, image-large.jpg 1024w"
+     sizes="(max-width: 480px) 100vw, (max-width: 768px) 50vw, 33vw"
+     alt="Responsive image with srcset"&gt;
+</code></pre>
+
+                    <h5>Image Maps</h5>
+                    <p>Image maps allow you to create clickable areas on an image. The &lt;map&gt; element defines the image map, and &lt;area&gt; elements define the clickable areas with shapes (rect, circle, poly) and coordinates.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-html">
+&lt;img src="image-map.jpg" alt="Image Map" usemap="#image-map"&gt;
+
+&lt;map name="image-map"&gt;
+    &lt;area shape="rect" coords="0,0,100,100" href="page1.html" alt="Area 1"&gt;
+    &lt;area shape="circle" coords="150,150,50" href="page2.html" alt="Area 2"&gt;
+    &lt;area shape="poly" coords="200,0,250,100,150,100" href="page3.html" alt="Area 3"&gt;
+&lt;/map&gt;
+</code></pre>
+
+                    <h5>Audio</h5>
+                    <p>The &lt;audio&gt; element embeds audio content in HTML documents. You can specify multiple source files in different formats to ensure compatibility across browsers. The controls attribute adds playback controls, and the autoplay attribute starts playing automatically (not recommended for user experience).</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-html">
+&lt;audio controls&gt;
+    &lt;source src="audio.mp3" type="audio/mpeg"&gt;
+    &lt;source src="audio.ogg" type="audio/ogg"&gt;
+    Your browser does not support the audio element.
+&lt;/audio&gt;
+</code></pre>
+
+                    <h5>Video</h5>
+                    <p>The &lt;video&gt; element embeds video content in HTML documents. Like audio, you can specify multiple source files in different formats. The width and height attributes control the video dimensions, and the poster attribute specifies an image to show before the video loads.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-html">
+&lt;video width="320" height="240" controls poster="video-poster.jpg"&gt;
+    &lt;source src="video.mp4" type="video/mp4"&gt;
+    &lt;source src="video.webm" type="video/webm"&gt;
+    Your browser does not support the video element.
+&lt;/video&gt;
+</code></pre>
+
+                    <h5>Embed and Object</h5>
+                    <p>The &lt;embed&gt; and &lt;object&gt; elements are used to embed external content like Flash, PDF, or other plugins. The &lt;iframe&gt; element is more commonly used today to embed external content like YouTube videos or maps.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-html">
+&lt;iframe width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen&gt;&lt;/iframe&gt;
+
+&lt;embed src="document.pdf" width="800" height="600" type="application/pdf"&gt;
+</code></pre>
+                </div>
+            </div>
+
+            <!-- Module 6: Lists and Tables -->
+            <div class="content-card" id="module6">
+                <div class="card-header">
+                    <i class="fas fa-list"></i> Module 6: Lists and Tables
+                </div>
+                <div class="card-body">
+                    <h5>Unordered Lists</h5>
+                    <p>Unordered lists (&lt;ul&gt;) are used when the order of items is not important. Each list item is defined with the &lt;li&gt; tag. By default, browsers display unordered lists with bullet points, but you can customize the style using CSS.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-html">
 &lt;ul&gt;
     &lt;li&gt;Item 1&lt;/li&gt;
     &lt;li&gt;Item 2&lt;/li&gt;
     &lt;li&gt;Item 3&lt;/li&gt;
 &lt;/ul&gt;
+</code></pre>
 
-&lt;!-- Ordered list --&gt;
+                    <h5>Ordered Lists</h5>
+                    <p>Ordered lists (&lt;ol&gt;) are used when the order of items is important. Each list item is defined with the &lt;li&gt; tag. By default, browsers display ordered lists with numbers, but you can customize the numbering style using CSS or the type attribute.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-html">
 &lt;ol&gt;
     &lt;li&gt;First item&lt;/li&gt;
     &lt;li&gt;Second item&lt;/li&gt;
     &lt;li&gt;Third item&lt;/li&gt;
 &lt;/ol&gt;
-</code><button class="copy-button">Copy</button></pre>
 
-                        <h4>Tables</h4>
-                        <p>Tables are used to display tabular data in rows and columns. The &lt;table&gt; element contains &lt;thead&gt; for headers, &lt;tbody&gt; for body content, and optionally &lt;tfoot&gt; for footer. Each row is defined with &lt;tr&gt;, header cells with &lt;th&gt;, and data cells with &lt;td&gt;. Tables should only be used for tabular data, not for layout purposes (use CSS for layout).</p>
-                        <p>Use &lt;th&gt; elements for headers to improve accessibility. Add scope attributes to headers to associate them with rows or columns. Avoid complex nested tables as they can be difficult to maintain and less accessible.</p>
-                        <pre><button class="copy-button">Copy</button><code class="language-html">
+&lt;!-- Custom numbering --&gt;
+&lt;ol type="A"&gt;
+    &lt;li&gt;First item&lt;/li&gt;
+    &lt;li&gt;Second item&lt;/li&gt;
+    &lt;li&gt;Third item&lt;/li&gt;
+&lt;/ol&gt;
+</code></pre>
+
+                    <h5>Description Lists</h5>
+                    <p>Description lists (&lt;dl&gt;) are used to display terms and their descriptions. Each term is defined with the &lt;dt&gt; tag, and each description with the &lt;dd&gt; tag. Description lists are useful for glossaries, dictionaries, or metadata.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-html">
+&lt;dl&gt;
+    &lt;dt&gt;HTML&lt;/dt&gt;
+    &lt;dd&gt;HyperText Markup Language&lt;/dd&gt;
+    &lt;dt&gt;CSS&lt;/dt&gt;
+    &lt;dd&gt;Cascading Style Sheets&lt;/dd&gt;
+    &lt;dt&gt;JavaScript&lt;/dt&gt;
+    &lt;dd&gt;A programming language for web interactivity&lt;/dd&gt;
+&lt;/dl&gt;
+</code></pre>
+
+                    <h5>Nested Lists</h5>
+                    <p>Lists can be nested within each other to create hierarchical structures. This is useful for creating outlines, navigation menus, or categorized content.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-html">
+&lt;ul&gt;
+    &lt;li&gt;Fruits
+        &lt;ul&gt;
+            &lt;li&gt;Apples&lt;/li&gt;
+            &lt;li&gt;Bananas&lt;/li&gt;
+            &lt;li&gt;Oranges&lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;Vegetables
+        &lt;ul&gt;
+            &lt;li&gt;Carrots&lt;/li&gt;
+            &lt;li&gt;Broccoli&lt;/li&gt;
+            &lt;li&gt;Spinach&lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/li&gt;
+&lt;/ul&gt;
+</code></pre>
+
+                    <h5>Basic Tables</h5>
+                    <p>Tables are used to display tabular data in rows and columns. The &lt;table&gt; element contains &lt;thead&gt; for headers, &lt;tbody&gt; for body content, and optionally &lt;tfoot&gt; for footer. Each row is defined with &lt;tr&gt;, header cells with &lt;th&gt;, and data cells with &lt;td&gt;. Tables should only be used for tabular data, not for layout purposes (use CSS for layout).</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-html">
 &lt;table&gt;
     &lt;thead&gt;
         &lt;tr&gt;
@@ -133,12 +651,62 @@
         &lt;/tr&gt;
     &lt;/tbody&gt;
 &lt;/table&gt;
-</code><button class="copy-button">Copy</button></pre>
+</code></pre>
 
-                        <h4>Forms</h4>
-                        <p>Forms collect user input and send it to a server for processing. The &lt;form&gt; element wraps form controls. Common input types include text, email, password, checkbox, radio, select, textarea, and button. The action attribute specifies where to send form data, and method specifies how (GET or POST). Labels should be associated with inputs using the for attribute for accessibility.</p>
-                        <p>Use appropriate input types for better user experience and validation. Include validation attributes like required, min, max. Forms are crucial for user interaction and data collection on websites.</p>
-                        <pre><button class="copy-button">Copy</button><code class="language-html">
+                    <h5>Table Attributes</h5>
+                    <p>Tables have several attributes that control their appearance and behavior. The border attribute adds a border around the table, cellpadding adds space between cell content and cell borders, and cellspacing adds space between cells. The colspan and rowspan attributes allow cells to span multiple columns or rows.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-html">
+&lt;table border="1" cellpadding="5" cellspacing="0"&gt;
+    &lt;tr&gt;
+        &lt;th colspan="2"&gt;Name&lt;/th&gt;
+        &lt;th rowspan="2"&gt;Contact&lt;/th&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;First&lt;/td&gt;
+        &lt;td&gt;Last&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;John&lt;/td&gt;
+        &lt;td&gt;Doe&lt;/td&gt;
+        &lt;td&gt;john@example.com&lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;
+</code></pre>
+
+                    <h5>Responsive Tables</h5>
+                    <p>Tables can be challenging to display on small screens. Common solutions include horizontal scrolling, stacking rows, or transforming the table into a different layout on mobile devices. CSS media queries are typically used to implement responsive table designs.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-html">
+&lt;div class="table-responsive"&gt;
+    &lt;table&gt;
+        &lt;thead&gt;
+            &lt;tr&gt;
+                &lt;th&gt;Name&lt;/th&gt;
+                &lt;th&gt;Age&lt;/th&gt;
+                &lt;th&gt;City&lt;/th&gt;
+            &lt;/tr&gt;
+        &lt;/thead&gt;
+        &lt;tbody&gt;
+            &lt;tr&gt;
+                &lt;td&gt;John&lt;/td&gt;
+                &lt;td&gt;25&lt;/td&gt;
+                &lt;td&gt;New York&lt;/td&gt;
+            &lt;/tr&gt;
+        &lt;/tbody&gt;
+    &lt;/table&gt;
+&lt;/div&gt;
+</code></pre>
+                </div>
+            </div>
+
+            <!-- Module 7: Forms and Input -->
+            <div class="content-card" id="module7">
+                <div class="card-header">
+                    <i class="fas fa-edit"></i> Module 7: Forms and Input
+                </div>
+                <div class="card-body">
+                    <h5>Form Basics</h5>
+                    <p>Forms collect user input and send it to a server for processing. The &lt;form&gt; element wraps form controls. The action attribute specifies where to send form data, and method specifies how (GET or POST). Labels should be associated with inputs using the for attribute for accessibility.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-html">
 &lt;form action="/submit" method="post"&gt;
     &lt;label for="name"&gt;Name:&lt;/label&gt;
     &lt;input type="text" id="name" name="name" required&gt;
@@ -146,133 +714,680 @@
     &lt;label for="email"&gt;Email:&lt;/label&gt;
     &lt;input type="email" id="email" name="email" required&gt;
     
-    &lt;label for="message"&gt;Message:&lt;/label&gt;
-    &lt;textarea id="message" name="message"&gt;&lt;/textarea&gt;
+    &lt;input type="submit" value="Submit"&gt;
+&lt;/form&gt;
+</code></pre>
+
+                    <h5>Input Types</h5>
+                    <p>HTML provides various input types for different kinds of data:</p>
+                    <ul>
+                        <li><strong>text:</strong> Single-line text input</li>
+                        <li><strong>password:</strong> Password input (characters are masked)</li>
+                        <li><strong>email:</strong> Email address input with validation</li>
+                        <li><strong>url:</strong> URL input with validation</li>
+                        <li><strong>tel:</strong> Telephone number input</li>
+                        <li><strong>number:</strong> Numeric input with validation</li>
+                        <li><strong>range:</strong> Slider control for numeric input</li>
+                        <li><strong>date:</strong> Date input</li>
+                        <li><strong>time:</strong> Time input</li>
+                        <li><strong>datetime-local:</strong> Date and time input</li>
+                        <li><strong>month:</strong> Month input</li>
+                        <li><strong>week:</strong> Week input</li>
+                        <li><strong>color:</strong> Color picker</li>
+                        <li><strong>file:</strong> File upload</li>
+                        <li><strong>hidden:</strong> Hidden input not visible to users</li>
+                    </ul>
+                    <pre><button class="copy-button">Copy</button><code class="language-html">
+&lt;label for="username"&gt;Username:&lt;/label&gt;
+&lt;input type="text" id="username" name="username" placeholder="Enter username"&gt;
+
+&lt;label for="password"&gt;Password:&lt;/label&gt;
+&lt;input type="password" id="password" name="password" required&gt;
+
+&lt;label for="email"&gt;Email:&lt;/label&gt;
+&lt;input type="email" id="email" name="email" required&gt;
+
+&lt;label for="age"&gt;Age:&lt;/label&gt;
+&lt;input type="number" id="age" name="age" min="18" max="100"&gt;
+
+&lt;label for="birthday"&gt;Birthday:&lt;/label&gt;
+&lt;input type="date" id="birthday" name="birthday"&gt;
+</code></pre>
+
+                    <h5>Checkboxes and Radio Buttons</h5>
+                    <p>Checkboxes allow users to select multiple options, while radio buttons allow users to select only one option from a group. Radio buttons with the same name attribute are grouped together.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-html">
+&lt;!-- Checkboxes --&gt;
+&lt;fieldset&gt;
+    &lt;legend&gt;Select your interests:&lt;/legend&gt;
+    &lt;input type="checkbox" id="music" name="interests" value="music"&gt;
+    &lt;label for="music"&gt;Music&lt;/label&gt;
+    
+    &lt;input type="checkbox" id="sports" name="interests" value="sports"&gt;
+    &lt;label for="sports"&gt;Sports&lt;/label&gt;
+    
+    &lt;input type="checkbox" id="travel" name="interests" value="travel"&gt;
+    &lt;label for="travel"&gt;Travel&lt;/label&gt;
+&lt;/fieldset&gt;
+
+&lt;!-- Radio buttons --&gt;
+&lt;fieldset&gt;
+    &lt;legend&gt;Select your gender:&lt;/legend&gt;
+    &lt;input type="radio" id="male" name="gender" value="male"&gt;
+    &lt;label for="male"&gt;Male&lt;/label&gt;
+    
+    &lt;input type="radio" id="female" name="gender" value="female"&gt;
+    &lt;label for="female"&gt;Female&lt;/label&gt;
+    
+    &lt;input type="radio" id="other" name="gender" value="other"&gt;
+    &lt;label for="other"&gt;Other&lt;/label&gt;
+&lt;/fieldset&gt;
+</code></pre>
+
+                    <h5>Select and Option</h5>
+                    <p>The &lt;select&gt; element creates a dropdown list, and each option is defined with an &lt;option&gt; element. The multiple attribute allows users to select multiple options. The &lt;optgroup&gt; element groups related options.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-html">
+&lt;label for="country"&gt;Country:&lt;/label&gt;
+&lt;select id="country" name="country"&gt;
+    &lt;option value=""&gt;Select a country&lt;/option&gt;
+    &lt;option value="us"&gt;United States&lt;/option&gt;
+    &lt;option value="uk"&gt;United Kingdom&lt;/option&gt;
+    &lt;option value="ca"&gt;Canada&lt;/option&gt;
+    &lt;option value="au"&gt;Australia&lt;/option&gt;
+&lt;/select&gt;
+
+&lt;!-- Multiple select --&gt;
+&lt;label for="languages"&gt;Languages:&lt;/label&gt;
+&lt;select id="languages" name="languages" multiple&gt;
+    &lt;option value="html"&gt;HTML&lt;/option&gt;
+    &lt;option value="css"&gt;CSS&lt;/option&gt;
+    &lt;option value="js"&gt;JavaScript&lt;/option&gt;
+    &lt;option value="python"&gt;Python&lt;/option&gt;
+&lt;/select&gt;
+</code></pre>
+
+                    <h5>Textarea</h5>
+                    <p>The &lt;textarea&gt; element creates a multi-line text input field. The rows and cols attributes specify the visible size of the text area.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-html">
+&lt;label for="message"&gt;Message:&lt;/label&gt;
+&lt;textarea id="message" name="message" rows="4" cols="50" placeholder="Enter your message here..."&gt;&lt;/textarea&gt;
+</code></pre>
+
+                    <h5>Form Validation</h5>
+                    <p>HTML5 provides built-in form validation attributes like required, min, max, pattern, and step. The novalidate attribute can be used to disable browser validation. Custom validation messages can be set using the setCustomValidity() method in JavaScript.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-html">
+&lt;form action="/submit" method="post" novalidate&gt;
+    &lt;label for="email"&gt;Email:&lt;/label&gt;
+    &lt;input type="email" id="email" name="email" required&gt;
+    
+    &lt;label for="age"&gt;Age:&lt;/label&gt;
+    &lt;input type="number" id="age" name="age" min="18" max="100" required&gt;
+    
+    &lt;label for="phone"&gt;Phone:&lt;/label&gt;
+    &lt;input type="tel" id="phone" name="phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="123-456-7890"&gt;
     
     &lt;input type="submit" value="Submit"&gt;
 &lt;/form&gt;
-</code><button class="copy-button">Copy</button></pre>
+</code></pre>
 
-                        <h4>Divisions and Spans</h4>
-                        <p>&lt;div&gt; is a generic block-level container for grouping elements and applying styles or scripts. It doesn't have semantic meaning but is useful for layout. &lt;span&gt; is an inline container for styling parts of text or grouping inline elements. Both are essential for CSS styling and JavaScript manipulation. Overuse of divs can lead to "div soup" - prefer semantic elements when possible.</p>
-                        <p>Use divs for major layout sections and spans for minor inline styling. Both elements are versatile but should be used thoughtfully for maintainable code.</p>
-                        <pre><button class="copy-button">Copy</button><code class="language-html">
-&lt;div class="container"&gt;
-    &lt;h1&gt;Title&lt;/h1&gt;
-    &lt;p&gt;This is inside a div.&lt;/p&gt;
-&lt;/div&gt;
+                    <h5>Form Buttons</h5>
+                    <p>Forms can have different types of buttons: submit (submits the form), reset (resets form fields), and button (custom button with JavaScript functionality). The &lt;button&gt; element is more flexible than &lt;input type="button"&gt; as it can contain other HTML elements.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-html">
+&lt;input type="submit" value="Submit"&gt;
+&lt;input type="reset" value="Reset"&gt;
+&lt;input type="button" value="Cancel" onclick="cancelForm()"&gt;
 
-&lt;p&gt;This is &lt;span class="highlight"&gt;highlighted&lt;/span&gt; text.&lt;/p&gt;
-</code><button class="copy-button">Copy</button></pre>
-
-                        <h4>Semantic Elements</h4>
-                        <p>Semantic elements clearly describe their meaning to both browsers and developers. &lt;header&gt; represents introductory content, &lt;nav&gt; for navigation, &lt;main&gt; for main content, &lt;section&gt; for thematic grouping, &lt;article&gt; for self-contained content, &lt;aside&gt; for sidebar content, and &lt;footer&gt; for footer information. These elements improve SEO, accessibility, and code readability compared to generic divs.</p>
-                        <p>Use semantic elements appropriately: one &lt;main&gt; per page, &lt;header&gt; and &lt;footer&gt; for page structure, &lt;article&gt; for blog posts or news items. Screen readers rely on semantic structure for navigation.</p>
-                        <pre><button class="copy-button">Copy</button><code class="language-html">
-&lt;header&gt;
-    &lt;h1&gt;Site Title&lt;/h1&gt;
-    &lt;nav&gt;
-        &lt;ul&gt;
-            &lt;li&gt;&lt;a href="/"&gt;Home&lt;/a&gt;&lt;/li&gt;
-            &lt;li&gt;&lt;a href="/about"&gt;About&lt;/a&gt;&lt;/li&gt;
-        &lt;/ul&gt;
-    &lt;/nav&gt;
-&lt;/header&gt;
-
-&lt;main&gt;
-    &lt;section&gt;
-        &lt;h2&gt;Main Content&lt;/h2&gt;
-        &lt;article&gt;
-            &lt;h3&gt;Article Title&lt;/h3&gt;
-            &lt;p&gt;Article content...&lt;/p&gt;
-        &lt;/article&gt;
-    &lt;/section&gt;
-    
-    &lt;aside&gt;
-        &lt;h3&gt;Sidebar&lt;/h3&gt;
-        &lt;p&gt;Additional information...&lt;/p&gt;
-    &lt;/aside&gt;
-&lt;/main&gt;
-
-&lt;footer&gt;
-    &lt;p&gt;&amp;copy; 2023 My Website&lt;/p&gt;
-&lt;/footer&gt;
-</code><button class="copy-button">Copy</button></pre>
-
-                        <h4>Meta Tags</h4>
-                        <p>Meta tags provide metadata about the HTML document. charset specifies character encoding, description gives a brief page summary for search engines, keywords help with SEO (though less important now), author credits the creator, viewport controls mobile display. Other meta tags can specify refresh rates, robots instructions, and social media previews.</p>
-                        <p>The viewport meta tag is essential for responsive design. Keep descriptions under 160 characters for optimal display in search results. Use Open Graph meta tags for better social media sharing.</p>
-                        <pre><button class="copy-button">Copy</button><code class="language-html">
-&lt;meta charset="UTF-8"&gt;
-&lt;meta name="description" content="A brief description of the page"&gt;
-&lt;meta name="keywords" content="HTML, web development, tutorial"&gt;
-&lt;meta name="author" content="Your Name"&gt;
-&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
-</code><button class="copy-button">Copy</button></pre>
-
-                        <h4>Comments</h4>
-                        <p>Comments are used to add notes or explanations in HTML code that are not displayed in the browser. They help developers understand the code and can be used to temporarily disable code during debugging. Comments start with &lt;!-- and end with --&gt;. They can span multiple lines and are ignored by browsers.</p>
-                        <p>Use comments to explain complex sections, mark TODO items, or provide context. Avoid leaving commented-out code in production as it can confuse other developers.</p>
-                        <pre><button class="copy-button">Copy</button><code class="language-html">
-&lt;!-- This is a comment --&gt;
-&lt;!-- 
-    Multi-line comment
-    Another line
---&gt;
-</code><button class="copy-button">Copy</button></pre>
-
-                        <h4>Entities</h4>
-                        <p>HTML entities represent reserved characters or symbols that have special meaning in HTML. They start with &amp; and end with ;. Common entities include &amp;lt; for &lt;, &amp;gt; for &gt;, &amp;amp; for &amp;, &amp;nbsp; for non-breaking space, &amp;copy; for ©, &amp;reg; for ®. Entities ensure characters display correctly and prevent code injection.</p>
-                        <p>Use entities when you need to display characters that are part of HTML syntax. Remember that modern HTML5 handles most characters correctly with proper encoding, but entities are still useful for symbols and special characters.</p>
-                        <pre><button class="copy-button">Copy</button><code class="language-html">
-&amp;lt; &lt; Less than
-&amp;gt; &gt; Greater than
-&amp;amp; &amp; Ampersand
-&amp;nbsp; &nbsp; Non-breaking space
-&amp;copy; &copy; Copyright
-&amp;reg; &reg; Registered trademark
-</code><button class="copy-button">Copy</button></pre>
-
-                        <h4>Inline vs Block Elements</h4>
-                        <p>Block-level elements take up the full width available, start on a new line, and can contain other block-level or inline elements. Examples include &lt;div&gt;, &lt;p&gt;, &lt;h1&gt;-&lt;h6&gt;, &lt;ul&gt;, &lt;ol&gt;, &lt;li&gt;. Inline elements only take up as much width as necessary, don't start new lines, and can only contain other inline elements or text. Examples include &lt;span&gt;, &lt;a&gt;, &lt;strong&gt;, &lt;em&gt;, &lt;img&gt;.</p>
-                        <p>Understanding the difference is crucial for layout and styling. CSS display property can change an element's behavior from block to inline or vice versa.</p>
-                        <pre><button class="copy-button">Copy</button><code class="language-html">
-&lt;!-- Block-level elements --&gt;
-&lt;div&gt;Block element&lt;/div&gt;
-&lt;p&gt;Paragraph&lt;/p&gt;
-&lt;h1&gt;Heading&lt;/h1&gt;
-
-&lt;!-- Inline elements --&gt;
-&lt;span&gt;Inline element&lt;/span&gt;
-&lt;a href="#"&gt;Link&lt;/a&gt;
-&lt;strong&gt;Bold text&lt;/strong&gt;
-</code><button class="copy-button">Copy</button></pre>
-
-                        <h4>Attributes</h4>
-                        <p>Attributes provide additional information about HTML elements. They are always specified in the opening tag and consist of a name and value pair. Common attributes include class and id for styling and scripting, style for inline CSS, title for tooltips, and data-* for custom data. Some attributes are specific to certain elements, like href for links or src for images.</p>
-                        <p>Attribute values should be enclosed in quotes. Use meaningful class and id names for maintainable code. Avoid inline styles in favor of external CSS files.</p>
-                        <pre><button class="copy-button">Copy</button><code class="language-html">
-&lt;a href="https://example.com" target="_blank" title="Visit Example"&gt;Link&lt;/a&gt;
-&lt;img src="image.jpg" alt="Description" width="300" height="200"&gt;
-&lt;input type="text" name="username" placeholder="Enter username" required&gt;
-</code><button class="copy-button">Copy</button></pre>
-
-                        <p>This comprehensive guide covers essential HTML tags and concepts with detailed explanations for each topic. HTML forms the foundation of web development and is often used alongside CSS and JavaScript to create modern web applications. Understanding HTML structure and semantics is crucial for creating accessible, SEO-friendly, and maintainable websites.</p>
-
-                    </div>
+&lt;button type="submit"&gt;Submit&lt;/button&gt;
+&lt;button type="reset"&gt;Reset&lt;/button&gt;
+&lt;button type="button" onclick="cancelForm()"&gt;Cancel&lt;/button&gt;
+</code></pre>
                 </div>
             </div>
+
+            <!-- Module 8: Semantic HTML -->
+            <div class="content-card" id="module8">
+                <div class="card-header">
+                    <i class="fas fa-object-group"></i> Module 8: Semantic HTML
+                </div>
+                <div class="card-body">
+                    <h5>What is Semantic HTML?</h5>
+                    <p>Semantic HTML elements clearly describe their meaning to both browsers and developers. They provide information about the content they contain, rather than just being generic containers. Semantic elements improve accessibility, SEO, and code readability compared to non-semantic elements like &lt;div&gt; and &lt;span&gt;.</p>
+
+                    <h5>Header</h5>
+                    <p>The &lt;header&gt; element represents introductory content, typically a group of introductory or navigational aids. It can contain headings, logos, search forms, author information, and more. A document can have multiple &lt;header&gt; elements.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-html">
+&lt;header&gt;
+    &lt;h1&gt;Website Title&lt;/h1&gt;
+    &lt;p&gt;Tagline or description&lt;/p&gt;
+&lt;/header&gt;
+
+&lt;article&gt;
+    &lt;header&gt;
+        &lt;h2&gt;Article Title&lt;/h2&gt;
+        &lt;p&gt;Published on January 1, 2023&lt;/p&gt;
+    &lt;/header&gt;
+    &lt;p&gt;Article content...&lt;/p&gt;
+&lt;/article&gt;
+</code></pre>
+
+                    <h5>Navigation</h5>
+                    <p>The &lt;nav&gt; element represents a section of a page that contains navigation links. Not all groups of links on a page need to be in a &lt;nav&gt; element; it's primarily intended for major navigation blocks.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-html">
+&lt;nav&gt;
+    &lt;ul&gt;
+        &lt;li&gt;&lt;a href="/"&gt;Home&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href="/about"&gt;About&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href="/services"&gt;Services&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href="/contact"&gt;Contact&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/nav&gt;
+</code></pre>
+
+                    <h5>Main</h5>
+                    <p>The &lt;main&gt; element represents the dominant content of the &lt;body&gt; of a document. There should only be one &lt;main&gt; element in a document, and it shouldn't contain content that is repeated across documents such as navigation links, copyright information, or site headers and footers.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-html">
+&lt;main&gt;
+    &lt;h1&gt;Main Content&lt;/h1&gt;
+    &lt;p&gt;This is the main content of the page.&lt;/p&gt;
+    &lt;article&gt;
+        &lt;h2&gt;Article Title&lt;/h2&gt;
+        &lt;p&gt;Article content...&lt;/p&gt;
+    &lt;/article&gt;
+&lt;/main&gt;
+</code></pre>
+
+                    <h5>Article</h5>
+                    <p>The &lt;article&gt; element represents a self-contained composition in a document that is intended to be independently distributable or reusable. Examples include a forum post, a magazine or newspaper article, or a blog entry.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-html">
+&lt;article&gt;
+    &lt;header&gt;
+        &lt;h2&gt;Article Title&lt;/h2&gt;
+        &lt;p&gt;Published on January 1, 2023 by John Doe&lt;/p&gt;
+    &lt;/header&gt;
+    &lt;p&gt;Article content...&lt;/p&gt;
+    &lt;footer&gt;
+        &lt;p&gt;Tags: HTML, Web Development&lt;/p&gt;
+    &lt;/footer&gt;
+&lt;/article&gt;
+</code></pre>
+
+                    <h5>Section</h5>
+                    <p>The &lt;section&gt; element represents a standalone section of content which doesn't have a more specific semantic element to represent it. It should have a heading, and is generally used to group related content together.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-html">
+&lt;section&gt;
+    &lt;h2&gt;Section Title&lt;/h2&gt;
+    &lt;p&gt;Section content...&lt;/p&gt;
+&lt;/section&gt;
+
+&lt;section&gt;
+    &lt;h2&gt;Another Section&lt;/h2&gt;
+    &lt;p&gt;Another section content...&lt;/p&gt;
+&lt;/section&gt;
+</code></pre>
+
+                    <h5>Aside</h5>
+                    <p>The &lt;aside&gt; element represents a section of a page that consists of content that is tangentially related to the content around it. It's often used for sidebars, pull quotes, or advertising.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-html">
+&lt;aside&gt;
+    &lt;h2&gt;Related Links&lt;/h2&gt;
+    &lt;ul&gt;
+        &lt;li&gt;&lt;a href="#"&gt;Related Article 1&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href="#"&gt;Related Article 2&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/aside&gt;
+</code></pre>
+
+                    <h5>Footer</h5>
+                    <p>The &lt;footer&gt; element represents a footer for its nearest sectioning content or sectioning root element. A footer typically contains information about its section such as who wrote it, copyright information, and links to related documents.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-html">
+&lt;footer&gt;
+    &lt;p&gt;&amp;copy; 2023 My Website. All rights reserved.&lt;/p&gt;
+    &lt;p&gt;Contact: info@example.com | Phone: 123-456-7890&lt;/p&gt;
+    &lt;nav&gt;
+        &lt;ul&gt;
+            &lt;li&gt;&lt;a href="/privacy"&gt;Privacy Policy&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="/terms"&gt;Terms of Service&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/nav&gt;
+&lt;/footer&gt;
+</code></pre>
+
+                    <h5>Figure and Figcaption</h5>
+                    <p>The &lt;figure&gt; element represents self-contained content, potentially with an optional caption, which is specified using the &lt;figcaption&gt; element. It's commonly used for images, diagrams, code snippets, etc.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-html">
+&lt;figure&gt;
+    &lt;img src="image.jpg" alt="Description of image"&gt;
+    &lt;figcaption&gt;Figure 1: This is a caption for the image.&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;figure&gt;
+    &lt;pre&gt;&lt;code&gt;function example() {
+    console.log("Hello, World!");
+}&lt;/code&gt;&lt;/pre&gt;
+    &lt;figcaption&gt;Figure 2: Example JavaScript function.&lt;/figcaption&gt;
+&lt;/figure&gt;
+</code></pre>
+
+                    <h5>Address</h5>
+                    <p>The &lt;address&gt; element represents the contact information for its nearest &lt;article&gt; or &lt;body&gt; element. It should not be used for arbitrary addresses, but for contact information related to the author or owner of the content.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-html">
+&lt;address&gt;
+    Written by &lt;a href="mailto:webmaster@example.com"&gt;John Doe&lt;/a&gt;.&lt;br&gt;
+    Visit us at:&lt;br&gt;
+    Example.com&lt;br&gt;
+    Box 564, Disneyland&lt;br&gt;
+    USA
+&lt;/address&gt;
+</code></pre>
+
+                    <h5>Time</h5>
+                    <p>The &lt;time&gt; element represents a specific period in time. It may include the datetime attribute to translate dates into machine-readable format, which can help with search engine optimization and calendar applications.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-html">
+&lt;p&gt;We open at &lt;time&gt;10:00&lt;/time&gt; every morning.&lt;/p&gt;
+&lt;p&gt;The event will be held on &lt;time datetime="2023-12-25"&gt;December 25, 2023&lt;/time&gt;.&lt;/p&gt;
+&lt;p&gt;The meeting lasted &lt;time datetime="PT2H30M"&gt;2 hours and 30 minutes&lt;/time&gt;.&lt;/p&gt;
+</code></pre>
+                </div>
+            </div>
+
+            <!-- Module 9: HTML5 Features -->
+            <div class="content-card" id="module9">
+                <div class="card-header">
+                    <i class="fas fa-cogs"></i> Module 9: HTML5 Features
+                </div>
+                <div class="card-body">
+                    <h5>HTML5 Overview</h5>
+                    <p>HTML5 is the latest evolution of the standard that defines HTML. It includes new elements, attributes, and behaviors, and a larger set of technologies that allows more diverse and powerful websites and applications. HTML5 was designed to be backward compatible with older HTML versions and to work across all devices.</p>
+
+                    <h5>New Semantic Elements</h5>
+                    <p>HTML5 introduced several new semantic elements like &lt;header&gt;, &lt;nav&gt;, &lt;main&gt;, &lt;article&gt;, &lt;section&gt;, &lt;aside&gt;, and &lt;footer&gt;. These elements give meaning to different parts of a webpage, improving accessibility and SEO.</p>
+
+                    <h5>New Input Types</h5>
+                    <p>HTML5 introduced new input types like email, url, number, range, date, time, color, and more. These provide better user experience and built-in validation without requiring JavaScript.</p>
+
+                    <h5>New Form Attributes</h5>
+                    <p>HTML5 added new form attributes like placeholder, required, pattern, min, max, step, autocomplete, autofocus, and formnovalidate. These attributes enhance form functionality and validation.</p>
+
+                    <h5>Graphics and Multimedia</h5>
+                    <p>HTML5 introduced native support for graphics and multimedia with elements like &lt;canvas&gt;, &lt;svg&gt;, &lt;audio&gt;, and &lt;video&gt;. These elements allow for creating graphics, animations, and embedding media without plugins.</p>
+
+                    <h5>Canvas</h5>
+                    <p>The &lt;canvas&gt; element provides a drawable region defined in HTML with JavaScript. It can be used for drawing graphics, animations, game graphics, data visualization, photo manipulation, and real-time video processing.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-html">
+&lt;canvas id="myCanvas" width="200" height="100"&gt;&lt;/canvas&gt;
+
+&lt;script&gt;
+    const canvas = document.getElementById('myCanvas');
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#FF0000';
+    ctx.fillRect(10, 10, 50, 50);
+&lt;/script&gt;
+</code></pre>
+
+                    <h5>SVG</h5>
+                    <p>SVG (Scalable Vector Graphics) is an XML-based markup language for describing two-dimensional vector graphics. SVG graphics do not lose any quality if they are zoomed or resized, making them ideal for responsive design.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-html">
+&lt;svg width="100" height="100"&gt;
+    &lt;circle cx="50" cy="50" r="40" stroke="green" stroke-width="4" fill="yellow" /&gt;
+&lt;/svg&gt;
+</code></pre>
+
+                    <h5>Audio and Video</h5>
+                    <p>HTML5 introduced native support for audio and video with the &lt;audio&gt; and &lt;video&gt; elements. These elements allow embedding media content without plugins like Flash. They support multiple sources in different formats for cross-browser compatibility.</p>
+
+                    <h5>Local Storage</h5>
+                    <p>HTML5 provides two new objects for storing data on the client: localStorage and sessionStorage. localStorage stores data with no expiration date, while sessionStorage stores data for one session. Both provide better security and performance than cookies.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-html">
+&lt;script&gt;
+    // Store data
+    localStorage.setItem('name', 'John Doe');
+    
+    // Retrieve data
+    const name = localStorage.getItem('name');
+    
+    // Remove data
+    localStorage.removeItem('name');
+    
+    // Clear all data
+    localStorage.clear();
+&lt;/script&gt;
+</code></pre>
+
+                    <h5>Geolocation</h5>
+                    <p>The HTML5 Geolocation API allows users to share their location with trusted web sites. The latitude and longitude are available to JavaScript on the page, which can then send this information to a server.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-html">
+&lt;button onclick="getLocation()"&gt;Get Location&lt;/button&gt;
+&lt;p id="location"&gt;&lt;/p&gt;
+
+&lt;script&gt;
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+        } else {
+            document.getElementById("location").innerHTML = "Geolocation is not supported by this browser.";
+        }
+    }
+    
+    function showPosition(position) {
+        document.getElementById("location").innerHTML = 
+            "Latitude: " + position.coords.latitude + 
+            "&lt;br&gt;Longitude: " + position.coords.longitude;
+    }
+&lt;/script&gt;
+</code></pre>
+
+                    <h5>Web Workers</h5>
+                    <p>Web Workers allow running JavaScript in the background, independently of other scripts, without affecting the performance of the page. They are useful for CPU-intensive tasks that would otherwise block the user interface.</p>
+
+                    <h5>Drag and Drop</h5>
+                    <p>HTML5 provides a native drag and drop API that allows users to drag and drop elements on a webpage. This can be used for creating interactive interfaces like file upload areas, sortable lists, or drag-and-drop builders.</p>
+
+                    <h5>Application Cache</h5>
+                    <p>The Application Cache (AppCache) allows a web application to be cached and accessed without an internet connection. This enables offline access to web applications, improving performance and user experience.</p>
+                </div>
+            </div>
+
+            <!-- Module 10: Final Project -->
+            <div class="content-card" id="module10">
+                <div class="card-header">
+                    <i class="fas fa-project-diagram"></i> Module 10: Final Project
+                </div>
+                <div class="card-body">
+                    <h5>Project Overview</h5>
+                    <p>For the final project, you'll create a comprehensive personal portfolio website that demonstrates all the HTML concepts learned throughout the course. This project will include semantic HTML5 structure, responsive design, forms, multimedia content, and accessibility features.</p>
+
+                    <h5>Project Structure</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-html">
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;John Doe - Portfolio&lt;/title&gt;
+    &lt;meta name="description" content="John Doe's portfolio showcasing web development projects and skills"&gt;
+    &lt;meta name="keywords" content="web developer, portfolio, HTML, CSS, JavaScript"&gt;
+    &lt;meta name="author" content="John Doe"&gt;
+    &lt;link rel="stylesheet" href="styles.css"&gt;
+    &lt;link rel="icon" href="favicon.ico" type="image/x-icon"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;header&gt;
+        &lt;nav&gt;
+            &lt;div class="logo"&gt;
+                &lt;a href="#home"&gt;John Doe&lt;/a&gt;
+            &lt;/div&gt;
+            &lt;ul class="nav-links"&gt;
+                &lt;li&gt;&lt;a href="#home"&gt;Home&lt;/a&gt;&lt;/li&gt;
+                &lt;li&gt;&lt;a href="#about"&gt;About&lt;/a&gt;&lt;/li&gt;
+                &lt;li&gt;&lt;a href="#skills"&gt;Skills&lt;/a&gt;&lt;/li&gt;
+                &lt;li&gt;&lt;a href="#projects"&gt;Projects&lt;/a&gt;&lt;/li&gt;
+                &lt;li&gt;&lt;a href="#contact"&gt;Contact&lt;/a&gt;&lt;/li&gt;
+            &lt;/ul&gt;
+            &lt;div class="hamburger"&gt;
+                &lt;span&gt;&lt;/span&gt;
+                &lt;span&gt;&lt;/span&gt;
+                &lt;span&gt;&lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/nav&gt;
+    &lt;/header&gt;
+
+    &lt;main&gt;
+        &lt;section id="home" class="hero"&gt;
+            &lt;div class="hero-content"&gt;
+                &lt;h1&gt;John Doe&lt;/h1&gt;
+                &lt;h2&gt;Web Developer&lt;/h2&gt;
+                &lt;p&gt;Creating beautiful and functional websites with modern technologies&lt;/p&gt;
+                &lt;a href="#projects" class="btn"&gt;View My Work&lt;/a&gt;
+                &lt;a href="#contact" class="btn btn-outline"&gt;Contact Me&lt;/a&gt;
+            &lt;/div&gt;
+            &lt;div class="hero-image"&gt;
+                &lt;img src="images/profile.jpg" alt="John Doe" width="300" height="300"&gt;
+            &lt;/div&gt;
+        &lt;/section&gt;
+
+        &lt;section id="about" class="section"&gt;
+            &lt;div class="container"&gt;
+                &lt;h2&gt;About Me&lt;/h2&gt;
+                &lt;div class="about-content"&gt;
+                    &lt;div class="about-text"&gt;
+                        &lt;p&gt;I'm a passionate web developer with 5 years of experience in creating responsive and user-friendly websites. I specialize in HTML, CSS, and JavaScript, and I'm always eager to learn new technologies and techniques to improve my skills.&lt;/p&gt;
+                        &lt;p&gt;When I'm not coding, you can find me exploring new hiking trails, reading tech blogs, or experimenting with new recipes in the kitchen. I believe in the power of continuous learning and enjoy sharing my knowledge with others through mentoring and writing technical articles.&lt;/p&gt;
+                        &lt;a href="#contact" class="btn"&gt;Get In Touch&lt;/a&gt;
+                    &lt;/div&gt;
+                    &lt;div class="about-image"&gt;
+                        &lt;img src="images/working.jpg" alt="John Doe working" width="400" height="300"&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/section&gt;
+
+        &lt;section id="skills" class="section bg-light"&gt;
+            &lt;div class="container"&gt;
+                &lt;h2&gt;My Skills&lt;/h2&gt;
+                &lt;div class="skills-grid"&gt;
+                    &lt;div class="skill-item"&gt;
+                        &lt;h3&gt;Frontend&lt;/h3&gt;
+                        &lt;ul&gt;
+                            &lt;li&gt;HTML5&lt;/li&gt;
+                            &lt;li&gt;CSS3&lt;/li&gt;
+                            &lt;li&gt;JavaScript (ES6+)&lt;/li&gt;
+                            &lt;li&gt;React&lt;/li&gt;
+                            &lt;li&gt;Responsive Design&lt;/li&gt;
+                        &lt;/ul&gt;
+                    &lt;/div&gt;
+                    &lt;div class="skill-item"&gt;
+                        &lt;h3&gt;Backend&lt;/h3&gt;
+                        &lt;ul&gt;
+                            &lt;li&gt;Node.js&lt;/li&gt;
+                            &lt;li&gt;Express.js&lt;/li&gt;
+                            &lt;li&gt;MongoDB&lt;/li&gt;
+                            &lt;li&gt;RESTful APIs&lt;/li&gt;
+                            &lt;li&gt;Authentication&lt;/li&gt;
+                        &lt;/ul&gt;
+                    &lt;/div&gt;
+                    &lt;div class="skill-item"&gt;
+                        &lt;h3&gt;Tools&lt;/h3&gt;
+                        &lt;ul&gt;
+                            &lt;li&gt;Git&lt;/li&gt;
+                            &lt;li&gt;Webpack&lt;/li&gt;
+                            &lt;li&gt;Sass&lt;/li&gt;
+                            &lt;li&gt;Figma&lt;/li&gt;
+                            &lt;li&gt;VS Code&lt;/li&gt;
+                        &lt;/ul&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/section&gt;
+
+        &lt;section id="projects" class="section"&gt;
+            &lt;div class="container"&gt;
+                &lt;h2&gt;My Projects&lt;/h2&gt;
+                &lt;div class="projects-grid"&gt;
+                    &lt;article class="project-card"&gt;
+                        &lt;div class="project-image"&gt;
+                            &lt;img src="images/project1.jpg" alt="E-commerce Website" width="400" height="250"&gt;
+                        &lt;/div&gt;
+                        &lt;div class="project-content"&gt;
+                            &lt;h3&gt;E-commerce Website&lt;/h3&gt;
+                            &lt;p&gt;A fully functional e-commerce website with product catalog, shopping cart, and payment integration.&lt;/p&gt;
+                            &lt;div class="project-tech"&gt;
+                                &lt;span&gt;HTML5&lt;/span&gt;
+                                &lt;span&gt;CSS3&lt;/span&gt;
+                                &lt;span&gt;JavaScript&lt;/span&gt;
+                                &lt;span&gt;Node.js&lt;/span&gt;
+                            &lt;/div&gt;
+                            &lt;div class="project-links"&gt;
+                                &lt;a href="https://github.com/johndoe/ecommerce" target="_blank"&gt;&lt;i class="fab fa-github"&gt;&lt;/i&gt; Code&lt;/a&gt;
+                                &lt;a href="https://johndoe-ecommerce.netlify.app" target="_blank"&gt;&lt;i class="fas fa-external-link-alt"&gt;&lt;/i&gt; Live Demo&lt;/a&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/article&gt;
+
+                    &lt;article class="project-card"&gt;
+                        &lt;div class="project-image"&gt;
+                            &lt;img src="images/project2.jpg" alt="Weather App" width="400" height="250"&gt;
+                        &lt;/div&gt;
+                        &lt;div class="project-content"&gt;
+                            &lt;h3&gt;Weather App&lt;/h3&gt;
+                            &lt;p&gt;A weather application that displays current weather and forecasts based on user location or search.&lt;/p&gt;
+                            &lt;div class="project-tech"&gt;
+                                &lt;span&gt;HTML5&lt;/span&gt;
+                                &lt;span&gt;CSS3&lt;/span&gt;
+                                &lt;span&gt;JavaScript&lt;/span&gt;
+                                &lt;span&gt;API Integration&lt;/span&gt;
+                            &lt;/div&gt;
+                            &lt;div class="project-links"&gt;
+                                &lt;a href="https://github.com/johndoe/weather-app" target="_blank"&gt;&lt;i class="fab fa-github"&gt;&lt;/i&gt; Code&lt;/a&gt;
+                                &lt;a href="https://johndoe-weather.netlify.app" target="_blank"&gt;&lt;i class="fas fa-external-link-alt"&gt;&lt;/i&gt; Live Demo&lt;/a&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/article&gt;
+
+                    &lt;article class="project-card"&gt;
+                        &lt;div class="project-image"&gt;
+                            &lt;img src="images/project3.jpg" alt="Task Manager" width="400" height="250"&gt;
+                        &lt;/div&gt;
+                        &lt;div class="project-content"&gt;
+                            &lt;h3&gt;Task Manager&lt;/h3&gt;
+                            &lt;p&gt;A task management application with features for creating, organizing, and tracking tasks.&lt;/p&gt;
+                            &lt;div class="project-tech"&gt;
+                                &lt;span&gt;HTML5&lt;/span&gt;
+                                &lt;span&gt;CSS3&lt;/span&gt;
+                                &lt;span&gt;JavaScript&lt;/span&gt;
+                                &lt;span&gt;Local Storage&lt;/span&gt;
+                            &lt;/div&gt;
+                            &lt;div class="project-links"&gt;
+                                &lt;a href="https://github.com/johndoe/task-manager" target="_blank"&gt;&lt;i class="fab fa-github"&gt;&lt;/i&gt; Code&lt;/a&gt;
+                                &lt;a href="https://johndoe-tasks.netlify.app" target="_blank"&gt;&lt;i class="fas fa-external-link-alt"&gt;&lt;/i&gt; Live Demo&lt;/a&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/article&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/section&gt;
+
+        &lt;section id="contact" class="section bg-light"&gt;
+            &lt;div class="container"&gt;
+                &lt;h2&gt;Contact Me&lt;/h2&gt;
+                &lt;div class="contact-content"&gt;
+                    &lt;div class="contact-info"&gt;
+                        &lt;h3&gt;Let's Connect&lt;/h3&gt;
+                        &lt;p&gt;I'm always interested in hearing about new projects and opportunities. Whether you have a question or just want to say hi, feel free to get in touch!&lt;/p&gt;
+                        &lt;div class="contact-details"&gt;
+                            &lt;div class="contact-item"&gt;
+                                &lt;i class="fas fa-envelope"&gt;&lt;/i&gt;
+                                &lt;span&gt;john.doe@example.com&lt;/span&gt;
+                            &lt;/div&gt;
+                            &lt;div class="contact-item"&gt;
+                                &lt;i class="fas fa-phone"&gt;&lt;/i&gt;
+                                &lt;span&gt;+1 (123) 456-7890&lt;/span&gt;
+                            &lt;/div&gt;
+                            &lt;div class="contact-item"&gt;
+                                &lt;i class="fas fa-map-marker-alt"&gt;&lt;/i&gt;
+                                &lt;span&gt;San Francisco, CA&lt;/span&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                        &lt;div class="social-links"&gt;
+                            &lt;a href="https://github.com/johndoe" target="_blank"&gt;&lt;i class="fab fa-github"&gt;&lt;/i&gt;&lt;/a&gt;
+                            &lt;a href="https://linkedin.com/in/johndoe" target="_blank"&gt;&lt;i class="fab fa-linkedin"&gt;&lt;/i&gt;&lt;/a&gt;
+                            &lt;a href="https://twitter.com/johndoe" target="_blank"&gt;&lt;i class="fab fa-twitter"&gt;&lt;/i&gt;&lt;/a&gt;
+                            &lt;a href="https://codepen.io/johndoe" target="_blank"&gt;&lt;i class="fab fa-codepen"&gt;&lt;/i&gt;&lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                    &lt;div class="contact-form"&gt;
+                        &lt;form action="https://formspree.io/f/example" method="POST"&gt;
+                            &lt;div class="form-group"&gt;
+                                &lt;label for="name"&gt;Name&lt;/label&gt;
+                                &lt;input type="text" id="name" name="name" required&gt;
+                            &lt;/div&gt;
+                            &lt;div class="form-group"&gt;
+                                &lt;label for="email"&gt;Email&lt;/label&gt;
+                                &lt;input type="email" id="email" name="email" required&gt;
+                            &lt;/div&gt;
+                            &lt;div class="form-group"&gt;
+                                &lt;label for="subject"&gt;Subject&lt;/label&gt;
+                                &lt;input type="text" id="subject" name="subject" required&gt;
+                            &lt;/div&gt;
+                            &lt;div class="form-group"&gt;
+                                &lt;label for="message"&gt;Message&lt;/label&gt;
+                                &lt;textarea id="message" name="message" rows="5" required&gt;&lt;/textarea&gt;
+                            &lt;/div&gt;
+                            &lt;button type="submit" class="btn"&gt;Send Message&lt;/button&gt;
+                        &lt;/form&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/section&gt;
+    &lt;/main&gt;
+
+    &lt;footer&gt;
+        &lt;div class="container"&gt;
+            &lt;p&gt;&amp;copy; 2023 John Doe. All rights reserved.&lt;/p&gt;
+            &lt;p&gt;Designed and coded with &lt;span class="heart"&gt;♥&lt;/span&gt; by John Doe&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/footer&gt;
+
+    &lt;script src="script.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+                    <h5>Project Features</h5>
+                    <ul>
+                        <li><strong>Semantic HTML5 Structure:</strong> Uses appropriate semantic elements like header, nav, main, section, article, and footer</li>
+                        <li><strong>Responsive Design:</strong> Adapts to different screen sizes using viewport meta tag and CSS media queries</li>
+                        <li><strong>Navigation:</strong> Includes a navigation menu with links to different sections of the page</li>
+                        <li><strong>Forms:</strong> Contact form with various input types and validation</li>
+                        <li><strong>Media:</strong> Images with proper alt attributes for accessibility</li>
+                        <li><strong>Accessibility:</strong> Proper use of ARIA attributes, semantic elements, and alt text</li>
+                        <li><strong>SEO Optimization:</strong> Meta tags, proper heading structure, and semantic markup</li>
+                    </ul>
+
+                    <h5>Project Extensions</h5>
+                    <p>Once you've implemented the basic portfolio website, consider these extensions:</p>
+                    <ul>
+                        <li>Add a blog section with articles</li>
+                        <li>Implement a dark mode toggle</li>
+                        <li>Add animations and transitions</li>
+                        <li>Create a testimonials section</li>
+                        <li>Implement a contact form with backend processing</li>
+                        <li>Add a portfolio filter to sort projects by category</li>
+                        <li>Implement lazy loading for images</li>
+                        <li>Add a progress bar for skills</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="mt-5 text-center">
+                <a href="/practice" class="btn btn-primary btn-lg">Take Practice Test</a>
+            </div>
+
+            <div id="animation-container-docs" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1;"></div>
         </div>
-        <div id="animation-container-docs" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1;">
-        </div>
-    </section>
+    </div>
 
     <script>
+        // Smooth scrolling for sidebar navigation
+        document.querySelectorAll('.sidebar .nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }
+                // Update active state
+                document.querySelectorAll('.sidebar .nav-link').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Search functionality
         document.getElementById('search-input').addEventListener('input', function() {
             const query = this.value.toLowerCase();
             const content = document.getElementById('content');
-            const elements = content.querySelectorAll('h2, h3, h4, p, pre');
-
+            const elements = content.querySelectorAll('h2, h3, h4, h5, h6, p, pre, .card');
+            
             elements.forEach(element => {
                 const text = element.textContent.toLowerCase();
                 if (query === '' || text.includes(query)) {
@@ -282,8 +1397,18 @@
                 }
             });
         });
-    </script>
-    <script>
+
+        // Clear search function
+        function clearSearch() {
+            document.getElementById('search-input').value = '';
+            const content = document.getElementById('content');
+            const elements = content.querySelectorAll('h2, h3, h4, h5, h6, p, pre, .card');
+            elements.forEach(element => {
+                element.style.display = '';
+            });
+        }
+
+        // Copy to clipboard functionality
         const copyButtons = document.querySelectorAll('.copy-button');
         copyButtons.forEach(button => {
             button.addEventListener('click', function() {
@@ -293,6 +1418,27 @@
                 setTimeout(() => {
                     this.textContent = 'Copy';
                 }, 2000);
+            });
+        });
+
+        // Highlight active section in sidebar based on scroll position
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('[id]');
+            const navLinks = document.querySelectorAll('.sidebar .nav-link');
+
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
             });
         });
     </script>

@@ -4,43 +4,391 @@
 
 {% block head %}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/github-dark.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/languages/python.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.3/purify.min.js"></script>
+    <style>
+        body {
+            background: #f8f9fa;
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #212529;
+        }
+        .sidebar {
+            position: fixed;
+            top: 70px;
+            left: 0;
+            width: 280px;
+            height: calc(100vh - 70px);
+            background: #343a40;
+            border-right: 1px solid #495057;
+            overflow-y: auto;
+            z-index: 1000;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+        }
+        .sidebar .nav-link {
+            color: #adb5bd;
+            padding: 12px 20px;
+            border-radius: 0;
+            margin: 0;
+            transition: all 0.2s ease;
+            font-weight: 500;
+            border-left: 3px solid transparent;
+        }
+        .sidebar .nav-link:hover {
+            background: #495057;
+            color: #fff;
+            text-decoration: none;
+            border-left-color: #3776ab;
+        }
+        .sidebar .nav-link.active {
+            background: #3776ab;
+            color: #fff;
+            border-left-color: #3776ab;
+        }
+        .main-content {
+            margin-left: 280px;
+            padding: 30px;
+            max-width: 1200px;
+        }
+
+        .content-card {
+            margin-bottom: 30px;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            background: #fff;
+        }
+        .content-card .card-header {
+            background: #3776ab;
+            color: white;
+            font-weight: 600;
+            font-size: 1.1rem;
+            border-bottom: 1px solid #dee2e6;
+            padding: 15px 20px;
+            border-radius: 8px 8px 0 0;
+        }
+        .search-container {
+            background: rgba(255,255,255,0.9);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .accordion-button:not(.collapsed) {
+            background: #e6f3ff;
+            color: #3776ab;
+            font-weight: 500;
+        }
+        .accordion-button {
+            border-radius: 0;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+        .accordion-button:focus {
+            box-shadow: none;
+        }
+        .badge-note {
+            background: #e9ecef;
+            color: #495057;
+            font-weight: 500;
+        }
+        .badge-tip {
+            background: #d1ecf1;
+            color: #0c5460;
+            font-weight: 500;
+        }
+        .btn {
+            border-radius: 6px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .copy-button {
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 4px 8px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .copy-button:hover {
+            background: #5a6268;
+            transform: scale(1.05);
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Inter', sans-serif;
+            color: #212529;
+            font-weight: 600;
+        }
+        .card-body {
+            padding: 20px;
+        }
+        .table {
+            margin-bottom: 0;
+        }
+        .table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            border-top: none;
+        }
+        pre {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+        }
+        code {
+            background: #f1f3f4;
+            color: #d73a49;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+        .python-logo {
+            color: #3776ab;
+            font-weight: 700;
+        }
+        .data-type-section {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #3776ab;
+        }
+        .method-table {
+            width: 100%;
+            margin-top: 10px;
+            margin-bottom: 15px;
+        }
+        .method-table th {
+            background-color: #e9ecef;
+            text-align: left;
+            padding: 8px;
+        }
+        .method-table td {
+            padding: 8px;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .console-output {
+            background-color: #1e1e1e;
+            color: #d4d4d4;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            margin: 10px 0;
+        }
+        .code-result {
+            background-color: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        .code-error {
+            background-color: #ffebee;
+            border-left: 4px solid #f44336;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        .interactive-demo {
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .interactive-demo button {
+            background-color: #3776ab;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            margin-right: 10px;
+        }
+        .interactive-demo button:hover {
+            background-color: #2c5aa0;
+        }
+        .interactive-demo input {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+            .main-content {
+                margin-left: 0;
+            }
+        }
+    </style>
     <script>
         hljs.highlightAll();
     </script>
 {% endblock %}
 
 {% block content %}
-    <!-- Data Analysis Docs Page -->
-    <section class="docs-page py-5">
-        <div class="container-fluid">
-            <div class="row">
-                <!-- Documentation Content -->
-                <div class="col-md-12">
-                    <!-- Search Box -->
-                    <div class="search-container mb-4">
-                        <input type="text" id="search-input" class="form-control" placeholder="Search documentation...">
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar">
+        <div class="p-3">
+            <h5 class="text-center mb-3" style="font-size: 1.1rem; color: #fff; font-weight: 600;"><i class="fab fa-python"></i> <span class="python-logo">Data Analysis with Python</span> Documentation</h5>
+
+            <!-- Search Box -->
+            <div class="search-container">
+                <input type="text" id="search-input" class="form-control" placeholder="Search documentation..." style="background: rgba(255,255,255,0.9); border: 1px solid #495057; color: #212529;">
+                <button class="btn btn-sm btn-outline-dark mt-2 w-100" onclick="clearSearch()">Clear Search</button>
+            </div>
+
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link" href="#module1"><i class="fas fa-info-circle"></i> Module 1: Introduction to Data Analysis</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module2"><i class="fas fa-cogs"></i> Module 2: Setting Up the Environment</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module3"><i class="fas fa-cube"></i> Module 3: NumPy Fundamentals</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module4"><i class="fas fa-table"></i> Module 4: Pandas DataFrames</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module5"><i class="fas fa-broom"></i> Module 5: Data Cleaning and Preprocessing</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module6"><i class="fas fa-chart-line"></i> Module 6: Exploratory Data Analysis</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module7"><i class="fas fa-chart-bar"></i> Module 7: Data Visualization</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module8"><i class="fas fa-calculator"></i> Module 8: Statistical Analysis</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module9"><i class="fas fa-brain"></i> Module 9: Machine Learning Basics</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module10"><i class="fas fa-clock"></i> Module 10: Time Series Analysis</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#module11"><i class="fas fa-project-diagram"></i> Module 11: Final Project</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div id="content">
+            <h1 class="mb-4" style="text-align: center;"><span class="python-logo">Data Analysis with Python</span> Documentation</h1>
+            <p style="text-align: center; font-size: 1.1rem; color: #6c757d;">Complete guide to data analysis with Python, from basics to advanced techniques</p>
+
+            <!-- Module 1: Introduction to Data Analysis -->
+            <div class="content-card" id="module1">
+                <div class="card-header">
+                    <i class="fas fa-info-circle"></i> Module 1: Introduction to Data Analysis
+                </div>
+                <div class="card-body">
+                    <h5>What is Data Analysis?</h5>
+                    <p>Data analysis is the process of inspecting, cleaning, transforming, and modeling data to discover useful information, draw conclusions, and support decision-making. It's a crucial skill in today's data-driven world, with applications in business, science, healthcare, and many other fields.</p>
+                    
+                    <p>Python has become the leading language for data analysis due to its powerful libraries, ease of use, and strong community support. Python's data analysis ecosystem includes libraries for data manipulation (Pandas), numerical computing (NumPy), visualization (Matplotlib, Seaborn), and machine learning (Scikit-learn).</p>
+
+                    <h5>Why Python for Data Analysis?</h5>
+                    <ul>
+                        <li><strong>Rich Ecosystem:</strong> Python offers a comprehensive set of libraries specifically designed for data analysis</li>
+                        <li><strong>Easy to Learn:</strong> Python's simple syntax makes it accessible to beginners</li>
+                        <li><strong>Versatile:</strong> Can handle everything from data cleaning to machine learning</li>
+                        <li><strong>Integration:</strong> Works well with other languages and tools</li>
+                        <li><strong>Community:</strong> Large, active community provides extensive documentation and support</li>
+                    </ul>
+
+                    <h5>The Data Analysis Workflow</h5>
+                    <p>A typical data analysis project follows these steps:</p>
+                    <ol>
+                        <li><strong>Data Collection:</strong> Gathering data from various sources</li>
+                        <li><strong>Data Cleaning:</strong> Handling missing values, correcting errors, and ensuring consistency</li>
+                        <li><strong>Exploratory Analysis:</strong> Understanding the data through visualization and summary statistics</li>
+                        <li><strong>Feature Engineering:</strong> Creating new variables from existing ones</li>
+                        <li><strong>Modeling:</strong> Applying statistical or machine learning models</li>
+                        <li><strong>Communication:</strong> Presenting findings through visualizations and reports</li>
+                    </ol>
+
+                    <h5>Key Python Libraries for Data Analysis</h5>
+                    <div class="data-type-section">
+                        <h6>NumPy</h6>
+                        <p>NumPy (Numerical Python) is the fundamental package for scientific computing in Python. It provides support for arrays, matrices, and mathematical functions.</p>
+                        
+                        <h6>Pandas</h6>
+                        <p>Pandas provides data structures and functions needed to manipulate structured data. It's built on top of NumPy and is particularly well-suited for tabular data with columns of different types.</p>
+                        
+                        <h6>Matplotlib & Seaborn</h6>
+                        <p>These libraries are used for data visualization. Matplotlib is highly customizable, while Seaborn provides a high-level interface for drawing attractive statistical graphics.</p>
+                        
+                        <h6>Scikit-learn</h6>
+                        <p>Scikit-learn is a machine learning library that provides simple and efficient tools for data mining and data analysis.</p>
+                        
+                        <h6>SciPy</h6>
+                        <p>SciPy provides algorithms for scientific and technical computing, including optimization, integration, interpolation, signal processing, linear algebra, and statistics.</p>
                     </div>
-                    <div id="content">
-                        <h2 class="mb-4">Data Analysis with Python</h2>
-                        <p>Welcome to the comprehensive Data Analysis with Python documentation. This guide covers essential tools, techniques, and best practices for data analysis using Python.</p>
 
-                        <h3 id="introduction" class="mt-5">Introduction to Data Analysis</h3>
-                        <p>Data analysis is the process of inspecting, cleaning, transforming, and modeling data to discover useful information, draw conclusions, and support decision-making. Python has become the leading language for data analysis due to its powerful libraries and ease of use.</p>
-                        <p>Key Python libraries for data analysis include:</p>
-                        <ul>
-                            <li><strong>Pandas</strong> - Data manipulation and analysis</li>
-                            <li><strong>NumPy</strong> - Numerical computing</li>
-                            <li><strong>Matplotlib</strong> - Data visualization</li>
-                            <li><strong>Seaborn</strong> - Statistical data visualization</li>
-                            <li><strong>Scikit-learn</strong> - Machine learning</li>
-                            <li><strong>SciPy</strong> - Scientific computing</li>
-                        </ul>
+                    <h5>Interactive Example</h5>
+                    <div class="interactive-demo">
+                        <p>Try a simple data analysis operation:</p>
+                        <input type="text" id="intro-input" placeholder="Enter comma-separated numbers">
+                        <button onclick="analyzeNumbers()">Analyze</button>
+                        <div id="intro-result"></div>
+                    </div>
+                </div>
+            </div>
 
-                        <h3 id="setup" class="mt-5">Setting Up the Environment</h3>
-                        <p>Before starting with data analysis, you need to set up your environment with the necessary libraries:</p>
-                        <pre><button class="copy-button">Copy</button><code class="language-bash">
+            <!-- Module 2: Setting Up the Environment -->
+            <div class="content-card" id="module2">
+                <div class="card-header">
+                    <i class="fas fa-cogs"></i> Module 2: Setting Up the Environment
+                </div>
+                <div class="card-body">
+                    <h5>Python Installation</h5>
+                    <p>Before starting with data analysis, you need to have Python installed on your system. The recommended approach is to use the Anaconda distribution, which comes with most data analysis libraries pre-installed.</p>
+                    
+                    <h5>Installing Anaconda</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Download Anaconda from https://www.anaconda.com/products/distribution
+# Follow the installation instructions for your operating system
+
+# Verify installation
+python --version
+conda --version
+</code></pre>
+
+                    <h5>Creating a Virtual Environment</h5>
+                    <p>Virtual environments allow you to manage dependencies for different projects separately. This is a best practice to avoid conflicts between project requirements.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Create a new environment
+conda create -n data-analysis python=3.9
+
+# Activate the environment
+conda activate data-analysis
+
+# Install additional packages
+conda install pandas numpy matplotlib seaborn scikit-learn jupyter
+
+# Save the environment
+conda env export > environment.yml
+</code></pre>
+
+                    <h5>Using pip</h5>
+                    <p>If you prefer to use pip instead of conda, you can install packages individually:</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-bash">
 # Install essential data analysis libraries
 pip install pandas numpy matplotlib seaborn scipy scikit-learn jupyter
 
@@ -55,113 +403,214 @@ pip install beautifulsoup4 requests scrapy
 
 # For big data processing
 pip install dask pyspark
-</code><button class="copy-button">Copy</button></pre>
+</code></pre>
 
-                        <h3 id="numpy" class="mt-5">NumPy - Numerical Computing Foundation</h3>
-                        <p>NumPy is the fundamental package for scientific computing in Python. It provides support for arrays, matrices, and mathematical functions.</p>
+                    <h5>Jupyter Notebooks</h5>
+                    <p>Jupyter Notebooks provide an interactive computing environment that allows you to combine code, text, and visualizations in a single document. They are ideal for data analysis and exploration.</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-bash">
+# Start Jupyter Notebook
+jupyter notebook
 
-                        <h4>NumPy Arrays</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-python">
+# Or start Jupyter Lab (more modern interface)
+jupyter lab
+</code></pre>
+
+                    <h5>IDEs for Data Analysis</h5>
+                    <p>While Jupyter Notebooks are great for exploration, you might prefer an IDE for larger projects:</p>
+                    <ul>
+                        <li><strong>PyCharm Professional:</strong> Excellent for data science projects with built-in support for Jupyter</li>
+                        <li><strong>VS Code:</strong> Free, lightweight option with excellent Python extensions</li>
+                        <li><strong>Spyder:</strong> Scientific Python IDE with built-in data exploration tools</li>
+                        <li><strong>JupyterLab:</strong> Web-based interface for Jupyter</li>
+                    </ul>
+
+                    <h5>Environment Verification</h5>
+                    <div class="interactive-demo">
+                        <p>Verify your Python environment setup:</p>
+                        <button onclick="checkEnvironment()">Check Environment</button>
+                        <div id="env-result"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module 3: NumPy Fundamentals -->
+            <div class="content-card" id="module3">
+                <div class="card-header">
+                    <i class="fas fa-cube"></i> Module 3: NumPy Fundamentals
+                </div>
+                <div class="card-body">
+                    <h5>Introduction to NumPy</h5>
+                    <p>NumPy (Numerical Python) is the fundamental package for scientific computing in Python. It provides support for arrays, matrices, and mathematical functions. NumPy arrays are more memory-efficient and faster than Python lists for numerical operations.</p>
+
+                    <h5>Creating NumPy Arrays</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-python">
 import numpy as np
 
-# Creating arrays
+# Creating arrays from Python lists
 arr1 = np.array([1, 2, 3, 4, 5])  # 1D array
 arr2 = np.array([[1, 2, 3], [4, 5, 6]])  # 2D array
+
+# Creating arrays with built-in functions
 arr3 = np.zeros((3, 3))  # Array of zeros
 arr4 = np.ones((2, 4))  # Array of ones
-arr5 = np.random.rand(3, 3)  # Random array
-arr6 = np.arange(0, 10, 2)  # Array with step
-arr7 = np.linspace(0, 10, 5)  # Linearly spaced values
+arr5 = np.full((2, 3), 7)  # Array filled with a specific value
+arr6 = np.random.rand(3, 3)  # Random array with values between 0 and 1
+arr7 = np.random.randn(3, 3)  # Random array with normal distribution
+arr8 = np.arange(0, 10, 2)  # Array with step
+arr9 = np.linspace(0, 10, 5)  # Linearly spaced values
+arr10 = np.eye(3)  # Identity matrix
+</code></pre>
+
+                    <h5>Array Properties and Attributes</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-python">
+arr = np.array([[1, 2, 3], [4, 5, 6]])
 
 # Array properties
-print(arr2.shape)  # (2, 3)
-print(arr2.ndim)  # 2
-print(arr2.dtype)  # dtype('int64')
-print(arr2.size)  # 6
+print(arr.shape)  # (2, 3) - dimensions of the array
+print(arr.ndim)   # 2 - number of dimensions
+print(arr.dtype)  # dtype('int64') - data type of elements
+print(arr.size)   # 6 - total number of elements
+print(arr.itemsize)  # 8 - size in bytes of each element
+print(arr.nbytes)  # 48 - total bytes consumed by the array
 
-# Array operations
-arr = np.array([1, 2, 3, 4, 5])
-print(arr + 2)  # [3 4 5 6 7] (broadcasting)
-print(arr * 2)  # [ 2  4  6  8 10]
-print(arr.sum())  # 15
-print(arr.mean())  # 3.0
-print(arr.std())  # 1.4142135623730951
-print(arr.max())  # 5
-print(arr.min())  # 1
+# Changing data type
+arr_float = arr.astype(np.float32)
+print(arr_float.dtype)  # dtype('float32')
+</code></pre>
 
-# Array indexing and slicing
+                    <h5>Array Indexing and Slicing</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-python">
 arr = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
-print(arr[0, 1])  # 2
-print(arr[:, 1])  # [2 5 8] (second column)
-print(arr[1, :])  # [4 5 6] (second row)
-print(arr[:2, :2])  # [[1 2] [4 5]] (top-left 2x2)
 
-# Boolean indexing
+# Indexing
+print(arr[0, 1])  # 2 - element at row 0, column 1
+print(arr[1])     # [4 5 6] - entire second row
+
+# Slicing
+print(arr[:, 1])    # [2 5 8] - second column
+print(arr[1, :])    # [4 5 6] - second row
+print(arr[:2, :2])  # [[1 2] [4 5]] - top-left 2x2 subarray
+
+# Advanced slicing
+print(arr[::2, ::2])  # [[1 3] [7 9]] - every other element starting from 0
+print(arr[1::-1, ::-1])  # [6 5 4] - second row in reverse
+</code></pre>
+
+                    <h5>Array Operations</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-python">
 arr = np.array([1, 2, 3, 4, 5])
-print(arr > 3)  # [False False False  True  True]
-print(arr[arr > 3])  # [4 5]
 
-# Reshaping arrays
-arr = np.arange(12)
-reshaped = arr.reshape(3, 4)
-flattened = reshaped.flatten()
-transposed = reshaped.T
+# Arithmetic operations
+print(arr + 10)  # [11 12 13 14 15] - broadcasting
+print(arr * 2)   # [ 2 4 6 8 10]
+print(arr - 3)   # [-2 -1 0 1 2]
+print(arr / 2)   # [0.5 1. 1.5 2. 2.5]
+
+# Comparison operations
+print(arr > 3)    # [False False False  True  True]
+print(arr == 3)   # [False False True False False]
 
 # Mathematical functions
-x = np.array([0, np.pi/2, np.pi])
-print(np.sin(x))  # [0.0000000e+00 1.0000000e+00 1.2246468e-16]
-print(np.cos(x))  # [ 1.000000e+00  6.123234e-17 -1.000000e+00]
-print(np.exp([1, 2, 3]))  # [ 2.71828183  7.3890561  20.08553692]
-print(np.log([1, 2, 3]))  # [0.         0.69314718 1.09861229]
+print(np.sqrt(arr))    # [1.         1.41421356 1.73205081 2.         2.23606798]
+print(np.exp(arr))     # [  2.71828183  7.3890561  20.08553692 54.59815003 148.4131591]
+print(np.log(arr))     # [0.         0.69314718 1.09861229 1.38629436 1.60943791]
 
-# Linear algebra
+# Statistical functions
+print(np.mean(arr))   # 3.0
+print(np.median(arr)) # 3.0
+print(np.std(arr))    # 1.4142135623730951
+print(np.var(arr))    # 2.0
+print(np.min(arr))    # 1
+print(np.max(arr))    # 5
+</code></pre>
+
+                    <h5>Linear Algebra with NumPy</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-python">
+# Matrix operations
 A = np.array([[1, 2], [3, 4]])
 B = np.array([[5, 6], [7, 8]])
-print(np.dot(A, B))  # Matrix multiplication
-print(np.linalg.det(A))  # Determinant
-print(np.linalg.inv(A))  # Inverse
-eigenvalues, eigenvectors = np.linalg.eig(A)  # Eigenvalues and eigenvectors
-</code><button class="copy-button">Copy</button></pre>
 
-                        <h3 id="pandas" class="mt-5">Pandas - Data Manipulation and Analysis</h3>
-                        <p>Pandas is the most important library for data manipulation and analysis in Python. It provides two main data structures: Series and DataFrame.</p>
+# Matrix multiplication
+print(np.dot(A, B))  # [[19 22] [43 50]]
 
-                        <h4>Pandas Series</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-python">
+# Transpose
+print(A.T)  # [[1 3] [2 4]]
+
+# Inverse
+print(np.linalg.inv(A))  # [[-2.   1. ] [ 1.5 -0.5]]
+
+# Determinant
+print(np.linalg.det(A))  # -2.0
+
+# Eigenvalues and eigenvectors
+eigenvalues, eigenvectors = np.linalg.eig(A)
+print("Eigenvalues:", eigenvalues)
+print("Eigenvectors:", eigenvectors)
+
+# Solving linear systems
+x = np.array([3, 4])
+b = np.array([7, 10])
+solution = np.linalg.solve(A, b)
+print("Solution:", solution)  # [1. 1.]
+</code></pre>
+
+                    <h5>Reshaping and Stacking Arrays</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-python">
+# Reshaping
+arr = np.arange(12)
+reshaped = arr.reshape(3, 4)
+print(reshaped)
+# [[ 0  1  2 3]
+#  [ 4  5  6 7]
+#  [ 8 9 10 11]]
+
+# Flattening
+flattened = reshaped.flatten()
+print(flattened)  # [ 0 1 2 3 4 5 6 7 8 9 10 11]
+
+# Stacking arrays
+arr1 = np.array([1, 2, 3])
+arr2 = np.array([4, 5, 6])
+stacked_v = np.vstack((arr1, arr2))  # Vertical stacking
+stacked_h = np.hstack((arr1, arr2))  # Horizontal stacking
+print("Vertical stack:", stacked_v)  # [[1 2 3] [4 5 6]]
+print("Horizontal stack:", stacked_h)  # [1 2 3 4 5 6]
+
+# Concatenating along different axes
+arr3 = np.array([7, 8, 9])
+concat_axis0 = np.concatenate((arr1.reshape(1, 3), arr3.reshape(1, 3)))
+concat_axis1 = np.concatenate((arr1.reshape(3, 1), arr3.reshape(3, 1)), axis=1)
+print("Concat along axis 0:", concat_axis0)  # [[1 2 3] [7 8 9]]
+print("Concat along axis 1:", concat_axis1)  # [[1 7] [2 8] [3 9]]
+</code></pre>
+
+                    <h5>Interactive Example</h5>
+                    <div class="interactive-demo">
+                        <p>Try NumPy array operations:</p>
+                        <input type="text" id="numpy-input" placeholder="Enter comma-separated numbers">
+                        <button onclick="numpyOperation('sum')">Sum</button>
+                        <button onclick="numpyOperation('mean')">Mean</button>
+                        <button onclick="numpyOperation('std')">Std Dev</button>
+                        <div id="numpy-result"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module 4: Pandas DataFrames -->
+            <div class="content-card" id="module4">
+                <div class="card-header">
+                    <i class="fas fa-table"></i> Module 4: Pandas DataFrames
+                </div>
+                <div class="card-body">
+                    <h5>Introduction to Pandas</h5>
+                    <p>Pandas is a powerful library for data manipulation and analysis. It provides two main data structures: Series (1D labeled array) and DataFrame (2D labeled data structure with columns of potentially different types).</p>
+
+                    <h5>Creating DataFrames</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-python">
 import pandas as pd
 import numpy as np
 
-# Creating Series
-s1 = pd.Series([1, 2, 3, 4, 5])
-s2 = pd.Series([1, 2, 3, 4, 5], index=['a', 'b', 'c', 'd', 'e'])
-s3 = pd.Series({'a': 1, 'b': 2, 'c': 3})
-s4 = pd.Series(np.random.randn(5))
-
-# Series properties
-print(s2.index)  # Index(['a', 'b', 'c', 'd', 'e'], dtype='object')
-print(s2.values)  # [1 2 3 4 5]
-print(s2.dtype)  # dtype('int64')
-
-# Series operations
-s = pd.Series([1, 2, 3, 4, 5], index=['a', 'b', 'c', 'd', 'e'])
-print(s['a'])  # 1
-print(s[['a', 'c']])  # a    1, c    3
-print(s[s > 3])  # d    4, e    5
-print(s + 10)  # Add 10 to all elements
-
-# Series methods
-s = pd.Series([1, 2, 3, np.nan, 5])
-print(s.sum())  # 11.0 (NaN is ignored)
-print(s.mean())  # 2.75
-print(s.describe())  # Statistical summary
-print(s.isnull())  # Check for null values
-print(s.fillna(0))  # Fill NaN with 0
-print(s.dropna())  # Drop NaN values
-</code><button class="copy-button">Copy</button></pre>
-
-                        <h4>Pandas DataFrame</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-python">
-# Creating DataFrames
+# From dictionary of lists
 df1 = pd.DataFrame({
     'Name': ['Alice', 'Bob', 'Charlie', 'Diana'],
     'Age': [25, 30, 35, 28],
@@ -169,6 +618,7 @@ df1 = pd.DataFrame({
     'Salary': [70000, 80000, 90000, 75000]
 })
 
+# From list of lists
 df2 = pd.DataFrame([
     ['Alice', 25, 'New York', 70000],
     ['Bob', 30, 'Los Angeles', 80000],
@@ -176,76 +626,176 @@ df2 = pd.DataFrame([
     ['Diana', 28, 'Houston', 75000]
 ], columns=['Name', 'Age', 'City', 'Salary'])
 
-# DataFrame properties
-print(df1.shape)  # (4, 4)
-print(df1.columns)  # Index(['Name', 'Age', 'City', 'Salary'], dtype='object')
-print(df1.index)  # RangeIndex(start=0, stop=4, step=1)
-print(df1.dtypes)  # Data types of columns
-print(df1.info())  # Concise summary
-print(df1.describe())  # Statistical summary
+# From NumPy array
+data = np.random.randn(5, 4)
+df3 = pd.DataFrame(data, columns=['A', 'B', 'C', 'D'])
 
-# Selecting data
-print(df1['Name'])  # Select column (Series)
-print(df1[['Name', 'Age']])  # Select multiple columns (DataFrame)
-print(df1.loc[0])  # Select row by label
-print(df1.iloc[0])  # Select row by position
-print(df1.loc[0:2, ['Name', 'Age']])  # Select rows and columns
-print(df1.iloc[0:2, 0:2])  # Select by position
+# From CSV file
+# df4 = pd.read_csv('data.csv')
 
-# Filtering
-print(df1[df1['Age'] > 30])  # Filter by condition
-print(df1[(df1['Age'] > 25) & (df1['Salary'] < 80000)])  # Multiple conditions
-print(df1[df1['City'].isin(['New York', 'Chicago'])])  # Filter by list
+# From Excel file
+# df5 = pd.read_excel('data.xlsx', sheet_name='Sheet1')
 
-# Adding and modifying columns
-df1['Bonus'] = df1['Salary'] * 0.1  # Add new column
-df1['Age_Group'] = np.where(df1['Age'] > 30, 'Senior', 'Junior')  # Conditional column
-df1['Full_Name'] = df1['Name'] + ' - ' + df1['City']  # String concatenation
+# From SQL database
+# import sqlite3
+# conn = sqlite3.connect('database.db')
+# df6 = pd.read_sql_query('SELECT * FROM table_name', conn)
+</code></pre>
 
-# Sorting
-df_sorted = df1.sort_values('Age')  # Sort by column
-df_sorted_desc = df1.sort_values('Age', ascending=False)  # Sort descending
-df_sorted_multi = df1.sort_values(['City', 'Age'])  # Sort by multiple columns
+                    <h5>Exploring DataFrames</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-python">
+# Display first/last rows
+print(df.head())  # First 5 rows
+print(df.tail())  # Last 5 rows
 
-# Grouping
-grouped = df1.groupby('City')
+# DataFrame information
+print(df.info())  # Summary including data types and non-null values
+print(df.shape)  # Dimensions (rows, columns)
+print(df.columns)  # Column names
+print(df.index)   # Index information
+print(df.dtypes)  # Data types of columns
+
+# Statistical summary
+print(df.describe())  # Statistical summary for numeric columns
+print(df.describe(include='all'))  # Include all columns
+
+# Accessing columns
+print(df['Name'])  # Select column (Series)
+print(df[['Name', 'Age']])  # Select multiple columns (DataFrame)
+
+# Accessing rows
+print(df.loc[0])  # Select row by label
+print(df.iloc[0])  # Select row by position
+print(df.loc[0:2, ['Name', 'Age']])  # Select rows and columns by label
+print(df.iloc[0:2, 0:2])  # Select rows and columns by position
+</code></pre>
+
+                    <h5>Data Selection and Filtering</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-python">
+# Conditional filtering
+print(df[df['Age'] > 30])  # Filter by condition
+print(df[(df['Age'] > 25) & (df['Salary'] < 80000)])  # Multiple conditions
+print(df[df['City'].isin(['New York', 'Chicago'])])  # Filter by list
+
+# Using query method
+print(df.query('Age > 30 and Salary < 80000'))
+
+# Using isin method
+print(df[df['City'].isin(['New York', 'Chicago'])])
+
+# Using str methods for string columns
+print(df[df['Name'].str.startswith('A')])  # Names starting with 'A'
+print(df[df['Name'].str.contains('a')])  # Names containing 'a'
+
+# Using between method
+print(df[df['Age'].between(25, 30)])  # Ages between 25 and 30
+</code></pre>
+
+                    <h5>Grouping and Aggregation</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-python">
+# Group by a single column
+grouped = df.groupby('City')
 print(grouped.mean())  # Mean by group
-print(grouped['Salary'].agg(['mean', 'max', 'min']))  # Multiple aggregations
-print(grouped.size())  # Size of each group
+print(grouped['Salary'].agg(['mean', 'max', 'min', 'count']))  # Multiple aggregations
 
-# Merging and joining
-df3 = pd.DataFrame({
-    'Name': ['Alice', 'Bob', 'Charlie'],
-    'Department': ['HR', 'IT', 'Finance']
-})
-merged = pd.merge(df1, df3, on='Name', how='left')  # Left join
-concatenated = pd.concat([df1, df3], axis=1)  # Concatenate side by side
+# Group by multiple columns
+multi_grouped = df.groupby(['City', 'Age > 30'])
+print(multi_grouped.mean())
 
-# Handling missing values
-df_with_nan = df1.copy()
+# Transform operations
+df['Salary_Rank'] = df.groupby('City')['Salary'].rank(ascending=False)
+df['Salary_Pct'] = df.groupby('City')['Salary'].transform(lambda x: x / x.max())
+
+# Filter groups
+high_salary_cities = df.groupby('City').filter(lambda x: x['Salary'].mean() > 75000)
+print(high_salary_cities.mean())
+</code></pre>
+
+                    <h5>Handling Missing Data</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-python">
+# Create DataFrame with missing values
+df_with_nan = df.copy()
 df_with_nan.loc[2, 'Salary'] = np.nan
-print(df_with_nan.isnull())  # Check for missing values
-print(df_with_nan.fillna(0))  # Fill with 0
-print(df_with_nan.fillna(df_with_nan.mean()))  # Fill with mean
-print(df_with_nan.dropna())  # Drop rows with missing values
-print(df_with_nan.dropna(axis=1))  # Drop columns with missing values
+df_with_nan.loc[3, 'City'] = np.nan
 
-# Applying functions
-df1['Salary_in_K'] = df1['Salary'].apply(lambda x: x / 1000)  # Apply to column
-df1['Name_Length'] = df1['Name'].apply(len)  # Apply function
-df1['Age_Squared'] = df1['Age']apply(lambda x: x**2)  # Square age
+# Check for missing values
+print(df_with_nan.isnull())  # Boolean mask of missing values
+print(df_with_nan.isnull().sum())  # Count missing values per column
+print(df_with_nan.isnull().sum().sum())  # Total missing values
 
-# Time series data
-dates = pd.date_range('20230101', periods=10)
-ts = pd.Series(np.random.randn(10), index=dates)
-print(ts.head())  # First 5 rows
-print(ts.tail())  # Last 5 rows
-print(ts.resample('D').mean())  # Resample by day
-print(ts.rolling(window=3).mean())  # Rolling mean
-</code><button class="copy-button">Copy</button></pre>
+# Drop missing values
+df_dropped_rows = df_with_nan.dropna()  # Drop rows with any missing values
+df_dropped_cols = df_with_nan.dropna(axis=1)  # Drop columns with any missing values
+df_dropped_subset = df_with_nan.dropna(subset=['Age', 'Salary'])  # Drop if specific columns are missing
 
-                        <h4>Reading and Writing Data</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-python">
+# Fill missing values
+df_filled_zero = df_with_nan.fillna(0)  # Fill with 0
+df_filled_mean = df_with_nan.fillna(df_with_nan.mean())  # Fill with mean (only for numeric columns)
+df_filled_median = df_with_nan.fillna(df_with_nan.median())  # Fill with median
+df_filled_mode = df_with_nan.fillna(df_with_nan.mode().iloc[0])  # Fill with mode
+
+# Forward fill and backward fill
+df_ffill = df_with_nan.fillna(method='ffill')  # Forward fill
+df_bfill = df_with_nan.fillna(method='bfill')  # Backward fill
+
+# Interpolation
+df_interpolated = df_with_nan.interpolate()  # Linear interpolation
+
+# Custom fill strategies
+df['Age'].fillna(df['Age'].median(), inplace=True)  # Fill Age with median
+df['City'].fillna('Unknown', inplace=True)  # Fill City with 'Unknown'
+df['Salary'].fillna(df.groupby('City')['Salary'].transform('mean'), inplace=True)  # Fill with group mean
+</code></pre>
+
+                    <h5>Merging and Joining DataFrames</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-python">
+# Create additional DataFrame
+df2 = pd.DataFrame({
+    'Name': ['Eve', 'Frank', 'Grace'],
+    'Age': [22, 40, 33],
+    'City': ['Boston', 'Seattle', 'Miami'],
+    'Salary': [65000, 95000, 85000]
+})
+
+# Concatenate DataFrames
+df_concat = pd.concat([df, df2])
+print(df_concat)
+
+# Merge DataFrames
+df3 = pd.DataFrame({
+    'Name': ['Alice', 'Bob', 'Charlie', 'Diana'],
+    'Department': ['HR', 'IT', 'Finance', 'IT']
+})
+
+# Inner join (default)
+merged_inner = pd.merge(df, df3, on='Name')
+print(merged_inner)
+
+# Left join
+merged_left = pd.merge(df, df3, on='Name', how='left')
+print(merged_left)
+
+# Right join
+merged_right = pd.merge(df, df3, on='Name', how='right')
+print(merged_right)
+
+# Outer join
+merged_outer = pd.merge(df, df3, on='Name', how='outer')
+print(merged_outer)
+
+# Join on multiple columns
+df4 = pd.DataFrame({
+    'First_Name': ['Alice', 'Bob', 'Charlie', 'Diana'],
+    'Last_Name': ['Smith', 'Johnson', 'Brown', 'Jones'],
+    'Email': ['alice@example.com', 'bob@example.com', 'charlie@example.com', 'diana@example.com']
+})
+
+merged_multi = pd.merge(df, df4, left_on=['Name'], right_on=['First_Name'])
+print(merged_multi)
+</code></pre>
+
+                    <h5>Reading and Writing Data</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-python">
 # Reading CSV files
 df = pd.read_csv('data.csv')
 df = pd.read_csv('data.csv', sep=';', encoding='utf-8')  # Custom separator and encoding
@@ -263,7 +813,7 @@ df = pd.read_excel('data.xlsx', sheet_name=['Sheet1', 'Sheet2'])  # Multiple she
 # Writing Excel files
 df.to_excel('output.xlsx', sheet_name='Sheet1', index=False)
 with pd.ExcelWriter('output.xlsx') as writer:
-    df1.to_excel(writer, sheet_name='Sheet1')
+    df.to_excel(writer, sheet_name='Sheet1')
     df2.to_excel(writer, sheet_name='Sheet2')
 
 # Reading JSON files
@@ -292,13 +842,30 @@ df = pd.read_csv(url)
 # Reading HTML tables
 tables = pd.read_html('https://example.com/tables.html')
 df = tables[0]  # First table
-</code><button class="copy-button">Copy</button></pre>
+</code></pre>
 
-                        <h3 id="data-cleaning" class="mt-5">Data Cleaning and Preprocessing</h3>
-                        <p>Data cleaning is a crucial step in data analysis. It involves handling missing values, removing duplicates, correcting data types, and dealing with outliers.</p>
+                    <h5>Interactive Example</h5>
+                    <div class="interactive-demo">
+                        <p>Try DataFrame operations:</p>
+                        <button onclick="createDataFrame()">Create DataFrame</button>
+                        <button onclick="filterDataFrame()">Filter DataFrame</button>
+                        <button onclick="groupByDataFrame()">Group By Column</button>
+                        <div id="pandas-result"></div>
+                    </div>
+                </div>
+            </div>
 
-                        <h4>Handling Missing Values</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-python">
+            <!-- Module 5: Data Cleaning and Preprocessing -->
+            <div class="content-card" id="module5">
+                <div class="card-header">
+                    <i class="fas fa-broom"></i> Module 5: Data Cleaning and Preprocessing
+                </div>
+                <div class="card-body">
+                    <h5>Introduction to Data Cleaning</h5>
+                    <p>Data cleaning is a crucial step in data analysis. It involves handling missing values, removing duplicates, correcting data types, and dealing with outliers. Clean data ensures accurate analysis and reliable results.</p>
+
+                    <h5>Handling Missing Values</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-python">
 import pandas as pd
 import numpy as np
 
@@ -346,10 +913,10 @@ df[['Age', 'Salary']] = imputer_mean.fit_transform(df[['Age', 'Salary']])
 
 imputer_mode = SimpleImputer(strategy='most_frequent')
 df[['City']] = imputer_mode.fit_transform(df[['City']])
-</code><button class="copy-button">Copy</button></pre>
+</code></pre>
 
-                        <h4>Handling Duplicates</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-python">
+                    <h5>Handling Duplicates</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-python">
 # Create data with duplicates
 df = pd.DataFrame({
     'Name': ['Alice', 'Bob', 'Alice', 'Charlie', 'Bob'],
@@ -370,10 +937,10 @@ df_keep_false = df.drop_duplicates(keep=False)  # Drop all duplicates
 # Find and analyze duplicates
 duplicate_rows = df[df.duplicated(keep=False)]
 print(duplicate_rows)
-</code><button class="copy-button">Copy</button></pre>
+</code></pre>
 
-                        <h4>Data Type Conversion</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-python">
+                    <h5>Data Type Conversion</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-python">
 # Create data with type issues
 df = pd.DataFrame({
     'Name': ['Alice', 'Bob', 'Charlie'],
@@ -407,12 +974,13 @@ df['Quarter'] = df['Join_Date'].dt.quarter
 df['Department'] = ['HR', 'IT', 'Finance']
 df['Department'] = df['Department'].astype('category')  # Convert to category
 df['Department_Cat'] = df['Department'].cat.codes  # Get categorical codes
-</code><button class="copy-button">Copy</button></pre>
+</code></pre>
 
-                        <h4>Handling Outliers</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-python">
+                    <h5>Handling Outliers</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-python">
 import numpy as np
 import pandas as pd
+from scipy import stats
 
 # Create data with outliers
 np.random.seed(42)
@@ -421,7 +989,6 @@ data = np.append(data, [200, 250, 300])  # Add outliers
 df = pd.DataFrame({'Value': data})
 
 # Detect outliers using Z-score
-from scipy import stats
 df['Z_Score'] = np.abs(stats.zscore(df['Value']))
 outliers_z = df[df['Z_Score'] > 3]
 print(f"Outliers using Z-score: {len(outliers_z)}")
@@ -450,13 +1017,60 @@ import matplotlib.pyplot as plt
 plt.boxplot(df['Value'])
 plt.title('Boxplot to Identify Outliers')
 plt.show()
-</code><button class="copy-button">Copy</button></pre>
+</code></pre>
 
-                        <h3 id="exploratory-data-analysis" class="mt-5">Exploratory Data Analysis (EDA)</h3>
-                        <p>EDA is the process of analyzing and visualizing data to understand its main characteristics, patterns, and relationships.</p>
+                    <h5>Text Data Processing</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-python">
+# Create sample text data
+df = pd.DataFrame({
+    'Text': ['Hello World', 'Python is great', 'Data Analysis', 'Machine Learning', 'Artificial Intelligence'],
+    'Category': ['Greeting', 'Statement', 'Topic', 'Topic', 'Topic']
+})
 
-                        <h4>Descriptive Statistics</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-python">
+# String operations
+df['Text_Length'] = df['Text'].str.len()  # Length of strings
+df['Word_Count'] = df['Text'].str.split().str.len()  # Number of words
+df['Contains_Python'] = df['Text'].str.contains('Python')  # Boolean mask
+
+# Case operations
+df['Text_Upper'] = df['Text'].str.upper()
+df['Text_Lower'] = df['Text'].str.lower()
+df['Text_Title'] = df['Text'].str.title()
+
+# Extract substrings
+df['First_Word'] = df['Text'].str.split().str[0]
+df['Last_Word'] = df['Text'].str.split().str[-1]
+
+# Replace substrings
+df['Text_Cleaned'] = df['Text'].str.replace('Machine Learning', 'ML')
+
+# Regular expressions
+df['Has_Numbers'] = df['Text'].str.contains(r'\d+', regex=True)
+df['Emails'] = df['Text'].str.findall(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}')
+</code></pre>
+
+                    <h5>Interactive Example</h5>
+                    <div class="interactive-demo">
+                        <p>Try data cleaning operations:</p>
+                        <button onclick="handleMissingValues()">Handle Missing Values</button>
+                        <button onclick="removeDuplicates()">Remove Duplicates</button>
+                        <button onclick="detectOutliers()">Detect Outliers</button>
+                        <div id="cleaning-result"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module 6: Exploratory Data Analysis -->
+            <div class="content-card" id="module6">
+                <div class="card-header">
+                    <i class="fas fa-chart-line"></i> Module 6: Exploratory Data Analysis
+                </div>
+                <div class="card-body">
+                    <h5>Introduction to EDA</h5>
+                    <p>Exploratory Data Analysis (EDA) is the process of analyzing and visualizing data to understand its main characteristics, patterns, and relationships. EDA helps generate hypotheses, identify data quality issues, and guide further analysis.</p>
+
+                    <h5>Descriptive Statistics</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-python">
 import pandas as pd
 import numpy as np
 
@@ -465,7 +1079,7 @@ df = pd.DataFrame({
     'Age': [25, 30, 35, 28, 22, 45, 38, 32, 29, 26],
     'Salary': [70000, 80000, 90000, 75000, 65000, 120000, 95000, 85000, 78000, 72000],
     'Experience': [2, 5, 10, 4, 1, 20, 12, 7, 5, 3],
-    'Department': ['IT', 'HR', 'Finance', 'IT', 'HR', 'Finance', 'IT', 'HR', 'Finance', 'IT']
+    'Department': ['IT', 'HR', 'Finance', 'IT', 'HR', 'Finance', 'IT', 'HR', 'Finance', 'IT', 'HR']
 })
 
 # Basic statistics
@@ -496,10 +1110,10 @@ print(df['Department'].value_counts(normalize=True))  # Proportions
 
 # Cross-tabulation
 print(pd.crosstab(df['Department'], df['Age'] > 30))
-</code><button class="copy-button">Copy</button></pre>
+</code></pre>
 
-                        <h4>Data Visualization with Matplotlib</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-python">
+                    <h5>Data Visualization with Matplotlib</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-python">
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -571,13 +1185,14 @@ axes[1, 1].bar(categories, values)
 axes[1, 1].set_title('Bar Plot')
 plt.tight_layout()
 plt.show()
-</code><button class="copy-button">Copy</button></pre>
+</code></pre>
 
-                        <h4>Data Visualization with Seaborn</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-python">
+                    <h5>Data Visualization with Seaborn</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-python">
 import seaborn as sns
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 
 # Load sample dataset
 tips = sns.load_dataset('tips')
@@ -639,15 +1254,276 @@ g = sns.FacetGrid(tips, col='time', row='sex')
 g.map(sns.scatterplot, 'total_bill', 'tip')
 plt.suptitle('Tips by Time and Sex', y=1.02)
 plt.show()
-</code><button class="copy-button">Copy</button></pre>
+</code></pre>
 
-                        <h3 id="statistical-analysis" class="mt-5">Statistical Analysis</h3>
-                        <p>Statistical analysis helps us understand data patterns, test hypotheses, and make informed decisions.</p>
+                    <h5>Interactive Example</h5>
+                    <div class="interactive-demo">
+                        <p>Try creating visualizations:</p>
+                        <button onclick="createHistogram()">Create Histogram</button>
+                        <button onclick="createScatterPlot()">Create Scatter Plot</button>
+                        <button onclick="createBoxPlot()">Create Box Plot</button>
+                        <div id="eda-result"></div>
+                    </div>
+                </div>
+            </div>
 
-                        <h4>Hypothesis Testing</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-python">
+            <!-- Module 7: Data Visualization -->
+            <div class="content-card" id="module7">
+                <div class="card-header">
+                    <i class="fas fa-chart-bar"></i> Module 7: Data Visualization
+                </div>
+                <div class="card-body">
+                    <h5>Advanced Visualization Techniques</h5>
+                    <p>Data visualization is a crucial part of data analysis, helping to communicate insights effectively. Python offers a rich ecosystem of visualization libraries, from basic plots to complex interactive dashboards.</p>
+
+                    <h5>Statistical Visualizations</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-python">
+import matplotlib.pyplot as plt
+import seaborn as sns
+import pandas as pd
+import numpy as np
+
+# Load sample data
+tips = sns.load_dataset('tips')
+
+# Distribution plots
+plt.figure(figsize=(12, 6))
+plt.subplot(1, 2, 1)
+sns.histplot(tips['total_bill'], kde=True, bins=20)
+plt.title('Distribution of Total Bill')
+plt.subplot(1, 2, 2)
+sns.kdeplot(tips['total_bill'], shade=True)
+plt.title('KDE Plot of Total Bill')
+plt.tight_layout()
+plt.show()
+
+# Comparative distributions
+plt.figure(figsize=(12, 6))
+sns.kdeplot(data=tips, x='total_bill', hue='day', shade=True)
+plt.title('Distribution of Total Bill by Day')
+plt.show()
+
+# Violin plots for comparing distributions
+plt.figure(figsize=(12, 6))
+sns.violinplot(x='day', y='total_bill', data=tips, inner='quartile')
+plt.title('Violin Plot of Total Bill by Day')
+plt.show()
+
+# Ridgeline plots
+plt.figure(figsize=(12, 6))
+sns.kdeplot(data=tips, x='total_bill', y='tip', hue='day', shade=True, shade_lowest=False, shade_highest=False)
+plt.title('Ridgeline Plot of Tip vs Total Bill by Day')
+plt.show()
+</code></pre>
+
+                    <h5>Advanced Plot Types</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-python">
+# Pair plots with regression
+sns.jointplot(x='total_bill', y='tip', data=tips, kind='reg', hue='day')
+plt.title('Joint Plot with Regression Line')
+plt.show()
+
+# Pair grid with regression
+sns.pairplot(tips, kind='reg', hue='day')
+plt.title('Pair Plot Grid with Regression')
+plt.show()
+
+# Pair plot with kde
+sns.pairplot(tips, kind='kde', hue='day')
+plt.title('Pair Plot Grid with KDE')
+plt.show()
+
+# Pair plot with hexbin
+sns.pairplot(tips, kind='hex', hue='day')
+plt.title('Pair Plot Grid with Hexbin')
+plt.show()
+
+# Categorical plots
+plt.figure(figsize=(12, 6))
+sns.catplot(x='day', y='total_bill', data=tips, kind='box')
+plt.title('Box Plot of Total Bill by Day')
+plt.show()
+
+# Swarm plot
+plt.figure(figsize=(12, 6))
+sns.swarmplot(x='day', y='total_bill', data=tips)
+plt.title('Swarm Plot of Total Bill by Day')
+plt.show()
+
+# Point plot
+plt.figure(figsize=(12, 6))
+sns.pointplot(x='day', y='total_bill', data=tips, hue='sex', join=False, dodge=True)
+plt.title('Point Plot of Total Bill by Day and Sex')
+plt.show()
+</code></pre>
+
+                    <h5>Interactive Visualizations</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-python">
+import plotly.graph_objects as go
+import pandas as pd
+import numpy as np
+
+# Create sample data
+np.random.seed(42)
+dates = pd.date_range('2022-01-01', periods=365, freq='D')
+values = np.cumsum(np.random.randn(365) + 100)
+
+# Interactive line chart
+fig = go.Figure()
+fig.add_trace(go.Scatter(
+    x=dates,
+    y=values,
+    mode='lines+markers',
+    name='Value',
+    line=dict(color='royalblue', width=2),
+    marker=dict(color='royalblue', size=6)
+)
+
+fig.update_layout(
+    title='Interactive Time Series',
+    xaxis_title='Date',
+    yaxis_title='Value',
+    hovermode='x unified'
+)
+
+fig.show()
+
+# Interactive scatter plot
+fig = go.Figure()
+
+# Add scatter plot
+fig.add_trace(go.Scatter(
+    x=np.random.randn(100),
+    y=np.random.randn(100),
+    mode='markers',
+    marker=dict(
+        size=10,
+        color=np.random.choice(['red', 'blue', 'green', 'purple', 'orange']),
+        opacity=0.7,
+        line=dict(width=0)
+    ),
+    name='Random Points'
+)
+
+# Add dropdown for filtering
+fig.update_layout(
+    title='Interactive Scatter Plot',
+    xaxis_title='X Value',
+    yaxis_title='Y Value',
+    updatemenus=[dict(type='buttons', buttons=[dict(label='All', method='restyle')],
+                     dict(type='dropdown', x='xaxis.title', y='yaxis.title')]
+)
+
+fig.show()
+</code></pre>
+
+                    <h5>Geospatial Data Visualization</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-python">
+import geopandas as gpd
+import matplotlib.pyplot as plt
+
+# Load world map data
+world = gpd.read_file(gpd.datasets.get_path('naturalearth'))
+
+# Create a choropleth map
+fig, ax = plt.subplots(figsize=(15, 10))
+world.plot(ax=ax, color='lightgray', edgecolor='white')
+
+# Add color-coded data
+world['gdp_per_capita'] = world['gdp_per_capita'] / 1000000
+world.plot(column='gdp_per_capita', cmap='viridis', legend=False, ax=ax, 
+        legend_kwds={'label': 'GDP per Capita', 'orientation': 'horizontal'})
+
+# Add annotations for specific countries
+for i, row in world.nlargest(5, 'gdp_md_est').iterrows():
+    ax.annotate(
+        row['name'], 
+        xy=(row['geometry'].representative_point().coords[0], row['geometry'].representative_point().coords[1]),
+        ha='center',
+        fontsize=8
+    )
+
+plt.title('World GDP per Capita')
+plt.colorbar(label='GDP per Capita ($)')
+plt.show()
+</code></pre>
+
+                    <h5>Network Graphs</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-python">
+import networkx as nx
+import matplotlib.pyplot as plt
+
+# Create a random graph
+G = nx.erdos_renyi(10, 0.3, seed=42)
+
+# Calculate centrality measures
+centrality = nx.degree_centrality(G)
+betweenness = nx.betweenness_centrality(G)
+
+# Create a visualization
+plt.figure(figsize=(12, 8))
+pos = nx.spring_layout(G, k=0.15, iterations=50)
+pos = nx.spring_layout(G, pos=pos, fixed=[0, 0])
+nx.draw_network(G, pos, with_labels=True, node_size=300, node_color=centrality.values(), cmap=plt.cm.viridis)
+plt.title('Network Graph with Node Centrality')
+plt.colorbar(label='Centrality', orientation='vertical')
+plt.show()
+</code></pre>
+
+                    <h5>Interactive Example</h5>
+                    <div class="interactive-demo">
+                        <p>Try creating different visualizations:</p>
+                        <button onclick="createHeatmap()">Create Heatmap</button>
+                        <button onclick="createContourfPlot()">Create Contour Plot</button>
+                        <button onclick="create3DPlot()">Create 3D Plot</button>
+                        <div id="viz-result"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module 8: Statistical Analysis -->
+            <div class="content-card" id="module8">
+                <div class="card-header">
+                    <i class="fas fa-calculator"></i> Module 8: Statistical Analysis
+                </div>
+                <div class="card-body">
+                    <h5>Statistical Concepts</h5>
+                    <p>Statistical analysis involves collecting, analyzing, interpreting, and presenting data to discover patterns and trends. It helps us make informed decisions based on data rather than intuition.</p>
+
+                    <h5>Descriptive Statistics</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-python">
 import numpy as np
 import pandas as pd
+from scipy import stats
+
+# Generate sample data
+np.random.seed(42)
+data = np.random.normal(100, 15, 1000)
+
+# Calculate descriptive statistics
+mean = np.mean(data)
+median = np.median(data)
+mode = stats.mode(data)
+variance = np.var(data)
+std_dev = np.std(data)
+min_val = np.min(data)
+max_val = np.max(data)
+percentiles = np.percentile(data, [25, 50, 75])
+
+print(f"Mean: {mean:.2f}")
+print(f"Median: {median:.2f}")
+print(f"Mode: {mode.mode[0]:.2f}")
+print(f"Variance: {variance:.2f}")
+print(f"Standard Deviation: {std_dev:.2f}")
+print(f"Min: {min_val:.2f}")
+print(f"Max: {max_val:.2f}")
+print(f"25th Percentile: {percentiles[0]:.2f}")
+print(f"50th Percentile: {percentiles[1]:.2f}")
+print(f"75th Percentile: {percentiles[2]:.2f}")
+</code></pre>
+
+                    <h5>Hypothesis Testing</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-python">
 from scipy import stats
 
 # Generate sample data
@@ -696,21 +1572,10 @@ corr, p_value = stats.pearsonr(x, y)
 print(f"\nCorrelation test:")
 print(f"Correlation coefficient: {corr:.4f}")
 print(f"P-value: {p_value:.4f}")
+</code></pre>
 
-# Normality test
-data = np.random.normal(0, 1, 1000)
-stat, p_value = stats.shapiro(data)
-print(f"\nShapiro-Wilk test for normality:")
-print(f"Statistic: {stat:.4f}")
-print(f"P-value: {p_value:.4f}")
-if p_value > 0.05:
-    print("Data appears to be normally distributed")
-else:
-    print("Data does not appear to be normally distributed")
-</code><button class="copy-button">Copy</button></pre>
-
-                        <h4>Regression Analysis</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-python">
+                    <h5>Regression Analysis</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-python">
 import numpy as np
 import pandas as pd
 import statsmodels.api as sm
@@ -735,14 +1600,15 @@ print(f"RMSE: {np.sqrt(mean_squared_error(y, y_pred)):.4f}")
 
 # Multiple Linear Regression with statsmodels
 X_with_const = sm.add_constant(X)
-model = sm.OLS(y, X_with_const).fit()
+model = sm.OLS(y, X_with_const)
+results = model.fit()
 print("\nDetailed Regression Results:")
-print(model.summary())
+print(results.summary())
 
 # Polynomial Regression
 from sklearn.preprocessing import PolynomialFeatures
 
-X_poly = PolynomialFeatures(degree=2).fit_transform(X[:, 0].reshape(-1, 1))
+X_poly = PolynomialFeatures(degree=2).fit_transform(X)
 model_poly = LinearRegression()
 model_poly.fit(X_poly, y)
 y_pred_poly = model_poly.predict(X_poly)
@@ -765,13 +1631,30 @@ print("\nClassification Report:")
 print(classification_report(y_class, y_pred_logistic))
 print("\nConfusion Matrix:")
 print(confusion_matrix(y_class, y_pred_logistic))
-</code><button class="copy-button">Copy</button></pre>
+</code></pre>
 
-                        <h3 id="machine-learning" class="mt-5">Machine Learning for Data Analysis</h3>
-                        <p>Machine learning algorithms can help uncover patterns and make predictions from data.</p>
+                    <h5>Interactive Example</h5>
+                    <div class="interactive-demo">
+                        <p>Try statistical operations:</p>
+                        <button onclick="calculateStatistics()">Calculate Statistics</button>
+                        <button onclick="performTTest()">Perform T-Test</button>
+                        <button onclick="performCorrelation()">Calculate Correlation</button>
+                        <div id="stats-result"></div>
+                    </div>
+                </div>
+            </div>
 
-                        <h4>Supervised Learning</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-python">
+            <!-- Module 9: Machine Learning Basics -->
+            <div class="content-card" id="module9">
+                <div class="card-header">
+                    <i class="fas fa-brain"></i> Module 9: <strong>Machine Learning Basics</strong>
+                </div>
+                <div class="card-body">
+                    <h5>Introduction to Machine Learning</h5>
+                    <p>Machine learning is a subset of artificial intelligence that enables systems to learn and improve from experience without being explicitly programmed. Python's scikit-learn library provides simple and efficient tools for data mining and data analysis.</p>
+
+                    <h5>Supervised Learning</h5>
+                    <pre><button class="button">Copy</button><code class="language-python">
 import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
@@ -825,63 +1708,60 @@ nn_model = MLPClassifier(hidden_layer_sizes=(100, 50), max_iter=1000, random_sta
 nn_model.fit(X_train_scaled, y_train)
 nn_pred = nn_model.predict(X_test_scaled)
 print("Neural Network Accuracy:", accuracy_score(y_test, nn_pred))
+</code></pre>
 
-# Feature importance
-feature_importance = pd.DataFrame({
-    'feature': iris.feature_names,
-    'importance': rf_model.feature_importances_
-}).sort_values('importance', ascending=False)
-print("\nFeature Importance:")
-print(feature_importance)
-
-# Cross-validation
-from sklearn.model_selection import cross_val_score
-cv_scores = cross_val_score(rf_model, X, y, cv=5)
-print(f"\nCross-validation scores: {cv_scores}")
-print(f"Mean CV score: {cv_scores.mean():.4f}")
-</code><button class="copy-button">Copy</button></pre>
-
-                        <h4>Unsupervised Learning</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-python">
+                    <h5>Unsupervised Learning</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-python">
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
+from sklearn.datasets import load_digits
 
-# Generate sample data
-np.random.seed(42)
-X = np.vstack([
-    np.random.normal([2, 2], 0.5, (100, 2)),
-    np.random.normal([6, 6], 0.5, (100, 2)),
-    np.random.normal([2, 6], 0.5, (100, 2))
-])
+# Load high-dimensional data
+digits = load_digits()
+X = digits.data
+y = digits.target
+
+# Standardize the data
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+# Apply PCA for dimensionality reduction
+pca = PCA(n_components=2)
+X_pca = pca.fit_transform(X_scaled)
 
 # K-Means Clustering
 kmeans = KMeans(n_clusters=3, random_state=42)
-clusters = kmeans.fit_predict(X)
+clusters = kmeans.fit_predict(X_pca)
 centers = kmeans.cluster_centers_
 
 # Visualize clusters
 plt.figure(figsize=(10, 6))
-plt.scatter(X[:, 0], X[:, 1], c=clusters, cmap='viridis', alpha=0.6)
+plt.scatter(X_pca[:, 0], X_pca[:, 1], c=clusters, cmap='viridis', alpha=0.6)
 plt.scatter(centers[:, 0], centers[:, 1], c='red', s=300, marker='X', label='Centroids')
+plt.xlabel('First Principal Component')
+plt.ylabel('Second Principal Component')
 plt.title('K-Means Clustering')
-plt.xlabel('Feature 1')
-plt.ylabel('Feature 2')
 plt.legend()
 plt.show()
 
 # Elbow method to find optimal k
 inertias = []
-for k in range(1, 11):
-    kmeans = KMeans(n_clusters=k, random_state=42)
-    kmeans.fit(X)
-    inertias.append(kmeans.inertia_)
+silhouette_scores = []
+k_range = range(2, 11)
 
+for k in k_range:
+    kmeans = KMeans(n_clusters=k, random_state=42)
+    kmeans.fit(X_pca)
+    inertias.append(kmeans.inertia_)
+    silhouette_scores.append(silhouette_score(X_pca, kmeans.labels_))
+
+# Plot elbow method
 plt.figure(figsize=(10, 6))
-plt.plot(range(1, 11), inertias, 'bo-')
+plt.plot(range(2, 11), inertias, 'bo-')
 plt.xlabel('Number of clusters')
 plt.ylabel('Inertia')
 plt.title('Elbow Method')
@@ -893,86 +1773,168 @@ from scipy.cluster.hierarchy import dendrogram, linkage
 
 # Perform hierarchical clustering
 hc = AgglomerativeClustering(n_clusters=3, linkage='ward')
-hc_clusters = hc.fit_predict(X)
+hc_clusters = hc.fit(X_pca)
 
 # Create dendrogram
-linkage_matrix = linkage(X, method='ward')
+linkage_matrix = linkage(X_pca, method='ward')
 plt.figure(figsize=(12, 8))
 dendrogram(linkage_matrix)
 plt.title('Hierarchical Clustering Dendrogram')
 plt.xlabel('Sample Index')
 plt.ylabel('Distance')
 plt.show()
+</code></pre>
 
-# Principal Component Analysis (PCA)
-# Load Iris dataset
-from sklearn.datasets import load_iris
-iris = load_iris()
-X_iris = iris.data
-y_iris = iris.target
+                    <h5>Model Evaluation</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-python">
+from sklearn.model_selection import cross_val_score
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 
-# Standardize the data
-scaler = StandardScaler()
-X_scaled = scaler.fit_transform(X_iris)
+# Cross-validation
+cv_scores = cross_val_score(rf_model, X, y, cv=5)
+print(f"Cross-validation scores: {cv_scores}")
+print(f"Mean CV score: {cv_scores.mean():.4f}")
 
-# Apply PCA
-pca = PCA(n_components=2)
-X_pca = pca.fit_transform(X_scaled)
+# Different evaluation metrics
+accuracy = accuracy_score(y_test, y_pred)
+precision = precision_score(y_test, y_pred, average='weighted')
+recall = recall_score(y_test, y_pred, average='weighted')
+f1 = f1_score(y_test, y_pred)
+print(f"F1 Score: {f1:.4f}")
 
-# Visualize PCA results
-plt.figure(figsize=(10, 6))
-scatter = plt.scatter(X_pca[:, 0], X_pca[:, 1], c=y_iris, cmap='viridis')
-plt.xlabel('First Principal Component')
-plt.ylabel('Second Principal Component')
-plt.title('PCA of Iris Dataset')
-plt.legend(handles=scatter.legend_elements()[0], labels=iris.target_names)
-plt.show()
+# Confusion Matrix
+cm = confusion_matrix(y_test, y_pred)
+print("Confusion Matrix:")
+print(cm)
 
-# Explained variance
-print("Explained variance ratio:", pca.explained_variance_ratio_)
-print("Total explained variance:", sum(pca.explained_variance_ratio_))
-</code><button class="copy-button">Copy</button></pre>
+# Classification Report
+print("\nClassification Report:")
+print(classification_report(y_test, y_pred))
+</code></pre>
 
-                        <h3 id="time-series" class="mt-5">Time Series Analysis</h3>
-                        <p>Time series analysis involves analyzing data points collected over time to identify patterns, trends, and seasonality.</p>
+                    <h5>Feature Importance</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-python">
+# Get feature importance from Random Forest
+feature_importance = pd.DataFrame({
+    'feature': iris.feature_names,
+    'importance': rf_model.feature_importances_
+}).sort_values('importance', ascending=False)
+print("Feature Importance:")
+print(feature_importance)
 
-                        <pre><button class="copy-button">Copy</button><code class="language-python">
+# Get feature importance from Decision Tree
+from sklearn.tree import DecisionTree
+dt_model = DecisionTree(random_state=42)
+dt_model.fit(X_train, y)
+feature_importance_dt = pd.DataFrame({
+    'feature': iris.feature_names,
+    'importance': dt_model.feature_importances_
+}).sort_values('importance', ascending=False)
+print("\nDecision Tree Feature Importance:")
+print(feature_importance_dt)
+
+# Get feature importance from Gradient Boosting
+gb_model = GradientBoostingClassifier(random_state=42)
+gb_model.fit(X_train, y)
+feature_importance_gb = pd.DataFrame({
+    'feature': iris.feature_names,
+    'importance': gb_model.feature_importances_
+}).sort_values('importance', ascending=False)
+print("\nGradient Boosting Feature Importance:")
+print(feature_importance_gb)
+</code></pre>
+
+                    <h5>Interactive Example</h5>
+                    <div class="interactive-demo">
+                        <p>Try machine learning operations:</p>
+                        <button onclick="trainModel()">Train Model</button>
+                        <button onclick="makePrediction()">Make Prediction</button>
+                        <button onclick="evaluateModel()">Evaluate Model</button>
+                        <div id="ml-result"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module 10: Time Series Analysis -->
+            <div class="content-card" id="module10">
+                <div class="card-header">
+                    <i class="fas fa-clock"></i> Module 10: Time Series Analysis
+                </div>
+                <div class="card-body">
+                    <h5>Introduction to Time Series</h5>
+                    <p>Time series analysis involves analyzing data points collected over time to identify patterns, trends, and seasonality. This is particularly important in finance, economics, weather forecasting, and any domain where understanding temporal patterns is crucial.</p>
+
+                    <h5>Time Series Components</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-python">
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-from statsmodels.tsa.seasonal import seasonal_decompose
-from statsmodels.tsa.arima.model import ARIMA
-from statsmodels.tsa.stattools import adfuller
 
-# Create sample time series data
-np.random.seed(42)
+# Create a time series
 dates = pd.date_range('2020-01-01', periods=365, freq='D')
-trend = np.linspace(100, 200, 365)
-seasonal = 10 * np.sin(np.linspace(0, 4*np.pi, 365))
-noise = np.random.normal(0, 5, 365)
-values = trend + seasonal + noise
-
+values = np.random.randn(365) + 100
 ts = pd.Series(values, index=dates)
 
-# Plot time series
-plt.figure(figsize=(12, 6))
-plt.plot(ts)
-plt.title('Time Series Data')
-plt.xlabel('Date')
-plt.ylabel('Value')
-plt.show()
+# Time series components
+print(ts.head())
+print(ts.index)  # DatetimeIndex
+print(ts.index.freq)  # Frequency (D for daily)
+print(ts.index.month)  # Month component
+print(ts.index.day)  # Day component
+print(ts.index.dayofweek)  # Day of week (0=Monday)
+print(ts.index.quarter)  # Quarter (1-4)
+</code></pre>
+
+                    <h5>Time Series Operations</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-python">
+# Resampling
+ts_daily = ts.resample('D')  # Daily
+ts_weekly = ts.resample('W')  # Weekly
+ts_monthly = ts.resample('M')  # Monthly
+
+# Shifting
+ts_shifted = ts.shift(1)  # Shift forward by 1 period
+ts_shifted_back = ts.shift(-1) 6gt;  # Shift backward by 1 period
+
+# Rolling calculations
+ts_7day_avg = ts.rolling(window=7).mean()
+ts_30day_avg = ts.rolling(window=30).mean()
+ts_std_30day = ts.rolling(window=30).std()
+
+# Expanding and window calculations
+ts_expanding = ts.expanding().mean()
+ts_cumsum = ts.expanding().sum()
+
+# Differences
+ts_diff = ts.diff()  # First difference
+ts_diff2 = ts.diff(2)  # Second difference
+</code></pre>
+
+                    <h5>Decomposition</h5>
+                    <pre><button class="copy-button">Decomposition</button><code class="language-python">
+from statsmodels.tsa.seasonal import seasonal_decompose
 
 # Decompose time series
 decomposition = seasonal_decompose(ts, model='additive', period=30)
 fig = decomposition.plot()
-fig.set_size_inches(12, 8)
+fig.set_size(12, 8)
 plt.show()
+
+# Access components
+trend = decomposition.trend
+seasonal = decomposition.seasonal
+residual = decomposition.resid
+</code></pre>
+
+                    <h5>Stationarity Testing</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-python">
+from statsmodels.tsa.stattools import adfuller
 
 # Check for stationarity
 def check_stationarity(timeseries):
     result = adfuller(timeseries)
     print('ADF Statistic:', result[0])
-    print('p-value:', result[1])
+    print('P-value:', result[1])
     print('Critical Values:')
     for key, value in result[4].items():
         print(f'\t{key}: {value}')
@@ -982,14 +1944,16 @@ def check_stationarity(timeseries):
     else:
         print("Time series is non-stationary")
 
-check_stationarity(ts)
-
-# Make time series stationary (differencing)
+# Make time series stationary
 ts_diff = ts.diff().dropna()
 check_stationarity(ts_diff)
+</code></pre>
 
-# ARIMA model
-# Split data into train and test
+                    <h5>ARIMA Models</h5>
+                    <pre><button class="copy-button">Copy</button><code class="language-python">
+from statsmodels.tsa.arima.model import ARIMA
+
+# Split data
 train_size = int(len(ts) * 0.8)
 train, test = ts[:train_size], ts[train_size:]
 
@@ -1000,6 +1964,8 @@ print(model_fit.summary())
 
 # Make predictions
 predictions = model_fit.forecast(steps=len(test))
+print(f"ARIMA Model Predictions:")
+print(predictions.head())
 
 # Plot predictions
 plt.figure(figsize=(12, 6))
@@ -1017,522 +1983,257 @@ from sklearn.metrics import mean_squared_error
 mse = mean_squared_error(test, predictions)
 rmse = np.sqrt(mse)
 print(f'RMSE: {rmse:.2f}')
-
-# Moving averages
-ts_ma_7 = ts.rolling(window=7).mean()
-ts_ma_30 = ts.rolling(window=30).mean()
-
-plt.figure(figsize=(12, 6))
-plt.plot(ts, label='Original')
-plt.plot(ts_ma_7, label='7-day MA')
-plt.plot(ts_ma_30, label='30-day MA')
-plt.title('Time Series with Moving Averages')
-plt.xlabel('Date')
-plt.ylabel('Value')
-plt.legend()
-plt.show()
-</code><button class="copy-button">Copy</button></pre>
-
-                        <h3 id="advanced-techniques" class="mt-5">Advanced Data Analysis Techniques</h3>
-
-                        <h4>Feature Engineering</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-python">
-import pandas as pd
-import numpy as np
-from sklearn.preprocessing import StandardScaler, MinMaxScaler, LabelEncoder, OneHotEncoder
-
-# Create sample dataset
-df = pd.DataFrame({
-    'Name': ['Alice', 'Bob', 'Charlie', 'Diana', 'Eve'],
-    'Age': [25, 30, 35, 28, 22],
-    'Salary': [70000, 80000, 90000, 75000, 65000],
-    'Department': ['IT', 'HR', 'Finance', 'IT', 'HR'],
-    'Join_Date': pd.date_range('2020-01-01', periods=5, freq='M'),
-    'Performance': [4.2, 3.8, 4.5, 3.9, 4.1]
-})
-
-# Feature extraction from datetime
-df['Join_Year'] = df['Join_Date'].dt.year
-df['Join_Month'] = df['Join_Date'].dt.month
-df['Join_Day'] = df['Join_Date'].dt.day
-df['Tenure_Days'] = (pd.Timestamp.now() - df['Join_Date']).dt.days
-
-# Polynomial features
-df['Age_Squared'] = df['Age'] ** 2
-df['Salary_Log'] = np.log(df['Salary'])
-df['Performance_Age_Ratio'] = df['Performance'] / df['Age']
-
-# Binning
-df['Age_Group'] = pd.cut(df['Age'], bins=[20, 30, 40], labels=['Young', 'Middle'])
-df['Salary_Bracket'] = pd.qcut(df['Salary'], q=3, labels=['Low', 'Medium', 'High'])
-
-# Encoding categorical variables
-# Label encoding
-le = LabelEncoder()
-df['Department_Encoded'] = le.fit_transform(df['Department'])
-
-# One-hot encoding
-df_encoded = pd.get_dummies(df, columns=['Department', 'Age_Group'])
-
-# Feature scaling
-scaler_standard = StandardScaler()
-df['Age_Standardized'] = scaler_standard.fit_transform(df[['Age']])
-
-scaler_minmax = MinMaxScaler()
-df['Salary_Normalized'] = scaler_minmax.fit_transform(df[['Salary']])
-
-# Interaction features
-df['Age_Salary_Interaction'] = df['Age'] * df['Salary']
-
-# Text features (if applicable)
-df['Name_Length'] = df['Name'].apply(len)
-df['Name_First_Letter'] = df['Name'].str[0]
-
-print(df.head())
-</code><button class="copy-button">Copy</button></pre>
-
-                        <h4>Dimensionality Reduction</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-python">
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-from sklearn.decomposition import PCA, t-SNE
-from sklearn.preprocessing import StandardScaler
-from sklearn.datasets import load_digits
-
-# Load high-dimensional data
-digits = load_digits()
-X = digits.data
-y = digits.target
-
-# Standardize the data
-scaler = StandardScaler()
-X_scaled = scaler.fit_transform(X)
-
-# PCA for dimensionality reduction
-pca = PCA(n_components=2)
-X_pca = pca.fit_transform(X_scaled)
-
-# Visualize PCA results
-plt.figure(figsize=(10, 6))
-scatter = plt.scatter(X_pca[:, 0], X_pca[:, 1], c=y, cmap='viridis', alpha=0.6)
-plt.colorbar(scatter)
-plt.xlabel('First Principal Component')
-plt.ylabel('Second Principal Component')
-plt.title('PCA of Digits Dataset')
-plt.show()
-
-# Explained variance
-plt.figure(figsize=(10, 6))
-plt.plot(np.cumsum(pca.explained_variance_ratio_))
-plt.xlabel('Number of Components')
-plt.ylabel('Cumulative Explained Variance')
-plt.title('PCA Explained Variance')
-plt.show()
-
-# t-SNE for visualization
-from sklearn.manifold import TSNE
-
-tsne = TSNE(n_components=2, random_state=42)
-X_tsne = tsne.fit_transform(X_scaled)
-
-plt.figure(figsize=(10, 6))
-scatter = plt.scatter(X_tsne[:, 0], X_tsne[:, 1], c=y, cmap='viridis', alpha=0.6)
-plt.colorbar(scatter)
-plt.xlabel('t-SNE 1')
-plt.ylabel('t-SNE 2')
-plt.title('t-SNE Visualization of Digits Dataset')
-plt.show()
-
-# Feature selection using SelectKBest
-from sklearn.feature_selection import SelectKBest, f_classif
-
-selector = SelectKBest(score_func=f_classif, k=20)
-X_selected = selector.fit_transform(X, y)
-
-print(f"Original features: {X.shape[1]}")
-print(f"Selected features: {X_selected.shape[1]}")
-</code><button class="copy-button">Copy</button></pre>
-
-                        <h3 id="best-practices" class="mt-5">Best Practices in Data Analysis</h3>
-
-                        <h4>Code Organization and Documentation</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-python">
-"""
-Data Analysis Project Template
-
-This script demonstrates best practices for organizing data analysis code.
-"""
-
-# Import libraries at the top
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
-from sklearn.preprocessing import StandardScaler
-from sklearn.model_selection import train_test_split
-
-# Set random seed for reproducibility
-np.random.seed(42)
-
-# Configuration
-CONFIG = {
-    'data_path': 'data.csv',
-    'test_size': 0.2,
-    'random_state': 42,
-    'figure_size': (12, 6)
-}
-
-# Define functions for reusable tasks
-def load_data(path):
-    """Load data from CSV file."""
-    try:
-        df = pd.read_csv(path)
-        print(f"Data loaded successfully. Shape: {df.shape}")
-        return df
-    except FileNotFoundError:
-        print(f"Error: File {path} not found")
-        return None
-
-def clean_data(df):
-    """Clean the dataset."""
-    # Remove duplicates
-    df = df.drop_duplicates()
-    
-    # Handle missing values
-    numeric_columns = df.select_dtypes(include=[np.number]).columns
-    df[numeric_columns] = df[numeric_columns].fillna(df[numeric_columns].mean())
-    
-    categorical_columns = df.select_dtypes(include=['object']).columns
-    df[categorical_columns] = df[categorical_columns].fillna(df[categorical_columns].mode().iloc[0])
-    
-    print(f"Data cleaned. Shape: {df.shape}")
-    return df
-
-def create_visualizations(df):
-    """Create basic visualizations."""
-    # Distribution of numeric columns
-    numeric_columns = df.select_dtypes(include=[np.number]).columns
-    for col in numeric_columns:
-        plt.figure(figsize=CONFIG['figure_size'])
-        sns.histplot(df[col], kde=True)
-        plt.title(f'Distribution of {col}')
-        plt.show()
-
-# Main analysis pipeline
-def main():
-    """Main function to run the analysis."""
-    # Load data
-    df = load_data(CONFIG['data_path'])
-    if df is None:
-        return
-    
-    # Clean data
-    df = clean_data(df)
-    
-    # Create visualizations
-    create_visualizations(df)
-    
-    # Further analysis...
-
-if __name__ == "__main__":
-    main()
-</code><button class="copy-button">Copy</button></pre>
-
-                        <h4>Performance Optimization</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-python">
-import pandas as pd
-import numpy as np
-from time import time
-
-# Create large dataset
-np.random.seed(42)
-n = 1000000
-df = pd.DataFrame({
-    'A': np.random.randn(n),
-    'B': np.random.randn(n),
-    'C': np.random.choice(['X', 'Y', 'Z'], n),
-    'D': np.random.randint(0, 100, n)
-})
-
-# Optimize memory usage
-def optimize_memory(df):
-    """Optimize memory usage by downcasting numeric types."""
-    start_mem = df.memory_usage().sum() / 1024**2
-    print(f"Initial memory usage: {start_mem:.2f} MB")
-    
-    # Downcast numeric columns
-    for col in df.select_dtypes(include=['int64']).columns:
-        df[col] = pd.to_numeric(df[col], downcast='integer')
-    
-    for col in df.select_dtypes(include=['float64']).columns:
-        df[col] = pd.to_numeric(df[col], downcast='float')
-    
-    # Convert object columns to category if low cardinality
-    for col in df.select_dtypes(include=['object']).columns:
-        if df[col].nunique() / len(df[col]) < 0.5:
-            df[col] = df[col].astype('category')
-    
-    end_mem = df.memory_usage().sum() / 1024**2
-    print(f"Final memory usage: {end_mem:.2f} MB")
-    print(f"Reduced by {100 * (start_mem - end_mem) / start_mem:.1f}%")
-    
-    return df
-
-# Vectorized operations vs loops
-def slow_method(df):
-    """Slow method using loops."""
-    result = []
-    for i in range(len(df)):
-        if df.iloc[i]['A'] > 0:
-            result.append(df.iloc[i]['A'] * df.iloc[i]['B'])
-        else:
-            result.append(0)
-    return result
-
-def fast_method(df):
-    """Fast method using vectorization."""
-    return np.where(df['A'] > 0, df['A'] * df['B'], 0)
-
-# Compare performance
-df_sample = df.head(10000)  # Smaller sample for timing
-
-start = time()
-slow_result = slow_method(df_sample)
-slow_time = time() - start
-
-start = time()
-fast_result = fast_method(df_sample)
-fast_time = time() - start
-
-print(f"Slow method: {slow_time:.4f} seconds")
-print(f"Fast method: {fast_time:.4f} seconds")
-print(f"Speedup: {slow_time/fast_time:.1f}x")
-
-# Use efficient data structures
-# Using categorical for repeated strings
-df['C'] = df['C'].astype('category')
-
-# Using appropriate data types
-df['D'] = df['D'].astype('int8')  # Small integers
-
-# Optimize the DataFrame
-df_optimized = optimize_memory(df.copy())
-</code><button class="copy-button">Copy</button></pre>
-
-                        <h3 id="real-world-examples" class="mt-5">Real-World Data Analysis Examples</h3>
-
-                        <h4>Sales Data Analysis</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-python">
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
-
-# Create sample sales data
-np.random.seed(42)
-dates = pd.date_range('2022-01-01', '2022-12-31', freq='D')
-products = ['Product A', 'Product B', 'Product C', 'Product D']
-regions = ['North', 'South', 'East', 'West']
-
-sales_data = []
-for date in dates:
-    for _ in range(np.random.randint(10, 50)):
-        sales_data.append({
-            'Date': date,
-            'Product': np.random.choice(products),
-            'Region': np.random.choice(regions),
-            'Sales': np.random.randint(100, 1000),
-            'Quantity': np.random.randint(1, 10)
-        })
-
-df = pd.DataFrame(sales_data)
-
-# Time series analysis
-daily_sales = df.groupby('Date')['Sales'].sum()
-
-plt.figure(figsize=(12, 6))
-daily_sales.plot()
-plt.title('Daily Sales Over Time')
-plt.xlabel('Date')
-plt.ylabel('Total Sales')
-plt.show()
-
-# Monthly trends
-df['Month'] = df['Date'].dt.month
-monthly_sales = df.groupby('Month')['Sales'].sum()
-
-plt.figure(figsize=(10, 6))
-monthly_sales.plot(kind='bar')
-plt.title('Monthly Sales')
-plt.xlabel('Month')
-plt.ylabel('Total Sales')
-plt.show()
-
-# Product performance
-product_sales = df.groupby('Product')['Sales'].sum().sort_values(ascending=False)
-
-plt.figure(figsize=(10, 6))
-product_sales.plot(kind='bar')
-plt.title('Sales by Product')
-plt.xlabel('Product')
-plt.ylabel('Total Sales')
-plt.show()
-
-# Regional analysis
-region_sales = df.groupby('Region')['Sales'].sum()
-
-plt.figure(figsize=(8, 8))
-plt.pie(region_sales, labels=region_sales.index, autopct='%1.1f%%')
-plt.title('Sales by Region')
-plt.show()
-
-# Correlation analysis
-correlation = df[['Sales', 'Quantity']].corr()
-print("Correlation between Sales and Quantity:")
-print(correlation)
-
-# Seasonal patterns
-df['DayOfWeek'] = df['Date'].dt.dayofweek
-dow_sales = df.groupby('DayOfWeek')['Sales'].mean()
-
-plt.figure(figsize=(10, 6))
-dow_sales.plot(kind='bar')
-plt.title('Average Sales by Day of Week')
-plt.xlabel('Day of Week (0=Monday)')
-plt.ylabel('Average Sales')
-plt.show()
-</code><button class="copy-button">Copy</button></pre>
-
-                        <h4>Customer Segmentation</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-python">
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-from sklearn.cluster import KMeans
-from sklearn.preprocessing import StandardScaler
-from sklearn.metrics import silhouette_score
-
-# Create sample customer data
-np.random.seed(42)
-n_customers = 1000
-
-customer_data = {
-    'CustomerID': range(1, n_customers + 1),
-    'Age': np.random.randint(18, 70, n_customers),
-    'AnnualIncome': np.random.normal(50000, 15000, n_customers),
-    'SpendingScore': np.random.randint(1, 100, n_customers),
-    'YearsAsCustomer': np.random.randint(1, 20, n_customers),
-    'NumPurchases': np.random.randint(1, 100, n_customers)
-}
-
-df = pd.DataFrame(customer_data)
-
-# Ensure positive values
-df['AnnualIncome'] = df['AnnualIncome'].clip(lower=0)
-
-# Feature selection for clustering
-features = ['Age', 'AnnualIncome', 'SpendingScore', 'YearsAsCustomer', 'NumPurchases']
-X = df[features]
-
-# Standardize features
-scaler = StandardScaler()
-X_scaled = scaler.fit_transform(X)
-
-# Find optimal number of clusters using elbow method
-inertias = []
-silhouette_scores = []
-k_range = range(2, 11)
-
-for k in k_range:
-    kmeans = KMeans(n_clusters=k, random_state=42)
-    kmeans.fit(X_scaled)
-    inertias.append(kmeans.inertia_)
-    silhouette_scores.append(silhouette_score(X_scaled, kmeans.labels_))
-
-# Plot elbow method
-fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 5))
-ax1.plot(k_range, inertias, 'bo-')
-ax1.set_xlabel('Number of clusters')
-ax1.set_ylabel('Inertia')
-ax1.set_title('Elbow Method')
-
-ax2.plot(k_range, silhouette_scores, 'bo-')
-ax2.set_xlabel('Number of clusters')
-ax2.set_ylabel('Silhouette Score')
-ax2.set_title('Silhouette Score')
-plt.show()
-
-# Choose optimal k (let's say k=4 based on the plots)
-optimal_k = 4
-kmeans = KMeans(n_clusters=optimal_k, random_state=42)
-df['Cluster'] = kmeans.fit_predict(X_scaled)
-
-# Analyze clusters
-cluster_analysis = df.groupby('Cluster')[features].mean()
-print("Cluster Analysis:")
-print(cluster_analysis)
-
-# Visualize clusters
-plt.figure(figsize=(12, 8))
-plt.scatter(X_scaled[:, 0], X_scaled[:, 1], c=df['Cluster'], cmap='viridis', alpha=0.6)
-plt.scatter(kmeans.cluster_centers_[:, 0], kmeans.cluster_centers_[:, 1], 
-            c='red', s=300, marker='X', label='Centroids')
-plt.xlabel('Age (scaled)')
-plt.ylabel('Annual Income (scaled)')
-plt.title('Customer Segments')
-plt.legend()
-plt.show()
-
-# Create customer profiles
-cluster_profiles = []
-for cluster in range(optimal_k):
-    cluster_data = df[df['Cluster'] == cluster]
-    profile = {
-        'Cluster': cluster,
-        'Size': len(cluster_data),
-        'AvgAge': cluster_data['Age'].mean(),
-        'AvgIncome': cluster_data['AnnualIncome'].mean(),
-        'AvgSpendingScore': cluster_data['SpendingScore'].mean(),
-        'AvgYearsAsCustomer': cluster_data['YearsAsCustomer'].mean(),
-        'AvgPurchases': cluster_data['NumPurchases'].mean()
-    }
-    cluster_profiles.append(profile)
-
-profiles_df = pd.DataFrame(cluster_profiles)
-print("\nCustomer Profiles:")
-print(profiles_df)
-
-# Visualize cluster characteristics
-fig, axes = plt.subplots(2, 3, figsize=(18, 10))
-for i, feature in enumerate(features):
-    row = i // 3
-    col = i % 3
-    sns.boxplot(x='Cluster', y=feature, data=df, ax=axes[row, col])
-    axes[row, col].set_title(f'{feature} by Cluster')
-plt.tight_layout()
-plt.show()
-</code><button class="copy-button">Copy</button></pre>
-
-                        <p>This comprehensive guide covers essential data analysis techniques using Python, from basic data manipulation to advanced machine learning applications. Remember that data analysis is an iterative process, and the key to success is understanding your data, asking the right questions, and choosing appropriate techniques for your specific use case.</p>
-
-                        <div class="mt-5 text-center">
-                            <a href="/practice" class="btn btn-primary btn-lg">Take Practice Test</a>
-                        </div>
+</code></pre>
+
+                    <h5>Interactive Example</h5>
+                    <div class="interactive-demo">
+                        <p>Try time series operations:</p>
+                        <button onclick="createTimeSeries()">Create Time Series</button>
+                        <button onclick="decomposeTimeSeries()">Decompose Time Series</button>
+                        <button onclick="forecastTimeSeries()">Forecast Time Series</button>
+                        <div id="ts-result"></div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div id="animation-container-docs" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1;">
+
+            <!-- Module 11: Final Project -->
+            <div class="content-card" id="module11">
+                <div class="card-header">
+                    <i class="fas fa-project-diagram"></i> Module 11: Final Project
+                </div>
+                <div class="card-body">
+                    <h5>Project Overview</h5>
+                    <p>For the final project, you'll create a comprehensive data analysis project that demonstrates all the concepts learned throughout the course. This project will involve loading, cleaning, analyzing, and visualizing a real-world dataset to extract meaningful insights.</p>
+
+                    <h5>Project Structure</h5>
+                    <pre><button class="button">Copy</button><code class="language-python">
+# project.py
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import r2_score, mean_squared_error
+
+class DataAnalysisProject:
+    def __init__(self, data_path):
+        self.data_path = data_path
+        self.df = None
+        self.X = None
+        self.y = None
+        self.model = None
+        self.scaler = None
+        self.X_train = None
+        self.X_test = None
+        self.y_train = None
+        self.y_test = None
+        self.y_pred = None
+        
+    def load_data(self):
+        """Load data from CSV file"""
+        try:
+            self.df = pd.read_csv(self.data_path)
+            print(f"Data loaded successfully. Shape: {self.df.shape}")
+            return True
+        except FileNotFoundError:
+            print(f"Error: File {self.data_path} not found")
+            return False
+    
+    def clean_data(self):
+        """Clean the dataset"""
+        # Handle missing values
+        numeric_columns = self.df.select_dtypes(include=[np.number]).columns
+        self.df[numeric_columns] = self.df[numeric_columns].fillna(self.df[numeric_columns].mean())
+        
+        # Handle duplicates
+        self.df = self.df.drop_duplicates()
+        
+        # Convert data types
+        self.df['date'] = pd.to_datetime(self.df['date'])
+        
+        print(f"Data cleaned. Shape: {self.df.shape}")
+        return True
+    
+    def explore_data(self):
+        """Perform exploratory data analysis"""
+        print("Data Overview:")
+        print(self.df.describe())
+        print("\nData Types:")
+        print(self.df.dtypes)
+        print("\nMissing Values:")
+        print(self.df.isnull().sum())
+        
+        # Visualize distributions
+        plt.figure(figsize=(12, 6))
+        sns.hist(self.df['value'], bins=20)
+        plt.title('Distribution of Values')
+        plt.show()
+        
+        # Visualize correlations
+        if len(self.df.select_dtypes(include=[np.number]).columns) > 1:
+            plt.figure(figsize=(10, 8))
+            sns.heatmap(self.df.select_dtypes(include=[np.number]).corr(), annot=True, cmap='coolwarm', center=0)
+            plt.title('Correlation Matrix')
+            plt.show()
+    
+    def feature_engineering(self):
+        """Create new features from existing ones"""
+        # Date features
+        self.df['year'] = self.df['date'].dt.year
+        self.df['month'] = self.df['date'].dt.month
+        self.df['day'] = self.df['date'].dt.day
+        self.df['day_of_week'] = self.df['date'].dt.dayofweek
+        
+        # Interaction features
+        self.df['value_log'] = np.log(self.df['value'])
+        self.df['value_sqrt'] = np.sqrt(self.df['value'])
+        
+        return True
+    
+    def build_model(self, target_column):
+        """Build a predictive model"""
+        # Define features and target
+        features = ['year', 'month', 'day', 'day_of_week', 'value_log', 'value_sqrt']
+        self.X = self.df[features]
+        self.y = self.df[target_column]
+        
+        # Split data
+        self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(
+            self.X, self.y, test_size=0.2, random_state=42
+        )
+        
+        # Scale features
+        self.scaler = StandardScaler()
+        self.X_train = self.scaler.fit_transform(self.X_train)
+        self.X_test = self.scaler.transform(self.X_test)
+        
+        # Train model
+        self.model = LinearRegression()
+        self.model.fit(self.X_train, self.y_train)
+        
+        # Evaluate model
+        self.y_pred = self.model.predict(self.X_test)
+        r2 = r2_score(self.y_test, self.y_pred)
+        rmse = np.sqrt(mean_squared_error(self.y_test, self.y_pred))
+        
+        print(f"Model Performance:")
+        print(f"R² Score: {r2:.4f}")
+        print(f"RMSE: {rmse:.4f}")
+        
+        return True
+    
+    def visualize_results(self):
+        """Visualize model results"""
+        # Actual vs Predicted
+        plt.figure(figsize=(12, 6))
+        plt.scatter(self.y_test, self.y_pred, alpha=0.6)
+        plt.plot([min(self.y_test.min(), self.y_test.max()], [min(self.y_pred.min(), self.y_pred.max()], 'r--', 'r--')
+        plt.xlabel('Actual Values')
+        plt.ylabel('Predicted Values')
+        plt.title('Actual vs Predicted Values')
+        plt.show()
+        
+        # Residuals
+        residuals = self.y_test - self.y_pred
+        plt.figure(figsize=(12, 4))
+        plt.scatter(self.y_test, residuals, alpha=0.6)
+        plt.axhline(y=0, color='red', linestyle='--', alpha=0.7)
+        plt.title('Residuals Plot')
+        plt.xlabel('Actual Values')
+        plt.ylabel('Residuals')
+        plt.show()
+    
+    def run_analysis(self):
+        """Run the complete analysis pipeline"""
+        if not self.load_data():
+            print("Failed to load data. Please check the file path.")
+            return
+        
+        if not self.clean_data():
+            print("Failed to clean data.")
+            return
+            
+        if not self.explore_data():
+            print("Failed to explore data.")
+            return
+            
+        if not self.feature_engineering():
+            print("Failed to engineer features.")
+            return
+            
+        if not self.build_model('value'):
+            print("Failed to build model.")
+            return
+            
+        if not self.visualize_results():
+            print("Failed to visualize results.")
+            return
+            
+        print("Analysis completed successfully!")
+</code></pre>
+
+                    <h5>Project Features</h5>
+                    <ul>
+                        <li><strong>Data Loading:</strong> Load data from various sources (CSV, Excel, databases)</li>
+                        <li><strong>Data Cleaning:</strong> Handle missing values, duplicates, and type issues</li>
+                        <li><strong>Exploratory Analysis:</strong> Generate descriptive statistics and visualizations</li>
+                        <li><strong>Feature Engineering:</strong> Create new features from existing ones</li>
+                        <li><strong>Model Building:</strong> Train and evaluate predictive models</li>
+                        <li><strong>Visualization:</strong> Create compelling visualizations to communicate findings</li>
+                        <li>
+                    </ul>
+
+                    <h5>Project Extensions</h5>
+                    <p>Once you've implemented the basic analysis, consider these extensions:</p>
+                    <ul>
+                        <li>Add more advanced statistical tests</li>
+                        <li>Implement multiple models and compare performance</li>
+                        <li>Create an interactive dashboard using Dash or Streamlit</li>
+                        <li>Deploy the analysis as a web application</li>
+                        <li>Add automated reporting</li>
+                    </ul>
+
+                    <h5>Interactive Demo</h5>
+                    <div class="interactive-demo">
+                        <p>Try the complete analysis pipeline:</p>
+                        <button onclick="runAnalysisPipeline()">Run Analysis Pipeline</button>
+                        <div id="project-result"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-5 text-center">
+                <a href="/practice" class="btn btn-primary btn-lg">Take Practice Test</a>
+            </div>
+
+            <div id="animation-container-docs" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1;"></div>
         </div>
     </section>
 
     <script>
+        // Smooth scrolling for sidebar navigation
+        document.querySelectorAll('.sidebar .nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }
+                // Update active state
+                document.querySelectorAll('.sidebar .nav-link').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Search functionality
         document.getElementById('search-input').addEventListener('input', function() {
             const query = this.value.toLowerCase();
             const content = document.getElementById('content');
-            const elements = content.querySelectorAll('h2, h3, h4, p, pre');
-
+            const elements = content.querySelectorAll('h2, h3, h4, h5, h6, p, pre, .card');
+            
             elements.forEach(element => {
                 const text = element.textContent.toLowerCase();
                 if (query === '' || text.includes(query)) {
@@ -1542,8 +2243,18 @@ plt.show()
                 }
             });
         });
-    </script>
-    <script>
+
+        // Clear search function
+        function clearSearch() {
+            document.getElementById('search-input').value = '';
+            const content = document.getElementById('content');
+            const elements = content.querySelectorAll('h2, h3, h4, h5, h6, p, pre, .card');
+            elements.forEach(element => {
+                element.style.display = '';
+            });
+        }
+
+        // Copy to clipboard functionality
         const copyButtons = document.querySelectorAll('.copy-button');
         copyButtons.forEach(button => {
             button.addEventListener('click', function() {
@@ -1555,5 +2266,233 @@ plt.show()
                 }, 2000);
             });
         });
+
+        // Highlight active section in sidebar based on scroll position
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('[id]');
+            const navLinks = document.querySelectorAll('.sidebar .nav-link');
+
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Interactive demo functions
+        function checkEnvironment() {
+            const resultDiv = document.getElementById('env-result');
+            resultDiv.innerHTML = `
+                <div class="console-output">
+                    <p>Python version: ${navigator.userAgent.match(/Python\/(\d+\.\d+\.\d+)/)[1]}</p>
+                    <p>
+                        <p>NumPy version: ${np.__version__}</p>
+                        <p>Pandas version: ${pd.__version__}</p>
+                        <p>Matplotlib version: ${plt.matplotlib.__version__}</p>
+                    </div>
+            `;
+        }
+
+        function analyzeNumbers() {
+            const input = document.getElementById('intro-input').value;
+            const resultDiv = document.getElementById('intro-result');
+            
+            if (!input) {
+                resultDiv.innerHTML = '<p>Please enter some numbers</p>';
+                return;
+            }
+            
+            const numbers = input.split(',').map(item => {
+                const trimmed = item.trim();
+                return isNaN(trimmed) ? 0 : Number(trimmed);
+            });
+            
+            if (numbers.length === 0) {
+                resultDiv.innerHTML = '<p>Please enter valid numbers</p>';
+                return;
+            }
+            
+            const sum = numbers.reduce((a, b) => a + b, 0);
+            const mean = sum / numbers.length;
+            const std = Math.sqrt(numbers.reduce((sum, sum => sum + Math.pow(num - mean, 2), 0) / numbers.length);
+            
+            resultDiv.innerHTML = `
+                <div class="code-result">
+                    <p>Count: ${numbers.length}</p>
+                    <p>Sum: ${sum}</p>
+                    <p>Mean: ${mean.toFixed(2)}</p>
+                    <p>Std Dev: ${std.toFixed(2)}</p>
+                </div>
+            `;
+        }
+
+        function createDataFrame() {
+            const resultDiv = document.getElementById('pandas-result');
+            
+            const data = {
+                'Name': ['Alice', 'Bob', 'Charlie', 'Diana'],
+                'Age': [25, 30, 35],
+                'City': ['New York', 'Los Angeles', 'Chicago'],
+                'Salary': [70000, 80000, 90000]
+            };
+            
+            const df = pd.DataFrame(data);
+            resultDiv.innerHTML = `
+                <div class="code-result">
+                    <p>DataFrame created with ${len(df)} rows</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-python">
+ ${df.head().to_string()}
+                    </code></pre>
+            `;
+        }
+
+        function filterDataFrame() {
+            const resultDiv = document.getElementById('pandas-result');
+            
+            if (!window.demoDF) {
+                resultDiv.innerHTML = '<p>No DataFrame created yet. Create a DataFrame first.</p>';
+                return;
+            }
+            
+            const filtered = window.demoDF[window.demoDF['Age'] > 30];
+            resultDiv.innerHTML = `
+                <div class="code-result">
+                    <p>Filtered DataFrame with ${len(filtered)} rows</p>
+                    <pre><button class="filter-button">Copy</button><code class="language-python">
+ ${filtered.head().to_string()}
+                    </code></pre>
+            `;
+        }
+
+        function groupByDataFrame() {
+            const resultDiv = document.getElementById('pandas-result');
+            
+            if (!window.demoDF) {
+                resultDiv.innerHTML = '<p>No DataFrame created yet. Create a DataFrame first.</p>';
+                return;
+            }
+            
+            const grouped = window.demoDF.groupby('City')['Salary'].mean();
+            resultDiv.innerHTML = `
+                <div class="code-result">
+                    <p>Average Salary by City:</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-python">
+ ${grouped.to_string()}
+                    </code></pre>
+            `;
+        }
+
+        function createTimeSeries() {
+            const resultDiv = document.getElementById('ts-result');
+            
+            np.random.seed(42);
+            dates = pd.date_range('2022-01-01', periods=365, freq='D')
+            values = np.random.randn(365) + 100
+            const ts = pd.Series(values, index=dates);
+            
+            resultDiv.innerHTML = `
+                <div class="code-result">
+                    <p>Time Series created with ${len(ts)} data points</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-python">
+ ${ts.head().to_string()}
+                    </code></pre>
+            `;
+        }
+
+        function decomposeTimeSeries() {
+            const resultDiv = document.getElementById('ts-result');
+            
+            if (!window.demoTS) {
+                resultDiv.innerHTML = '<p>No Time Series created yet. Create a Time Series first.</p>';
+                return;
+            }
+            
+            decomposition = seasonal_decompose(window.demoTS, model='additive', period=30);
+            
+            resultDiv.innerHTML = `
+                <div class="code-result">
+                    <p>Decomposition:</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-python">
+ ${decomposition.trend.to_string()}
+                    </code></pre>
+                    <pre><button class="copy-button"></button><code class="language-python">
+ ${decomposition.seasonal.to_string()}
+                    </code></pre>
+            `;
+        }
+
+        function forecastTimeSeries() {
+            const resultDiv = document.getElementById('ts-result');
+            
+            if (!window.demoTS) {
+                resultDiv.innerHTML = '<p>No Time Series created yet. Create a Time Series first.</p>';
+                return;
+            }
+            
+            # Split data
+            train_size = int(len(window.demoTS) * 0.8)
+            train, test = window.demoTS[:train_size], window.demoTS[train_size:]
+            
+            # Fit ARIMA model
+            model = ARIMA(train, order=(1, 1, 1))
+            model_fit = model.fit()
+            
+            # Make predictions
+            predictions = model_fit.forecast(steps=len(test))
+            
+            resultDiv.innerHTML = `
+                <div class="code-result">
+                    <p>ARIMA Model Trained</p>
+                    <pre><button class="copy-button">Copy</button><code class="language-python">
+{model_fit.summary()}
+                    </code></pre>
+                    <p>RMSE: {np.sqrt(mean_squared_error(test, predictions):.2f}</p>
+                </div>
+            `;
+        }
+
+        function runAnalysisPipeline() {
+            const resultDiv = document.getElementById('project-result');
+            
+            // Create a sample dataset
+            np.random.seed(42)
+            data = {
+                'date': pd.date_range('2020-01-01', periods=365, freq='D'),
+                'sales': np.random.randint(100, 1000, 365),
+                'marketing': np.random.randint(50, 200, 365),
+                'weather': np.random.randint(20, 80, 365)
+            }
+            
+            df = pd.DataFrame(data)
+            
+            resultDiv.innerHTML = `
+                <div class="code-result">
+                    <p>Analysis Pipeline Started...</p>
+                    <p>Data Shape: ${df.shape}</p>
+                    <p>Processing: Cleaning...</p>
+                    <p>Analysis: Analyzing...</p>
+                    <p>Modeling: Training...</p>
+                    <p>Results: R² Score: 0.85</p>
+                    <p>RMSE: 125.45</p>
+                </div>
+            
+            // Simulate the pipeline
+            setTimeout(() => {
+                resultDiv.innerHTML += `<p>Data cleaned and analyzed successfully!</p>`;
+            }, 1000);
+        }
+
+        // Initialize demo variables
+        window.demoDF = null;
+        window.demoTS = null;
     </script>
 {% endblock %}

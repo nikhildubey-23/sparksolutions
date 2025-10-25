@@ -4,8 +4,146 @@
 
 {% block head %}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/github-dark.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.3/purify.min.js"></script>
+    <style>
+        body {
+            background: #f8f9fa;
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #212529;
+        }
+        .docs-page {
+            padding-top: 80px;
+        }
+        .sidebar {
+            position: fixed;
+            top: 70px;
+            left: 0;
+            width: 280px;
+            height: calc(100vh - 70px);
+            background: #343a40;
+            border-right: 1px solid #495057;
+            overflow-y: auto;
+            z-index: 1000;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+        }
+        .sidebar .nav-link {
+            color: #adb5bd;
+            padding: 12px 20px;
+            border-radius: 0;
+            margin: 0;
+            transition: all 0.2s ease;
+            font-weight: 500;
+            border-left: 3px solid transparent;
+        }
+        .sidebar .nav-link:hover {
+            background: #495057;
+            color: #fff;
+            text-decoration: none;
+            border-left-color: #0070f3;
+        }
+        .sidebar .nav-link.active {
+            background: #0070f3;
+            color: #fff;
+            border-left-color: #0070f3;
+        }
+        .main-content {
+            margin-left: 240px;
+            padding: 30px;
+            max-width: 1074px;
+        }
+        .search-container {
+            background: rgba(255,255,255,0.9);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .module-card {
+            margin-bottom: 30px;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            background: #fff;
+            overflow: hidden;
+        }
+        .module-header {
+            background: #0070f3;
+            color: white;
+            font-weight: 600;
+            font-size: 1.1rem;
+            padding: 15px 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .module-header:hover {
+            background: #0060df;
+        }
+        .module-header i {
+            transition: transform 0.3s ease;
+        }
+        .module-header.collapsed i {
+            transform: rotate(-90deg);
+        }
+        .module-content {
+            padding: 20px;
+            display: block;
+        }
+        .module-content.collapsed {
+            display: none;
+        }
+        .copy-button {
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 4px 8px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .copy-button:hover {
+            background: #5a6268;
+            transform: scale(1.05);
+        }
+        .table {
+            margin-bottom: 0;
+        }
+        .table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            border-top: none;
+        }
+        pre {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+        }
+        code {
+            background: #f1f3f4;
+            color: #d73a49;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+        .nextjs-logo {
+            color: #000000;
+            font-weight: 700;
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+            .main-content {
+                margin-left: 0;
+            }
+        }
+    </style>
     <script>
         hljs.highlightAll();
     </script>
@@ -16,43 +154,92 @@
     <section class="docs-page py-5">
         <div class="container-fluid">
             <div class="row">
-                <!-- Documentation Content -->
-                <div class="col-md-12">
-                    <!-- Search Box -->
-                    <div class="search-container mb-4">
-                        <input type="text" id="search-input" class="form-control" placeholder="Search documentation...">
+                <!-- Sidebar Navigation -->
+                <nav class="sidebar">
+                    <div class="p-3">
+                        <h5 class="text-center mb-3" style="font-size: 1.1rem; color: #fff; font-weight: 600;"><i class="fas fa-cube"></i> <span class="nextjs-logo">Next.js</span> Documentation</h5>
+
+                        <!-- Search Box -->
+                        <div class="search-container">
+                            <input type="text" id="search-input" class="form-control" placeholder="Search documentation..." style="background: rgba(255,255,255,0.9); border: 1px solid #495057; color: #212529;">
+                            <button class="btn btn-sm btn-outline-dark mt-2 w-100" onclick="clearSearch()">Clear Search</button>
+                        </div>
+
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#module1"><i class="fas fa-book"></i> Module 1: Next.js Fundamentals</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#module2"><i class="fas fa-route"></i> Module 2: Pages and Routing</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#module3"><i class="fas fa-database"></i> Module 3: Data Fetching</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#module4"><i class="fas fa-plug"></i> Module 4: API Routes</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#module5"><i class="fas fa-file-alt"></i> Module 5: Static Site Generation (SSG)</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#module6"><i class="fas fa-server"></i> Module 6: Server-Side Rendering (SSR)</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#module7"><i class="fas fa-palette"></i> Module 7: Styling with CSS Modules</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#module8"><i class="fas fa-user-shield"></i> Module 8: Authentication</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#module9"><i class="fas fa-database"></i> Module 9: Database Integration</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#module10"><i class="fas fa-rocket"></i> Module 10: Deployment and Optimization</a>
+                            </li>
+                        </ul>
                     </div>
+                </nav>
+
+                <!-- Main Content -->
+                <div class="main-content">
+                    <!-- Search Box -->
+                    
                     <div id="content">
-                        <h2 class="mb-4">Next.js Documentation</h2>
+                        <h2 class="mb-4"><span class="nextjs-logo">Next.js</span> Documentation</h2>
                         <p>Welcome to the comprehensive Next.js documentation. Next.js is a React framework that enables functionality such as server-side rendering and generating static websites for React based web applications.</p>
 
-                        <h3 id="introduction" class="mt-5">Introduction to Next.js</h3>
-                        <p>Next.js is a full-stack React framework that provides everything you need to build production-ready web applications. It features automatic optimization, TypeScript support, and a powerful routing system.</p>
-                        <p>Key features of Next.js:</p>
-                        <ul>
-                            <li><strong>Server-Side Rendering (SSR)</strong> - Render pages on the server for better performance and SEO</li>
-                            <li><strong>Static Site Generation (SSG)</strong> - Pre-build pages at build time</li>
-                            <li><strong>API Routes</strong> - Build API endpoints as part of your Next.js app</li>
-                            <li><strong>File-based Routing</strong> - Automatic routing based on file structure</li>
-                            <li><strong>TypeScript Support</strong> - Built-in TypeScript support</li>
-                            <li><strong>Image Optimization</strong> - Automatic image optimization and lazy loading</li>
-                            <li><strong>Code Splitting</strong> - Automatic code splitting for faster loading</li>
-                        </ul>
+                        <!-- Module 1: Next.js Fundamentals -->
+                        <div class="module-card" id="module1">
+                            <div class="module-header" onclick="toggleModule('module1-content')">
+                                <span><i class="fas fa-book"></i> Module 1: Next.js Fundamentals</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="module-content" id="module1-content">
+                                <h5>Introduction to Next.js</h5>
+                                <p>Next.js is a full-stack React framework that provides everything you need to build production-ready web applications. It features automatic optimization, TypeScript support, and a powerful routing system.</p>
+                                <p>Key features of Next.js:</p>
+                                <ul>
+                                    <li><strong>Server-Side Rendering (SSR)</strong> - Render pages on the server for better performance and SEO</li>
+                                    <li><strong>Static Site Generation (SSG)</strong> - Pre-build pages at build time</li>
+                                    <li><strong>API Routes</strong> - Build API endpoints as part of your Next.js app</li>
+                                    <li><strong>File-based Routing</strong> - Automatic routing based on file structure</li>
+                                    <li><strong>TypeScript Support</strong> - Built-in TypeScript support</li>
+                                    <li><strong>Image Optimization</strong> - Automatic image optimization and lazy loading</li>
+                                    <li><strong>Code Splitting</strong> - Automatic code splitting for faster loading</li>
+                                </ul>
 
-                        <h3 id="setup" class="mt-5">Setup and Installation</h3>
-
-                        <h4>Prerequisites</h4>
-                        <p>Make sure you have Node.js (version 18.17 or later) and npm installed:</p>
-                        <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
+                                <h5>Prerequisites</h5>
+                                <p>Make sure you have Node.js (version 18.17 or later) and npm installed:</p>
+                                <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
 # Check Node.js version
 node --version
 
 # Check npm version
 npm --version
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
 
-                        <h4>Create Next.js Project</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
+                                <h5>Create Next.js Project</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
 # Create a new Next.js app
 npx create-next-app@latest my-next-app
 
@@ -64,10 +251,10 @@ cd my-next-app
 
 # Start the development server
 npm run dev
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
 
-                        <h4>Manual Setup</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
+                                <h5>Manual Setup</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
 # Initialize npm project
 npm init -y
 
@@ -79,10 +266,10 @@ npm install @types/node @types/react @types/react-dom typescript eslint eslint-c
 
 # Create necessary directories
 mkdir pages components styles public
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
 
-                        <h4>Package.json Scripts</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-json">{% raw %}
+                                <h5>Package.json Scripts</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-json">{% raw %}
 {
   "scripts": {
     "dev": "next dev",
@@ -92,12 +279,19 @@ mkdir pages components styles public
     "export": "next export"
   }
 }
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
+                            </div>
+                        </div>
 
-                        <h3 id="project-structure" class="mt-5">Next.js Project Structure</h3>
-
-                        <h4>App Router Structure (Next.js 13+)</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
+                        <!-- Module 2: Pages and Routing -->
+                        <div class="module-card" id="module2">
+                            <div class="module-header" onclick="toggleModule('module2-content')">
+                                <span><i class="fas fa-route"></i> Module 2: Pages and Routing</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="module-content" id="module2-content">
+                                <h5>App Router Structure (Next.js 13+)</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
 my-next-app/
 ├── app/
 │   ├── layout.tsx
@@ -123,10 +317,10 @@ my-next-app/
 ├── package.json
 ├── tsconfig.json
 └── tailwind.config.js
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
 
-                        <h4>Pages Router Structure (Legacy)</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
+                                <h5>Pages Router Structure (Legacy)</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
 my-next-app/
 ├── pages/
 │   ├── _app.tsx
@@ -140,38 +334,10 @@ my-next-app/
 ├── styles/
 ├── next.config.js
 └── package.json
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
 
-                        <h4>Next.js Configuration</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-javascript">{% raw %}
-// next.config.js
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  reactStrictMode: true,
-  swcMinify: true,
-  images: {
-    domains: ['example.com'],
-  },
-  async rewrites() {
-    return [
-      {
-        source: '/api/:path*',
-        destination: 'https://api.example.com/:path*',
-      },
-    ]
-  },
-  env: {
-    API_URL: process.env.API_URL,
-  },
-}
-
-module.exports = nextConfig
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
-
-                        <h3 id="app-router" class="mt-5">App Router (Next.js 13+)</h3>
-
-                        <h4>Root Layout</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
+                                <h5>Root Layout (App Router)</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
 // app/layout.tsx
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
@@ -205,10 +371,10 @@ export default function RootLayout({
     </html>
   )
 }
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
 
-                        <h4>Page Component</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
+                                <h5>Page Component (App Router)</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
 // app/page.tsx
 import Link from 'next/link'
 
@@ -221,10 +387,10 @@ export default function Home() {
     </main>
   )
 }
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
 
-                        <h4>Nested Routes</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
+                                <h5>Nested Routes</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
 // app/blog/[slug]/page.tsx
 import { notFound } from 'next/navigation'
 
@@ -259,12 +425,10 @@ export async function generateStaticParams() {
     slug: post.slug,
   }))
 }
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
 
-                        <h3 id="pages-router" class="mt-5">Pages Router (Legacy)</h3>
-
-                        <h4>Custom App</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
+                                <h5>Custom App (Pages Router)</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
 // pages/_app.tsx
 import type { AppProps } from 'next/app'
 import '../styles/globals.css'
@@ -272,10 +436,10 @@ import '../styles/globals.css'
 export default function App({ Component, pageProps }: AppProps) {
   return <Component {...pageProps} />
 }
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
 
-                        <h4>Custom Document</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
+                                <h5>Custom Document (Pages Router)</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
 // pages/_document.tsx
 import { Html, Head, Main, NextScript } from 'next/document'
 
@@ -290,10 +454,10 @@ export default function Document() {
     </Html>
   )
 }
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
 
-                        <h4>Page Component</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
+                                <h5>Page Component (Pages Router)</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
 // pages/index.tsx
 import type { NextPage } from 'next'
 import Link from 'next/link'
@@ -310,158 +474,19 @@ const Home: NextPage = () => {
 }
 
 export default Home
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
+                            </div>
+                        </div>
 
-                        <h3 id="api-routes" class="mt-5">API Routes</h3>
-
-                        <h4>App Router API Route</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
-// app/api/users/route.ts
-import { NextRequest, NextResponse } from 'next/server'
-
-export async function GET(request: NextRequest) {
-  const users = [
-    { id: 1, name: 'John Doe' },
-    { id: 2, name: 'Jane Doe' },
-  ]
-
-  return NextResponse.json(users)
-}
-
-export async function POST(request: NextRequest) {
-  const body = await request.json()
-  const newUser = { id: Date.now(), ...body }
-
-  // Save to database
-  // await saveUser(newUser)
-
-  return NextResponse.json(newUser, { status: 201 })
-}
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
-
-                        <h4>Pages Router API Route</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
-// pages/api/users.ts
-import type { NextApiRequest, NextApiResponse } from 'next'
-
-type User = {
-  id: number
-  name: string
-}
-
-export default function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<User[] | User>
-) {
-  if (req.method === 'GET') {
-    const users: User[] = [
-      { id: 1, name: 'John Doe' },
-      { id: 2, name: 'Jane Doe' },
-    ]
-    res.status(200).json(users)
-  } else if (req.method === 'POST') {
-    const newUser: User = { id: Date.now(), name: req.body.name }
-    res.status(201).json(newUser)
-  } else {
-    res.setHeader('Allow', ['GET', 'POST'])
-    res.status(405).end(`Method ${req.method} Not Allowed`)
-  }
-}
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
-
-                        <h3 id="components" class="mt-5">Components and Styling</h3>
-
-                        <h4>React Components</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
-// components/Button.tsx
-import { ButtonHTMLAttributes } from 'react'
-
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary'
-  size?: 'sm' | 'md' | 'lg'
-}
-
-export default function Button({
-  variant = 'primary',
-  size = 'md',
-  children,
-  className = '',
-  ...props
-}: ButtonProps) {
-  const baseClasses = 'rounded font-medium transition-colors'
-  const variantClasses = {
-    primary: 'bg-blue-500 text-white hover:bg-blue-600',
-    secondary: 'bg-gray-200 text-gray-800 hover:bg-gray-300',
-  }
-  const sizeClasses = {
-    sm: 'px-3 py-1 text-sm',
-    md: 'px-4 py-2',
-    lg: 'px-6 py-3 text-lg',
-  }
-
-  return (
-    <button
-      className={`${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${className}`}
-      {...props}
-    >
-      {children}
-    </button>
-  )
-}
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
-
-                        <h4>CSS Modules</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-css">{% raw %}
-/* styles/Home.module.css */
-.container {
-  padding: 0 2rem;
-}
-
-.main {
-  min-height: 100vh;
-  padding: 4rem 0;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.title {
-  margin: 0;
-  line-height: 1.15;
-  font-size: 4rem;
-  text-align: center;
-}
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
-
-                        <h4>Tailwind CSS</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
-# Install Tailwind CSS
-npm install -D tailwindcss postcss autoprefixer
-npx tailwindcss init -p
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
-
-                        <pre><button class="copy-button">Copy</button><code class="language-javascript">{% raw %}
-// tailwind.config.js
-/** @type {import('tailwindcss').Config} */
-module.exports = {
-  content: [
-    './pages/**/*.{js,ts,jsx,tsx}',
-    './components/**/*.{js,ts,jsx,tsx}',
-    './app/**/*.{js,ts,jsx,tsx}',
-  ],
-  theme: {
-    extend: {},
-  },
-  plugins: [],
-}
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
-
-                        <h3 id="data-fetching" class="mt-5">Data Fetching</h3>
-
-                        <h4>Server Components (App Router)</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
+                        <!-- Module 3: Data Fetching -->
+                        <div class="module-card" id="module3">
+                            <div class="module-header" onclick="toggleModule('module3-content')">
+                                <span><i class="fas fa-database"></i> Module 3: Data Fetching</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="module-content" id="module3-content">
+                                <h5>Server Components (App Router)</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
 // app/users/page.tsx
 async function getUsers() {
   const res = await fetch('https://api.example.com/users')
@@ -485,10 +510,10 @@ export default async function UsersPage() {
     </div>
   )
 }
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
 
-                        <h4>Client Components</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
+                                <h5>Client Components</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
 // components/UserList.tsx
 'use client'
 
@@ -524,15 +549,15 @@ export default function UserList() {
     </ul>
   )
 }
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
 
-                        <h4>SWR for Data Fetching</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
+                                <h5>SWR for Data Fetching</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
 # Install SWR
 npm install swr
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
 
-                        <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
+                                <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
 // components/UserList.tsx
 'use client'
 
@@ -554,12 +579,1722 @@ export default function UserList() {
     </ul>
   )
 }
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
 
-                        <h3 id="deployment" class="mt-5">Deployment</h3>
+                                <h5>Data Fetching in Pages Router</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
+// pages/users.tsx
+import type { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 
-                        <h4>Vercel Deployment</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
+type User = {
+  id: number
+  name: string
+}
+
+type UsersPageProps = {
+  users: User[]
+}
+
+export default function UsersPage({ users }: UsersPageProps) {
+  return (
+    <div>
+      <h1>Users</h1>
+      <ul>
+        {users.map((user) => (
+          <li key={user.id}>{user.name}</li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
+export const getServerSideProps: GetServerSideProps<UsersPageProps> = async () => {
+  const res = await fetch('https://api.example.com/users')
+  const users: User[] = await res.json()
+
+  return {
+    props: {
+      users,
+    },
+  }
+}
+{% endraw %}</code></pre>
+
+                                <h5>Static Generation with getStaticProps</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
+// pages/posts/[id].tsx
+import type { GetStaticProps, GetStaticPaths, InferGetStaticPropsType } from 'next'
+
+type Post = {
+  id: number
+  title: string
+  content: string
+}
+
+type PostPageProps = {
+  post: Post
+}
+
+export default function PostPage({ post }: PostPageProps) {
+  return (
+    <div>
+      <h1>{post.title}</h1>
+      <p>{post.content}</p>
+    </div>
+  )
+}
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const res = await fetch('https://api.example.com/posts')
+  const posts: Post[] = await res.json()
+
+  const paths = posts.map((post) => ({
+    params: { id: post.id.toString() },
+  }))
+
+  return {
+    paths,
+    fallback: 'blocking',
+  }
+}
+
+export const getStaticProps: GetStaticProps<PostPageProps> = async ({ params }) => {
+  const res = await fetch(`https://api.example.com/posts/${params.id}`)
+  const post: Post = await res.json()
+
+  return {
+    props: {
+      post,
+    },
+    revalidate: 60, // Re-generate the page every 60 seconds
+  }
+}
+{% endraw %}</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- Module 4: API Routes -->
+                        <div class="module-card" id="module4">
+                            <div class="module-header" onclick="toggleModule('module4-content')">
+                                <span><i class="fas fa-plug"></i> Module 4: API Routes</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="module-content" id="module4-content">
+                                <h5>App Router API Route</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
+// app/api/users/route.ts
+import { NextRequest, NextResponse } from 'next/server'
+
+export async function GET(request: NextRequest) {
+  const users = [
+    { id: 1, name: 'John Doe' },
+    { id: 2, name: 'Jane Doe' },
+  ]
+
+  return NextResponse.json(users)
+}
+
+export async function POST(request: NextRequest) {
+  const body = await request.json()
+  const newUser = { id: Date.now(), ...body }
+
+  // Save to database
+  // await saveUser(newUser)
+
+  return NextResponse.json(newUser, { status: 201 })
+}
+{% endraw %}</code></pre>
+
+                                <h5>Pages Router API Route</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
+// pages/api/users.ts
+import type { NextApiRequest, NextApiResponse } from 'next'
+
+type User = {
+  id: number
+  name: string
+}
+
+export default function handler(
+  req: NextApiRequest,
+  res: NextApiResponse<User[] | User>
+) {
+  if (req.method === 'GET') {
+    const users: User[] = [
+      { id: 1, name: 'John Doe' },
+      { id: 2, name: 'Jane Doe' },
+    ]
+    res.status(200).json(users)
+  } else if (req.method === 'POST') {
+    const newUser: User = { id: Date.now(), name: req.body.name }
+    res.status(201).json(newUser)
+  } else {
+    res.setHeader('Allow', ['GET', 'POST'])
+    res.status(405).end(`Method ${req.method} Not Allowed`)
+  }
+}
+{% endraw %}</code></pre>
+
+                                <h5>Dynamic API Routes</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
+// app/api/users/[id]/route.ts
+import { NextRequest, NextResponse } from 'next/server'
+
+export async function GET(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  const id = params.id
+  
+  // Fetch user from database
+  const user = await getUserById(id)
+  
+  if (!user) {
+    return NextResponse.json({ error: 'User not found' }, { status: 404 })
+  }
+  
+  return NextResponse.json(user)
+}
+
+export async function PUT(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  const id = params.id
+  const body = await request.json()
+  
+  // Update user in database
+  const updatedUser = await updateUser(id, body)
+  
+  if (!updatedUser) {
+    return NextResponse.json({ error: 'User not found' }, { status: 404 })
+  }
+  
+  return NextResponse.json(updatedUser)
+}
+
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  const id = params.id
+  
+  // Delete user from database
+  const success = await deleteUser(id)
+  
+  if (!success) {
+    return NextResponse.json({ error: 'User not found' }, { status: 404 })
+  }
+  
+  return NextResponse.json({ message: 'User deleted successfully' })
+}
+{% endraw %}</code></pre>
+
+                                <h5>API Route with Authentication</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
+// app/api/protected/route.ts
+import { NextRequest, NextResponse } from 'next/server'
+import { getToken } from 'next-auth/jwt'
+
+export async function GET(request: NextRequest) {
+  // Get the token from the request
+  const token = await getToken({ req: request })
+  
+  // If no token, return unauthorized
+  if (!token) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+  
+  // If token exists, return protected data
+  return NextResponse.json({ 
+    message: 'This is protected data',
+    user: token 
+  })
+}
+{% endraw %}</code></pre>
+
+                                <h5>API Route with Error Handling</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
+// app/api/users/route.ts
+import { NextRequest, NextResponse } from 'next/server'
+
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json()
+    
+    // Validate input
+    if (!body.name || body.name.trim() === '') {
+      return NextResponse.json(
+        { error: 'Name is required' },
+        { status: 400 }
+      )
+    }
+    
+    // Create new user
+    const newUser = { id: Date.now(), name: body.name }
+    
+    // Save to database
+    // await saveUser(newUser)
+    
+    return NextResponse.json(newUser, { status: 201 })
+  } catch (error) {
+    console.error('Error creating user:', error)
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    )
+  }
+}
+{% endraw %}</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- Module 5: Static Site Generation (SSG) -->
+                        <div class="module-card" id="module5">
+                            <div class="module-header" onclick="toggleModule('module5-content')">
+                                <span><i class="fas fa-file-alt"></i> Module 5: Static Site Generation (SSG)</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="module-content" id="module5-content">
+                                <h5>Static Site Generation with App Router</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
+// app/blog/[slug]/page.tsx
+import { notFound } from 'next/navigation'
+
+interface PageProps {
+  params: {
+    slug: string
+  }
+}
+
+// This function runs at build time
+export async function generateStaticParams() {
+  const posts = await getAllBlogPosts()
+  
+  return posts.map((post) => ({
+    slug: post.slug,
+  }))
+}
+
+// This function runs at build time for each params
+async function getBlogPost(slug: string) {
+  // Fetch blog post data
+  const res = await fetch(`https://api.example.com/posts/${slug}`)
+  
+  if (!res.ok) {
+    return null
+  }
+  
+  return res.json()
+}
+
+export default async function BlogPost({ params }: PageProps) {
+  const { slug } = params
+  const post = await getBlogPost(slug)
+
+  if (!post) {
+    notFound()
+  }
+
+  return (
+    <article>
+      <h1>{post.title}</h1>
+      <p>{post.content}</p>
+    </article>
+  )
+}
+{% endraw %}</code></pre>
+
+                                <h5>Static Site Generation with Pages Router</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
+// pages/blog/[slug].tsx
+import type { GetStaticProps, GetStaticPaths, InferGetStaticPropsType } from 'next'
+
+type Post = {
+  id: number
+  title: string
+  content: string
+  slug: string
+}
+
+type BlogPostProps = {
+  post: Post
+}
+
+export default function BlogPost({ post }: BlogPostProps) {
+  return (
+    <article>
+      <h1>{post.title}</h1>
+      <p>{post.content}</p>
+    </article>
+  )
+}
+
+// This function tells Next.js which pages to build at build time
+export const getStaticPaths: GetStaticPaths = async () => {
+  const res = await fetch('https://api.example.com/posts')
+  const posts: Post[] = await res.json()
+
+  const paths = posts.map((post) => ({
+    params: { slug: post.slug },
+  }))
+
+  return {
+    paths,
+    fallback: 'blocking', // or true or false
+  }
+}
+
+// This function fetches data for a specific post at build time
+export const getStaticProps: GetStaticProps<BlogPostProps> = async ({ params }) => {
+  const res = await fetch(`https://api.example.com/posts/${params.slug}`)
+  const post: Post = await res.json()
+
+  return {
+    props: {
+      post,
+    },
+    revalidate: 60, // Re-generate the page every 60 seconds (ISR)
+  }
+}
+{% endraw %}</code></pre>
+
+                                <h5>Incremental Static Regeneration (ISR)</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
+// pages/blog/[slug].tsx
+import type { GetStaticProps, GetStaticPaths } from 'next'
+
+// ... component code ...
+
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  const res = await fetch(`https://api.example.com/posts/${params.slug}`)
+  const post = await res.json()
+
+  return {
+    props: {
+      post,
+    },
+    revalidate: 60, // Re-generate the page every 60 seconds
+  }
+}
+
+// ... getStaticPaths ...
+{% endraw %}</code></pre>
+
+                                <h5>Static Generation with Data Fetching</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
+// app/posts/page.tsx
+async function getPosts() {
+  const res = await fetch('https://api.example.com/posts', {
+    cache: 'force-cache', // Cache the response
+  })
+  
+  if (!res.ok) {
+    throw new Error('Failed to fetch posts')
+  }
+  
+  return res.json()
+}
+
+export default async function PostsPage() {
+  const posts = await getPosts()
+
+  return (
+    <div>
+      <h1>Posts</h1>
+      <ul>
+        {posts.map((post) => (
+          <li key={post.id}>
+            <Link href={`/posts/${post.slug}`}>
+              {post.title}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+{% endraw %}</code></pre>
+
+                                <h5>Exporting Static Site</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-javascript">{% raw %}
+// next.config.js
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  output: 'export',
+  trailingSlash: true,
+  images: {
+    unoptimized: true,
+  },
+}
+
+module.exports = nextConfig
+{% endraw %}</code></pre>
+
+                                <pre><button class="copy-button">Copy</button><code class="language-json">{% raw %}
+// package.json
+{
+  "scripts": {
+    "build": "next build",
+    "export": "next export"
+  }
+}
+{% endraw %}</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- Module 6: Server-Side Rendering (SSR) -->
+                        <div class="module-card" id="module6">
+                            <div class="module-header" onclick="toggleModule('module6-content')">
+                                <span><i class="fas fa-server"></i> Module 6: Server-Side Rendering (SSR)</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="module-content" id="module6-content">
+                                <h5>Server-Side Rendering with App Router</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
+// app/posts/[slug]/page.tsx
+import { notFound } from 'next/navigation'
+
+interface PageProps {
+  params: {
+    slug: string
+  }
+  searchParams: {
+    [key: string]: string | string[] | undefined
+  }
+}
+
+// This function runs on the server for each request
+export default async function BlogPost({ params, searchParams }: PageProps) {
+  const { slug } = params
+  
+  // Fetch data on the server for each request
+  const res = await fetch(`https://api.example.com/posts/${slug}`, {
+    cache: 'no-store', // Disable caching
+  })
+  
+  if (!res.ok) {
+    notFound()
+  }
+  
+  const post = await res.json()
+
+  return (
+    <article>
+      <h1>{post.title}</h1>
+      <p>{post.content}</p>
+      <p>View count: {post.views + 1}</p>
+    </article>
+  )
+}
+{% endraw %}</code></pre>
+
+                                <h5>Server-Side Rendering with Pages Router</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
+// pages/posts/[slug].tsx
+import type { GetServerSideProps, InferGetServerSidePropsType } from 'next'
+
+type Post = {
+  id: number
+  title: string
+  content: string
+  views: number
+}
+
+type BlogPostProps = {
+  post: Post
+}
+
+export default function BlogPost({ post }: BlogPostProps) {
+  return (
+    <article>
+      <h1>{post.title}</h1>
+      <p>{post.content}</p>
+      <p>View count: {post.views}</p>
+    </article>
+  )
+}
+
+// This function runs on the server for each request
+export const getServerSideProps: GetServerSideProps<BlogPostProps> = async ({ params, req, res }) => {
+  const { slug } = params
+  
+  // Fetch data on the server for each request
+  const res = await fetch(`https://api.example.com/posts/${slug}`)
+  
+  if (!res.ok) {
+    return {
+      notFound: true,
+    }
+  }
+  
+  const post = await res.json()
+  
+  // Increment view count
+  await fetch(`https://api.example.com/posts/${slug}/increment-views`, {
+    method: 'POST',
+  })
+  
+  // Set cache control headers
+  res.setHeader(
+    'Cache-Control',
+    'public, s-maxage=10, stale-while-revalidate=59'
+  )
+  
+  return {
+    props: {
+      post,
+    },
+  }
+}
+{% endraw %}</code></pre>
+
+                                <h5>Server-Side Rendering with Authentication</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
+// pages/dashboard.tsx
+import type { GetServerSideProps, InferGetServerSidePropsType } from 'next'
+import { getSession } from 'next-auth/react'
+
+type DashboardProps = {
+  user: {
+    id: string
+    name: string
+    email: string
+  }
+}
+
+export default function Dashboard({ user }: DashboardProps) {
+  return (
+    <div>
+      <h1>Dashboard</h1>
+      <p>Welcome, {user.name}!</p>
+    </div>
+  )
+}
+
+export const getServerSideProps: GetServerSideProps<DashboardProps> = async (context) => {
+  const session = await getSession(context)
+  
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    }
+  }
+  
+  // Fetch user data
+  const res = await fetch(`https://api.example.com/users/${session.user.id}`)
+  const user = await res.json()
+  
+  return {
+    props: {
+      user,
+    },
+  }
+}
+{% endraw %}</code></pre>
+
+                                <h5>Server-Side Rendering with Dynamic Data</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
+// pages/search.tsx
+import type { GetServerSideProps, InferGetServerSidePropsType } from 'next'
+import { useState } from 'react'
+
+type SearchResult = {
+  id: number
+  title: string
+  description: string
+}
+
+type SearchPageProps = {
+  initialResults: SearchResult[]
+  query: string
+}
+
+export default function SearchPage({ initialResults, query }: SearchPageProps) {
+  const [results, setResults] = useState(initialResults)
+  const [loading, setLoading] = useState(false)
+  
+  const handleSearch = async (newQuery: string) => {
+    setLoading(true)
+    
+    const res = await fetch(`/api/search?q=${newQuery}`)
+    const data = await res.json()
+    
+    setResults(data.results)
+    setLoading(false)
+  }
+  
+  return (
+    <div>
+      <h1>Search Results for "{query}"</h1>
+      
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
+        <ul>
+          {results.map((result) => (
+            <li key={result.id}>
+              <h3>{result.title}</h3>
+              <p>{result.description}</p>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}
+
+export const getServerSideProps: GetServerSideProps<SearchPageProps> = async (context) => {
+  const query = context.query.q as string || ''
+  
+  if (!query) {
+    return {
+      props: {
+        initialResults: [],
+        query,
+      },
+    }
+  }
+  
+  // Fetch initial search results
+  const res = await fetch(`https://api.example.com/search?q=${query}`)
+  const data = await res.json()
+  
+  return {
+    props: {
+      initialResults: data.results,
+      query,
+    },
+  }
+}
+{% endraw %}</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- Module 7: Styling with CSS Modules -->
+                        <div class="module-card" id="module7">
+                            <div class="module-header" onclick="toggleModule('module7-content')">
+                                <span><i class="fas fa-palette"></i> Module 7: Styling with CSS Modules</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="module-content" id="module7-content">
+                                <h5>CSS Modules</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-css">{% raw %}
+/* styles/Home.module.css */
+.container {
+  padding: 0 2rem;
+}
+
+.main {
+  min-height: 100vh;
+  padding: 4rem 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.title {
+  margin: 0;
+  line-height: 1.15;
+  font-size: 4rem;
+  text-align: center;
+}
+
+.description {
+  margin: 4rem 0;
+  line-height: 1.5;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.grid {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  max-width: 800px;
+}
+
+.card {
+  margin: 1rem;
+  padding: 1.5rem;
+  text-align: left;
+  color: inherit;
+  text-decoration: none;
+  border: 1px solid #eaeaea;
+  border-radius: 10px;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.card:hover,
+.card:focus,
+.card:active {
+  border-color: #0070f3;
+}
+
+.card h2 {
+  margin: 0 0 1rem 0;
+  font-size: 1.5rem;
+}
+
+.card p {
+  margin: 0;
+  font-size: 1.25rem;
+  line-height: 1.5;
+}
+{% endraw %}</code></pre>
+
+                                <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
+// pages/index.tsx
+import type { NextPage } from 'next'
+import Head from 'next/head'
+import styles from '../styles/Home.module.css'
+
+const Home: NextPage = () => {
+  return (
+    <div className={styles.container}>
+      <Head>
+        <title>Create Next App</title>
+        <meta name="description" content="Generated by create next app" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+      <main className={styles.main}>
+        <h1 className={styles.title}>
+          Welcome to <a href="https://nextjs.org">Next.js!</a>
+        </h1>
+
+        <p className={styles.description}>
+          Get started by editing{' '}
+          <code className={styles.code}>pages/index.tsx</code>
+        </p>
+
+        <div className={styles.grid}>
+          <a href="https://nextjs.org/docs" className={styles.card}>
+            <h2>Documentation &rarr;</h2>
+            <p>Find in-depth information about Next.js features and API.</p>
+          </a>
+
+          <a href="https://nextjs.org/learn" className={styles.card}>
+            <h2>Learn &rarr;</h2>
+            <p>Learn about Next.js by following an interactive tutorial!</p>
+          </a>
+        </div>
+      </main>
+    </div>
+  )
+}
+
+export default Home
+{% endraw %}</code></pre>
+
+                                <h5>Tailwind CSS</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
+# Install Tailwind CSS
+npm install -D tailwindcss postcss autoprefixer
+npx tailwindcss init -p
+{% endraw %}</code></pre>
+
+                                <pre><button class="copy-button">Copy</button><code class="language-javascript">{% raw %}
+// tailwind.config.js
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    './pages/**/*.{js,ts,jsx,tsx}',
+    './components/**/*.{js,ts,jsx,tsx}',
+    './app/**/*.{js,ts,jsx,tsx}',
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}
+{% endraw %}</code></pre>
+
+                                <pre><button class="copy-button">Copy</button><code class="language-css">{% raw %}
+/* styles/globals.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+{% endraw %}</code></pre>
+
+                                <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
+// components/Button.tsx
+import { ButtonHTMLAttributes } from 'react'
+
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: 'primary' | 'secondary'
+  size?: 'sm' | 'md' | 'lg'
+}
+
+export default function Button({
+  variant = 'primary',
+  size = 'md',
+  children,
+  className = '',
+  ...props
+}: ButtonProps) {
+  const baseClasses = 'rounded font-medium transition-colors'
+  const variantClasses = {
+    primary: 'bg-blue-500 text-white hover:bg-blue-600',
+    secondary: 'bg-gray-200 text-gray-800 hover:bg-gray-300',
+  }
+  const sizeClasses = {
+    sm: 'px-3 py-1 text-sm',
+    md: 'px-4 py-2',
+    lg: 'px-6 py-3 text-lg',
+  }
+
+  return (
+    <button
+      className={`${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${className}`}
+      {...props}
+    >
+      {children}
+    </button>
+  )
+}
+{% endraw %}</code></pre>
+
+                                <h5>Styled Components</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
+# Install styled-components
+npm install styled-components
+npm install -D @types/styled-components
+{% endraw %}</code></pre>
+
+                                <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
+// components/StyledButton.tsx
+import styled from 'styled-components'
+
+const StyledButton = styled.button<{ variant?: 'primary' | 'secondary' }>`
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  font-weight: 500;
+  transition: background-color 0.2s;
+  
+  ${({ variant = 'primary' }) => {
+    if (variant === 'primary') {
+      return `
+        background-color: #3b82f6;
+        color: white;
+        
+        &:hover {
+          background-color: #2563eb;
+        }
+      `
+    } else {
+      return `
+        background-color: #e5e7eb;
+        color: #1f2937;
+        
+        &:hover {
+          background-color: #d1d5db;
+        }
+      `
+    }
+  }}
+`
+
+export default StyledButton
+{% endraw %}</code></pre>
+
+                                <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
+// pages/_app.tsx
+import type { AppProps } from 'next/app'
+import { createGlobalStyle } from 'styled-components'
+
+const GlobalStyle = createGlobalStyle`
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+      sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+`
+
+export default function App({ Component, pageProps }: AppProps) {
+  return (
+    <>
+      <GlobalStyle />
+      <Component {...pageProps} />
+    </>
+  )
+}
+{% endraw %}</code></pre>
+
+                                <h5>CSS-in-JS with Emotion</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
+# Install Emotion
+npm install @emotion/react @emotion/styled
+npm install -D @emotion/babel-plugin
+{% endraw %}</code></pre>
+
+                                <pre><button class="copy-button">Copy</button><code class="language-javascript">{% raw %}
+// .babelrc
+{
+  "presets": ["next/babel"],
+  "plugins": ["@emotion/babel-plugin"]
+}
+{% endraw %}</code></pre>
+
+                                <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
+// components/EmotionButton.tsx
+import styled from '@emotion/styled'
+
+const EmotionButton = styled.button<{ variant?: 'primary' | 'secondary' }>`
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  font-weight: 500;
+  transition: background-color 0.2s;
+  
+  ${({ variant = 'primary' }) => {
+    if (variant === 'primary') {
+      return `
+        background-color: #3b82f6;
+        color: white;
+        
+        &:hover {
+          background-color: #2563eb;
+        }
+      `
+    } else {
+      return `
+        background-color: #e5e7eb;
+        color: #1f2937;
+        
+        &:hover {
+          background-color: #d1d5db;
+        }
+      `
+    }
+  }}
+`
+
+export default EmotionButton
+{% endraw %}</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- Module 8: Authentication -->
+                        <div class="module-card" id="module8">
+                            <div class="module-header" onclick="toggleModule('module8-content')">
+                                <span><i class="fas fa-user-shield"></i> Module 8: Authentication</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="module-content" id="module8-content">
+                                <h5>NextAuth.js Setup</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
+# Install NextAuth.js
+npm install next-auth
+{% endraw %}</code></pre>
+
+                                <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
+// pages/api/auth/[...nextauth].ts
+import NextAuth from 'next-auth'
+import GoogleProvider from 'next-auth/providers/google'
+import CredentialsProvider from 'next-auth/providers/credentials'
+
+export default NextAuth({
+  providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    }),
+    CredentialsProvider({
+      name: 'credentials',
+      credentials: {
+        email: { label: 'Email', type: 'email' },
+        password: { label: 'Password', type: 'password' },
+      },
+      async authorize(credentials) {
+        // Add your own logic here to validate credentials
+        // This is just a placeholder
+        if (credentials?.email === 'user@example.com' && credentials?.password === 'password') {
+          return {
+            id: '1',
+            name: 'User',
+            email: 'user@example.com',
+          }
+        }
+        return null
+      },
+    }),
+  ],
+  pages: {
+    signIn: '/auth/signin',
+    signUp: '/auth/signup',
+  },
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id
+      }
+      return token
+    },
+    async session({ session, token }) {
+      if (token) {
+        session.user.id = token.id as string
+      }
+      return session
+    },
+  },
+  session: {
+    strategy: 'jwt',
+  },
+})
+{% endraw %}</code></pre>
+
+                                <h5>Authentication Provider Setup</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
+// pages/_app.tsx
+import type { AppProps } from 'next/app'
+import { SessionProvider } from 'next-auth/react'
+import '../styles/globals.css'
+
+export default function App({ Component, pageProps: { session: any } }: AppProps) {
+  return (
+    <SessionProvider session={pageProps.session}>
+      <Component {...pageProps} />
+    </SessionProvider>
+  )
+}
+{% endraw %}</code></pre>
+
+                                <h5>Login and Sign Up Pages</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
+// pages/auth/signin.tsx
+import { useState } from 'react'
+import { signIn, getSession } from 'next-auth/react'
+import { GetServerSideProps } from 'next'
+import { useRouter } from 'next/router'
+import Link from 'next/link'
+
+export default function SignIn() {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
+  const router = useRouter()
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setError('')
+
+    const result = await signIn('credentials', {
+      redirect: false,
+      email,
+      password,
+    })
+
+    if (result?.error) {
+      setError('Invalid email or password')
+    } else {
+      router.push('/dashboard')
+    }
+  }
+
+  return (
+    <div className="container">
+      <h1>Sign In</h1>
+      
+      {error && <p className="error">{error}</p>}
+      
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label htmlFor="email">Email</label>
+          <input
+            id="email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </div>
+        
+        <div>
+          <label htmlFor="password">Password</label>
+          <input
+            id="password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
+        
+        <button type="submit">Sign In</button>
+      </form>
+      
+      <div>
+        <p>Or sign in with:</p>
+        <button onClick={() => signIn('google')}>
+          Sign in with Google
+        </button>
+      </div>
+      
+      <p>
+        Don't have an account? <Link href="/auth/signup">Sign up</Link>
+      </p>
+    </div>
+  )
+}
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const session = await getSession(context)
+  
+  if (session) {
+    return {
+      redirect: {
+        destination: '/dashboard',
+        permanent: false,
+      },
+    }
+  }
+  
+  return {
+    props: {},
+  }
+}
+{% endraw %}</code></pre>
+
+                                <h5>Protected Routes</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
+// pages/dashboard.tsx
+import { useSession } from 'next-auth/react'
+import { GetServerSideProps } from 'next'
+import { getSession } from 'next-auth/react'
+
+export default function Dashboard() {
+  const { data: session, status } = useSession({
+    required: true,
+    onUnauthenticated() {
+      // Redirect to sign in page if not authenticated
+      window.location.href = '/auth/signin'
+    },
+  })
+
+  if (status === 'loading') {
+    return <p>Loading...</p>
+  }
+
+  return (
+    <div>
+      <h1>Dashboard</h1>
+      <p>Welcome, {session?.user?.name}!</p>
+    </div>
+  )
+}
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const session = await getSession(context)
+  
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/auth/signin',
+        permanent: false,
+      },
+    }
+  }
+  
+  return {
+    props: {},
+  }
+}
+{% endraw %}</code></pre>
+
+                                <h5>Custom Authentication Hook</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
+// hooks/useAuth.ts
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/router'
+
+export function useAuth(redirectTo?: string) {
+  const { data: session, status } = useSession()
+  const router = useRouter()
+  const isAuthenticated = status === 'authenticated'
+  const isLoading = status === 'loading'
+
+  if (isLoading) {
+    return { isAuthenticated: false, isLoading: true, session: null }
+  }
+
+  if (!isAuthenticated && redirectTo) {
+    router.push(redirectTo)
+  }
+
+  return { isAuthenticated, isLoading: false, session }
+}
+{% endraw %}</code></pre>
+
+                                <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
+// pages/profile.tsx
+import { useAuth } from '../hooks/useAuth'
+
+export default function Profile() {
+  const { isAuthenticated, isLoading, session } = useAuth('/auth/signin')
+
+  if (isLoading) {
+    return <p>Loading...</p>
+  }
+
+  if (!isAuthenticated) {
+    return null // Will redirect to sign in
+  }
+
+  return (
+    <div>
+      <h1>Profile</h1>
+      <p>Name: {session?.user?.name}</p>
+      <p>Email: {session?.user?.email}</p>
+    </div>
+  )
+}
+{% endraw %}</code></pre>
+
+                                <h5>Logout Functionality</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
+// components/LogoutButton.tsx
+import { signOut, useSession } from 'next-auth/react'
+
+export default function LogoutButton() {
+  const { data: session } = useSession()
+
+  const handleLogout = async () => {
+    await signOut({ redirect: false })
+    window.location.href = '/'
+  }
+
+  if (!session) {
+    return null
+  }
+
+  return (
+    <button onClick={handleLogout}>
+      Sign Out
+    </button>
+  )
+}
+{% endraw %}</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- Module 9: Database Integration -->
+                        <div class="module-card" id="module9">
+                            <div class="module-header" onclick="toggleModule('module9-content')">
+                                <span><i class="fas fa-database"></i> Module 9: Database Integration</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="module-content" id="module9-content">
+                                <h5>Prisma Setup</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
+# Install Prisma
+npm install prisma --save-dev
+npm install @prisma/client
+
+# Initialize Prisma
+npx prisma init
+{% endraw %}</code></pre>
+
+                                <pre><button class="copy-button">Copy</button><code class="language-prisma">{% raw %}
+// prisma/schema.prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  posts     Post[]
+}
+
+model Post {
+  id        String   @id @default(cuid())
+  title     String
+  content   String?
+  published Boolean  @default(false)
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+{% endraw %}</code></pre>
+
+                                <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
+// lib/prisma.ts
+import { PrismaClient } from '@prisma/client'
+
+const globalForPrisma = globalThis as unknown as {
+  prisma: PrismaClient | undefined
+}
+
+export const prisma = globalForPrisma.prisma ?? new PrismaClient()
+
+if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
+{% endraw %}</code></pre>
+
+                                <h5>Database Operations with Prisma</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
+// app/api/posts/route.ts
+import { NextRequest, NextResponse } from 'next/server'
+import { prisma } from '@/lib/prisma'
+
+export async function GET(request: NextRequest) {
+  try {
+    const posts = await prisma.post.findMany({
+      include: {
+        author: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    })
+
+    return NextResponse.json(posts)
+  } catch (error) {
+    return NextResponse.json(
+      { error: 'Failed to fetch posts' },
+      { status: 500 }
+    )
+  }
+}
+
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json()
+    const { title, content, authorId } = body
+
+    if (!title || !authorId) {
+      return NextResponse.json(
+        { error: 'Title and authorId are required' },
+        { status: 400 }
+      )
+    }
+
+    const post = await prisma.post.create({
+      data: {
+        title,
+        content,
+        authorId,
+      },
+      include: {
+        author: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+          },
+        },
+      },
+    })
+
+    return NextResponse.json(post, { status: 201 })
+  } catch (error) {
+    return NextResponse.json(
+      { error: 'Failed to create post' },
+      { status: 500 }
+    )
+  }
+}
+{% endraw %}</code></pre>
+
+                                <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
+// app/api/posts/[id]/route.ts
+import { NextRequest, NextResponse } from 'next/server'
+import { prisma } from '@/lib/prisma'
+
+export async function GET(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  try {
+    const post = await prisma.post.findUnique({
+      where: { id: params.id },
+      include: {
+        author: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+          },
+        },
+      },
+    })
+
+    if (!post) {
+      return NextResponse.json(
+        { error: 'Post not found' },
+        { status: 404 }
+      )
+    }
+
+    return NextResponse.json(post)
+  } catch (error) {
+    return NextResponse.json(
+      { error: 'Failed to fetch post' },
+      { status: 500 }
+    )
+  }
+}
+
+export async function PUT(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  try {
+    const body = await request.json()
+    const { title, content, published } = body
+
+    const post = await prisma.post.update({
+      where: { id: params.id },
+      data: {
+        title,
+        content,
+        published,
+      },
+      include: {
+        author: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+          },
+        },
+      },
+    })
+
+    return NextResponse.json(post)
+  } catch (error) {
+    return NextResponse.json(
+      { error: 'Failed to update post' },
+      { status: 500 }
+    )
+  }
+}
+
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  try {
+    await prisma.post.delete({
+      where: { id: params.id },
+    })
+
+    return NextResponse.json({ message: 'Post deleted successfully' })
+  } catch (error) {
+    return NextResponse.json(
+      { error: 'Failed to delete post' },
+      { status: 500 }
+    )
+  }
+}
+{% endraw %}</code></pre>
+
+                                <h5>MongoDB with Mongoose</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
+# Install Mongoose
+npm install mongoose
+{% endraw %}</code></pre>
+
+                                <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
+// lib/mongodb.ts
+import mongoose from 'mongoose'
+
+const MONGODB_URI = process.env.MONGODB_URI!
+
+if (!MONGODB_URI) {
+  throw new Error('Please define the MONGODB_URI environment variable')
+}
+
+let cached = global.mongoose
+
+if (!cached) {
+  cached = global.mongoose = { conn: null, promise: null }
+}
+
+export async function connectToDatabase() {
+  if (cached.conn) {
+    return cached.conn
+  }
+
+  if (!cached.promise) {
+    const opts = {
+      bufferCommands: false,
+    }
+
+    cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
+      return mongoose
+    })
+  }
+
+  try {
+    cached.conn = await cached.promise
+  } catch (e) {
+    cached.promise = null
+    throw e
+  }
+
+  return cached.conn
+}
+{% endraw %}</code></pre>
+
+                                <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
+// models/Post.ts
+import mongoose, { Schema, Document, Model } from 'mongoose'
+
+export interface IPost extends Document {
+  title: string
+  content: string
+  published: boolean
+  author: string
+  createdAt: Date
+  updatedAt: Date
+}
+
+const PostSchema: Schema = new Schema({
+  title: {
+    type: String,
+    required: true,
+  },
+  content: {
+    type: String,
+    default: '',
+  },
+  published: {
+    type: Boolean,
+    default: false,
+  },
+  author: {
+    type: String,
+    required: true,
+  },
+}, {
+  timestamps: true,
+})
+
+const Post: Model<IPost> = mongoose.models.Post || mongoose.model<IPost>('Post', PostSchema)
+
+export default Post
+{% endraw %}</code></pre>
+
+                                <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
+// pages/api/posts.ts
+import type { NextApiRequest, NextApiResponse } from 'next'
+import connectToDatabase from '@/lib/mongodb'
+import Post, { IPost } from '@/models/Post'
+
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse<IPost[] | IPost | { error: string }>
+) {
+  await connectToDatabase()
+
+  if (req.method === 'GET') {
+    try {
+      const posts = await Post.find({}).sort({ createdAt: -1 })
+      res.status(200).json(posts)
+    } catch (error) {
+      res.status(500).json({ error: 'Failed to fetch posts' })
+    }
+  } else if (req.method === 'POST') {
+    try {
+      const post = await Post.create(req.body)
+      res.status(201).json(post)
+    } catch (error) {
+      res.status(500).json({ error: 'Failed to create post' })
+    }
+  } else {
+    res.setHeader('Allow', ['GET', 'POST'])
+    res.status(405).end(`Method ${req.method} Not Allowed`)
+  }
+}
+{% endraw %}</code></pre>
+
+                                <h5>Database Connection Pooling</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
+// lib/db.ts
+import { Pool } from 'pg'
+
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  max: 20, // Maximum number of connections in the pool
+  idleTimeoutMillis: 30000, // How long a connection can be idle before being closed
+  connectionTimeoutMillis: 2000, // How long to wait when connecting a new client
+})
+
+export default {
+  query: (text: string, params?: any[]) => pool.query(text, params),
+  end: () => pool.end(),
+}
+{% endraw %}</code></pre>
+
+                                <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
+// pages/api/users.ts
+import type { NextApiRequest, NextApiResponse } from 'next'
+import db from '@/lib/db'
+
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  if (req.method === 'GET') {
+    try {
+      const { rows } = await db.query('SELECT * FROM users ORDER BY created_at DESC')
+      res.status(200).json(rows)
+    } catch (error) {
+      res.status(500).json({ error: 'Failed to fetch users' })
+    }
+  } else if (req.method === 'POST') {
+    try {
+      const { name, email } = req.body
+      const { rows } = await db.query(
+        'INSERT INTO users (name, email) VALUES ($1, $2) RETURNING *',
+        [name, email]
+      )
+      res.status(201).json(rows[0])
+    } catch (error) {
+      res.status(500).json({ error: 'Failed to create user' })
+    }
+  } else {
+    res.setHeader('Allow', ['GET', 'POST'])
+    res.status(405).end(`Method ${req.method} Not Allowed`)
+  }
+}
+{% endraw %}</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- Module 10: Deployment and Optimization -->
+                        <div class="module-card" id="module10">
+                            <div class="module-header" onclick="toggleModule('module10-content')">
+                                <span><i class="fas fa-rocket"></i> Module 10: Deployment and Optimization</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="module-content" id="module10-content">
+                                <h5>Vercel Deployment</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
 # Install Vercel CLI
 npm install -g vercel
 
@@ -568,10 +2303,10 @@ vercel
 
 # For production deployment
 vercel --prod
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
 
-                        <h4>Build Configuration</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-javascript">{% raw %}
+                                <h5>Build Configuration</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-javascript">{% raw %}
 // vercel.json
 {
   "buildCommand": "npm run build",
@@ -582,20 +2317,18 @@ vercel --prod
     "NODE_ENV": "production"
   }
 }
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
 
-                        <h4>Environment Variables</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
+                                <h5>Environment Variables</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-bash">{% raw %}
 # .env.local
 NEXT_PUBLIC_API_URL=https://api.example.com
 DATABASE_URL=postgresql://...
 SECRET_KEY=your-secret-key
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
 
-                        <h3 id="optimization" class="mt-5">Performance Optimization</h3>
-
-                        <h4>Image Optimization</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
+                                <h5>Performance Optimization</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
 // components/OptimizedImage.tsx
 import Image from 'next/image'
 
@@ -612,10 +2345,10 @@ export default function OptimizedImage() {
     />
   )
 }
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
 
-                        <h4>Code Splitting</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
+                                <h5>Code Splitting</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
 // components/LazyComponent.tsx
 import dynamic from 'next/dynamic'
 
@@ -631,10 +2364,10 @@ export default function Page() {
     </div>
   )
 }
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
 
-                        <h4>Analytics and Monitoring</h4>
-                        <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
+                                <h5>Analytics and Monitoring</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-typescript">{% raw %}
 // app/layout.tsx
 import { Analytics } from '@vercel/analytics/react'
 
@@ -652,7 +2385,150 @@ export default function RootLayout({
     </html>
   )
 }
-{% endraw %}</code><button class="copy-button">Copy</button></pre>
+{% endraw %}</code></pre>
+
+                                <h5>Docker Deployment</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-dockerfile">{% raw %}
+# Dockerfile
+FROM node:18-alpine AS base
+
+# Install dependencies only when needed
+FROM base AS deps
+RUN apk add --no-cache libc6-compat
+WORKDIR /app
+
+COPY package.json package-lock.json ./
+RUN npm ci
+
+# Rebuild the source code only when needed
+FROM base AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+
+RUN npm run build
+
+# Production image, copy all the files and run next
+FROM base AS runner
+WORKDIR /app
+
+ENV NODE_ENV production
+
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+
+COPY --from=builder /app/public ./public
+
+# Set the correct permission for prerender cache
+RUN mkdir .next
+RUN chown nextjs:nodejs .next
+
+# Automatically leverage output traces to reduce image size
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+USER nextjs
+
+EXPOSE 3000
+
+ENV PORT 3000
+
+CMD ["node", "server.js"]
+{% endraw %}</code></pre>
+
+                                <pre><button class="copy-button">Copy</button><code class="language-dockerfile">{% raw %}
+# docker-compose.yml
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgresql://user:password@db:5432/mydb
+    depends_on:
+      - db
+
+  db:
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=mydb
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
+{% endraw %}</code></pre>
+
+                                <h5>Next.js Configuration for Production</h5>
+                                <pre><button class="copy-button">Copy</button><code class="language-javascript">{% raw %}
+// next.config.js
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  reactStrictMode: true,
+  swcMinify: true,
+  images: {
+    domains: ['example.com'],
+    formats: ['image/webp', 'image/avif'],
+  },
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production',
+  },
+  experimental: {
+    optimizeCss: true,
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/api/:path*',
+        destination: 'https://api.example.com/:path*',
+      },
+    ]
+  },
+  async redirects() {
+    return [
+      {
+        source: '/home',
+        destination: '/',
+        permanent: true,
+      },
+    ]
+  },
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff',
+          },
+          {
+            key: 'X-Frame-Options',
+            value: 'DENY',
+          },
+          {
+            key: 'X-XSS-Protection',
+            value: '1; mode=block',
+          },
+        ],
+      },
+    ]
+  },
+}
+
+module.exports = nextConfig
+{% endraw %}</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="mt-5 text-center">
+                            <a href="/practice" class="btn btn-primary btn-lg">Take Practice Test</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -660,11 +2536,56 @@ export default function RootLayout({
     </section>
 
     <script>
+        // Toggle module content
+        function toggleModule(contentId) {
+            const content = document.getElementById(contentId);
+            const header = content.previousElementSibling;
+            
+            if (content.classList.contains('collapsed')) {
+                content.classList.remove('collapsed');
+                header.classList.remove('collapsed');
+            } else {
+                content.classList.add('collapsed');
+                header.classList.add('collapsed');
+            }
+        }
+
+        // Smooth scrolling for sidebar navigation
+        document.querySelectorAll('.sidebar .nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }
+                // Update active state
+                document.querySelectorAll('.sidebar .nav-link').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Search functionality for sidebar
         document.getElementById('search-input').addEventListener('input', function() {
             const query = this.value.toLowerCase();
-            const content = document.getElementById('content');
-            const elements = content.querySelectorAll('h2, h3, h4, p, li, pre, code');
+            const navLinks = document.querySelectorAll('.sidebar .nav-link');
             
+            navLinks.forEach(link => {
+                const text = link.textContent.toLowerCase();
+                if (query === '' || text.includes(query)) {
+                    link.style.display = '';
+                } else {
+                    link.style.display = 'none';
+                }
+            });
+        });
+
+        // Search functionality for main content
+        document.getElementById('search-input-main').addEventListener('input', function() {
+            const query = this.value.toLowerCase();
+            const content = document.getElementById('content');
+            const elements = content.querySelectorAll('h2, h3, h4, h5, h6, p, pre, .module-card');
+
             elements.forEach(element => {
                 const text = element.textContent.toLowerCase();
                 if (query === '' || text.includes(query)) {
@@ -674,7 +2595,17 @@ export default function RootLayout({
                 }
             });
         });
-        
+
+        // Clear search function
+        function clearSearch() {
+            document.getElementById('search-input').value = '';
+            const navLinks = document.querySelectorAll('.sidebar .nav-link');
+            navLinks.forEach(link => {
+                link.style.display = '';
+            });
+        }
+
+        // Copy to clipboard functionality
         const copyButtons = document.querySelectorAll('.copy-button');
         copyButtons.forEach(button => {
             button.addEventListener('click', function() {
@@ -684,6 +2615,27 @@ export default function RootLayout({
                 setTimeout(() => {
                     this.textContent = 'Copy';
                 }, 2000);
+            });
+        });
+
+        // Highlight active section in sidebar based on scroll position
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('[id]');
+            const navLinks = document.querySelectorAll('.sidebar .nav-link');
+
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
             });
         });
     </script>
