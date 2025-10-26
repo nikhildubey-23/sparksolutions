@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, SelectField
 from wtforms.validators import DataRequired, Email, Optional
@@ -403,9 +403,9 @@ def contact():
 
     return render_template('contact.html', form=form)
 
-@app.route('/aibot')
-def aibot():
-    return render_template('aibot.html')
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))

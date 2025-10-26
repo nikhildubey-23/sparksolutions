@@ -88,13 +88,103 @@
         .footer.footer-visible .col-lg-3:nth-child(2) { transition-delay: 0.2s; }
         .footer.footer-visible .col-lg-3:nth-child(3) { transition-delay: 0.3s; }
         .footer.footer-visible .col-lg-3:nth-child(4) { transition-delay: 0.4s; }
+
+        /* Custom Navbar Styles */
+        .custom-navbar {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .custom-navbar .navbar-brand img {
+            filter: brightness(0) invert(1);
+        }
+
+        .custom-navbar .nav-link {
+            color: rgba(255,255,255,0.9) !important;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .custom-navbar .nav-link:hover {
+            color: #007bff !important;
+            transform: translateY(-1px);
+        }
+
+        .custom-navbar .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #007bff;
+            transition: width 0.3s ease;
+        }
+
+        .custom-navbar .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .custom-navbar .docs-link {
+            color: #28a745 !important;
+        }
+
+        .custom-navbar .docs-link:hover {
+            color: #20c997 !important;
+        }
+
+        .custom-navbar .docs-link::after {
+            background: #28a745;
+        }
+
+        .custom-navbar .ai-bot-link {
+            color: #ffc107 !important;
+        }
+
+        .custom-navbar .ai-bot-link:hover {
+            color: #ffca2c !important;
+        }
+
+        .custom-navbar .ai-bot-link::after {
+            background: #ffc107;
+        }
+
+        .custom-dropdown {
+            background: rgba(42, 42, 42, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+
+        .custom-dropdown .dropdown-item {
+            color: rgba(255,255,255,0.9) !important;
+            transition: all 0.3s ease;
+            border-radius: 4px;
+            margin: 2px 4px;
+        }
+
+        .custom-dropdown .dropdown-item:hover {
+            background: rgba(0,123,255,0.2);
+            color: #007bff !important;
+            transform: translateX(5px);
+        }
+
+        .custom-dropdown .dropdown-item i {
+            color: #007bff;
+        }
     </style>
     {% block head %}{% endblock %}
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top bg-white p-0">
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top custom-navbar">
         <div class="container">
-            <a class="navbar-brand" href="/"><img src="/static/images/logo2.jpeg" alt="SN VERSE" style="height: 21px; width:88px"></a>
+            <a class="navbar-brand" href="/">
+                <img src="/static/images/logo2.jpeg" alt="SN VERSE" style="height: 21px; width:88px">
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -116,27 +206,27 @@
                         <a class="nav-link" href="/team">Team</a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="docsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Docs
+                        <a class="nav-link dropdown-toggle docs-link" href="#" id="docsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-book me-1"></i>Docs
                         </a>
-                        <ul class="dropdown-menu" aria-labelledby="docsDropdown" style="max-height: 300px; overflow-y: auto;">
-                            <li><a class="dropdown-item" href="/python">Python</a></li>
-                            <li><a class="dropdown-item" href="/html">HTML</a></li>
-                            <li><a class="dropdown-item" href="/css">CSS</a></li>
-                            <li><a class="dropdown-item" href="/js">JS</a></li>
-                            <li><a class="dropdown-item" href="/dap">Data Analysis With Python</a></li>
-                            <li><a class="dropdown-item" href="/react">React.js</a></li>
-                            <li><a class="dropdown-item" href="/node">Node.js</a></li>
-                            <li><a class="dropdown-item" href="/flask">Flask</a></li>
-                            <li><a class="dropdown-item" href="/django">Django</a></li>
-                            <li><a class="dropdown-item" href="/nextjs">Next.js</a></li>
-                            <li><a class="dropdown-item" href="/docker">Docker</a></li>
-                            <li><a class="dropdown-item" href="/java">Java</a></li>
-                            <li><a class="dropdown-item" href="/c-lang">C lang</a></li>
-                            <li><a class="dropdown-item" href="/cpp-lang">C++ lang</a></li>
-                            <li><a class="dropdown-item" href="/linux-arch">Linux arch</a></li>
-                            <li><a class="dropdown-item" href="/linux-deb">Linux deb</a></li>
-                            <li><a class="dropdown-item" href="/git-github">Git and GitHub</a></li>
+                        <ul class="dropdown-menu custom-dropdown" aria-labelledby="docsDropdown">
+                            <li><a class="dropdown-item" href="/python"><i class="bi bi-code-slash me-2"></i>Python</a></li>
+                            <li><a class="dropdown-item" href="/html"><i class="bi bi-file-earmark-code me-2"></i>HTML</a></li>
+                            <li><a class="dropdown-item" href="/css"><i class="bi bi-palette me-2"></i>CSS</a></li>
+                            <li><a class="dropdown-item" href="/js"><i class="bi bi-braces me-2"></i>JavaScript</a></li>
+                            <li><a class="dropdown-item" href="/dap"><i class="bi bi-graph-up me-2"></i>Data Analysis With Python</a></li>
+                            <li><a class="dropdown-item" href="/react"><i class="bi bi-rocket-takeoff me-2"></i>React.js</a></li>
+                            <li><a class="dropdown-item" href="/node"><i class="bi bi-server me-2"></i>Node.js</a></li>
+                            <li><a class="dropdown-item" href="/flask"><i class="bi bi-flask me-2"></i>Flask</a></li>
+                            <li><a class="dropdown-item" href="/django"><i class="bi bi-diamond me-2"></i>Django</a></li>
+                            <li><a class="dropdown-item" href="/nextjs"><i class="bi bi-lightning me-2"></i>Next.js</a></li>
+                            <li><a class="dropdown-item" href="/docker"><i class="bi bi-box me-2"></i>Docker</a></li>
+                            <li><a class="dropdown-item" href="/java"><i class="bi bi-cup-hot me-2"></i>Java</a></li>
+                            <li><a class="dropdown-item" href="/c-lang"><i class="bi bi-c-circle me-2"></i>C lang</a></li>
+                            <li><a class="dropdown-item" href="/cpp-lang"><i class="bi bi-c-square me-2"></i>C++ lang</a></li>
+                            <li><a class="dropdown-item" href="/linux-arch"><i class="bi bi-ubuntu me-2"></i>Linux arch</a></li>
+                            <li><a class="dropdown-item" href="/linux-deb"><i class="bi bi-debian me-2"></i>Linux deb</a></li>
+                            <li><a class="dropdown-item" href="/git-github"><i class="bi bi-git me-2"></i>Git and GitHub</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">
@@ -146,15 +236,14 @@
                         <a class="nav-link" href="/contact">Contact</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/aibot">AI Bot</a>
-                    </li>
 
+                    </li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <div class="container-fluid mt-4" style="padding-top: 70px;">
+    <div class="container-fluid mt-4" style="padding-top: 80px;">
         {% block content %}{% endblock %}
     </div>
 
