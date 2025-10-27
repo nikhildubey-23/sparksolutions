@@ -561,33 +561,5 @@ Format your responses with proper code blocks using triple backticks."""
         print(f"Unexpected error: {e}")
         return f"Sorry, an unexpected error occurred: {str(e)}"
 
-
-@app.route("/chatbot")
-def chatbot():
-    """Render the AI chatbot page"""
-    return render_template("chatbot.html")
-
-
-@app.route("/api/chat", methods=["POST"])
-def api_chat():
-    """Handle chat messages from the frontend"""
-    try:
-        data = request.get_json()
-        if not data or "message" not in data:
-            return jsonify({"success": False, "error": "No message provided"}), 400
-
-        message = data["message"]
-        code_context = data.get("code", "")
-
-        # Get response from Groq
-        response = get_groq_response(message, code_context)
-
-        return jsonify({"success": True, "response": response})
-
-    except Exception as e:
-        print(f"Chat API error: {e}")
-        return jsonify({"success": False, "error": str(e)}), 500
-
-
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
