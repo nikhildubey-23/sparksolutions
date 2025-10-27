@@ -9,28 +9,31 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import re
+import requests
+import json
 
 load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = os.getenv("FLASK_SECRET_KEY", "supersecretkey")
-app.config['GROQ_API_KEY'] = os.getenv('GROQ_API_KEY')
+app.config["GROQ_API_KEY"] = os.getenv("GROQ_API_KEY")
 CORS(app)
 
 # Email setup
 EMAIL_USER = "sparksolutionfreelancing@gmail.com"
 EMAIL_APP_PASSWORD = "xmng fmym qfuq oswj"
 
+
 def send_email(subject, body, to_email):
     msg = MIMEMultipart()
-    msg['From'] = EMAIL_USER
-    msg['To'] = to_email
-    msg['Subject'] = subject
-    msg.attach(MIMEText(body, 'plain'))
+    msg["From"] = EMAIL_USER
+    msg["To"] = to_email
+    msg["Subject"] = subject
+    msg.attach(MIMEText(body, "plain"))
 
     # Try SSL port 465 first (more compatible with serverless)
     try:
-        server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
+        server = smtplib.SMTP_SSL("smtp.gmail.com", 465)
         server.login(EMAIL_USER, EMAIL_APP_PASSWORD)
         server.send_message(msg)
         server.quit()
@@ -39,7 +42,7 @@ def send_email(subject, body, to_email):
         print(f"SSL SMTP failed: {e}")
         # Fallback to TLS port 587
         try:
-            server = smtplib.SMTP('smtp.gmail.com', 587)
+            server = smtplib.SMTP("smtp.gmail.com", 587)
             server.starttls()
             server.login(EMAIL_USER, EMAIL_APP_PASSWORD)
             server.send_message(msg)
@@ -49,93 +52,132 @@ def send_email(subject, body, to_email):
             print(f"TLS SMTP also failed: {e2}")
             return False
 
+
 def validate_email(email):
-    regex = r'^\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b'
+    regex = r"^\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b"
     return re.match(regex, email)
+
 
 def validate_phone(phone):
     if phone == "":
         return True
-    regex = r'^\+?[\d\s\-]{7,15}$'
+    regex = r"^\+?[\d\s\-]{7,15}$"
     return re.match(regex, phone)
 
 
-
 class ContactForm(FlaskForm):
-    name = StringField('Name', validators=[DataRequired()])
-    email = StringField('Email', validators=[DataRequired(), Email()])
-    phone = StringField('Phone', validators=[Optional()])
-    subject = StringField('Subject', validators=[DataRequired()])
-    message = TextAreaField('Message', validators=[DataRequired()])
-    service_interest = SelectField('Service Interest', choices=[
-        ('', 'Select a service'),
-        ('software_development', 'Software Development'),
-        ('video_editing', 'Video Editing'),
-        ('logo_design', 'Logo Design'),
-        ('content_writing', 'Content Writing'),
-        ('teaching', 'Teaching')
-    ], validators=[DataRequired()])
+    name = StringField("Name", validators=[DataRequired()])
+    email = StringField("Email", validators=[DataRequired(), Email()])
+    phone = StringField("Phone", validators=[Optional()])
+    subject = StringField("Subject", validators=[DataRequired()])
+    message = TextAreaField("Message", validators=[DataRequired()])
+    service_interest = SelectField(
+        "Service Interest",
+        choices=[
+            ("", "Select a service"),
+            ("software_development", "Software Development"),
+            ("video_editing", "Video Editing"),
+            ("logo_design", "Logo Design"),
+            ("content_writing", "Content Writing"),
+            ("teaching", "Teaching"),
+        ],
+        validators=[DataRequired()],
+    )
+
 
 @app.context_processor
 def inject_theme():
     return dict()
 
-@app.route('/')
+
+@app.route("/")
 def home():
-    return render_template('index.html')
+    return render_template("index.html")
 
-@app.route('/about')
+
+@app.route("/about")
 def about():
-    return render_template('about.html')
+    return render_template("about.html")
 
-@app.route('/services')
+
+@app.route("/services")
 def services():
-    return render_template('services.html')
+    return render_template("services.html")
 
-@app.route('/courses')
+
+@app.route("/courses")
 def courses():
-    return render_template('courses.html')
+    return render_template("courses.html")
 
-@app.route('/team')
+
+@app.route("/team")
 def team():
-    return render_template('team.html')
+    return render_template("team.html")
 
-@app.route('/docs')
+
+@app.route("/docs")
 def docs():
-    return render_template('docs.html')
+    return render_template("docs.html")
 
-@app.route('/python')
+
+@app.route("/python")
 def python():
-    return render_template('python.html')
+    return render_template("python.html")
 
-@app.route('/html')
+
+@app.route("/html")
 def html_page():
-    return render_template('html.html')
+    return render_template("html.html")
 
-@app.route('/previous-work')
+
+@app.route("/previous-work")
 def previous_work():
-    return render_template('previous_work.html')
+    return render_template("previous_work.html")
 
-@app.route('/practice')
+
+@app.route("/practice")
 def practice():
-    return render_template('practice.html')
+    return render_template("practice.html")
 
-@app.route('/submit-practice', methods=['POST'])
+
+@app.route("/submit-practice", methods=["POST"])
 def submit_practice():
-    name = request.form.get('name')
-    mobile = request.form.get('mobile')
-    email = request.form.get('email')
+    name = request.form.get("name")
+    mobile = request.form.get("mobile")
+    email = request.form.get("email")
 
     if not all([name, mobile, email]):
         flash("All student details are required!", "error")
-        return redirect(url_for('practice'))
+        return redirect(url_for("practice"))
 
     # Calculate score with negative marking
     score = 0
     answers = {
-        'q1': 'a', 'q2': 'a', 'q3': 'a', 'q4': 'b', 'q5': 'b', 'q6': 'a', 'q7': 'a', 'q8': 'b', 'q9': 'a', 'q10': 'b',
-        'q11': 'b', 'q12': 'c', 'q13': 'c', 'q14': 'b', 'q15': 'd', 'q16': 'b', 'q17': 'b', 'q18': 'b', 'q19': 'b',
-        'q20': 'a', 'q21': 'b', 'q22': 'b', 'q23': 'c', 'q24': 'd', 'q25': 'b'
+        "q1": "a",
+        "q2": "a",
+        "q3": "a",
+        "q4": "b",
+        "q5": "b",
+        "q6": "a",
+        "q7": "a",
+        "q8": "b",
+        "q9": "a",
+        "q10": "b",
+        "q11": "b",
+        "q12": "c",
+        "q13": "c",
+        "q14": "b",
+        "q15": "d",
+        "q16": "b",
+        "q17": "b",
+        "q18": "b",
+        "q19": "b",
+        "q20": "a",
+        "q21": "b",
+        "q22": "b",
+        "q23": "c",
+        "q24": "d",
+        "q25": "b",
     }
 
     for q, ans in answers.items():
@@ -146,11 +188,11 @@ def submit_practice():
             score -= 1
 
     # Coding checks (bonus, no negative)
-    code1 = request.form.get('code1', '')
-    code2 = request.form.get('code2', '')
-    if 'def' in code1 and 'return' in code1:
+    code1 = request.form.get("code1", "")
+    code2 = request.form.get("code2", "")
+    if "def" in code1 and "return" in code1:
         score += 2
-    if 'for' in code2 or 'while' in code2:
+    if "for" in code2 or "while" in code2:
         score += 2
 
     # Send email to admin
@@ -182,82 +224,113 @@ def submit_practice():
     student_sent = send_email(student_subject, student_body, email)
 
     if admin_sent and student_sent:
-        flash(f"Test submitted! Your score: {score}/27. Email notifications sent.", "success")
-        return render_template('success.html')
+        flash(
+            f"Test submitted! Your score: {score}/27. Email notifications sent.",
+            "success",
+        )
+        return render_template("success.html")
     elif admin_sent or student_sent:
-        flash(f"Test submitted! Your score: {score}/27. Some email notifications sent.", "warning")
-        return render_template('success.html')
+        flash(
+            f"Test submitted! Your score: {score}/27. Some email notifications sent.",
+            "warning",
+        )
+        return render_template("success.html")
     else:
-        flash(f"Test submitted! Your score: {score}/27. Email notifications failed.", "error")
-        return redirect(url_for('practice'))
+        flash(
+            f"Test submitted! Your score: {score}/27. Email notifications failed.",
+            "error",
+        )
+        return redirect(url_for("practice"))
 
-@app.route('/css')
+
+@app.route("/css")
 def css():
-    return render_template('css.html')
+    return render_template("css.html")
 
-@app.route('/flask')
+
+@app.route("/flask")
 def flask():
-    return render_template('flask.html')
+    return render_template("flask.html")
 
-@app.route('/nextjs')
+
+@app.route("/nextjs")
 def nextjs():
-    return render_template('nextjs.html')
+    return render_template("nextjs.html")
 
-@app.route('/react')
+
+@app.route("/react")
 def react():
-    return render_template('react.html')
+    return render_template("react.html")
 
-@app.route('/js')
+
+@app.route("/js")
 def js():
-    return render_template('js.html')
+    return render_template("js.html")
 
-@app.route('/django')
+
+@app.route("/django")
 def django():
-    return render_template('django.html')
+    return render_template("django.html")
 
 
-@app.route('/node')
+@app.route("/node")
 def node():
-    return render_template('node.html')
+    return render_template("node.html")
 
-@app.route('/dap')
+
+@app.route("/dap")
 def dap():
-    return render_template('dap.html')
+    return render_template("dap.html")
 
-@app.route('/htmltest')
+
+@app.route("/htmltest")
 def htmltest():
-    return render_template('htmltest.html')
+    return render_template("htmltest.html")
 
-@app.route('/form')
+
+@app.route("/form")
 def form():
-    return render_template('form.html')
+    return render_template("form.html")
 
-@app.route('/enroll', methods=['POST'])
+
+@app.route("/enroll", methods=["POST"])
 def enroll():
-    name = request.form.get('name')
-    phone = request.form.get('phone')
-    email = request.form.get('email')
-    course = request.form.get('course')
-    terms = request.form.get('terms')
+    name = request.form.get("name")
+    phone = request.form.get("phone")
+    email = request.form.get("email")
+    course = request.form.get("course")
+    terms = request.form.get("terms")
 
     if not all([name, phone, email, course, terms]):
         flash("All fields are required!", "error")
-        return redirect(url_for('form'))
+        return redirect(url_for("form"))
 
     # Course details mapping
     courses = {
-        'python-basics': {'name': 'Python Basics with OOPs', 'price': '₹200', 'ref': 'PYB001'},
-        'data-analysis': {'name': 'Data Analysis', 'price': '₹250', 'ref': 'DAP001'},
-        'html-css-js-react': {'name': 'HTML, CSS, JS & React', 'price': '₹500', 'ref': 'HCR001'},
-        'javascript-dsa': {'name': 'JavaScript with DSA', 'price': '₹350', 'ref': 'JSD001'},
-        'nodejs': {'name': 'Node.js', 'price': '₹250', 'ref': 'NOD001'},
-        'flask': {'name': 'Flask', 'price': '₹250', 'ref': 'FLA001'},
-        'django': {'name': 'Django', 'price': '₹400', 'ref': 'DJG001'},
-        'nextjs': {'name': 'Next.js', 'price': '₹500', 'ref': 'NXJ001'},
-        'video-editing': {'name': 'Video Editing', 'price': '₹600', 'ref': 'VED001'},
+        "python-basics": {
+            "name": "Python Basics with OOPs",
+            "price": "₹200",
+            "ref": "PYB001",
+        },
+        "data-analysis": {"name": "Data Analysis", "price": "₹250", "ref": "DAP001"},
+        "html-css-js-react": {
+            "name": "HTML, CSS, JS & React",
+            "price": "₹500",
+            "ref": "HCR001",
+        },
+        "javascript-dsa": {
+            "name": "JavaScript with DSA",
+            "price": "₹350",
+            "ref": "JSD001",
+        },
+        "nodejs": {"name": "Node.js", "price": "₹250", "ref": "NOD001"},
+        "flask": {"name": "Flask", "price": "₹250", "ref": "FLA001"},
+        "django": {"name": "Django", "price": "₹400", "ref": "DJG001"},
+        "nextjs": {"name": "Next.js", "price": "₹500", "ref": "NXJ001"},
+        "video-editing": {"name": "Video Editing", "price": "₹600", "ref": "VED001"},
     }
 
-    course_info = courses.get(course, {'name': 'Unknown', 'price': 'N/A', 'ref': 'N/A'})
+    course_info = courses.get(course, {"name": "Unknown", "price": "N/A", "ref": "N/A"})
 
     # Send email notification
     email_body = f"""
@@ -266,117 +339,135 @@ def enroll():
     Name: {name}
     Phone: {phone}
     Email: {email}
-    Course: {course_info['name']}
-    Course Reference: {course_info['ref']}
-    Price: {course_info['price']}
+    Course: {course_info["name"]}
+    Course Reference: {course_info["ref"]}
+    Price: {course_info["price"]}
     """
     send_email(f"New Course Enrollment: {course_info['name']}", email_body, EMAIL_USER)
 
     flash("Enrollment successful! We will contact you soon.", "success")
-    return render_template('success.html')
+    return render_template("success.html")
 
 
-
-
-
-
-
-@app.route('/python-module')
+@app.route("/python-module")
 def python_module():
-    return render_template('python_module.html')
+    return render_template("python_module.html")
 
-@app.route('/data-analysis-module')
+
+@app.route("/data-analysis-module")
 def data_analysis_module():
-    return render_template('data_analysis_module.html')
+    return render_template("data_analysis_module.html")
 
-@app.route('/html-css-js-react-module')
+
+@app.route("/html-css-js-react-module")
 def html_css_js_react_module():
-    return render_template('html_css_js_react_module.html')
+    return render_template("html_css_js_react_module.html")
 
-@app.route('/javascript-dsa-module')
+
+@app.route("/javascript-dsa-module")
 def javascript_dsa_module():
-    return render_template('javascript_dsa_module.html')
+    return render_template("javascript_dsa_module.html")
 
-@app.route('/nodejs-module')
+
+@app.route("/nodejs-module")
 def nodejs_module():
-    return render_template('nodejs_module.html')
+    return render_template("nodejs_module.html")
 
-@app.route('/flask-module')
+
+@app.route("/flask-module")
 def flask_module():
-    return render_template('flask_module.html')
+    return render_template("flask_module.html")
 
-@app.route('/django-module')
+
+@app.route("/django-module")
 def django_module():
-    return render_template('django_module.html')
+    return render_template("django_module.html")
 
-@app.route('/nextjs-module')
+
+@app.route("/nextjs-module")
 def nextjs_module():
-    return render_template('nextjs_module.html')
+    return render_template("nextjs_module.html")
 
-@app.route('/video-editing-module')
+
+@app.route("/video-editing-module")
 def video_editing_module():
-    return render_template('video_editing_module.html')
+    return render_template("video_editing_module.html")
 
-@app.route('/docker-module')
+
+@app.route("/docker-module")
 def docker_module():
-    return render_template('docker_module.html')
+    return render_template("docker_module.html")
 
-@app.route('/linux-deb-module')
+
+@app.route("/linux-deb-module")
 def linux_deb_module():
-    return render_template('linux_deb_module.html')
+    return render_template("linux_deb_module.html")
 
-@app.route('/linux-arch-module')
+
+@app.route("/linux-arch-module")
 def linux_arch_module():
-    return render_template('linux_arch_module.html')
+    return render_template("linux_arch_module.html")
 
-@app.route('/c-lang-module')
+
+@app.route("/c-lang-module")
 def c_lang_module():
-    return render_template('c_lang_module.html')
+    return render_template("c_lang_module.html")
 
-@app.route('/cpp-module')
+
+@app.route("/cpp-module")
 def cpp_module():
-    return render_template('cpp_module.html')
+    return render_template("cpp_module.html")
 
-@app.route('/java-oops-module')
+
+@app.route("/java-oops-module")
 def java_oops_module():
-    return render_template('java_oops_module.html')
+    return render_template("java_oops_module.html")
 
-@app.route('/git-github-module')
+
+@app.route("/git-github-module")
 def git_github_module():
-    return render_template('git_github_module.html')
+    return render_template("git_github_module.html")
 
-@app.route('/docker')
+
+@app.route("/docker")
 def docker():
-    return render_template('docker.html')
+    return render_template("docker.html")
 
-@app.route('/java')
+
+@app.route("/java")
 def java():
-    return render_template('java.html')
+    return render_template("java.html")
 
-@app.route('/c-lang')
+
+@app.route("/c-lang")
 def c_lang():
-    return render_template('c_lang.html')
+    return render_template("c_lang.html")
 
-@app.route('/cpp-lang')
+
+@app.route("/cpp-lang")
 def cpp_lang():
-    return render_template('cpp_lang.html')
+    return render_template("cpp_lang.html")
 
-@app.route('/linux-arch')
+
+@app.route("/linux-arch")
 def linux_arch():
-    return render_template('linux_arch.html')
+    return render_template("linux_arch.html")
 
-@app.route('/linux-deb')
+
+@app.route("/linux-deb")
 def linux_deb():
-    return render_template('linux_deb.html')
+    return render_template("linux_deb.html")
 
-@app.route('/git-github')
+
+@app.route("/git-github")
 def git_github():
-    return render_template('git_github.html')
+    return render_template("git_github.html")
 
-@app.route('/contact', methods=['GET', 'POST'])
+
+@app.route("/contact", methods=["GET", "POST"])
 def contact():
     form = ContactForm()
-    if request.method == 'POST' and form.validate_on_submit():
+    if request.method == "POST" and form.validate_on_submit():
         name = form.name.data
         email = form.email.data
         phone = form.phone.data
@@ -399,13 +490,104 @@ def contact():
         send_email(f"New Contact Form Submission: {subject}", email_body, EMAIL_USER)
 
         flash("Your message has been sent successfully!", "success")
-        return redirect(url_for('contact'))
+        return redirect(url_for("contact"))
 
-    return render_template('contact.html', form=form)
-
-
+    return render_template("contact.html", form=form)
 
 
+# Groq API Integration
+def get_groq_response(message, code_context=""):
+    """Get response from Groq API"""
+    api_key = os.getenv("GROQ_API_KEY")
+    if not api_key:
+        return "Error: GROQ_API_KEY not found in environment variables"
 
-if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
+    url = "https://api.groq.com/openai/v1/chat/completions"
+
+    # Prepare the system prompt for a coding assistant
+    system_prompt = """You are an expert coding assistant specialized in helping with programming, code review, debugging, and algorithm implementation. You have deep knowledge of:
+
+- Python, JavaScript, Java, C++, C#, Go, Rust, PHP, Ruby
+- Web development (HTML, CSS, React, Node.js, Django, Flask)
+- Data structures and algorithms
+- Software architecture and design patterns
+- Database design and optimization
+- DevOps and cloud technologies
+- Code best practices and optimization
+
+Always provide:
+1. Clear, well-commented code examples
+2. Explanation of concepts
+3. Best practices and potential improvements
+4. Alternative approaches when relevant
+5. Error handling and edge cases
+
+Format your responses with proper code blocks using triple backticks."""
+
+    # Combine message with code context if provided
+    full_message = message
+    if code_context and code_context.strip():
+        full_message += f"\n\nContext - Current Code:\n```{code_context}```"
+
+    headers = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
+
+    data = {
+        "model": "mixtral-8x7b-32768",
+        "messages": [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": full_message},
+        ],
+        "max_tokens": 2000,
+        "temperature": 0.7,
+        "top_p": 0.9,
+    }
+
+    try:
+        response = requests.post(url, headers=headers, json=data, timeout=30)
+        response.raise_for_status()
+
+        result = response.json()
+        if "choices" in result and len(result["choices"]) > 0:
+            return result["choices"][0]["message"]["content"].strip()
+        else:
+            return "Sorry, I couldn't generate a response. Please try again."
+
+    except requests.exceptions.RequestException as e:
+        print(f"Groq API Error: {e}")
+        return (
+            f"Sorry, I'm having trouble connecting to the AI service. Error: {str(e)}"
+        )
+    except Exception as e:
+        print(f"Unexpected error: {e}")
+        return f"Sorry, an unexpected error occurred: {str(e)}"
+
+
+@app.route("/chatbot")
+def chatbot():
+    """Render the AI chatbot page"""
+    return render_template("chatbot.html")
+
+
+@app.route("/api/chat", methods=["POST"])
+def api_chat():
+    """Handle chat messages from the frontend"""
+    try:
+        data = request.get_json()
+        if not data or "message" not in data:
+            return jsonify({"success": False, "error": "No message provided"}), 400
+
+        message = data["message"]
+        code_context = data.get("code", "")
+
+        # Get response from Groq
+        response = get_groq_response(message, code_context)
+
+        return jsonify({"success": True, "response": response})
+
+    except Exception as e:
+        print(f"Chat API error: {e}")
+        return jsonify({"success": False, "error": str(e)}), 500
+
+
+if __name__ == "__main__":
+    app.run(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))

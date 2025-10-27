@@ -4,3 +4,4 @@ python-dotenv
 flask_wtf
 email-validator
 groq
+requests
