@@ -191,6 +191,9 @@
                 border: 1px solid rgba(255, 255, 255, 0.1);
                 border-radius: 8px;
                 box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+                overflow-y: scroll;
+                max-height: 400px;
+                overflow-x: hidden  ;
             }
 
             .custom-dropdown .dropdown-item {
@@ -315,8 +318,7 @@
                                 </li>
                                 <li>
                                     <a class="dropdown-item" href="/flask"
-                                        ><i class="bi bi-flask me-2"></i
-                                        >Flask</a
+                                        > <span><img src="./static/images/Flask.svg" alt="" srcset="" height="22px"></span> Flask</a
                                     >
                                 </li>
                                 <li>
@@ -362,7 +364,7 @@
                                 </li>
                                 <li>
                                     <a class="dropdown-item" href="/linux-deb"
-                                        ><i class="bi bi-debian me-2"></i>Linux
+                                        ><span><img src="./static/images/debian.svg" alt="" srcset="" height="22px"></span>Linux
                                         deb</a
                                     >
                                 </li>
@@ -382,7 +384,7 @@
                         <li class="nav-item">
                             <a class="nav-link" href="/contact">Contact</a>
                         </li>
-                        
+
                         <li class="nav-item"></li>
                     </ul>
                 </div>
